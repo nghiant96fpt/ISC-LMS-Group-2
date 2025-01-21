@@ -2,13 +2,13 @@
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  /* align-items: center; */
+  
 }
 
 /* CSS input */
 .calendar-input {
-  height: 37px;
+  height: 36px;
   cursor: pointer;
   border: none;
   border-right: 2px solid #787575;
