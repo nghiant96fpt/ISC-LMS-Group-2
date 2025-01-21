@@ -1,3 +1,4 @@
+
 .calendar-container {
   position: relative;
   display: flex;
@@ -13,6 +14,7 @@
   border: none;
   border-right: 2px solid #787575;
 }
+
 .calendar-input:hover {
   background-color: #fffbfb;
 }
@@ -20,34 +22,37 @@
 .calendar-input:focus {
   outline: none;
 }
+
+/* Container input và icon */
 .calendar-input-container {
   display: flex;
   align-items: center;
-  border: 2px solid #787575;
+  border: 2px solid #605f5f;
   border-radius: 7px;
   padding: 5px;
-  height: 40px;
-  /* width: 647px; */
   height: 40px;
   background-color: white;
 }
 
+/* Placeholder cho input */
 .calendar-input::placeholder {
   color: #aaa;
 }
 
+/* Icon lịch */
 .calendar-icon {
   cursor: pointer;
   height: 22px;
   width: 26px;
   padding-left: 5px;
 }
+
 .calendar-icon:hover {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   opacity: 90%;
 }
 
-/* CSS popup */
+/* Popup */
 .calendar-popup {
   position: absolute;
   top: 52%;
@@ -56,7 +61,6 @@
   border: 1px solid #e0e0e0;
   border-radius: 20px;
   margin-top: 8px;
-  /* padding: 16px; */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
@@ -71,6 +75,7 @@
   pointer-events: auto;
 }
 
+/* Header Calendar */
 .calendar-header {
   display: flex;
   justify-content: space-between;
@@ -86,6 +91,7 @@
   color: #333;
 }
 
+/*  điều hướng tháng */
 .calendar-nav-button {
   background-color: transparent;
   border: none;
@@ -98,6 +104,7 @@
   color: #0056b3;
 }
 
+/* Các ngày trong tuần */
 .calendar-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -111,6 +118,7 @@
   padding: 4px;
 }
 
+/* Lưới ngày trong tháng */
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -131,19 +139,22 @@
   opacity: 90%;
 }
 
+/* Ngày được chọn */
 .calendar-day.selected {
   background-color: #ff7506;
   color: white;
 }
 
+/* Các ngày tháng khác */
 .calendar-day.other-month {
   color: #ccc;
 }
 
+/*  */
 .calendar-footer {
   display: flex;
   justify-content: center;
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 .calendar-choose-button {

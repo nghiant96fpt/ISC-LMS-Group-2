@@ -1,17 +1,8 @@
 import React from 'react';
-
-import './App.css';
 import CalendarInput from './components/CalendarInput';
 
-function App() {
-  return (
-    <div className="App">
-      <div className="p-4 ">
-        <h1>Chọn ngày</h1>
-        <CalendarInput />
-      </div>
-    </div>
-  );
-}
+const App = () => {
+  return <div className="p-4"></div>;
+};
 
 export default App;
