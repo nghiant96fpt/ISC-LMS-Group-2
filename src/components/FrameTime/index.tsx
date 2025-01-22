@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import "./style.css";
+import iconCalendar from '../../../src/assets/icons/icon-calendar.png';
+import iconArrowLeft from '../../../src/assets/icons/icon-arrow-left.png';
+import iconArrowRight from '../../../src/assets/icons/icon-arrow-right.png';
 
 function FrameTime() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -31,8 +34,19 @@ function FrameTime() {
         <div className="time">{items[currentIndex].time}</div>
       </div>
       <div className="pagination">
-        <button className="nav-button" onClick={handlePrev} disabled={currentIndex === 0}>Trước</button>
-        <button className="nav-button" onClick={handleNext} disabled={currentIndex === items.length - 1}>Sau</button>
+        <img 
+          src={iconArrowLeft} 
+          alt="Previous" 
+          className={`nav-icon ${currentIndex === 0 ? 'disabled' : ''}`} 
+          onClick={handlePrev} 
+        />
+        /
+        <img 
+          src={iconArrowRight} 
+          alt="Next" 
+          className={`nav-icon ${currentIndex === items.length - 1 ? 'disabled' : ''}`} 
+          onClick={handleNext} 
+        />
       </div>
     </div>
   );
