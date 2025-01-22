@@ -1,0 +1,111 @@
+:root {
+    --color-primary: #FF7506;
+    --color-primary-hover: #FF7506;
+    --color-secondary: #C9C4C0;
+    --color-secondary-hover: #C9C4C0;
+    --color-secondary-border-hover: #C9C4C0;
+    --color-outline-primary: #FF7506;
+    --color-outline-secondary: #C9C4C0;
+    --color-disabled-bg: #e9ecef;
+    --color-disabled-text: #C9C4C0;
+}
+
+
+.button {
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+
+}
+
+.button.primary {
+    border-radius: 8px;
+    color: #fff;
+    background-color: var(--color-primary);
+    border-color: var(--color-outline-primary);
+}
+
+.button.primary:hover {
+    border-radius: 8px;
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+}
+
+
+.button.secondary {
+    border-radius: 8px;
+    color: #fff;
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+}
+
+.button.secondary:hover {
+    border-radius: 8px;
+    background-color: var(--color-secondary-hover);
+    border-color: var(--color-secondary-border-hover);
+}
+
+
+.button.outline-primary {
+    border-radius: 8px;
+    border: 1px solid var(--color-primary);
+    color: var(--color-outline-primary) !important;
+    background-color: transparent;
+    border-color: var(--color-outline-primary) !important;
+}
+
+.button.outline-primary:hover {
+    border-radius: 8px;
+    background-color: var(--color-outline-primary);
+    color: #fff !important;
+}
+
+
+.button.outline-secondary {
+    border-radius: 8px;
+    color: var(--color-outline-secondary) !important;
+    background-color: transparent;
+    border-color: var(--color-outline-secondary) !important;
+}
+
+.button.outline-secondary:hover {
+    border-radius: 8px;
+    background-color: var(--color-outline-secondary);
+    color: #fff !important;
+}
+
+.button.disabled {
+    color: white;
+    border-radius: 8px;
+    background-color: vavar(--color-disabled-bg);
+    border-color: var(--color-disabled-bg);
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.button.mini {
+    height: 32px;
+    width: 90px;
+    font-size: 16px !important;
+    gap: 10px;
+}
+
+.button.big {
+    height: 52px;
+    width: 160px;
+    font-size: 18px !important;
+    gap: 10px;
+}
+
+
+.button .icon {
+    width: 24px;
+    height: 24px;
+}
