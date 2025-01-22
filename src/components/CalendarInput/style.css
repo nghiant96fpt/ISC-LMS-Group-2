@@ -1,8 +1,6 @@
 .calendar-container {
   position: relative;
   display: flex;
-  /* justify-content: center; */
-  /* align-items: center; */
 }
 
 /* CSS input */
@@ -32,7 +30,7 @@
   background-color: white;
 }
 
-/* Placeholder cho input */
+/*  */
 .calendar-input::placeholder {
   color: #aaa;
 }
@@ -53,10 +51,10 @@ group-04 .calendar-icon:hover {
 /* Popup */
 .calendar-popup {
   position: fixed;
-  top: 50%; 
-  left: 50%; 
-  transform: translate(-50%, -50%); 
-  
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   background-color: white;
   border: 1px solid #e0e0e0;
   border-radius: 20px;
@@ -71,7 +69,6 @@ group-04 .calendar-icon:hover {
   opacity: 1;
   pointer-events: auto;
 }
-
 
 /* Header Calendar */
 .calendar-header {
