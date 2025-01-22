@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import './styles/tailwind.scss';
 
 function App() {
   return (
