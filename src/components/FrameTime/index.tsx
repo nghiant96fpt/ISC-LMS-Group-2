@@ -14,17 +14,7 @@ function FrameTime() {
     { title: "Tiết 4", time: "16:00" },
   ];
 
-  const handleNext = () => {
-    if (currentIndex < items.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-  };
+  
 
   return (
     <div className="container">

@@ -32,30 +32,13 @@
 }
 
 .time {
+    font-weight: bold;
     font-size: 35px;
     color: #fff; /* Màu chữ trắng */
 }
 
-.pagination {
-    display: flex;
-    justify-content: center;
-    gap: 20px; /* Khoảng cách giữa các nút */
-    margin-top: 10px; /* Khoảng cách giữa card và pagination */
-}
 
 
-.nav-icon {
-    width: 24px; /* Kích thước biểu tượng */
-    height: 24px; /* Kích thước biểu tượng */
-    cursor: pointer;
-    transition: opacity 0.3s ease;
-}
 
-.nav-icon.disabled {
-    opacity: 0.5; /* Hiệu ứng mờ khi vô hiệu hóa */
-    cursor: not-allowed;
-}
 
-.nav-icon:hover:not(.disabled) {
-    opacity: 0.8; /* Hiệu ứng hover */
-}
+
