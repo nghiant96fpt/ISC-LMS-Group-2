@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import userCircle from '../assets/images/user_circle.png';
+import userCircle from '../../assets/images/user_circle.png';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
