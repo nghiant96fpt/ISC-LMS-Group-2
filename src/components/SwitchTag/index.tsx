@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './switchTag.css';
+import './style.css';
 
 type Tab = {
   id: number;
