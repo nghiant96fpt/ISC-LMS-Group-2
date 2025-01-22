@@ -5,45 +5,57 @@
 }
 
 .card {
-    background-color: #ff8c00; /* Màu nền cam */
-    border-radius: 8px;
+    background-color: #FF7506; /* Màu nền cam */
+    border-radius: 16px; /* Bo góc cho card */
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin-bottom: 20px;
+    width: 122px;
+    height: 110px;
+    display: flex; /* Sử dụng flexbox để căn giữa nội dung */
+    flex-direction: column; /* Để tiêu đề và thời gian nằm chồng lên nhau */
+    justify-content: center; /* Căn giữa theo chiều dọc */
+    align-items: center; /* Căn giữa theo chiều ngang */
+    border: 2px solid #ffcc80; /* Viền màu cam nhạt */
+}
+.card2{
+    background-color: #ffcc80;
+    width: 85px;
+    border-radius: 16px;
 }
 
 .title {
     font-size: 18px;
     font-weight: bold;
-    color: #fff;
+    color: #fff; /* Màu chữ trắng */
+    
 }
 
 .time {
-    font-size: 24px;
-    color: #fff;
+    font-size: 35px;
+    color: #fff; /* Màu chữ trắng */
 }
 
 .pagination {
     display: flex;
     justify-content: center;
     gap: 20px; /* Khoảng cách giữa các nút */
+    margin-top: 10px; /* Khoảng cách giữa card và pagination */
 }
 
-.nav-button {
-    padding: 10px 20px;
-    background-color: green; /* Màu nền nút */
-    color: #ffffff; /* Màu chữ */
-    border: none;
-    border-radius: 5px;
+
+.nav-icon {
+    width: 24px; /* Kích thước biểu tượng */
+    height: 24px; /* Kích thước biểu tượng */
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: opacity 0.3s ease;
 }
 
-.nav-button:disabled {
-    background-color: #ccc; /* Màu nền khi vô hiệu hóa */
+.nav-icon.disabled {
+    opacity: 0.5; /* Hiệu ứng mờ khi vô hiệu hóa */
     cursor: not-allowed;
 }
 
-.nav-button:hover:not(:disabled) {
-    background-color: #0056b3; /* Màu nền khi hover */
+.nav-icon:hover:not(.disabled) {
+    opacity: 0.8; /* Hiệu ứng hover */
 }

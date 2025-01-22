@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import "./style.css";
-import iconCalendar from '../../../src/assets/icons/icon-calendar.png';
 import iconArrowLeft from '../../../src/assets/icons/icon-arrow-left.png';
 import iconArrowRight from '../../../src/assets/icons/icon-arrow-right.png';
 
@@ -30,24 +29,13 @@ function FrameTime() {
   return (
     <div className="container">
       <div className="card">
+        <div className="card2">
         <div className="title">{items[currentIndex].title}</div>
+
+        </div>
         <div className="time">{items[currentIndex].time}</div>
       </div>
-      <div className="pagination">
-        <img 
-          src={iconArrowLeft} 
-          alt="Previous" 
-          className={`nav-icon ${currentIndex === 0 ? 'disabled' : ''}`} 
-          onClick={handlePrev} 
-        />
-        /
-        <img 
-          src={iconArrowRight} 
-          alt="Next" 
-          className={`nav-icon ${currentIndex === items.length - 1 ? 'disabled' : ''}`} 
-          onClick={handleNext} 
-        />
-      </div>
+    
     </div>
   );
 }
