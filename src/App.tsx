@@ -1,4 +1,5 @@
 import React from 'react';
+
 import './App.css'; 
 import Header from './components/Header'; 
 
@@ -16,6 +17,8 @@ function App() {
         <p className="text-gray-700">Đây là nơi bạn hiển thị nội dung chính.</p>
       </main>
     </div>
+
+
   );
 }
 
