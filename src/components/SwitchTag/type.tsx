@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import SwitchTab from './switchTag';
+import SwitchTab from '.';
 
 const tabs = [
   { id: 0, label: 'Sample text 1' },
