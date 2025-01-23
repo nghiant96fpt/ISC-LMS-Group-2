@@ -37,4 +37,31 @@
   --icon-color: #{$icon-color};
   // user
   --user-color: #{$user-color};
+
+  // font-family
+  --font-Mulish: #{$font-Mulish};
+  --font-Source-Sans-Pro: #{$font-Source-Sans-Pro};
+
+  // font-size
+  --font-size-Mulish-1: #{$font-size-Mulish-1};
+  --font-size-Mulish-2: #{$font-size-Mulish-2};
+  --font-size-Mulish-3: #{$font-size-Mulish-3};
+  --font-size-Mulish-4: #{$font-size-Mulish-4};
+  --font-size-Source-Sans-Pro-1: #{$font-size-Source-Sans-Pro-1};
+  --font-size-Source-Sans-Pro-2: #{$font-size-Source-Sans-Pro-2};
+
+  // font-height
+  --line-height-Mulish-1: #{$line-height-Mulish-1};
+  --line-height-Mulish-2: #{$line-height-Mulish-2};
+  --line-height-Mulish-3: #{$line-height-Mulish-3};
+  --line-height-Mulish-4: #{$line-height-Mulish-4};
+  --line-height-Source-Sans-Pro-1: #{$line-height-Source-Sans-Pro-1};
+  --line-height-Source-Sans-Pro-2: #{$line-height-Source-Sans-Pro-2};
+  --line-height-Source-Sans-Pro-3: #{$line-height-Source-Sans-Pro-3};
+
+  // font-weight
+  --weight-Mulish: #{$weight-Mulish};
+  --weight-Source-Sans-Pro-1: #{$weight-Source-Sans-Pro-1};
+  --weight-Source-Sans-Pro-2: #{$weight-Source-Sans-Pro-2};
+  --weight-Source-Sans-Pro-3: #{$weight-Source-Sans-Pro-3};
 }
