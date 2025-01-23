@@ -18,9 +18,17 @@ const Menu: React.FC = () => {
     const handleMouseLeave = () => setIsExpanded(false);
 
     const handleIconClick = (iconName: string, index: number) => {
-        setActiveIcon(iconName); 
-        setActiveIndex(index);    
+        if (activeIcon === iconName && activeIndex === index) {
+            setIsExpanded(false);
+            setActiveIcon(null);
+            setActiveIndex(null);
+        } else {
+            setIsExpanded(true);
+            setActiveIcon(iconName);
+            setActiveIndex(index);
+        }
     };
+
 
     return (
         <div
@@ -97,56 +105,56 @@ const Menu: React.FC = () => {
                     <div className="w-2 h-14 left-[290px] top-[196px] absolute bg-[#ff7506] rounded-[11px]" style={{ top: `${activeIndex === 0 ? '205px' : activeIndex === 1 ? '276px' : activeIndex === 2 ? '436px' : activeIndex === 3 ? '598px' : activeIndex === 4 ? '664px' : activeIndex === 5 ? '730px' : ''}` }}></div>
 
                     {/* Các mục menu */}
-                    <a href="#" className={`block w-full h-12 absolute no-underline flex items-center ${activeIndex === 0 ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'}`} style={{ top: "205px", left: "34px" }}>
-                        <i className="fa-thin fa-eye text-lg"></i>
+                    <a href="#" className={`block w-full h-12 absolute no-underline flex items-center ${activeIndex === 0 ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'}`} style={{ top: "205px", left: "34px" }} onClick={() => setIsExpanded(false)} >
+                        <i className="fa-regular fa-eye"></i>
                         <span className="ml-4 text-lg font-bold font-sans tracking-tight">Tổng quan</span>
                     </a>
 
-                    <a href="#" className={`block w-full h-12 absolute no-underline flex items-center ${activeIndex === 1 ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'}`} style={{ top: "276px", left: "34px" }}>
+                    <a href="#" className={`block w-full h-12 absolute no-underline flex items-center ${activeIndex === 1 ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'}`} style={{ top: "276px", left: "34px" }} onClick={() => setIsExpanded(false)} >
                         <i className="fa-solid fa-book text-lg"></i>
                         <span className="ml-4 text-lg font-bold font-sans tracking-tight">Lớp học của tôi</span>
                     </a>
 
-                    <a href="#" className={`block w-full h-12 absolute no-underline flex items-center ${activeIndex === 2 ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'}`} style={{ top: "436px", left: "34px" }}>
+                    <a href="#" className={`block w-full h-12 absolute no-underline flex items-center ${activeIndex === 2 ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'}`} style={{ top: "436px", left: "34px" }} onClick={() => setIsExpanded(false)} >
                         <i className="fa-solid fa-book text-lg"></i>
                         <span className="ml-4 text-lg font-bold font-sans tracking-tight">Bài kiểm tra</span>
                     </a>
 
-                    <a href="#" className={`block w-full h-12 absolute no-underline flex items-center ${activeIndex === 3 ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'}`} style={{ top: "598px", left: "34px" }}>
+                    <a href="#" className={`block w-full h-12 absolute no-underline flex items-center ${activeIndex === 3 ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'}`} style={{ top: "598px", left: "34px" }} onClick={() => setIsExpanded(false)} >
                         <i className="fa-regular fa-calendar text-lg"></i>
                         <span className="ml-4 text-lg font-bold font-sans tracking-tight">Lịch thi</span>
                     </a>
 
-                    <a href="#" className={`block w-full h-12 absolute no-underline flex items-center ${activeIndex === 4 ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'}`} style={{ top: "664px", left: "34px" }}>
+                    <a href="#" className={`block w-full h-12 absolute no-underline flex items-center ${activeIndex === 4 ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'}`} style={{ top: "664px", left: "34px" }} onClick={() => setIsExpanded(false)} >
                         <i className="fa-regular fa-bell text-lg"></i>
                         <span className="ml-4 text-lg font-bold font-sans tracking-tight">Thông báo</span>
                     </a>
 
-                    <a href="#" className={`block w-full h-12 absolute no-underline flex items-center ${activeIndex === 5 ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'}`} style={{ top: "730px", left: "34px" }}>
+                    <a href="#" className={`block w-full h-12 absolute no-underline flex items-center ${activeIndex === 5 ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'}`} style={{ top: "730px", left: "34px" }} onClick={() => setIsExpanded(false)} >
                         <i className="fa-regular fa-comment text-lg"></i>
                         <span className="ml-4 text-lg font-bold font-sans tracking-tight">Trợ giúp</span>
                     </a>
 
                     {/* Các mục mới thêm */}
-                    <a href="#" className="block w-full h-10 absolute no-underline flex items-center" style={{ top: "335px", left: "60px" }}>
+                    <a href="#" className="block w-full h-10 absolute no-underline flex items-center" style={{ top: "335px", left: "60px" }} onClick={() => setIsExpanded(false)} >
                         <span className="text-[#373839] opacity-70 text-sm font-sans tracking-tight hover:text-[#373839] hover:font-bold hover:ml-2 transition-all">
                             Danh sách lớp học
                         </span>
                     </a>
 
-                    <a href="#" className="block w-full h-10 absolute no-underline flex items-center" style={{ top: "395px", left: "60px" }}>
+                    <a href="#" className="block w-full h-10 absolute no-underline flex items-center" style={{ top: "395px", left: "60px" }} onClick={() => setIsExpanded(false)} >
                         <span className="text-[#373839] opacity-70 text-sm font-sans tracking-tight hover:text-[#373839] hover:font-bold hover:ml-2 transition-all">
                             Tham gia vào lớp
                         </span>
                     </a>
 
-                    <a href="#" className="block w-full h-10 absolute no-underline flex items-center" style={{ top: "495px", left: "60px" }}>
+                    <a href="#" className="block w-full h-10 absolute no-underline flex items-center" style={{ top: "495px", left: "60px" }} onClick={() => setIsExpanded(false)} >
                         <span className="text-[#373839] opacity-70 text-sm font-sans tracking-tight hover:text-[#373839] hover:font-bold hover:ml-2 transition-all">
                             Danh sách bài kiểm tra
                         </span>
                     </a>
 
-                    <a href="#" className="block w-full h-10 absolute no-underline flex items-center" style={{ top: "555px", left: "60px" }}>
+                    <a href="#" className="block w-full h-10 absolute no-underline flex items-center" style={{ top: "555px", left: "60px" }} onClick={() => setIsExpanded(false)} >
                         <span className="text-[#373839] opacity-70 text-sm font-sans tracking-tight hover:text-[#373839] hover:font-bold hover:ml-2 transition-all">
                             Bảng điểm
                         </span>
