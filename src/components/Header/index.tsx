@@ -13,7 +13,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-gray-100 shadow-md flex items-center justify-between px-6 py-4 h-16">
+    <header className=" flex items-center justify-between px-6 py-4 h-16">
       <div></div>
       <div className="flex items-center space-x-4">
         {isLoggedIn ? (
