@@ -1,18 +1,9 @@
 import React, { useState } from 'react';
 import './style.css';
+import { SwitchTagProps } from './type';
 
-type Tab = {
-  id: number;
-  label: string;
-};
-
-type SwitchTabProps = {
-  tabs: Tab[];
-  defaultActiveTab?: number;
-  onTabChange?: (id: number) => void;
-};
-
-const SwitchTag: React.FC<SwitchTabProps> = ({ tabs, defaultActiveTab = 0, onTabChange }) => {
+const SwitchTag: React.FC<SwitchTagProps> = ({ options, onTabChange }) => {
+  const { labels, defaultActiveTab = 0 } = options;
   const [activeTab, setActiveTab] = useState(defaultActiveTab);
 
   const handleTabClick = (id: number) => {
@@ -22,9 +13,9 @@ const SwitchTag: React.FC<SwitchTabProps> = ({ tabs, defaultActiveTab = 0, onTab
 
   return (
     <div className="switch-tab">
-      {tabs.map((tab) => (
-        <button key={tab.id} className={`tab-button ${activeTab === tab.id ? 'active' : ''}`} onClick={() => handleTabClick(tab.id)}>
-          {tab.label}
+      {labels.map((label, index) => (
+        <button key={index} className={`tab-button ${activeTab === index ? 'active' : ''}`} onClick={() => handleTabClick(index)}>
+          {label}
         </button>
       ))}
     </div>
