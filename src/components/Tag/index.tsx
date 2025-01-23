@@ -10,22 +10,4 @@ const TagLayout: React.FC<TagProp> = ({ text, isActive, onClick }) => {
   );
 };
 
-const Tag: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(0);
-
-  const handleTagClick = (index: number) => {
-    setActiveIndex(index === activeIndex ? null : index);
-  };
-
-  const tags = ['Sample text', 'Sample text'];
-
-  return (
-    <div className="container">
-      {tags.map((text, index) => (
-        <TagLayout key={index} text={text} isActive={activeIndex === index} onClick={() => handleTagClick(index)} />
-      ))}
-    </div>
-  );
-};
-
-export default Tag;
+export default TagLayout;
