@@ -12,11 +12,11 @@ function App() {
   const tags = ['Sample text', 'Sample text'];
 
   return (
-    <div className="Tag">
+    <>
       {tags.map((text, index) => (
         <TagLayout key={index} text={text} isActive={activeIndex === index} onClick={() => handleTagClick(index)} />
       ))}
-    </div>
+    </>
   );
 }
 
