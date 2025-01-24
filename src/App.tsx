@@ -1,22 +1,25 @@
+import React from 'react';
+import logo from './logo.svg';
 import './App.css';
-import TagLayout from './components/Tag/index';
-import { useState } from 'react';
 
 function App() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(0);
-
-  const handleTagClick = (index: number) => {
-    setActiveIndex(index === activeIndex ? null : index);
-  };
-
-  const tags = ['Sample text', 'Sample text'];
-
   return (
-    <>
-      {tags.map((text, index) => (
-        <TagLayout key={index} text={text} isActive={activeIndex === index} onClick={() => handleTagClick(index)} />
-      ))}
-    </>
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.tsx</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
   );
 }
 
