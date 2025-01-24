@@ -1,5 +1,5 @@
-export interface TagProps {
-    text: string;
-    isActive: boolean;
-  }
-  
+export interface TagProp {
+  text: string;
+  isActive: boolean;
+  onClick: () => void;
+}

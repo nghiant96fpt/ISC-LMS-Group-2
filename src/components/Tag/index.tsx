@@ -1,18 +1,13 @@
-import React from 'react';
-import { TagProps } from './type';
-import './style.css'; // Keep this import
+import React, { useState } from 'react';
+import { TagProp } from './type';
+import './style.css';
 
-const Tag: React.FC<TagProps> = ({ text, isActive }) => {
-  return <div className={`tag ${isActive ? 'active' : 'inactive'}`}>{text}</div>;
-};
-
-const App: React.FC = () => {
+const TagLayout: React.FC<TagProp> = ({ text, isActive, onClick }) => {
   return (
-    <div className="container">
-      <Tag text="Sample text" isActive={true} />
-      <Tag text="Sample text" isActive={false} />
+    <div className={`tag ${isActive ? 'active' : 'inactive'}`} onClick={onClick}>
+      {text}
     </div>
   );
 };
 
-export default App;
+export default TagLayout;
