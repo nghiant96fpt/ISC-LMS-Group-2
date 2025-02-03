@@ -35,7 +35,7 @@ module.exports = {
         'background-blue-2': 'var(--background-blue-2)',
         'background-blue-3': 'var(--background-blue-3)',
         'background-green': 'var(--background-green)',
-        'background-while': 'var(--background-while)',
+        'background-white': 'var(--background-white)',
         'background-input': 'var(--background-input)',
 
         // Border colors
@@ -50,11 +50,13 @@ module.exports = {
       backgroundImage: {
         'br-gradient-top-or': 'linear-gradient(to top, var(--background-1), var(--background-2))',
         'br-gradient-right-or': 'linear-gradient(to right, var(--background-2), var(--background-1))',
-        'br-gradient-sheeet': 'linear-gradient(to right, var(--background-3), var(--background-4))',
+        'br-gradient-sheet': 'linear-gradient(to right, var(--background-3), var(--background-4))',
         'br-gradient-blue': 'linear-gradient(to right, var(--background-5), var(--background-6))',
         'br-gradient-green': 'linear-gradient(to right, var(--background-8), var(--background-7))',
+
       },
     },
   },
   plugins: [],
+
 };
