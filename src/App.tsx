@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import './App.css';
 import Header from './components/Header';
-import Menu from './components/MenuStudent';
+import Menu from './components/Menu';
 import Footer from './components/Footer';
 import { publicRouters } from './routes';
 
@@ -13,7 +13,7 @@ function App() {
       <div className="App flex flex-col min-h-screen">
         <main className="flex-grow flex relative">
           <aside className=" w-[30%]">
-            <Menu />
+            <Menu role="leadership" />
           </aside>
 
           <div className=" flex-grow p-4 ">
