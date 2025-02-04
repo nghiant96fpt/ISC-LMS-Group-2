@@ -3,7 +3,7 @@ import { SubjectButtonProps } from './types';
 import Icons from './icons';
 import './style.css';
 
-
+//hàm handleIconClick
 const handleIconClick = (onClose?: () => void) => (e: React.MouseEvent<HTMLSpanElement>) => {
   e.stopPropagation();
   if (onClose) {
