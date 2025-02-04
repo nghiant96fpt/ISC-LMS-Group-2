@@ -3,6 +3,14 @@ import { SubjectButtonProps } from './types';
 import Icons from './icons';
 import './style.css';
 
+
+const handleIconClick = (onClose?: () => void) => (e: React.MouseEvent<HTMLSpanElement>) => {
+  e.stopPropagation();
+  if (onClose) {
+    onClose();
+  }
+};
+
 const SubjectButton: React.FC<SubjectButtonProps> = ({
   title,
   backgroundColor,
@@ -11,7 +19,7 @@ const SubjectButton: React.FC<SubjectButtonProps> = ({
   disabled = false,
   size = 'extra-large',
   iconPosition = 'right',
-  onClose, 
+  onClose,
 }) => {
   const IconComponent = iconName ? Icons[iconName as keyof typeof Icons] : null;
   const isImage = typeof IconComponent === 'string';
@@ -23,7 +31,7 @@ const SubjectButton: React.FC<SubjectButtonProps> = ({
         disabled={disabled}
       >
         {IconComponent && iconPosition === 'left' && (
-          <span className="icon-wrapper" onClick={(e) => { e.stopPropagation(); onClose && onClose(); }}> 
+          <span className="icon-wrapper" onClick={handleIconClick(onClose)}> 
             {isImage ? (
               <img src={IconComponent} alt={`${iconName} icon`} className="w-6 h-6" />
             ) : (
@@ -36,7 +44,7 @@ const SubjectButton: React.FC<SubjectButtonProps> = ({
         </p>
 
         {IconComponent && iconPosition === 'right' && (
-          <span className="icon-wrapper" onClick={(e) => { e.stopPropagation(); onClose && onClose(); }}> 
+          <span className="icon-wrapper" onClick={handleIconClick(onClose)}> 
             {isImage ? (
               <img src={IconComponent} alt={`${iconName} icon`} className="w-6 h-6" />
             ) : (
