@@ -2,11 +2,12 @@ import React from 'react';
 import AddressType from './type';
 import arrow from '../../assets/images/chevron_big_right.png';
 import './Style.css';
+import { Link } from 'react-router';
 const AddressList: React.FC<AddressType> = ({ addressList, type = true }) => {
   let size = addressList.length;
   function processArray() {
     if (type && addressList.length > 5) {
-      const firstPart = [addressList[0], '...'];
+      const firstPart = [addressList[0], { linkName: '...', link: '#' }];
       const lastPart = addressList.slice(-2);
       addressList = [...firstPart, ...lastPart];
       size = addressList.length;
@@ -19,14 +20,20 @@ const AddressList: React.FC<AddressType> = ({ addressList, type = true }) => {
       {processArray().map((v, index) => {
         return index < size - 1 ? (
           <>
-            <p className="smalltext">{v}</p> <img className="image" src={arrow} />
+            <Link to={v.link} className="smalltext">
+              {' '}
+              {v.linkName}{' '}
+            </Link>{' '}
+            <img className="image" src={arrow} />
           </>
         ) : (
-          <p className="bigtext">{v}</p>
+          <Link to={v.link} className="bigtext">
+            {' '}
+            {v.linkName}
+          </Link>
         );
       })}
     </div>
   );
 };
-
 export default AddressList;
