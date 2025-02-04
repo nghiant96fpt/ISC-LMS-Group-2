@@ -1,7 +1,8 @@
 import React from 'react';
+import CalendarInput from './components/CalendarInput';
 
-function App() {
-  return <div className="App"></div>;
-}
+const App = () => {
+  return <div className="p-4"></div>;
+};
 
 export default App;
