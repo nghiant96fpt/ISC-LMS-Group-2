@@ -104,9 +104,7 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
                     <a
                       href={subItem.path || '#'}
                       key={subItem.id}
-                      className={`block w-full h-10 text-gray-600 text-sm hover:bg-gray-200 p-2 rounded-md ${
-                        activeSubIndex === subItem.id ? 'bg-gray-300' : ''
-                      }`}
+                      className={`block w-full h-10 text-sm hover:bg-gray-200 p-2 rounded-md ${activeSubIndex === subItem.id ? '' : ''}`}
                       onClick={(e) => {
                         e.preventDefault();
 
@@ -114,7 +112,11 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
                         setIsExpanded(false);
                       }}
                     >
-                      <span className="text-[#373839] opacity-70 text-sm font-sans tracking-tight hover:text-[#373839] hover:font-bold hover:ml-2 transition-all">
+                      <span
+                        className={`text-sm font-sans tracking-tight transition-all ${
+                          activeSubIndex === subItem.id ? 'text-black font-bold' : 'text-[#373839] opacity-70 hover:text-black'
+                        }`}
+                      >
                         {subItem.title}
                       </span>
                     </a>
