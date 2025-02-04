@@ -1,103 +1,159 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import './style.css';
+import { CalendarInputProps } from './type';
+import iconCalendar from '../../../src/assets/icons/icon-calendar.png';
+import iconArrowLeft from '../../../src/assets/icons/icon-arrow-left.png';
+import iconArrowRight from '../../../src/assets/icons/icon-arrow-right.png';
 
-const CalendarInput: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+const CalendarInput: React.FC<CalendarInputProps> = ({
+  placeholder = 'Chọn ngày',
+  onDateChange,
+  onMonthChange,
+  onToggleCalendar,
+  initialDate = null,
+  locale = 'vi-VN',
+  dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+
+  style,
+  inputStyle,
+  popupStyle,
+  buttonStyle,
+  selectedDayStyle,
+  otherMonthDayStyle,
+}) => {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(initialDate);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-
-  // Tính ngày trong tháng
-  const getDaysInMonth = (year: number, month: number) => {
-    return new Array(31)
-      .fill(null)
-      .map((_, index) => new Date(year, month, index + 1))
-      .filter((date) => date.getMonth() === month);
-  };
-
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
 
-  const days = getDaysInMonth(currentYear, currentMonth);
+  const getDaysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
+
+  const getCalendarDays = useMemo(() => {
+    const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+    const daysInCurrentMonth = getDaysInMonth(currentYear, currentMonth);
+
+    const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    const daysInPrevMonth = getDaysInMonth(prevYear, prevMonth);
+
+    const prevMonthDaysToShow = Array.from(
+      { length: firstDayOfMonth },
+      (_, i) => new Date(prevYear, prevMonth, daysInPrevMonth - firstDayOfMonth + 1 + i),
+    );
+
+    const currentMonthDays = Array.from({ length: daysInCurrentMonth }, (_, i) => new Date(currentYear, currentMonth, i + 1));
+
+    const remainder = (prevMonthDaysToShow.length + currentMonthDays.length) % 7;
+    const nextMonthDaysToShow = Array.from({ length: remainder === 0 ? 0 : 7 - remainder }, (_, i) => new Date(currentYear, currentMonth + 1, i + 1));
+
+    return [...prevMonthDaysToShow, ...currentMonthDays, ...nextMonthDaysToShow];
+  }, [currentMonth, currentYear]);
 
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);
-    // setIsCalendarOpen(false);
+    onDateChange?.(date);
   };
+
+  const formattedDateVN = (date: Date) => {
+    return date.toLocaleDateString('vi-VN');
+  };
+
   const handleDateChoose = () => {
     if (selectedDate) {
+      onDateChange?.(selectedDate);
       setIsCalendarOpen(false);
+      console.log(`Ngày đã chọn: ${formattedDateVN(selectedDate)}`);
     } else {
-      alert('Vui lòng chọn ngày trước khi xác nhận.');
+      alert('Vui lòng chọn ngày trước khi nhấn "Chọn".');
     }
   };
+
+  const formattedDate = (date: Date) => date.toLocaleDateString(locale);
+
+  const toggleCalendar = () => {
+    setIsCalendarOpen((prev) => !prev);
+    onToggleCalendar?.(!isCalendarOpen);
+  };
+
   const handlePrevMonth = () => {
-    if (currentMonth === 0) {
-      // Chuyển về tháng 12 năm trước
-      setCurrentMonth(11);
-      setCurrentYear((prev) => prev - 1);
-    } else {
-      setCurrentMonth((prev) => prev - 1);
-    }
+    const newMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const newYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
+    onMonthChange?.(newMonth, newYear);
   };
 
   const handleNextMonth = () => {
-    if (currentMonth === 11) {
-      // Chuyển về tháng 1 năm sau
-      setCurrentMonth(0);
-      setCurrentYear((prev) => prev + 1);
-    } else {
-      setCurrentMonth((prev) => prev + 1);
-    }
+    const newMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+    const newYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+    setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
+    onMonthChange?.(newMonth, newYear);
   };
 
   return (
-    <div className="calendar-container">
-      {/* Input field */}
-      <input
-        type="text"
-        value={selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''}
-        onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-        readOnly
-        placeholder="Chọn ngày"
-        className="calendar-input"
-      />
+    <div className="calendar-container" style={style}>
+      <div className="calendar-input-container" style={inputStyle}>
+        <input
+          type="text"
+          value={selectedDate ? formattedDate(selectedDate) : ''}
+          onClick={toggleCalendar}
+          readOnly
+          placeholder={placeholder}
+          className="calendar-input"
+        />
+        <button className="calendar-icon" onClick={toggleCalendar} style={buttonStyle}>
+          <img src={iconCalendar} alt="" />
+        </button>
+      </div>
 
-      {/* Calendar popup */}
       {isCalendarOpen && (
-        <div className="calendar-popup">
-          {/* Điều hướng tháng */}
-          {/* Điều hướng tháng */}
+        <div className="calendar-popup open" style={popupStyle}>
           <div className="calendar-header">
             <button className="calendar-nav-button" onClick={handlePrevMonth}>
-              {'<'}
+              <img src={iconArrowLeft} alt="" />
             </button>
             <span className="calendar-title">
               Tháng {currentMonth + 1}, {currentYear}
             </span>
             <button className="calendar-nav-button" onClick={handleNextMonth}>
-              {'>'}
+              <img src={iconArrowRight} alt="" />
             </button>
           </div>
 
-          {/* Hiển thị tên các ngày trong tuần */}
           <div className="calendar-weekdays">
-            {['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'].map((day, index) => (
+            {dayNames.map((day, index) => (
               <div key={index} className="calendar-weekday">
                 {day}
               </div>
             ))}
           </div>
-          {/* Danh sách ngày */}
+
           <div className="calendar-grid">
-            {days.map((date, index) => (
+            {getCalendarDays.map((date, index) => (
               <button
                 key={index}
                 onClick={() => handleDateClick(date)}
-                className={`calendar-day ${selectedDate?.toDateString() === date.toDateString() ? 'selected' : ''}`}
+                className={`calendar-day ${
+                  selectedDate?.toDateString() === date.toDateString() ? 'selected' : date.getMonth() !== currentMonth ? 'other-month' : ''
+                }`}
+                style={
+                  selectedDate?.toDateString() === date.toDateString()
+                    ? selectedDayStyle
+                    : date.getMonth() !== currentMonth
+                    ? otherMonthDayStyle
+                    : undefined
+                }
               >
                 {date.getDate()}
               </button>
             ))}
+          </div>
+          <div className="calendar-footer">
+            <button className="calendar-choose-button" onClick={handleDateChoose}>
+              Chọn
+            </button>
           </div>
         </div>
       )}
