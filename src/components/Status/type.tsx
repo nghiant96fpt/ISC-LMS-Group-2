@@ -1,18 +1,18 @@
 export interface StatusProps {
     type: 'studying' | 'dropped' | 'graduated' | 'classTransferred' | 'schoolTransferred';
-    label?: string; // Custom label text (optional override for default label)
+    label?: string; // Văn bản hiển thị (tuỳ chọn, có thể ghi đè nhãn mặc định)
     styles?: {
-        container?: React.CSSProperties; // Style for the container
-        dot?: React.CSSProperties;       // Style for the dot
-        label?: React.CSSProperties;     // Style for the label text
+        container?: React.CSSProperties; // Kiểu dáng cho phần bao bọc bên ngoài
+        dot?: React.CSSProperties;       // Kiểu dáng cho chấm tròn trạng thái
+        label?: React.CSSProperties;     // Kiểu dáng cho văn bản hiển thị
     };
-    className?: string; // Additional class names for the container
-    height?: string | number; // Custom height for the component
-    width?: string | number; // Custom width for the component
-    margin?: string | number; // Custom margin for the component
-    padding?: string | number; // Custom padding for the component
-    fontSize?: string | number; // Custom font size for the label text
-    borderRadius?: string | number; // Custom border radius for the container
-    gap?: string | number; // Custom gap between dot and label text
-    border?: string; // Custom border style for the container
+    className?: string; // Các class bổ sung cho phần bao bọc bên ngoài
+    height?: string | number; // Chiều cao tùy chỉnh của component
+    width?: string | number; // Chiều rộng tùy chỉnh của component
+    margin?: string | number; // Khoảng cách ngoài (margin) tùy chỉnh
+    padding?: string | number; // Khoảng cách bên trong (padding) tùy chỉnh
+    fontSize?: string | number; // Kích thước chữ của văn bản hiển thị
+    borderRadius?: string | number; // Độ bo góc của phần bao bọc bên ngoài
+    gap?: string | number; // Khoảng cách giữa chấm tròn và văn bản
+    border?: string; // Kiểu đường viền cho phần bao bọc bên ngoài
 }

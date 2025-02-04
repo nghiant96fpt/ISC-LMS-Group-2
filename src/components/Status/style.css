@@ -1,10 +1,9 @@
-/* Đặt các biến màu trong :root để dễ dàng chỉnh sửa */
 :root {
-    --status-studying-color: #49C510; /* Green */
-    --status-dropped-color: #ED2025; /* Red */
-    --status-graduated-color: #0B80EC; /* Blue */
-    --status-classTransferred-color: #FF7506; /* Orange */
-    --status-schoolTransferred-color: #373839; /* Black */
+    --status-studying-color: #49C510;
+    --status-dropped-color: #ED2025;
+    --status-graduated-color: #0B80EC;
+    --status-classTransferred-color: #FF7506;
+    --status-schoolTransferred-color: #373839;
 }
 
 /* Container chính của trạng thái */

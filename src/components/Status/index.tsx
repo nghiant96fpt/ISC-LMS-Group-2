@@ -2,7 +2,6 @@ import React from 'react';
 import './style.css';
 import { StatusProps } from './type';
 
-// Define statusConfig
 const statusConfig: Record<StatusProps['type'], { label: string; color: string; dotColor: string }> = {
     studying: {
         label: 'Đang theo học',
@@ -47,8 +46,8 @@ const Status: React.FC<StatusProps> = ({
 }) => {
     const { label: defaultLabel, color, dotColor } = statusConfig[type];
 
-    const containerStyle = {
-        ...styles?.container,
+    const containerStyle: React.CSSProperties = {
+        ...(styles?.container ?? {}),
         height,
         width,
         margin,
@@ -60,16 +59,19 @@ const Status: React.FC<StatusProps> = ({
         borderColor: color,
     };
 
+    const dotStyle: React.CSSProperties = {
+        backgroundColor: dotColor,
+        ...(styles?.dot ?? {}),
+    };
+
+    const labelStyle: React.CSSProperties = {
+        ...(styles?.label ?? {}),
+    };
+
     return (
-        <div
-            className={`status-container status-${type} ${className}`.trim()}
-            style={containerStyle}
-        >
-            <span
-                className={`status-dot ${type}`}
-                style={{ backgroundColor: dotColor, ...styles?.dot }}
-            ></span>
-            <span style={styles?.label}>{label || defaultLabel}</span>
+        <div className={`status-container status-${type} ${className}`.trim()} style={containerStyle}>
+            <span className={`status-dot ${type}`} style={dotStyle}></span>
+            <span style={labelStyle}>{label || defaultLabel}</span>
         </div>
     );
 };
