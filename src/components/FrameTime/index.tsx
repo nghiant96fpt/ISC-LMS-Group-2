@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
 import "./style.css";
 
-function FrameTime() {
+export interface Item {
+  title: string;
+  time: string;
+}
+
+interface FrameTimeProps {
+  items: Item[];
+}
+
+function FrameTime({ items }: FrameTimeProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  // Dữ liệu mẫu cho tiết
-  const items = [
-    { title: "Tiết 1", time: "13:00" },
-  ];
+
   return (
     <div className="container">
       <div className="card">
         <div className="card-2">
-        <div className="title">{items[currentIndex].title}</div>
-
+          <div className="title">{items[currentIndex]?.title}</div>
         </div>
-        <div className="time">{items[currentIndex].time}</div>
+        <div className="time">{items[currentIndex]?.time}</div>
       </div>
-    
     </div>
   );
 }
