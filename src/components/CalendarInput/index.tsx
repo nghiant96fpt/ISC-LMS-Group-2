@@ -1,62 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import './style.css';
-import iconColendar from './icon/u_calendar-alt.png';
-import iconShapeRight from "./icon/shape-right.png";
-import iconShapeLeft from "./icon/shape-left.png";
+import { CalendarInputProps } from './type';
+import iconCalendar from '../../../src/assets/icons/icon-calendar.png';
+import iconArrowLeft from '../../../src/assets/icons/icon-arrow-left.png';
+import iconArrowRight from '../../../src/assets/icons/icon-arrow-right.png';
 
-const CalendarInput: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+const CalendarInput: React.FC<CalendarInputProps> = ({
+  placeholder = 'Chọn ngày',
+  onDateChange,
+  onMonthChange,
+  onToggleCalendar,
+  initialDate = null,
+  locale = 'vi-VN',
+  dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+
+  style,
+  inputStyle,
+  popupStyle,
+  buttonStyle,
+  selectedDayStyle,
+  otherMonthDayStyle,
+}) => {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(initialDate);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
 
-  // lấy số ngày trong tháng
-  const getDaysInMonth = (year: number, month: number) => {
-    return new Date(year, month + 1, 0).getDate();
-  };
+  const getDaysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
 
-  //ngày hiển thị trong lịch
-  const getCalendarDays = () => {
+  const getCalendarDays = useMemo(() => {
     const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
     const daysInCurrentMonth = getDaysInMonth(currentYear, currentMonth);
 
-    // Ngày của tháng trước
     const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
     const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
     const daysInPrevMonth = getDaysInMonth(prevYear, prevMonth);
 
-    const prevMonthDaysToShow = [];
-    for (let i = daysInPrevMonth - firstDayOfMonth + 1; i <= daysInPrevMonth; i++) {
-      prevMonthDaysToShow.push(new Date(prevYear, prevMonth, i));
-    }
+    const prevMonthDaysToShow = Array.from(
+      { length: firstDayOfMonth },
+      (_, i) => new Date(prevYear, prevMonth, daysInPrevMonth - firstDayOfMonth + 1 + i),
+    );
 
-    // Ngày của tháng hiện tại
-    const currentMonthDays = [];
-    for (let i = 1; i <= daysInCurrentMonth; i++) {
-      currentMonthDays.push(new Date(currentYear, currentMonth, i));
-    }
+    const currentMonthDays = Array.from({ length: daysInCurrentMonth }, (_, i) => new Date(currentYear, currentMonth, i + 1));
 
-    const totalDays = prevMonthDaysToShow.length + currentMonthDays.length;
-    const remainder = totalDays % 7;
-    const daysToAddFromNextMonth = remainder === 0 ? 0 : 7 - remainder;
+    const remainder = (prevMonthDaysToShow.length + currentMonthDays.length) % 7;
+    const nextMonthDaysToShow = Array.from({ length: remainder === 0 ? 0 : 7 - remainder }, (_, i) => new Date(currentYear, currentMonth + 1, i + 1));
 
-    // Ngày của tháng sau
-    const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
-    const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-    const nextMonthDays = [];
-    for (let i = 1; i <= daysToAddFromNextMonth; i++) {
-      nextMonthDays.push(new Date(nextYear, nextMonth, i));
-    }
-
-    return [...prevMonthDaysToShow, ...currentMonthDays, ...nextMonthDays];
-  };
-
-  const days = getCalendarDays();
+    return [...prevMonthDaysToShow, ...currentMonthDays, ...nextMonthDaysToShow];
+  }, [currentMonth, currentYear]);
 
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);
+    onDateChange?.(date);
   };
 
   const formattedDateVN = (date: Date) => {
@@ -65,62 +61,69 @@ const CalendarInput: React.FC = () => {
 
   const handleDateChoose = () => {
     if (selectedDate) {
+      onDateChange?.(selectedDate);
       setIsCalendarOpen(false);
       console.log(`Ngày đã chọn: ${formattedDateVN(selectedDate)}`);
     } else {
-      alert('Vui lòng chọn ngày trước khi xác nhận.');
+      alert('Vui lòng chọn ngày trước khi nhấn "Chọn".');
     }
+  };
+
+  const formattedDate = (date: Date) => date.toLocaleDateString(locale);
+
+  const toggleCalendar = () => {
+    setIsCalendarOpen((prev) => !prev);
+    onToggleCalendar?.(!isCalendarOpen);
   };
 
   const handlePrevMonth = () => {
-    if (currentMonth === 0) {
-      setCurrentMonth(11);
-      setCurrentYear((prev) => prev - 1);
-    } else {
-      setCurrentMonth((prev) => prev - 1);
-    }
+    const newMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const newYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
+    onMonthChange?.(newMonth, newYear);
   };
 
   const handleNextMonth = () => {
-    if (currentMonth === 11) {
-      setCurrentMonth(0);
-      setCurrentYear((prev) => prev + 1);
-    } else {
-      setCurrentMonth((prev) => prev + 1);
-    }
+    const newMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+    const newYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+    setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
+    onMonthChange?.(newMonth, newYear);
   };
 
   return (
-    <div className="calendar-container">
-      <div className="calendar-input-container">
+    <div className="calendar-container" style={style}>
+      <div className="calendar-input-container" style={inputStyle}>
         <input
-          type=""
-          value={selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''}
-          onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+          type="text"
+          value={selectedDate ? formattedDate(selectedDate) : ''}
+          onClick={toggleCalendar}
           readOnly
-          placeholder="  Chọn ngày"
+          placeholder={placeholder}
           className="calendar-input"
         />
-        <img src={iconColendar} className="calendar-icon" onClick={() => setIsCalendarOpen(!isCalendarOpen)} />
+        <button className="calendar-icon" onClick={toggleCalendar} style={buttonStyle}>
+          <img src={iconCalendar} alt="" />
+        </button>
       </div>
 
-      {/* popup */}
       {isCalendarOpen && (
-        <div className={`calendar-popup ${isCalendarOpen ? 'open' : ''}`}>
+        <div className="calendar-popup open" style={popupStyle}>
           <div className="calendar-header">
             <button className="calendar-nav-button" onClick={handlePrevMonth}>
-              <img src={iconShapeLeft } alt=""  />
+              <img src={iconArrowLeft} alt="" />
             </button>
             <span className="calendar-title">
               Tháng {currentMonth + 1}, {currentYear}
             </span>
             <button className="calendar-nav-button" onClick={handleNextMonth}>
-              <img src={iconShapeRight } alt="" />
+              <img src={iconArrowRight} alt="" />
             </button>
           </div>
 
           <div className="calendar-weekdays">
-            {['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'].map((day, index) => (
+            {dayNames.map((day, index) => (
               <div key={index} className="calendar-weekday">
                 {day}
               </div>
@@ -128,19 +131,25 @@ const CalendarInput: React.FC = () => {
           </div>
 
           <div className="calendar-grid">
-            {days.map((date, index) => (
+            {getCalendarDays.map((date, index) => (
               <button
                 key={index}
                 onClick={() => handleDateClick(date)}
                 className={`calendar-day ${
                   selectedDate?.toDateString() === date.toDateString() ? 'selected' : date.getMonth() !== currentMonth ? 'other-month' : ''
                 }`}
+                style={
+                  selectedDate?.toDateString() === date.toDateString()
+                    ? selectedDayStyle
+                    : date.getMonth() !== currentMonth
+                    ? otherMonthDayStyle
+                    : undefined
+                }
               >
                 {date.getDate()}
               </button>
             ))}
           </div>
-
           <div className="calendar-footer">
             <button className="calendar-choose-button" onClick={handleDateChoose}>
               Chọn

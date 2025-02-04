@@ -1,17 +1,8 @@
 import React from 'react';
-
-import './App.css';
-import CalendarInput from './components/CalendarInput';
+import AddressList from './components/AddressUrlStack/Index';
 
 function App() {
-  return (
-    <div className="App">
-      <div className="p-4 ">
-        
-        <CalendarInput />
-      </div>
-    </div>
-  );
+  return <div className="App"></div>;
 }
 
 export default App;
