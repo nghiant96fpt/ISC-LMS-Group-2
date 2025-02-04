@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { StarProps } from './type';
 import StarIcon from './StarIcon';
 import './style.css';
-/**
- * Component Star dùng để hiển thị biểu tượng ngôi sao có thể chọn.
- * 
- * @param {boolean} selected - Trạng thái cho biết ngôi sao có được chọn hay không.
- * @param {Function} toggleSelect - Hàm callback để thay đổi trạng thái chọn của ngôi sao.
- */
+
 const Star: React.FC<StarProps> = ({ selected, toggleSelect }) => {
 
   const handleClick = () => {
