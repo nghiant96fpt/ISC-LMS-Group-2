@@ -3,6 +3,8 @@ export interface CalendarInputProps {
   onDateChange?: (date: Date | null) => void;
   onMonthChange?: (month: number, year: number) => void;
   onToggleCalendar?: (isOpen: boolean) => void;
+  handleDateChoose?: () => void;
+  selectedDate?: Date | null;
   initialDate?: Date;
   locale?: string;
   dayNames?: string[];

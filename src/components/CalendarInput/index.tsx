@@ -10,10 +10,10 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
   onDateChange,
   onMonthChange,
   onToggleCalendar,
-  initialDate = null,
+  selectedDate,
+  handleDateChoose,
   locale = 'vi-VN',
   dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
-
   style,
   inputStyle,
   popupStyle,
@@ -21,7 +21,6 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
   selectedDayStyle,
   otherMonthDayStyle,
 }) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(initialDate);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
@@ -51,25 +50,8 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
   }, [currentMonth, currentYear]);
 
   const handleDateClick = (date: Date) => {
-    setSelectedDate(date);
     onDateChange?.(date);
   };
-
-  const formattedDateVN = (date: Date) => {
-    return date.toLocaleDateString('vi-VN');
-  };
-
-  const handleDateChoose = () => {
-    if (selectedDate) {
-      onDateChange?.(selectedDate);
-      setIsCalendarOpen(false);
-      console.log(`Ngày đã chọn: ${formattedDateVN(selectedDate)}`);
-    } else {
-      alert('Vui lòng chọn ngày trước khi nhấn "Chọn".');
-    }
-  };
-
-  const formattedDate = (date: Date) => date.toLocaleDateString(locale);
 
   const toggleCalendar = () => {
     setIsCalendarOpen((prev) => !prev);
@@ -97,7 +79,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
       <div className="calendar-input-container" style={inputStyle}>
         <input
           type="text"
-          value={selectedDate ? formattedDate(selectedDate) : ''}
+          value={selectedDate ? selectedDate.toLocaleDateString(locale) : ''}
           onClick={toggleCalendar}
           readOnly
           placeholder={placeholder}
