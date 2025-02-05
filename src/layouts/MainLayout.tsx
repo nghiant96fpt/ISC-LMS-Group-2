@@ -2,11 +2,7 @@ import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import Menu from "../components/Menu";
 import Footer from "../components/Footer";
-
-interface LayoutProps {
-  role: "student" | "teacher" | "leadership";
-  children?: React.ReactNode; 
-}
+import { LayoutProps } from "./type"
 
 const MainLayout: React.FC<LayoutProps> = ({ role }) => {
   return (
