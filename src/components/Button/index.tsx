@@ -1,8 +1,8 @@
 import React, { useMemo, useCallback } from 'react';
 import './style.css';
-import { IButtonProps } from './type';
+import { ButtonProps } from './type';
 
-const Button: React.FC<IButtonProps> = ({
+const Button: React.FC<ButtonProps> = ({
     className = '',
     disabled = false,
     icon,
