@@ -126,7 +126,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
             {getCalendarDays.map((date, index) => (
               <button
                 key={index}
-                onClick={handleClick.bind(this, date)}
+                onClick={handleClick(date)}
                 className={`calendar-day ${
                   selectedDate?.toDateString() === date.toDateString() ? 'selected' : date.getMonth() !== currentMonth ? 'other-month' : ''
                 }`}

@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
-import "./style.css";
-
-export interface Item {
-  title: string;
-  time: string;
-}
-
-interface FrameTimeProps {
-  items: Item[];
-}
+import { Item, FrameTimeProps } from './type'; // Điều chỉnh đường dẫn nếu cần
+import './style.css';
 
 function FrameTime({ items }: FrameTimeProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
