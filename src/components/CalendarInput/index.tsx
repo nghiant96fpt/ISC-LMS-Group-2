@@ -48,10 +48,15 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
 
     return [...prevMonthDaysToShow, ...currentMonthDays, ...nextMonthDaysToShow];
   }, [currentMonth, currentYear]);
+
   const handleChooseDate = () => {
     handleDateChoose?.();
     setIsCalendarOpen(false);
     onToggleCalendar?.(false);
+  };
+
+  const handleClick = (date: Date) => () => {
+    handleDateClick(date);
   };
 
   const handleDateClick = (date: Date) => {
@@ -121,7 +126,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
             {getCalendarDays.map((date, index) => (
               <button
                 key={index}
-                onClick={() => handleDateClick(date)}
+                onClick={handleClick(date)}
                 className={`calendar-day ${
                   selectedDate?.toDateString() === date.toDateString() ? 'selected' : date.getMonth() !== currentMonth ? 'other-month' : ''
                 }`}
