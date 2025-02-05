@@ -1,4 +1,4 @@
 export interface Item {
-    title: string;
-    time: string;
-  }
+  title: string; // hiển thị tiêu đề vd : Tiết 1, Tiết 2,...
+  time: string; // thời gian
+}
