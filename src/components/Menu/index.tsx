@@ -103,7 +103,7 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
                 <div className="ml-8 rounded-lg p-2">
                   {item.subMenu.map((subItem) => (
                     <Link
-                      to={subItem.path || '#'} // ✅ Dùng Link thay vì <a>
+                      to={subItem.path || '#'}
                       key={subItem.id}
                       className={`block w-full h-10 text-sm hover:bg-gray-200 p-2 rounded-md ${activeSubIndex === subItem.id ? '' : ''}`}
                       onClick={() => {
