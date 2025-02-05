@@ -52,7 +52,7 @@ group-04 .calendar-icon:hover {
 
 /* Popup */
 .calendar-popup {
-  position: fixed; /* Đảm bảo popup giữ nguyên vị trí khi cuộn */
+  position: fixed; 
   top: 50%;
   left: 50%;
   background-color: white;
@@ -61,18 +61,16 @@ group-04 .calendar-icon:hover {
   padding: 16px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   transition: opacity 0.3s ease, transform 0.3s ease;
-
-  /* Căn giữa theo cả trục ngang & dọc */
   transform: translate(-50%, -50%) scale(0.95);
   opacity: 0;
   pointer-events: none;
 }
 
-/* Khi popup mở */
+/*  popup mở */
 .calendar-popup.open {
   padding: 16px 24px;
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1); /* Giữ translate để đảm bảo căn giữa */
+  transform: translate(-50%, -50%) scale(1); 
   pointer-events: auto;
 }
 
@@ -140,13 +138,13 @@ group-04 .calendar-icon:hover {
   opacity: 90%;
 }
 
-/* Ngày được chọn */
+
 .calendar-day.selected {
   background-color: #ff7506;
   color: white;
 }
 
-/* Các ngày tháng khác */
+
 .calendar-day.other-month {
   color: #ccc;
 }
