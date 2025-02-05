@@ -48,7 +48,6 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
 
     return [...prevMonthDaysToShow, ...currentMonthDays, ...nextMonthDaysToShow];
   }, [currentMonth, currentYear]);
-
   const handleChooseDate = () => {
     handleDateChoose?.();
     setIsCalendarOpen(false);
@@ -61,7 +60,6 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
 
   const toggleCalendar = () => {
     setIsCalendarOpen((prev) => !prev);
-
     onToggleCalendar?.(!isCalendarOpen);
   };
 
