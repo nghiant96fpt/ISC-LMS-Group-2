@@ -49,12 +49,19 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
     return [...prevMonthDaysToShow, ...currentMonthDays, ...nextMonthDaysToShow];
   }, [currentMonth, currentYear]);
 
+  const handleChooseDate = () => {
+    handleDateChoose?.();
+    setIsCalendarOpen(false);
+    onToggleCalendar?.(false);
+  };
+
   const handleDateClick = (date: Date) => {
     onDateChange?.(date);
   };
 
   const toggleCalendar = () => {
     setIsCalendarOpen((prev) => !prev);
+
     onToggleCalendar?.(!isCalendarOpen);
   };
 
@@ -133,7 +140,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
             ))}
           </div>
           <div className="calendar-footer">
-            <button className="calendar-choose-button" onClick={handleDateChoose}>
+            <button className="calendar-choose-button" onClick={handleChooseDate}>
               Chọn
             </button>
           </div>

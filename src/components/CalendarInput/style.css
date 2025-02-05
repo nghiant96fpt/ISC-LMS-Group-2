@@ -3,7 +3,6 @@
   display: flex;
   justify-content: center;
   /* align-items: center; */
-  
 }
 
 /* CSS input */
@@ -22,7 +21,6 @@
   outline: none;
 }
 
-/* Container input và icon */
 .calendar-input-container {
   display: flex;
   align-items: center;
@@ -33,7 +31,6 @@
   background-color: white;
 }
 
-/* Placeholder cho input */
 .calendar-input::placeholder {
   color: #aaa;
 }
@@ -53,28 +50,29 @@ group-04 .calendar-icon:hover {
 
 /* Popup */
 .calendar-popup {
-  position: absolute;
-  top: 52%;
-  left: 30%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
   background-color: white;
   border: 1px solid #e0e0e0;
   border-radius: 20px;
-  margin-top: 8px;
+  padding: 16px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translate(-50%, -50%) scale(0.95);
   opacity: 0;
-  transform: scale(0.95);
   pointer-events: none;
 }
 
+/* popup mở */
 .calendar-popup.open {
   padding: 16px 24px;
   opacity: 1;
-  transform: scale(1);
+  transform: translate(-50%, -50%) scale(1);
   pointer-events: auto;
 }
 
-/* Header Calendar */
+/*   */
 .calendar-header {
   display: flex;
   justify-content: space-between;
@@ -103,7 +101,6 @@ group-04 .calendar-icon:hover {
   color: #0056b3;
 }
 
-/* Các ngày trong tuần */
 .calendar-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -117,7 +114,6 @@ group-04 .calendar-icon:hover {
   padding: 4px;
 }
 
-/* Lưới ngày trong tháng */
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -144,7 +140,7 @@ group-04 .calendar-icon:hover {
   color: white;
 }
 
-/* Các ngày tháng khác */
+/*  */
 .calendar-day.other-month {
   color: #ccc;
 }
