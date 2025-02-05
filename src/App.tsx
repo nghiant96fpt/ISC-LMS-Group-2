@@ -1,40 +1,20 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
-import './App.css';
-import Header from './components/Header';
-import Menu from './components/Menu';
-import Footer from './components/Footer';
-import { publicRouters } from './routes';
+import "./App.css";
+import StudentRoutes from "./routes/StudentRoutes";
+import TeacherRoutes from "./routes/TeacherRoutes";
+import LedershipRoutes from "./routes/LeadershipRoutes";
 
 function App() {
   return (
     <Router>
-      <div className="App flex flex-col min-h-screen">
-        <main className="flex-grow flex relative">
-          <aside className=" w-[30%]">
-            <Menu role="leadership" />
-          </aside>
-
-          <div className=" flex-grow p-4 ">
-            <header className=" pl-20 top-0 ">
-              <Header />
-            </header>
-            <div className="pl-20">
-              <Routes>
-                {publicRouters.map((route, index) => {
-                  const Page = route.Component;
-                  return <Route key={index} path={route.path} element={<Page />} />;
-                })}
-              </Routes>
-            </div>
-          </div>
-        </main>
-
-        <footer className=" text-white text-center">
-          <Footer />
-        </footer>
-      </div>
+      <Routes>
+      <Route path="/" element={<Navigate to="/student" replace />} />
+        <Route path="/student/*" element={<StudentRoutes />} />
+        <Route path="/teacher/*" element={<TeacherRoutes />} />
+        <Route path="/leadership/*" element={<LedershipRoutes />} />
+      </Routes>
     </Router>
   );
 }
