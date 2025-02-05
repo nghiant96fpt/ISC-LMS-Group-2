@@ -3,14 +3,6 @@ import { SubjectButtonProps } from './types';
 import Icons from './icons';
 import './style.css';
 
-//hàm handleIconClick
-const handleIconClick = (onClose?: () => void) => (e: React.MouseEvent<HTMLSpanElement>) => {
-  e.stopPropagation();
-  if (onClose) {
-    onClose();
-  }
-};
-
 const SubjectButton: React.FC<SubjectButtonProps> = ({
   title,
   backgroundColor,
@@ -21,6 +13,13 @@ const SubjectButton: React.FC<SubjectButtonProps> = ({
   iconPosition = 'right',
   onClose,
 }) => {
+  const handleIconClick = (onClose?: () => void) => (e: React.MouseEvent<HTMLSpanElement>) => {
+    e.stopPropagation();
+    if (onClose) {
+      onClose();
+    }
+  };
+
   const IconComponent = iconName ? Icons[iconName as keyof typeof Icons] : null;
   const isImage = typeof IconComponent === 'string';
 
