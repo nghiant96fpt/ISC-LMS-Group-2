@@ -4,6 +4,7 @@ import CalendarInput from './components/CalendarInput';
 import Star from './components/Start';
 import SubjectButton from './components/SubjectButton';
 import { BrowserRouter } from 'react-router';
+import CalendarInput from './components/CalendarInput';
 function App() {
   return (
     <BrowserRouter>
@@ -51,9 +52,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
-// const App = () => {
-//   return <div className="p-4"></div>;
-// };
-
 export default App;
