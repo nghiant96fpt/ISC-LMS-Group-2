@@ -15,7 +15,6 @@ const AddressList: React.FC<AddressType> = ({ addressList, type = true }) => {
     }
     return addressList;
   }
-  
   return (
     <div className="container">
       {processArray().map((v, index) => {

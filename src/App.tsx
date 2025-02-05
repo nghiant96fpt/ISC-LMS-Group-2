@@ -15,7 +15,6 @@ function App() {
             { linkName: 'Sample 2', link: '/samepple2' },
           ]}
         />
-
         <AddressList
           type={false}
           addressList={[
