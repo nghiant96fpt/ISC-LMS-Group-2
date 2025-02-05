@@ -37,9 +37,11 @@ export const menuConfig: Record<string, MenuItem[]> = {
         { id: 3.2, title: 'Bảng điểm', path: '/student/score-board', roles: ['student'] },
       ],
     },
-    { id: 4, title: 'Lịch thi', path: '/student/exam-schedule', roles: ['student'] },
-    { id: 5, title: 'Thông báo', path: '/student/notifications', roles: ['student'] },
-    { id: 6, title: 'Trợ giúp', path: '/student/help', roles: ['student'] },
+
+    { id: 4, title: 'Lịch thi', icon: vector, path: '/student/exam-schedule', roles: ['student'] },
+    { id: 5, title: 'Thông báo', icon: fi_bell, path: '/student/notifications', roles: ['student'] },
+    { id: 6, title: 'Trợ giúp',icon: question, path: '/student/help', roles: ['student'] },
+
   ],
   teacher: [
     { id: 1, title: 'Tổng quan', icon: eye, path: '/teacher', roles: ['teacher'] },
