@@ -6,4 +6,5 @@ interface Address {
   linkName: string;
   link: string;
 }
+
 export default AddressType;
