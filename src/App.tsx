@@ -1,10 +1,8 @@
 import React from 'react';
-
 import './App.css';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import './styles/tailwind.scss';
-import CalendarInput from './components/CalendarInput';
 
 function App() {
   return (
