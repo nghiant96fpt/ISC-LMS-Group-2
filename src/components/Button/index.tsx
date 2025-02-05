@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import './style.css';
-import { ButtonProps } from './type';
+import { IButtonProps } from './type';
 
-const Button: React.FC<ButtonProps> = ({
-    className: className = '',
+const Button: React.FC<IButtonProps> = ({
+    className = '',
     disabled = false,
     icon,
     children,
@@ -14,13 +14,27 @@ const Button: React.FC<ButtonProps> = ({
     type = 'button',
     style,
 }) => {
-    const buttonClass = `button ${className} ${size}  ${disabled ? 'disabled' : ''}`;
+    const buttonClass = useMemo(
+        () => `button ${className} ${size} ${disabled ? 'disabled' : ''}`,
+        [className, size, disabled]
+    );
+
+    const buttonStyle = useMemo(
+        () => ({ ...style, width, height }),
+        [style, width, height]
+    );
+
+    const handleClick = useCallback(() => {
+        if (onClick) {
+            onClick();
+        }
+    }, [onClick]);
 
     return (
         <button
             className={buttonClass}
-            onClick={onClick}
-            style={{ ...style, width, height }}
+            onClick={handleClick}
+            style={buttonStyle}
             type={type}
         >
             {icon && <span className="icon">{icon}</span>}
