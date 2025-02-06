@@ -1,0 +1,32 @@
+.switch-tab {
+  display: flex;
+  background-color: #f4f4f4;
+  border-radius: 100px;
+  padding: 8px;
+  gap: 4px;
+  max-width: 25%;
+  margin: 0.3rem;
+}
+
+.tab-button {
+  flex: 1;
+  border: none;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #888;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-button.active {
+  background-color: #000;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tab-button:hover:not(.active) {
+  color: #333;
+}
