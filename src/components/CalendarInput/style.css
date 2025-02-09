@@ -10,11 +10,11 @@
   height: 36px;
   cursor: pointer;
   border: none;
-  border-right: 2px solid #787575;
+  border-right: 2px solid #605f5f;
 }
 
 .calendar-input:hover {
-  background-color: #fffbfb;
+  background-color: var(--while-text);
 }
 
 .calendar-input:focus {
@@ -29,12 +29,12 @@
   border-radius: 7px;
   padding: 5px;
   height: 40px;
-  background-color: white;
+  background-color: var(--background-white);
 }
 
 /* Placeholder cho input */
 .calendar-input::placeholder {
-  color: #aaa;
+  color: var(--grey-text);
 }
 
 /* Icon lịch */
@@ -52,11 +52,11 @@ group-04 .calendar-icon:hover {
 
 /* Popup */
 .calendar-popup {
-  position: fixed; 
+  position: fixed;
   top: 50%;
   left: 50%;
-  background-color: white;
-  border: 1px solid #e0e0e0;
+  background-color: var(--background-white);
+  border: 1px solid var(--background-gray);
   border-radius: 20px;
   padding: 16px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
@@ -70,7 +70,7 @@ group-04 .calendar-icon:hover {
 .calendar-popup.open {
   padding: 16px 24px;
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1); 
+  transform: translate(-50%, -50%) scale(1);
   pointer-events: auto;
 }
 
@@ -87,7 +87,7 @@ group-04 .calendar-icon:hover {
 .calendar-title {
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  color: var(--black-text);
 }
 
 /*  điều hướng tháng */
@@ -100,7 +100,7 @@ group-04 .calendar-icon:hover {
 }
 
 .calendar-nav-button:hover {
-  color: #0056b3;
+  color: var(--blue-text);
 }
 
 /* Các ngày trong tuần */
@@ -110,7 +110,7 @@ group-04 .calendar-icon:hover {
   text-align: center;
   margin-bottom: 4px;
   font-weight: bold;
-  color: #0b80ec;
+  color: var(--background-6);
 }
 
 .calendar-weekday {
@@ -128,7 +128,7 @@ group-04 .calendar-icon:hover {
   padding: 6px 10px;
   text-align: center;
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: var(--background-white);
   border: none;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -138,15 +138,13 @@ group-04 .calendar-icon:hover {
   opacity: 90%;
 }
 
-
 .calendar-day.selected {
-  background-color: #ff7506;
-  color: white;
+  background-color: var(--background-2);
+  color: var(--while-text);
 }
 
-
 .calendar-day.other-month {
-  color: #ccc;
+  color: var(--grey-text);
 }
 
 /*  */
@@ -157,8 +155,9 @@ group-04 .calendar-icon:hover {
 }
 
 .calendar-choose-button {
-  background-color: #ff7506;
+  background-color: var(--background-2);
   color: white;
+  /* var(--while-text) */
   border: none;
   padding: 10px 30px;
   border-radius: 4px;
@@ -169,5 +168,5 @@ group-04 .calendar-icon:hover {
 }
 
 .calendar-choose-button:hover {
-  background-color: #f66f00;
+  background-color: var(--background-1);
 }

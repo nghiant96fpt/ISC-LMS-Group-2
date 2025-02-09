@@ -4,7 +4,6 @@ import { CalendarInputProps } from './type';
 import iconCalendar from '../../../src/assets/icons/icon-calendar.png';
 import iconArrowLeft from '../../../src/assets/icons/icon-arrow-left.png';
 import iconArrowRight from '../../../src/assets/icons/icon-arrow-right.png';
-
 const CalendarInput: React.FC<CalendarInputProps> = ({
   placeholder = 'Chọn ngày',
   onDateChange,
