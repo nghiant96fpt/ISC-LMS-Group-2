@@ -22,6 +22,8 @@
 
 .subject-button .title {
   @apply font-normal leading-5;
+  font-family: var(--font-Mulish);
+  font-weight: var(--weight-Source-Sans-Pro-3);
 }
 
 .group {
@@ -29,11 +31,11 @@
   z-index: 0;
 }
 
-.subject-button[data-pressed="true"] {
+.subject-button[data-pressed='true'] {
   transform: scale(0.97);
 }
 
-.subject-button[data-focus-visible="true"] {
+.subject-button[data-focus-visible='true'] {
   z-index: 10;
   outline: 2px solid var(--tw-outline-focus);
   outline-offset: 2px;
@@ -44,25 +46,26 @@
 }
 
 .subject-button.blue {
-  @apply bg-[#0B80EC] text-white;
+  background-color: var(--blue-status);
+  color: var(--while-text);
 }
-
 .subject-button.gray {
-  @apply bg-[#C5C5C5] text-white;
+  @apply bg-[#C5C5C5];
+  color: var(--while-text);
 }
 
 .subject-button.white-text {
-  color: white;
+  color: var(--while-text);
 }
 
 .subject-button.black-text {
-  color: black;
+  color: var(--black-text);
 }
 
 .subject-button.disabled {
   @apply bg-gray-500 cursor-not-allowed;
 }
 
-.subject-button[data-hover="true"] {
+.subject-button[data-hover='true'] {
   @apply opacity-75;
 }
