@@ -52,7 +52,7 @@ export const menuConfig: Record<string, MenuItem[]> = {
       roles: ['teacher'],
       subMenu: [
         { id: 2.1, title: 'Danh sách lớp học', path: '/teacher/class-list', roles: ['teacher'] },
-        { id: 2.2, title: 'Thêm buổi học mới', path: '/teacher/add-session', roles: ['teacher'] },
+        { id: 2.2, title: 'Thêm buổi học mới', path: '/teacher/add-class', roles: ['teacher'] },
         { id: 2.3, title: 'Tham gia vào lớp học', path: '/teacher/join-class', roles: ['teacher'] },
       ],
     },
