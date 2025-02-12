@@ -14,7 +14,7 @@ const Settings = require('../../assets/images/people/leadership/fi_settings.png'
 const Manage = require('../../assets/images/people/leadership/manage.png');
 export const menuConfig: Record<string, MenuItem[]> = {
   student: [
-    { id: 1, title: 'Tổng quan', icon: eye,  path: "/student", roles: ['student'] },
+    { id: 1, title: 'Tổng quan', icon: eye, path: '/student', roles: ['student'] },
     {
       id: 2,
       title: 'Quản lý lớp học',
@@ -40,8 +40,7 @@ export const menuConfig: Record<string, MenuItem[]> = {
 
     { id: 4, title: 'Lịch thi', icon: vector, path: '/student/exam-schedule', roles: ['student'] },
     { id: 5, title: 'Thông báo', icon: fi_bell, path: '/student/notifications', roles: ['student'] },
-    { id: 6, title: 'Trợ giúp',icon: question, path: '/student/help', roles: ['student'] },
-
+    { id: 6, title: 'Trợ giúp', icon: question, path: '/student/help', roles: ['student'] },
   ],
   teacher: [
     { id: 1, title: 'Tổng quan', icon: eye, path: '/teacher', roles: ['teacher'] },
