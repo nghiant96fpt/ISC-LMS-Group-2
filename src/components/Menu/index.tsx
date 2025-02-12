@@ -73,9 +73,9 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
 
   return (
     <nav
-      className={`shadow-md h-screen p-2 flex flex-col duration-100 ${open ? 'bg-background-white text-black-text' : 'bg-background-1 text-white'} ${
-        open ? 'w-80' : 'w-20'
-      }`}
+      className={`shadow-md h-screen p-2 flex flex-col duration-100 ${
+        open ? 'bg-background-white text-black-text' : 'bg-background-1 text-while-text'
+      } ${open ? 'w-80' : 'w-20'}`}
     >
       {/* Header */}
       <div className="relative px-3 py-2 h-20 flex flex-col justify-center items-center">
@@ -108,12 +108,12 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
                 } relative group ${
                   open
                     ? 'hover:bg-slate-100  hover:border-r-8 hover:border-border-orange w-[300px] '
-                    : 'hover:bg-amber-700 hover:text-while-text hover:scale-105 '
+                    : 'hover:bg-orange-300 hover:text-while-text hover:scale-105 '
                 } ${
                   activeParentIndex === index
                     ? open
                       ? 'bg-slate-200 text-orange-text border-r-8 border-border-orange w-[300px] '
-                      : 'bg-amber-800'
+                      : 'bg-orange-200 '
                     : ''
                 }`}
               >
@@ -121,11 +121,12 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
                   src={item.icon || 'default-icon.png'}
                   alt={item.title}
                   className={`duration-300 ${
-                    open ? 'w-8 h-8 filter brightness-0 invert-[20%] sepia-[0%] saturate-[0%] hue-rotate-[0deg]' : 'w-7 h-7 '
+                    open
+                      ? `w-8 h-8 ${activeParentIndex === index ? 'custom-orange-filter' : 'custom-black-filter'}`
+                      : `w-7 h-7 ${activeParentIndex === index ? 'custom-orange-filter' : ''}`
                   }`}
                 />
 
-                {/* Title */}
                 <p className={`${open ? '' : 'hidden'}  overflow-hidden`}>{item.title}</p>
               </div>
             </Link>

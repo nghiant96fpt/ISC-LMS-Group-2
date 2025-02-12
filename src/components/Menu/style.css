@@ -13,3 +13,9 @@
   transform: translate(-50%, -50%);
   border-radius: 0;
 }
+.custom-orange-filter {
+  filter: invert(59%) sepia(95%) saturate(2111%) hue-rotate(2deg) brightness(106%) contrast(102%);
+}
+.custom-black-filter {
+  filter: brightness(0) invert(0);
+}

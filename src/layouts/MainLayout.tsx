@@ -11,7 +11,7 @@ const MainLayout: React.FC<LayoutProps> = ({ role }) => {
         <aside>
           <Menu role={role} />
         </aside>
-        <div className="flex-grow p-4 flex flex-col">
+        <div className="flex-grow  flex flex-col">
           <header className="pl-20 top-0">
             <Header />
           </header>
