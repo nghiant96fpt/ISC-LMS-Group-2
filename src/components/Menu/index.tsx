@@ -346,9 +346,9 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
 
   return (
     <nav
-      className={`shadow-md h-screen p-2 flex flex-col duration-100 ${
-        open ? 'bg-background-white text-black' : 'bg-background-orange-3 text-white'
-      } ${open ? 'w-80' : 'w-20'}`}
+      className={`shadow-md h-screen p-2 flex flex-col duration-100 ${open ? 'bg-background-white text-black' : 'bg-background-1 text-white'} ${
+        open ? 'w-80' : 'w-20'
+      }`}
     >
       {/* Header */}
       <div className="relative px-3 py-2 h-20 flex flex-col justify-center items-center">
@@ -391,7 +391,7 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
                   src={item.icon || 'default-icon.png'}
                   alt={item.title}
                   className={`duration-300 ${
-                    open ? 'w-8 h-8 filter brightness-0 invert-[20%] sepia-[0%] saturate-[0%] hue-rotate-[0deg]' : 'w-7 h-7'
+                    open ? 'w-8 h-8 filter brightness-0 invert-[20%] sepia-[0%] saturate-[0%] hue-rotate-[0deg]' : 'w-7 h-7 '
                   }`}
                 />
 
@@ -412,7 +412,7 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
                     >
                       <span
                         className={`text-sm font-sans tracking-tight transition-all ${
-                          activeSubIndex === subItem.id ? 'text-background-orange-1' : 'text-black hover:text-background-orange-1'
+                          activeSubIndex === subItem.id ? 'text-background-1' : 'text-black hover:text-background-1'
                         }`}
                       >
                         {subItem.title}
