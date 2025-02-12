@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { MenuItem, MenuProps } from './type';
 import './style.css';
 import { menuConfig } from './menuConfig';
@@ -56,24 +56,25 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
     <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <div className="absolute left-0 top-0 bg-orange-500 w-[112px] sm:w-[112px] lg:w-28 h-screen">
         <div>
-          <a href="/">
+          <Link to="/">
             <img className="w-[74px] h-[42px] left-[19px] top-[58px] absolute" src={logo} alt="Logo" />
-          </a>
+          </Link>
         </div>
         <div className="w-8 h-[300px] left-[40px] top-[40px] absolute">
           {menuItems.map((item, index) => (
             <div key={item.id} className="relative">
-              <a
-                href={item.path || '#'}
-                className={`relative w-8 h-8 absolute top-0 left-0 flex justify-center items-center cursor-pointer ${activeIndex === index
+              <Link
+                to={item.path || '#'}
+                className={`relative w-8 h-8 absolute top-0 left-0 flex justify-center items-center cursor-pointer ${
+                  activeIndex === index
                     ? 'before:content-[""] before:absolute before:w-[70px] before:h-[70px] before:bg-white/50 before:rounded-lg before:top-1/2 before:left-1/2 before:transform before:-translate-x-1/2 before:-translate-y-1/2'
                     : ''
-                  }`}
+                }`}
                 onClick={() => handleIconClick(item.title, index, item.subMenu)}
                 style={{ top: `${205 + index * 60}px` }}
               >
                 <img src={item.icon || 'default-icon.png'} alt={item.title} />
-              </a>
+              </Link>
             </div>
           ))}
         </div>
@@ -83,8 +84,9 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
           {menuItems.map((item, index) => (
             <div key={item.id}>
               <span
-                className={`block w-full h-12 no-underline flex items-center p-8 ${activeIndex === index ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'
-                  }`}
+                className={`block w-full h-12 no-underline flex items-center p-8 ${
+                  activeIndex === index ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'
+                }`}
               >
                 <img
                   className="w-8 h-8 filter invert"
@@ -101,20 +103,18 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
                 <div className="ml-8 rounded-lg p-2">
                   {item.subMenu.map((subItem) => (
                     <Link
-                      to={subItem.path || "#"} // ✅ Dùng Link thay vì <a>
+                      to={subItem.path || '#'}
                       key={subItem.id}
-                      className={`block w-full h-10 text-sm hover:bg-gray-200 p-2 rounded-md ${activeSubIndex === subItem.id ? "" : ""
-                        }`}
+                      className={`block w-full h-10 text-sm hover:bg-gray-200 p-2 rounded-md ${activeSubIndex === subItem.id ? '' : ''}`}
                       onClick={() => {
                         handleSubMenuClick(subItem.id, index);
                         setIsExpanded(false);
                       }}
                     >
                       <span
-                        className={`text-sm font-sans tracking-tight transition-all ${activeSubIndex === subItem.id
-                            ? "text-black font-bold"
-                            : "text-[#373839] opacity-70 hover:text-black"
-                          }`}
+                        className={`text-sm font-sans tracking-tight transition-all ${
+                          activeSubIndex === subItem.id ? 'text-black font-bold' : 'text-[#373839] opacity-70 hover:text-black'
+                        }`}
                       >
                         {subItem.title}
                       </span>
