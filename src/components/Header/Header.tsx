@@ -19,10 +19,10 @@ const Header = () => {
         {isLoggedIn ? (
           <>
             <img src={userCircle} alt="User Avatar" className="w-10 h-10 rounded-full object-cover" />
-            <span className="text-gray-500 font-semibold">Hiền Mai</span>
+            <span className="text-orange-500 font-medium">Hiền Mai</span>
             <span className="border-l h-6" style={{ borderColor: '#823B00' }}></span>
             <button
-              className="text-orange-500 font-medium underline hover:text-orange-500"
+              className="text-gray-500 font-medium hover:text-orange-500"
               style={{ textUnderlineOffset: '5px' }}
               onClick={handleLogout}
             >
