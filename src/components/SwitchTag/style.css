@@ -1,6 +1,15 @@
+:root {
+  --color-primary: theme(colors.background-gray);
+  --color-primary-hover: theme(colors.black-text);
+  --color-secondary: theme(colors.background-input);
+  --text-gray: theme(colors.grey-text);
+  --text-while: theme(colors.while-text);
+  --text-black: theme(colors.black-text);
+}
+
 .switch-tab {
   display: flex;
-  background-color: #f4f4f4;
+  background-color: var(--color-secondary);
   border-radius: 100px;
   padding: 8px;
   gap: 4px;
@@ -13,7 +22,7 @@
   border: none;
   padding: 8px 16px;
   background-color: transparent;
-  color: #888;
+  color: var(--grey-text);
   border-radius: 100px;
   font-size: 14px;
   font-weight: bold;
@@ -22,11 +31,10 @@
 }
 
 .tab-button.active {
-  background-color: #000;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background-color: var(--color-primary-hover);
+  color: var(--while-text);
 }
 
 .tab-button:hover:not(.active) {
-  color: #333;
+  color: var(--text-black);
 }

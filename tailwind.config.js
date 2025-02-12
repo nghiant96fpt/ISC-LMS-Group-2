@@ -15,7 +15,7 @@ module.exports = {
         // Status colors
         'red-status': 'var(--red-status)',
         'blue-status': 'var(--blue-status)',
-        'green-status': 'var(--green-statu)',
+        'green-status': 'var(--green-status)',
 
         // Background colors
         'background-1': 'var(--background-1)',
@@ -53,10 +53,8 @@ module.exports = {
         'br-gradient-sheet': 'linear-gradient(to right, var(--background-3), var(--background-4))',
         'br-gradient-blue': 'linear-gradient(to right, var(--background-5), var(--background-6))',
         'br-gradient-green': 'linear-gradient(to right, var(--background-8), var(--background-7))',
-
       },
     },
   },
   plugins: [],
-
 };
