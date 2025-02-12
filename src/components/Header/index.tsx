@@ -19,10 +19,10 @@ const Header = () => {
         {isLoggedIn ? (
           <>
             <img src={userCircle} alt="User Avatar" className="w-10 h-10 rounded-full object-cover" />
-            <span className="text-gray-500 font-semibold">Hiền Mai</span>
+            <span className="text-[var(--orange-text)] font-bold">Hiền Mai</span>
             <span className="border-l h-6" style={{ borderColor: '#823B00' }}></span>
             <button
-              className="text-orange-500 font-medium underline hover:text-orange-500"
+              className="text-[var(--grey-text)] font-medium underline hover:text-grey-500"
               style={{ textUnderlineOffset: '5px' }}
               onClick={handleLogout}
             >
@@ -32,14 +32,14 @@ const Header = () => {
         ) : (
           <>
             <button
-              className="text-orange-500 font-bold underline hover:text-orange-500"
+              className="text-[var(--orange-text)]  font-bold underline hover:[var(--orange-text)] "
               style={{ textUnderlineOffset: '5px' }}
               onClick={handleLogin}
             >
               Đăng nhập
             </button>
             <span className="border-l h-6" style={{ borderColor: '#823B00' }}></span>
-            <button className="text-orange-500 font-medium underline hover:text-orange-500" style={{ textUnderlineOffset: '5px' }}>
+            <button className="text-[var(--orange-text)]  font-medium underline hover:text-[var(--orange-text)] " style={{ textUnderlineOffset: '5px' }}>
               Đăng ký
             </button>
           </>
