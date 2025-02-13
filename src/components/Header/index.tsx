@@ -1,47 +1,33 @@
-import React, { useState } from 'react';
-import userCircle from '../../assets/images/people/user_circle.png';
+import React, { useState } from "react";
+import userCircle from "../../assets/images/people/user_circle.png";
+import "./style.css";
 
-const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+const Header: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  };
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
+  const handleLogin = () => setIsLoggedIn(true);
+  const handleLogout = () => setIsLoggedIn(false);
 
   return (
-    <header className=" flex items-center justify-between px-6 py-4 h-16">
+    <header className="header">
       <div></div>
-      <div className="flex items-center space-x-4">
+      <div className="user-section">
         {isLoggedIn ? (
           <>
-            <img src={userCircle} alt="User Avatar" className="w-10 h-10 rounded-full object-cover" />
-            <span className="text-[var(--orange-text)] font-bold">Hiền Mai</span>
-            <span className="border-l h-6" style={{ borderColor: '#823B00' }}></span>
-            <button
-              className="text-[var(--grey-text)] font-medium underline hover:text-grey-500"
-              style={{ textUnderlineOffset: '5px' }}
-              onClick={handleLogout}
-            >
+            <img src={userCircle} alt="User Avatar" className="user-avatar" />
+            <span className="user-name">Hiền Mai</span>
+            <span className="divider"></span>
+            <button className="logout-button" onClick={handleLogout}>
               Đăng xuất
             </button>
           </>
         ) : (
           <>
-            <button
-              className="text-[var(--orange-text)]  font-bold underline hover:[var(--orange-text)] "
-              style={{ textUnderlineOffset: '5px' }}
-              onClick={handleLogin}
-            >
+            <button className="login-button" onClick={handleLogin}>
               Đăng nhập
             </button>
-            <span className="border-l h-6" style={{ borderColor: '#823B00' }}></span>
-            <button className="text-[var(--orange-text)]  font-medium underline hover:text-[var(--orange-text)] " style={{ textUnderlineOffset: '5px' }}>
-              Đăng ký
-            </button>
+            <span className="divider"></span>
+            <button className="register-button">Đăng ký</button>
           </>
         )}
       </div>
