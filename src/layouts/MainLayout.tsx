@@ -16,11 +16,11 @@ const MainLayout: React.FC<LayoutProps> = ({ role }) => {
             <Header />
           </header>
 
-          <div className="pl-20 flex-grow">
+          <div className="pl-20 flex-grow bg-gray-50">
             <Outlet />
           </div>
 
-          <footer className="text-white text-center mt-4">
+          <footer className="text-white text-center ">
             <Footer />
           </footer>
         </div>
