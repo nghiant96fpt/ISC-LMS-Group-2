@@ -14,7 +14,7 @@ const Settings = require('../../assets/images/people/leadership/fi_settings.png'
 const Manage = require('../../assets/images/people/leadership/manage.png');
 export const menuConfig: Record<string, MenuItem[]> = {
   student: [
-    { id: 1, title: 'Tổng quan', icon: eye,  path: "/student", roles: ['student'] },
+    { id: 1, title: 'Tổng quan', icon: eye, path: '/student', roles: ['student'] },
     {
       id: 2,
       title: 'Quản lý lớp học',
@@ -40,8 +40,7 @@ export const menuConfig: Record<string, MenuItem[]> = {
 
     { id: 4, title: 'Lịch thi', icon: vector, path: '/student/exam-schedule', roles: ['student'] },
     { id: 5, title: 'Thông báo', icon: fi_bell, path: '/student/notifications', roles: ['student'] },
-    { id: 6, title: 'Trợ giúp',icon: question, path: '/student/help', roles: ['student'] },
-
+    { id: 6, title: 'Trợ giúp', icon: question, path: '/student/help', roles: ['student'] },
   ],
   teacher: [
     { id: 1, title: 'Tổng quan', icon: eye, path: '/teacher', roles: ['teacher'] },
@@ -53,7 +52,7 @@ export const menuConfig: Record<string, MenuItem[]> = {
       roles: ['teacher'],
       subMenu: [
         { id: 2.1, title: 'Danh sách lớp học', path: '/teacher/class-list', roles: ['teacher'] },
-        { id: 2.2, title: 'Thêm buổi học mới', path: '/teacher/add-session', roles: ['teacher'] },
+        { id: 2.2, title: 'Thêm buổi học mới', path: '/teacher/add-class', roles: ['teacher'] },
         { id: 2.3, title: 'Tham gia vào lớp học', path: '/teacher/join-class', roles: ['teacher'] },
       ],
     },

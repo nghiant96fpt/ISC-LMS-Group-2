@@ -15,7 +15,7 @@ function App() {
         {/* Gr01 - Hoài Thọ: <AppRoutes/> hoặc các component nếu muốn sử dụng redux phải nằm trong này ! */}
         <Router>
       <Routes>
-      <Route path="/" element={<Navigate to="/student" replace />} />
+        <Route path="/" element={<Navigate to="/student" replace />} />
         <Route path="/student/*" element={<StudentRoutes />} />
         <Route path="/teacher/*" element={<TeacherRoutes />} />
         <Route path="/leadership/*" element={<LedershipRoutes />} />
