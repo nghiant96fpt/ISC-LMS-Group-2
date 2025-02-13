@@ -1,50 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { MenuItem, MenuProps } from './type';
 import './style.css';
 import { menuConfig } from './menuConfig';
 const logo = require('../../assets/images/Logo.png');
+const logo2 = require('../../assets/images/logo2.png');
+const arrow = require('../../assets/icons/icon-arrow-left.png');
 
 const Menu: React.FC<MenuProps> = ({ role }) => {
-  const [activeIcon, setActiveIcon] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [expandedSubMenuIndex, setExpandedSubMenuIndex] = useState<number | null>(null);
+  const [open, setOpen] = useState(false);
   const [activeSubIndex, setActiveSubIndex] = useState<number | null>(null);
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const handleMouseEnter = () => setIsExpanded(true);
-  const handleMouseLeave = () => setIsExpanded(false);
-  const handleIconClick = (iconName: string, index: number, subMenu: any) => {
-    setActiveIcon(iconName);
-    setActiveIndex(index);
-    if (activeIcon === iconName && activeIndex === index) {
-      setIsExpanded(false);
-      setActiveIcon(null);
-      setActiveIndex(null);
-    } else {
-      setIsExpanded(true);
-      setActiveIcon(iconName);
-      setActiveIndex(index);
-    }
-
-    if (subMenu && subMenu.length > 0) {
-      setActiveSubIndex(subMenu[0].id);
-    } else {
-      setActiveSubIndex(null);
-    }
-  };
-
-  const handleSubMenuClick = (subIndex: number, parentIndex: number) => {
-    setActiveSubIndex(subIndex);
-    setActiveIndex(parentIndex);
-  };
-
+  const [activeParentIndex, setActiveParentIndex] = useState<number | null>(null);
   const menuItems: MenuItem[] = menuConfig[role] || [];
+  const location = useLocation();
 
   useEffect(() => {
     if (menuItems.length > 0 && activeIndex === null) {
-      setActiveIcon(menuItems[0].title);
       setActiveIndex(0);
-      setIsExpanded(true);
 
       if (menuItems[0].subMenu && menuItems[0].subMenu.length > 0) {
         setActiveSubIndex(menuItems[0].subMenu[0].id);
@@ -52,81 +26,137 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
     }
   }, [menuItems]);
 
+  useEffect(() => {
+    const path = location.pathname;
+    menuItems.forEach((item, index) => {
+      if (item.path === path) {
+        setActiveIndex(index);
+        setActiveParentIndex(index);
+        if (item.subMenu) {
+          item.subMenu.forEach((subItem) => {
+            if (subItem.path === path) {
+              setActiveSubIndex(subItem.id);
+            }
+          });
+        }
+      }
+    });
+  }, [location.pathname, menuItems]);
+
+  useEffect(() => {
+    if (!open) {
+      setExpandedSubMenuIndex(null);
+    }
+  }, [open]);
+
+  const handleParentMenuClick = (index: number) => {
+    if (!open) setOpen(true);
+    setActiveIndex(index);
+    setExpandedSubMenuIndex(expandedSubMenuIndex === index ? null : index);
+    setActiveParentIndex(index);
+
+    const currentMenuItem = menuItems[index];
+    if (currentMenuItem?.subMenu && currentMenuItem.subMenu.length > 0) {
+      setActiveSubIndex(currentMenuItem.subMenu[0].id);
+    } else {
+      setActiveSubIndex(null);
+    }
+  };
+
+  const handleSubMenuClick = (subIndex: number) => {
+    setActiveSubIndex(subIndex);
+  };
+
+  const toggleMenu = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
   return (
-    <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <div className="absolute left-0 top-0 bg-orange-500 w-[112px] sm:w-[112px] lg:w-28 h-screen">
-        <div>
-          <Link to="/">
-            <img className="w-[74px] h-[42px] left-[19px] top-[58px] absolute" src={logo} alt="Logo" />
-          </Link>
-        </div>
-        <div className="w-8 h-[300px] left-[40px] top-[40px] absolute">
-          {menuItems.map((item, index) => (
-            <div key={item.id} className="relative">
-              <Link
-                to={item.path || '#'}
-                className={`relative w-8 h-8 absolute top-0 left-0 flex justify-center items-center cursor-pointer ${
-                  activeIndex === index
-                    ? 'before:content-[""] before:absolute before:w-[70px] before:h-[70px] before:bg-white/50 before:rounded-lg before:top-1/2 before:left-1/2 before:transform before:-translate-x-1/2 before:-translate-y-1/2'
-                    : ''
-                }`}
-                onClick={() => handleIconClick(item.title, index, item.subMenu)}
-                style={{ top: `${205 + index * 60}px` }}
-              >
-                <img src={item.icon || 'default-icon.png'} alt={item.title} />
-              </Link>
-            </div>
-          ))}
-        </div>
+    <nav
+      className={`shadow-md h-screen p-2 flex flex-col duration-100 ${
+        open ? 'bg-background-white text-black-text' : 'bg-background-1 text-while-text'
+      } ${open ? 'w-80' : 'w-20'}`}
+    >
+      {/* Header */}
+      <div className="relative px-3 py-2 h-20 flex flex-col justify-center items-center">
+        {open && (
+          <img
+            src={arrow}
+            alt="Close"
+            className="absolute top-2 right-2 w-6 h-8 text-black-text p-1 rounded-full cursor-pointer"
+            onClick={toggleMenu}
+          />
+        )}
+
+        {/* Logo */}
+        <img
+          src={open ? logo2 : logo}
+          alt="Logo"
+          className={`duration-300 rounded-md absolute top-[40px] ${open ? 'w-[75px] h-[43px]' : 'w-[60px] h-[30px]'}`}
+        />
       </div>
-      {isExpanded && (
-        <div className="w-[300px] h-screen left-[112px] absolute bg-white pt-60 shadow-[4px_4px_10px_0px_rgba(133,178,220,0.25)]">
-          {menuItems.map((item, index) => (
-            <div key={item.id}>
-              <span
-                className={`block w-full h-12 no-underline flex items-center p-8 ${
-                  activeIndex === index ? 'text-[#ff7506]' : 'text-[#373839] opacity-70'
+
+      {/* Menu Items */}
+      <ul className={`absolute top-40 flex-1 flex flex-col ${open ? 'space-y-4' : 'space-y-6'}`}>
+        {menuItems.map((item, index) => (
+          <li key={index}>
+            <Link to={item?.path || '#'}>
+              <div
+                onClick={handleParentMenuClick.bind(this, index)}
+                className={`px-4 py-2 rounded-md duration-300 cursor-pointer flex ${
+                  open ? 'gap-4 items-center' : 'flex-col items-center '
+                } relative group ${
+                  open
+                    ? 'hover:bg-slate-100  hover:border-r-8 hover:border-border-orange w-[300px] '
+                    : 'hover:bg-orange-300 hover:text-while-text hover:scale-105 '
+                } ${
+                  activeParentIndex === index
+                    ? open
+                      ? 'bg-slate-200 text-orange-text border-r-8 border-border-orange w-[300px] '
+                      : 'bg-orange-200 '
+                    : ''
                 }`}
               >
                 <img
-                  className="w-8 h-8 filter invert"
                   src={item.icon || 'default-icon.png'}
                   alt={item.title}
-                  style={{
-                    filter: 'invert(26%) grayscale(91%) saturate(6307%) hue-rotate(2deg)',
-                  }}
+                  className={`duration-300 ${
+                    open
+                      ? `w-8 h-8 ${activeParentIndex === index ? 'custom-orange-filter' : 'custom-black-filter'}`
+                      : `w-7 h-7 ${activeParentIndex === index ? 'custom-orange-filter' : ''}`
+                  }`}
                 />
-                <span className="ml-4 text-lg font-bold">{item.title}</span>
-              </span>
 
-              {item.subMenu && (
-                <div className="ml-8 rounded-lg p-2">
-                  {item.subMenu.map((subItem) => (
+                <p className={`${open ? '' : 'hidden'}  overflow-hidden`}>{item.title}</p>
+              </div>
+            </Link>
+
+            {/* Submenu */}
+            {item.subMenu && (
+              <div className={`ml-4 rounded-lg p-2 ${expandedSubMenuIndex === index ? 'block' : 'hidden'}`}>
+                {item.subMenu.map((subItem) => (
+                  <div key={subItem.id}>
                     <Link
                       to={subItem.path || '#'}
-                      key={subItem.id}
-                      className={`block w-full h-10 text-sm hover:bg-gray-200 p-2 rounded-md ${activeSubIndex === subItem.id ? '' : ''}`}
-                      onClick={() => {
-                        handleSubMenuClick(subItem.id, index);
-                        setIsExpanded(false);
-                      }}
+                      className="block w-full h-10 text-sm p-2 rounded-md"
+                      onClick={handleSubMenuClick.bind(this, subItem.id)}
                     >
                       <span
                         className={`text-sm font-sans tracking-tight transition-all ${
-                          activeSubIndex === subItem.id ? 'text-black font-bold' : 'text-[#373839] opacity-70 hover:text-black'
+                          activeSubIndex === subItem.id ? 'text-orange-text' : 'text-black-text hover:text-orange-text'
                         }`}
                       >
                         {subItem.title}
                       </span>
                     </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };
 

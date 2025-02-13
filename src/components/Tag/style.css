@@ -1,20 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;600&display=swap');
 
+:root {
+  --black-text: theme(colors.text-black);
+  --white-text: theme(colors.while-text);
+  --grey-text: theme(colors.grey-text);
+
+  --background-gray: theme(colors.background-gray);
+  --background-white: theme(colors.background-white);
+  --background-input: theme(colors.blackground.input);
+}
+
 .tag {
   display: inline-block;
   margin-left: 20px;
   padding: 8px 48px;
   border-radius: 24px;
   cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .tag.inactive {
-  background-color: #f2f2f2;
-  color: #373839;
+  background-color: var(--background-gray);
+  color: var(--grey-text);
 }
 
 .tag.active {
-  background-color: #373839;
-  color: #fff;
+  background-color: var(--background-input);
+  color: var(--white-text);
   font-weight: bold;
 }

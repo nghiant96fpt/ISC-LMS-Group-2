@@ -1,23 +1,32 @@
 :root {
-    --status-studying-color: #49C510;
-    --status-dropped-color: #ED2025;
-    --status-graduated-color: #0B80EC;
-    --status-classTransferred-color: #FF7506;
-    --status-schoolTransferred-color: #373839;
+    --status-studying-color: theme(colors.background-green);
+    --status-dropped-color: theme(colors.red-status);
+    --status-graduated-color: theme(colors.blue-status);
+    --status-classTransferred-color: theme(colors.orange-text);
+    --status-schoolTransferred-color: theme(colors.black-text);
 }
 
 /* Container chính của trạng thái */
 .status-container {
     display: inline-flex;
-    align-items: center; /* Canh giữa theo chiều dọc */
-    justify-content: center; /* Canh giữa theo chiều ngang nếu cần */
-    padding: 16px; /* Chỉ thêm padding trái và phải */
-    border-radius: 4px; /* Bo tròn góc */
-    font-size: 14px; /* Kích thước chữ */
-    font-weight: 500; /* Độ đậm của chữ */
-    height: 32px; /* Chiều cao cố định */
-    border: 1.5px solid; /* Viền */
-    gap: 8px; /* Khoảng cách giữa dot và chữ */
+    align-items: center;
+    /* Canh giữa theo chiều dọc */
+    justify-content: center;
+    /* Canh giữa theo chiều ngang nếu cần */
+    padding: 16px;
+    /* Chỉ thêm padding trái và phải */
+    border-radius: 4px;
+    /* Bo tròn góc */
+    font-size: 14px;
+    /* Kích thước chữ */
+    font-weight: 500;
+    /* Độ đậm của chữ */
+    height: 32px;
+    /* Chiều cao cố định */
+    border: 1.5px solid;
+    /* Viền */
+    gap: 8px;
+    /* Khoảng cách giữa dot và chữ */
 }
 
 /* Dot trạng thái */
@@ -25,7 +34,8 @@
     align-items: center;
     width: 8px;
     height: 8px;
-    border-radius: 50%; /* Hình tròn */
+    border-radius: 50%;
+    /* Hình tròn */
 }
 
 /* Các trạng thái cụ thể */
