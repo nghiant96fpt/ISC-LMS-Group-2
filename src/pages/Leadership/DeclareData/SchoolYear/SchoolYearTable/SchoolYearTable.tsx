@@ -1,6 +1,6 @@
 import { Icons } from '../Icons';
 import { ISchoolYear } from '../type';
-
+import './style.css';
 const SchoolYearTable = ({ data, onDelete }: { data: ISchoolYear[]; onDelete: (id: number) => void }) => {
   return (
     <div className=" rounded-lg overflow-hidden">
