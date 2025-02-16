@@ -1,14 +1,15 @@
-import { Routes, Route } from "react-router-dom";
-import MainLayout from "../../layouts/MainLayout";
-import Dashboard from "../../pages/Leadership/Dashboard";
-import AllStudentProfiles from "../../pages/Leadership/AllStudentProfiles";
-import AllTeacherProfiles from "../../pages/Leadership/AllTeacherProfiles";
-import TransferAcceptance from "../../pages/Leadership/TransferAcceptance";
-import DeclareData from "../../pages/Leadership/DeclareData";
-import Exams from "../../pages/Leadership/Exams";
-import StudentRetention from "../../pages/Leadership/StudentRetention";
-import SystemSettings from "../../pages/Leadership/SystemSettings";
-import TeachingAssignment from "../../pages/Leadership/TeachingAssignment";
+import { Routes, Route } from 'react-router-dom';
+import MainLayout from '../../layouts/MainLayout';
+import Dashboard from '../../pages/Leadership/Dashboard';
+import AllStudentProfiles from '../../pages/Leadership/AllStudentProfiles';
+import AllTeacherProfiles from '../../pages/Leadership/AllTeacherProfiles';
+import TransferAcceptance from '../../pages/Leadership/TransferAcceptance';
+import DeclareData from '../../pages/Leadership/DeclareData';
+import Exams from '../../pages/Leadership/Exams';
+import StudentRetention from '../../pages/Leadership/StudentRetention';
+import SystemSettings from '../../pages/Leadership/SystemSettings';
+import TeachingAssignment from '../../pages/Leadership/TeachingAssignment';
+import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
 
 const StudentRoutes = () => {
   return (
@@ -23,6 +24,7 @@ const StudentRoutes = () => {
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
+        <Route path="subject-list" element={<SubjectList />} />
       </Route>
     </Routes>
   );
