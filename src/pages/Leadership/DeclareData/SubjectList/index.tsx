@@ -1,7 +1,7 @@
 import React from 'react';
 import deLete from '../../../../assets/images/fi_trash-2.png';
 import sortIcon from '../../../../assets/images/u_arrow up down.png';
-import { subjects } from './type';
+import { subjects } from './subjectListConfig';
 
 const SubjectPage: React.FC = () => {
   return (
