@@ -106,3 +106,4 @@ const DeclareData: React.FC = () => {
 };
 
 export default DeclareData;
+
