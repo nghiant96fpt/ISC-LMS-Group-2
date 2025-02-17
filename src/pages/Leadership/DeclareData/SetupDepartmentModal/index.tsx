@@ -1,29 +1,24 @@
 import React, { useState } from "react";
-import { DepartmentSettingsProps } from "./type";
+import { departmentData } from "./type";
 
-const minus = require("../../assets/icons/icon_minus.png");
-const plus = require("../../assets/icons/icon_plus.png");
-const caretdown = require("../../assets/icons/caret_down.png");
+const minus = require("../../../../assets/icons/icon_minus.png");
+const plus = require("../../../../assets/icons/icon_plus.png");
+const caretdown = require("../../../../assets/icons/caret_down.png");
 
 export const DepartmentSettings: React.FC = () => {
-    const departmentData: DepartmentSettingsProps = {
-        departmentName: "Khoa học tự nhiên",
-        headOfDepartment: ["Trần Thị B", "Nguyễn Văn A", "Lê Thị C"],
-        subjects: ["Toán", "Hóa", "Ngữ Văn", "Sinh", "Lý"],
-    };
 
     const [selectedHead, setSelectedHead] = useState(departmentData.headOfDepartment[0]);
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white rounded-2xl p-6 w-[884px] h-[539px] shadow-lg flex flex-col justify-between">
+            <div className="bg-white rounded-2xl p-6 w-[884px] h-[526px] shadow-lg flex flex-col justify-between">
                 <form className="w-full pt-3 px-[60px] pb-10">
                     <h2 className="text-black-text text-center text-2xl font-bold mb-5">Thiết lập Tổ - Bộ môn</h2>
 
                     <div className="flex items-center justify-between mb-4">
                         <label className="w-3/12 text-black-text font-bold text-base">Tổ - Bộ môn:</label>
                         <input type="text"
-                            className="w-9/12 p-2 border border-gray-300 rounded-lg text-gray-700 cursor-pointer"
+                            className="w-9/12 p-2 border border-gray-300 rounded-lg text-black-text cursor-pointer"
                             value={departmentData.departmentName} readOnly
                         />
                     </div>
@@ -31,7 +26,7 @@ export const DepartmentSettings: React.FC = () => {
                     <div className="flex items-center justify-between mb-4">
                         <label className="w-3/12 text-black-text font-bold text-base">Trưởng tổ - Bộ môn:</label>
                         <div className="w-9/12 relative flex-1 w-full">
-                            <select className="w-full p-2 border border-gray-300 rounded-lg text-gray-700 appearance-none"
+                            <select className="w-full p-2 border border-gray-300 rounded-lg text-black-text appearance-none"
                                 value={selectedHead} onChange={(e) => setSelectedHead(e.target.value)}
                             >
                                 {departmentData.headOfDepartment.map((name, index) => (
@@ -62,8 +57,8 @@ export const DepartmentSettings: React.FC = () => {
                     </div>
 
                     <div className="flex justify-center gap-4 mt-10">
-                        <button className="w-40 py-2 bg-gray-300 text-gray-700 font-bold rounded-lg">Hủy</button>
-                        <button className="w-40 py-2 bg-orange-text text-white font-bold rounded-lg">Lưu</button>
+                        <button className="w-40 h-12 py-2 bg-[#F2F2F2] text-black-text font-bold rounded-lg">Hủy</button>
+                        <button className="w-40 py-2 bg-orange-text text-while-text font-bold rounded-lg">Lưu</button>
                     </div>
                 </form>
             </div>
