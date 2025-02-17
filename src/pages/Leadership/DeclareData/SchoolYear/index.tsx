@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Icons } from './Icons';
 import { schoolYearData, ISchoolYear } from './type';
 import { DeleteConfirmation } from './SchoolYearAddDelete/SchoolYearAddDelete';
-import Pagination from './SchoolYearAddTablePagination/Pagination';
+import Pagination from './SchoolYearPagination/Pagination';
 import SchoolYearTable from './SchoolYearTable/SchoolYearTable';
 
 const SchoolYear = () => {
