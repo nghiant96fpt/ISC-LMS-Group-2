@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { departmentData } from "./type";
+import { departmentData } from "./data";
 
 const minus = require("../../../../assets/icons/icon_minus.png");
 const plus = require("../../../../assets/icons/icon_plus.png");
@@ -10,7 +10,7 @@ export const DepartmentSettings: React.FC = () => {
     const [selectedHead, setSelectedHead] = useState(departmentData.headOfDepartment[0]);
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="bg-white rounded-2xl p-6 w-[884px] h-[526px] shadow-lg flex flex-col justify-between">
                 <form className="w-full pt-3 px-[60px] pb-10">
                     <h2 className="text-black-text text-center text-2xl font-bold mb-5">Thiết lập Tổ - Bộ môn</h2>
