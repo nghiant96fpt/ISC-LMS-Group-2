@@ -41,8 +41,19 @@ const BlockDepartment = () => {
             <table className={styles.table}>
                 <thead>
                     <tr>
-                        <th>Mã khoa - khối</th>
-                        <th>Tên khoa - khối</th>
+                        <th>
+                            <p style={{ display: 'flex' }}>Mã khoa - khối <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-chevron-expand ms-1 fw-bold" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708m0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708" />
+                            </svg></p>
+
+                        </th>
+                        <th>
+                            <p style={{ display: 'flex' }}>    Tên khoa - khối
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-chevron-expand ms-1 fw-bold" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708m0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708" />
+                                </svg>
+                            </p>
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
