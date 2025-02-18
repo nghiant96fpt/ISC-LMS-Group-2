@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Icons } from './Icons';
 import { schoolYearData, ISchoolYear } from './type';
-import { DeleteConfirmation } from './SchoolYearAddDelete/SchoolYearAddDelete';
-import Pagination from './SchoolYearAddTablePagination/Pagination';
-import SchoolYearTable from './SchoolYearTable/SchoolYearTable';
+import { DeleteConfirmation } from '../SchoolYearDelete/SchoolYearDelete';
+
+import SchoolYearTable from './SchoolYearTable';
+import Panigation from '../SchoolYearPanigation/Panigation';
 
 const SchoolYear = () => {
   const [data, setData] = useState<ISchoolYear[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-
+  const [numPage, setNumPage] = useState(4);
+  const [index, setIndex] = useState(-1);
   useEffect(() => {
     setData(schoolYearData);
   }, []);
@@ -51,7 +53,8 @@ const SchoolYear = () => {
       />
 
       {/* Phân trang */}
-      <Pagination />
+
+      <Panigation indexChoose={index} numPage={numPage} setNumpage={setNumPage} setIndex={setIndex} />
 
       {/* popup delete */}
       {showPopup && <DeleteConfirmation onDelete={handleDelete} onCancel={handleShowPopup} />}

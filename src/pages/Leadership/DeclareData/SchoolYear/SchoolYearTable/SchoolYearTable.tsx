@@ -1,6 +1,8 @@
-import { Icons } from '../Icons';
-import { ISchoolYear } from '../type';
+import { Link } from 'react-router';
+import { Icons } from './Icons';
+import { ISchoolYear } from './type';
 import './style.css';
+
 const SchoolYearTable = ({ data, onDelete }: { data: ISchoolYear[]; onDelete: (id: number) => void }) => {
   return (
     <div className=" rounded-lg overflow-hidden">
@@ -44,9 +46,11 @@ const SchoolYearTable = ({ data, onDelete }: { data: ISchoolYear[]; onDelete: (i
                 <td className="lg:p-1.5">{row.start}</td>
                 <td className="lg:p-1.5">{row.end}</td>
                 <td className="lg:p-1.5 flex justify-center gap-2">
-                  <button className="w-10 h-10 bg-gray-100 hover:bg-orange-50 transition duration-300">
-                    <img src={Icons.pencil_icon} alt="edit icon" className="w-8 h-8" />
-                  </button>
+                  <Link to="/leadership/declare-data/school-year/edit">
+                    <button className="w-10 h-10 bg-gray-100 hover:bg-orange-50 transition duration-300">
+                      <img src={Icons.pencil_icon} alt="edit icon" className="w-8 h-8" />
+                    </button>
+                  </Link>
                   <button className="w-10 h-10 bg-gray-100 hover:bg-orange-50" onClick={() => onDelete(row.id)}>
                     <img src={Icons.trash_icon} alt="remove icon" className="w-8 h-8" />
                   </button>

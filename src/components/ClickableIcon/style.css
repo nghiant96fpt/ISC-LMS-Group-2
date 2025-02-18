@@ -1,0 +1,11 @@
+
+.clickable-icon {
+  @apply flex justify-center items-center rounded-full transition-transform cursor-pointer whitespace-normal;
+
+}
+
+
+
+.clickable-icon-img {
+  @apply rounded-full object-cover flex-shrink-0;
+}
