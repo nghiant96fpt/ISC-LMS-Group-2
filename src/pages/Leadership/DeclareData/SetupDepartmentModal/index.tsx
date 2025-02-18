@@ -10,7 +10,7 @@ const DepartmentSettings: React.FC = () => {
   const [selectedHead, setSelectedHead] = useState(departmentData.headOfDepartment[0]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen p-10">
+    <div className="flex justify-center items-center max-h-screen p-10">
       <div className="bg-white rounded-2xl p-6 w-full max-w-[884px] h-auto shadow-lg flex flex-col">
         <form className="w-full pt-3 px-6 md:px-[60px] pb-10">
           <h2 className="text-black-text text-center text-2xl font-bold mb-5">Thiết lập Tổ - Bộ môn</h2>
