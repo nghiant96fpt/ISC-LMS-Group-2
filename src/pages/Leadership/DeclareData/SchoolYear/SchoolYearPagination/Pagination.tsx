@@ -70,10 +70,5 @@ import PanigationType from "./Type";
             </ul>
         </div>
     );
-};
-
-
-
-
-
+}; 
 export default Panigation;
