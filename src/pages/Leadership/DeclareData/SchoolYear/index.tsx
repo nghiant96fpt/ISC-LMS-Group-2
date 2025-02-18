@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Icons } from './Icons';
 import { schoolYearData, ISchoolYear } from './type';
-import { DeleteConfirmation } from './SchoolYearAddDelete/SchoolYearAddDelete';
+import { DeleteConfirmation } from './SchoolYearDelete/SchoolYearDelete';
 import Pagination from './SchoolYearPagination/Pagination';
 import SchoolYearTable from './SchoolYearTable/SchoolYearTable';
 
