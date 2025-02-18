@@ -9,7 +9,11 @@ import Exams from '../../pages/Leadership/Exams';
 import StudentRetention from '../../pages/Leadership/StudentRetention';
 import SystemSettings from '../../pages/Leadership/SystemSettings';
 import TeachingAssignment from '../../pages/Leadership/TeachingAssignment';
+
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
+
+import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
+
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -28,6 +32,7 @@ const StudentRoutes = () => {
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
+        <Route path="subject-list" element={<SubjectList />} />
       </Route>
     </Routes>
   );
