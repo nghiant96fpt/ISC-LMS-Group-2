@@ -1,0 +1,6 @@
+.br-gradient-right-or {
+  background: linear-gradient(to right, var(--background-2), var(--background-1));
+}
+.text-white-text {
+  color: var(--white-text);
+}
