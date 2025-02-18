@@ -5,6 +5,8 @@ import PanigationType from "./Type";
   indexChoose = 1,
   setIndex = () => {},
   setNumpage = () => {},
+  size=5,
+  setSize= () => {}
 }) => {
     const [map, setMap] = useState<number[]>([]);
     const nextIndex=(index:number)=>{
@@ -37,7 +39,12 @@ import PanigationType from "./Type";
     }, [ indexChoose]);
 
     return (
-        <> 
+        <div className="flex justify-between items-center w-full "> 
+            <div className="flex items-center gap-2">
+                <span className="text-gray-700 italic text-xs"> Hiển thị</span> 
+                <input className="w-[35px] h-[30px] rounded-md border border-orange-500 px-1 py-1" value={size} onChange={(e)=>{setSize(Number.parseInt(e.target.value))}}/>
+                <span className="text-gray-700 italic text-xs"> Hàng trong mỗi trang</span>
+            </div>
             <ul style={{ display: "flex", gap: 19, listStyleType: "none",alignItems:"center" }}>
                 <li onClick={()=>{
                     nextIndex(-1)
@@ -61,7 +68,7 @@ import PanigationType from "./Type";
                 }} className={`font-bold text-2xl cursor-pointer ${indexChoose==numPage?"text-gray-300":""} `}> &rsaquo;</li>
                 
             </ul>
-        </>
+        </div>
     );
 };
 
