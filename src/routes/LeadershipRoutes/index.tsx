@@ -9,7 +9,7 @@ import Exams from '../../pages/Leadership/Exams';
 import StudentRetention from '../../pages/Leadership/StudentRetention';
 import SystemSettings from '../../pages/Leadership/SystemSettings';
 import TeachingAssignment from '../../pages/Leadership/TeachingAssignment';
-import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear';
+import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYearTable';
 
 const StudentRoutes = () => {
   return (

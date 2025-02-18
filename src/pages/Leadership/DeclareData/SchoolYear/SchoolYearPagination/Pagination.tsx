@@ -1,4 +1,4 @@
-import { Icons } from '../Icons';
+import { Icons } from '../SchoolYearTable/Icons';
 
 const Pagination = () => {
   return (
