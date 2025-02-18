@@ -54,6 +54,11 @@ module.exports = {
         'br-gradient-blue': 'linear-gradient(to right, var(--background-5), var(--background-6))',
         'br-gradient-green': 'linear-gradient(to right, var(--background-8), var(--background-7))',
       },
+
+      // shadow custom
+      boxShadow: {
+        custom: '4px 4px 25px 4px rgba(154, 202, 245, 0.5)',
+      },
     },
   },
   plugins: [],

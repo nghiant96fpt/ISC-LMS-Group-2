@@ -48,11 +48,19 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
     return [...prevMonthDaysToShow, ...currentMonthDays, ...nextMonthDaysToShow];
   }, [currentMonth, currentYear]);
 
-  const handleChooseDate = () => {
-    handleDateChoose?.();
-    setIsCalendarOpen(false);
-    onToggleCalendar?.(false);
-  };
+  // const handleChooseDate = () => {
+  //   handleDateChoose?.();
+  //   setIsCalendarOpen(false);
+  //   onToggleCalendar?.(false);
+  // };
+
+  // Câp nhât fn chọn ngày
+    const handleChooseDate = (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      if (!selectedDate) return;
+      setIsCalendarOpen(false);
+      onToggleCalendar?.(false);
+    };
 
   const handleClick = (date: Date) => () => {
     handleDateClick(date);
@@ -82,6 +90,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
     setCurrentYear(newYear);
     onMonthChange?.(newMonth, newYear);
   };
+  
 
   return (
     <div className="calendar-container" style={style}>
