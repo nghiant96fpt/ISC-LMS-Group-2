@@ -9,7 +9,7 @@ import Exams from "../../pages/Leadership/Exams";
 import StudentRetention from "../../pages/Leadership/StudentRetention";
 import SystemSettings from "../../pages/Leadership/SystemSettings";
 import TeachingAssignment from "../../pages/Leadership/TeachingAssignment";
-
+import DeclareDataRoutes from "../../pages/Leadership/DeclareData/DeclareDataRoutes";
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -18,7 +18,7 @@ const StudentRoutes = () => {
         <Route path="all-student-profiles" element={<AllStudentProfiles />} />
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
-        <Route path="declare-data" element={<DeclareData />} />
+        <Route path="declare-data/*" element={<DeclareDataRoutes />} />
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
