@@ -51,9 +51,11 @@ const DepartmentSettings: React.FC = () => {
                 </div>
               ))}
             </div>
-            <button className="mt-4 text-blue-text font-bold flex items-center">
-              <img src={plus} alt="Add" className="w-5 mr-2" /> Thêm môn học mới
-            </button>
+            <Link to="/leadership/declare-data/subject-list">
+              <button className="mt-4 text-blue-text font-bold flex items-center">
+                <img src={plus} alt="Add" className="w-5 mr-2" /> Thêm môn học mới
+              </button>
+            </Link>
           </div>
           <div className="flex flex-col md:flex-row justify-center gap-4 mt-10">
             <Link to="/leadership/declare-data">
