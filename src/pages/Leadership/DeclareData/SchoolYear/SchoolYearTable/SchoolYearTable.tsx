@@ -1,9 +1,11 @@
+
 import { Icons } from '../Icons';
 import { ISchoolYear } from '../type';
 import './style.css';
 const SchoolYearTable = ({ data, onDelete }: { data: ISchoolYear[]; onDelete: (id: number) => void }) => {
   return (
     <div className=" rounded-lg overflow-hidden">
+      
       {/* tb head */}
       <table className="w-full table-fixed overflow-hidden rounded-t-lg">
         <thead className="h-8 sm:h-6 md:h-7 lg:h-8 xl:h-10 sm:text-[8px] md:text-[10px]  xl:text-[16px] bg-gradient-to-r from-[#F17F21] to-[#FF5400] text-white sticky top-0 z-1">

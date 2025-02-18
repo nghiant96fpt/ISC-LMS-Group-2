@@ -82,6 +82,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
     setCurrentYear(newYear);
     onMonthChange?.(newMonth, newYear);
   };
+  
 
   return (
     <div className="calendar-container" style={style}>
