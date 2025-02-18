@@ -1,11 +1,11 @@
 
+import { Link } from 'react-router';
 import { Icons } from '../Icons';
 import { ISchoolYear } from '../type';
 import './style.css';
 const SchoolYearTable = ({ data, onDelete }: { data: ISchoolYear[]; onDelete: (id: number) => void }) => {
   return (
     <div className=" rounded-lg overflow-hidden">
-      
       {/* tb head */}
       <table className="w-full table-fixed overflow-hidden rounded-t-lg">
         <thead className="h-8 sm:h-6 md:h-7 lg:h-8 xl:h-10 sm:text-[8px] md:text-[10px]  xl:text-[16px] bg-gradient-to-r from-[#F17F21] to-[#FF5400] text-white sticky top-0 z-1">
@@ -46,9 +46,11 @@ const SchoolYearTable = ({ data, onDelete }: { data: ISchoolYear[]; onDelete: (i
                 <td className="lg:p-1.5">{row.start}</td>
                 <td className="lg:p-1.5">{row.end}</td>
                 <td className="lg:p-1.5 flex justify-center gap-2">
-                  <button className="w-10 h-10 bg-gray-100 hover:bg-orange-50 transition duration-300">
-                    <img src={Icons.pencil_icon} alt="edit icon" className="w-8 h-8" />
-                  </button>
+                  <Link to="/leadership/declare-data/school-year/edit">
+                    <button className="w-10 h-10 bg-gray-100 hover:bg-orange-50 transition duration-300">
+                      <img src={Icons.pencil_icon} alt="edit icon" className="w-8 h-8" />
+                    </button>
+                  </Link>
                   <button className="w-10 h-10 bg-gray-100 hover:bg-orange-50" onClick={() => onDelete(row.id)}>
                     <img src={Icons.trash_icon} alt="remove icon" className="w-8 h-8" />
                   </button>
