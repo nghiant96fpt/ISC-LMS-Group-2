@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Icons } from './Icons';
 import { schoolYearData, ISchoolYear } from './type';
 import { DeleteConfirmation } from '../SchoolYearDelete/SchoolYearDelete';
-import Pagination from '../SchoolYearPagination/Pagination';
+// import Pagination from '../SchoolYearPagination/Pagination';
 import SchoolYearTable from './SchoolYearTable';
 
 const SchoolYear = () => {
@@ -51,7 +51,7 @@ const SchoolYear = () => {
       />
 
       {/* Phân trang */}
-      <Pagination />
+      {/* <Pagination /> */}
 
       {/* popup delete */}
       {showPopup && <DeleteConfirmation onDelete={handleDelete} onCancel={handleShowPopup} />}
