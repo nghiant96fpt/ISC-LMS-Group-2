@@ -6,19 +6,9 @@ import Checkbox from '../../../../../components/CheckBox';
 import Button from '../../../../../components/Button';
 import CalendarInput from '../../../../../components/CalendarInput';
 import { useForm, Controller } from 'react-hook-form';
+import { FormData } from './../SchoolYearFormEdit/type';
 
-interface FormData {
-  term1StartDate: Date | null;
-  term1EndDate: Date | null;
-  term2StartDate: Date | null;
-  term2EndDate: Date | null;
-  yearStart: string;
-  yearEnd: string;
-  schoolYearTo: string;
-  inheritData: boolean;
-}
-
-const SchoolYearAdd: React.FC = () => {
+const SchoolYearAdd: React.FC = (FormData) => {
   const [isChecked, setIsChecked] = useState(false);
   const [semesters, setSemesters] = useState<number[]>([1]); // Default with one semester
   const {
