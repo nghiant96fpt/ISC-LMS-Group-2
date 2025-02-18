@@ -8,7 +8,7 @@ import CalendarInput from '../../../../../components/CalendarInput';
 import { useForm, Controller } from 'react-hook-form';
 import { FormData } from './../SchoolYearFormEdit/type';
 
-const SchoolYearAdd: React.FC = (FormData) => {
+const SchoolYearAdd: React.FC = (props) => {
   const [isChecked, setIsChecked] = useState(false);
   const [semesters, setSemesters] = useState<number[]>([1]); // Default with one semester
   const {
@@ -82,7 +82,7 @@ const SchoolYearAdd: React.FC = (FormData) => {
             <div className="flex items-center space-x-2">
               <p className="text-sm">Từ</p>
               <Controller
-                name={`term1StartDate`}
+                name="startDate"
                 control={control}
                 defaultValue={null}
                 render={({ field }) => (
@@ -99,7 +99,7 @@ const SchoolYearAdd: React.FC = (FormData) => {
 
               <p className="text-sm">đến</p>
               <Controller
-                name={`term1EndDate`}
+                name="endDate"
                 control={control}
                 defaultValue={null}
                 render={({ field }) => (

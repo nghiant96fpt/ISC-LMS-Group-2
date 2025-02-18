@@ -24,13 +24,17 @@ const StudentRoutes = () => {
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
         <Route path="declare-data" element={<DeclareData />} />
-        <Route path="declare-data/school-year/edit" element={<SchoolYearEditPages />} />
-        <Route path="declare-data/school-year" element={<SchoolYear />} /> {/*route cho school-year - group-4*/}
+
+        {/*route cho school-year - group-4*/}
+        <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
+        <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
+        <Route path="declare-data/school-year/add-school-year" element={<SchoolYearAdd />} /> {/* url thêm niên khóa */}
+        {/*  */}
+        
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
-        <Route path="add-school-year" element={<SchoolYearAdd />} />
       </Route>
     </Routes>
   );
