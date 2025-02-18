@@ -38,7 +38,7 @@ const Panigation: React.FC<PanigationType> = ({
   }, [indexChoose]);
 
   return (
-    <div className="flex justify-between items-center w-full ">
+    <div className="flex justify-between items-center w-full mt-4">
       <div className="flex items-center gap-2">
         <span className="text-gray-700 italic text-xs"> Hiển thị</span>
         <input
