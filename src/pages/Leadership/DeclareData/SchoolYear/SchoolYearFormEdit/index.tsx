@@ -10,8 +10,23 @@ import TextComponent from '../../../../../components/Text';
 
 import TextBlockComponent from '../../../../../components/TextBlock';
 import TitleComponent from '../../../../../components/Title';
+import { useForm, Controller } from 'react-hook-form';
+interface FormData {
+  schoolYearStart: string;
+  schoolYearEnd: string;
+  startDate: Date | null;
+  endDate: Date | null;
+  semester: string;
+}
 
 const SchoolYearFormEdit: React.FC = () => {
+  const {
+    control,
+    setValue,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = (
@@ -20,12 +35,26 @@ const SchoolYearFormEdit: React.FC = () => {
     setIsChecked(event.target.checked);
   };
 
-  const handleClick = () => {
-    console.log('Icon được nhấn!');
+  const handleFormSubmit = (data: FormData) => {
+    console.log('Form submitted', data);
   };
 
+  const handleDateChange = (
+    date: Date | null,
+    fieldName: keyof FormData,
+  ) => {
+    setValue(fieldName, date);
+  };
+
+  function handleClick(): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
-    <form encType="multipart/form-data">
+    <form
+      encType="multipart/form-data"
+      onSubmit={handleSubmit(handleFormSubmit)}
+    >
       <div className="p-6 sm:p-8 md:p-10 bg-white rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 w-full">
         <TitleComponent
           text="Thiết lập niên khóa"
@@ -36,54 +65,121 @@ const SchoolYearFormEdit: React.FC = () => {
         {/* Layout 2 cột */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
           {/* Cột 1 */}
-          <div className="p-6 sm:p-8 md:p-10 dark:bg-gray-700 rounded-lg">
+          <div className="p-6 col-span-full xl:col-auto">
             <TitleComponent
               text="Niên khóa"
               size={20}
               className="mb-4"
             />
 
-            {/* Dropdown + "đến" */}
-            <div className="flex items-center gap-4 flex-wrap">
-              <DropdownSelectionComponent
-                placeholder="Niên khóa"
-                options={['2020', '2021', '2022', '2023']}
-                width={144}
-                onSelect={(value) =>
-                  console.log('Bạn chọn:', value)
-                }
-              />
-              <span className="text-gray-700">đến</span>
-              <DropdownSelectionComponent
-                placeholder="Niên khóa"
-                options={['2020', '2021', '2022', '2023']}
-                width={144}
-                onSelect={(value) =>
-                  console.log('Bạn chọn:', value)
-                }
-              />
+            <div className="flex items-center gap-4">
+              <div className="flex-grow-0">
+                <Controller
+                  name="schoolYearStart"
+                  control={control}
+                  defaultValue=""
+                  rules={{
+                    required: 'Bắt buộc chọn niên khóa',
+                  }}
+                  render={({ field }) => (
+                    <div className="relative">
+                      <DropdownSelectionComponent
+                        {...field}
+                        placeholder="Niên khóa"
+                        options={[
+                          '2020',
+                          '2021',
+                          '2022',
+                          '2023',
+                        ]}
+                        width={200}
+                        onSelect={field.onChange}
+                      />
+                      {errors.schoolYearStart && (
+                        <span className="text-red-500 absolute top-full mt-1">
+                          {errors.schoolYearStart.message}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                />
+              </div>
+
+              <span className="mx-2">đến</span>
+
+              <div className="flex-grow-0">
+                <Controller
+                  name="schoolYearEnd"
+                  control={control}
+                  defaultValue=""
+                  rules={{
+                    required: 'Bắt buộc chọn niên khóa',
+                  }}
+                  render={({ field }) => (
+                    <div className="relative">
+                      <DropdownSelectionComponent
+                        {...field}
+                        placeholder="Niên khóa"
+                        options={[
+                          '2020',
+                          '2021',
+                          '2022',
+                          '2023',
+                        ]}
+                        width={200}
+                        onSelect={field.onChange}
+                      />
+                      {errors.schoolYearEnd && (
+                        <span className="text-red-500 absolute top-full mt-1">
+                          {errors.schoolYearEnd.message}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                />
+              </div>
             </div>
           </div>
 
           {/* Cột 2 */}
-          <div className="p-6 sm:p-8 md:p-10 dark:bg-gray-600 rounded-lg">
+          <div className="p-6 col-span-full xl:col-auto">
             <div className="flex justify-between items-center space-x-4">
               <CheckboxComponent
                 label="Kế thừa dữ liệu"
                 iconName="iconCheckActiveBlueLarge"
                 isChecked={isChecked}
                 onChange={handleCheckboxChange}
-                className="flex-grow"
+                className="flex-grow "
               />
 
-              <DropdownSelectionComponent
-                placeholder="Niên khóa"
-                options={['2020', '2021', '2022', '2023']}
-                width={144}
-                onSelect={(value) =>
-                  console.log('Bạn chọn:', value)
-                }
-                className="flex-grow"
+              <Controller
+                name="schoolYearEnd"
+                control={control}
+                defaultValue=""
+                rules={{
+                  required: 'Bắt buộc chọn niên khóa',
+                }}
+                render={({ field }) => (
+                  <div className="relative">
+                    <DropdownSelectionComponent
+                      {...field}
+                      placeholder="Niên khóa"
+                      options={[
+                        '2020',
+                        '2021',
+                        '2022',
+                        '2023',
+                      ]}
+                      width={200}
+                      onSelect={field.onChange}
+                    />
+                    {errors.schoolYearEnd && (
+                      <span className="text-red-500 absolute top-full mt-1">
+                        {errors.schoolYearEnd.message}
+                      </span>
+                    )}
+                  </div>
+                )}
               />
             </div>
             <div className="flex mt-4 space-x-4">
@@ -107,6 +203,11 @@ const SchoolYearFormEdit: React.FC = () => {
         </div>
 
         {/* Flexbox cho dropdown */}
+        {errors.semester && (
+          <span className="my-6 mx-6 text-red-500">
+            {errors.semester.message}
+          </span>
+        )}
         <div className="my-6 mx-6 flex flex-wrap gap-4 items-center justify-between">
           <ClickableIcon
             iconName="iconMinusActiveBlueLarge"
@@ -118,54 +219,55 @@ const SchoolYearFormEdit: React.FC = () => {
             text="Tên hoc kỳ:"
             color="var(--black-text)"
             weight="extrabold"
+       
           />
           <input
             type="text"
             placeholder="Học kỳ 1"
-            className="border border-gray-300 outline-none rounded-xl px-2 py-2 w-full md:w-60 "
+            className="border border-gray-300 outline-none rounded-xl px-2 py-2 w-full md:w-60"
+            {...register('semester', {
+              required: 'Bắt buộc nhập tên học kỳ',
+            })}
           />
+
           <TextComponent
             text="từ"
             color="var(--black-text)"
             weight="thin"
           />
-          <CalendarInput />
+          <Controller
+            name="startDate"
+            control={control}
+            defaultValue={null}
+            render={({ field }) => (
+              <CalendarInput
+                selectedDate={field.value}
+                onDateChange={(date) =>
+                  handleDateChange(date, 'startDate')
+                }
+              />
+            )}
+          />
           <TextComponent
             text="đến"
             color="var(--black-text)"
             weight="thin"
           />
-          <CalendarInput />
+          <Controller
+            name="endDate"
+            control={control}
+            defaultValue={null}
+            render={({ field }) => (
+              <CalendarInput
+                selectedDate={field.value}
+                onDateChange={(date) =>
+                  handleDateChange(date, 'endDate')
+                }
+              />
+            )}
+          />
         </div>
-        <div className="my-6 mx-6 flex flex-wrap gap-4 items-center justify-between">
-          <ClickableIcon
-            iconName="iconMinusActiveBlueLarge"
-            onClick={handleClick}
-            size="sm"
-          />
-          <TextComponent
-            text="Tên hoc kỳ:"
-            color="var(--black-text)"
-            weight="extrabold"
-          />
-          <input
-            type="text"
-            placeholder="Học kỳ 2"
-            className="border border-gray-300 outline-none rounded-xl px-2 py-2 w-full md:w-60 "
-          />
-          <TextComponent
-            text="từ"
-            color="var(--black-text)"
-            weight="thin"
-          />
-          <CalendarInput />
-          <TextComponent
-            text="đến"
-            color="var(--black-text)"
-            weight="thin"
-          />
-          <CalendarInput />
-        </div>
+
         <div className="my-6 mx-6 flex flex-wrap gap-4 items-center justify-start">
           <ClickableIcon
             iconName="iconPlusBlue"
@@ -195,7 +297,7 @@ const SchoolYearFormEdit: React.FC = () => {
           </Button>
           <Button
             size="big"
-            type="button"
+            type="submit"
             style={{
               backgroundColor: 'var(--background-4)',
               color: 'white',

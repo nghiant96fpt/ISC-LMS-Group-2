@@ -56,7 +56,7 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
         )}
       </span>
       {label && (
-        <span className="ml-3 text-gray-800 transition-colors" style={customStyles.label}>
+        <span className="ml-3 text-gray-800 transition-colors font-semibold" style={customStyles.label}>
           {label}
         </span>
       )}
