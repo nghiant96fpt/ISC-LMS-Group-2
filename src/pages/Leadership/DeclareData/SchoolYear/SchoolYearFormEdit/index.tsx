@@ -11,15 +11,9 @@ import TextComponent from '../../../../../components/Text';
 import TextBlockComponent from '../../../../../components/TextBlock';
 import TitleComponent from '../../../../../components/Title';
 import { useForm, Controller } from 'react-hook-form';
-interface FormData {
-  schoolYearStart: string;
-  schoolYearEnd: string;
-  startDate: Date | null;
-  endDate: Date | null;
-  semester: string;
-}
+import { FormData } from './type';
 
-const SchoolYearFormEdit: React.FC = () => {
+const SchoolYearFormEdit: React.FC = (FormData) => {
   const {
     control,
     setValue,
@@ -29,9 +23,7 @@ const SchoolYearFormEdit: React.FC = () => {
   } = useForm<FormData>();
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleCheckboxChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
   };
 
@@ -39,10 +31,7 @@ const SchoolYearFormEdit: React.FC = () => {
     console.log('Form submitted', data);
   };
 
-  const handleDateChange = (
-    date: Date | null,
-    fieldName: keyof FormData,
-  ) => {
+  const handleDateChange = (date: Date | null, fieldName: keyof FormData) => {
     setValue(fieldName, date);
   };
 
@@ -51,26 +40,14 @@ const SchoolYearFormEdit: React.FC = () => {
   }
 
   return (
-    <form
-      encType="multipart/form-data"
-      onSubmit={handleSubmit(handleFormSubmit)}
-    >
+    <form encType="multipart/form-data" onSubmit={handleSubmit(handleFormSubmit)}>
       <div className="p-6 sm:p-8 md:p-10 bg-white rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 w-full">
-        <TitleComponent
-          text="Thiết lập niên khóa"
-          size={30}
-          align="center"
-          weight="bold"
-        />
+        <TitleComponent text="Thiết lập niên khóa" size={30} align="center" weight="bold" />
         {/* Layout 2 cột */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
           {/* Cột 1 */}
           <div className="p-6 col-span-full xl:col-auto">
-            <TitleComponent
-              text="Niên khóa"
-              size={20}
-              className="mb-4"
-            />
+            <TitleComponent text="Niên khóa" size={20} className="mb-4" />
 
             <div className="flex items-center gap-4">
               <div className="flex-grow-0">
@@ -86,20 +63,11 @@ const SchoolYearFormEdit: React.FC = () => {
                       <DropdownSelectionComponent
                         {...field}
                         placeholder="Niên khóa"
-                        options={[
-                          '2020',
-                          '2021',
-                          '2022',
-                          '2023',
-                        ]}
+                        options={['2020', '2021', '2022', '2023']}
                         width={200}
                         onSelect={field.onChange}
                       />
-                      {errors.schoolYearStart && (
-                        <span className="text-red-500 absolute top-full mt-1">
-                          {errors.schoolYearStart.message}
-                        </span>
-                      )}
+                      {errors.schoolYearStart && <span className="text-red-500 absolute top-full mt-1">{errors.schoolYearStart.message}</span>}
                     </div>
                   )}
                 />
@@ -120,20 +88,11 @@ const SchoolYearFormEdit: React.FC = () => {
                       <DropdownSelectionComponent
                         {...field}
                         placeholder="Niên khóa"
-                        options={[
-                          '2020',
-                          '2021',
-                          '2022',
-                          '2023',
-                        ]}
+                        options={['2020', '2021', '2022', '2023']}
                         width={200}
                         onSelect={field.onChange}
                       />
-                      {errors.schoolYearEnd && (
-                        <span className="text-red-500 absolute top-full mt-1">
-                          {errors.schoolYearEnd.message}
-                        </span>
-                      )}
+                      {errors.schoolYearEnd && <span className="text-red-500 absolute top-full mt-1">{errors.schoolYearEnd.message}</span>}
                     </div>
                   )}
                 />
@@ -164,20 +123,11 @@ const SchoolYearFormEdit: React.FC = () => {
                     <DropdownSelectionComponent
                       {...field}
                       placeholder="Niên khóa"
-                      options={[
-                        '2020',
-                        '2021',
-                        '2022',
-                        '2023',
-                      ]}
+                      options={['2020', '2021', '2022', '2023']}
                       width={200}
                       onSelect={field.onChange}
                     />
-                    {errors.schoolYearEnd && (
-                      <span className="text-red-500 absolute top-full mt-1">
-                        {errors.schoolYearEnd.message}
-                      </span>
-                    )}
+                    {errors.schoolYearEnd && <span className="text-red-500 absolute top-full mt-1">{errors.schoolYearEnd.message}</span>}
                   </div>
                 )}
               />
@@ -192,35 +142,14 @@ const SchoolYearFormEdit: React.FC = () => {
         <hr className="mx-6 border-t border-gray-300" />
 
         <div className="dark:bg-gray-700 rounded-lg">
-          <TitleComponent
-            text="Cài đặt thời gian"
-            size={20}
-            align="left"
-            weight="bold"
-            color="#CC5C00"
-            className="m-6"
-          />
+          <TitleComponent text="Cài đặt thời gian" size={20} align="left" weight="bold" color="#CC5C00" className="m-6" />
         </div>
 
         {/* Flexbox cho dropdown */}
-        {errors.semester && (
-          <span className="my-6 mx-6 text-red-500">
-            {errors.semester.message}
-          </span>
-        )}
+        {errors.semester && <span className="my-6 mx-6 text-red-500">{errors.semester.message}</span>}
         <div className="my-6 mx-6 flex flex-wrap gap-4 items-center justify-between">
-          <ClickableIcon
-            iconName="iconMinusActiveBlueLarge"
-            onClick={handleClick}
-            size="sm"
-            text="Example Text"
-          />
-          <TextComponent
-            text="Tên hoc kỳ:"
-            color="var(--black-text)"
-            weight="extrabold"
-       
-          />
+          <ClickableIcon iconName="iconMinusActiveBlueLarge" onClick={handleClick} size="sm" text="Example Text" />
+          <TextComponent text="Tên hoc kỳ:" color="var(--black-text)" weight="extrabold" />
           <input
             type="text"
             placeholder="Học kỳ 1"
@@ -230,55 +159,25 @@ const SchoolYearFormEdit: React.FC = () => {
             })}
           />
 
-          <TextComponent
-            text="từ"
-            color="var(--black-text)"
-            weight="thin"
-          />
+          <TextComponent text="từ" color="var(--black-text)" weight="thin" />
           <Controller
             name="startDate"
             control={control}
             defaultValue={null}
-            render={({ field }) => (
-              <CalendarInput
-                selectedDate={field.value}
-                onDateChange={(date) =>
-                  handleDateChange(date, 'startDate')
-                }
-              />
-            )}
+            render={({ field }) => <CalendarInput selectedDate={field.value} onDateChange={(date) => handleDateChange(date, 'startDate')} />}
           />
-          <TextComponent
-            text="đến"
-            color="var(--black-text)"
-            weight="thin"
-          />
+          <TextComponent text="đến" color="var(--black-text)" weight="thin" />
           <Controller
             name="endDate"
             control={control}
             defaultValue={null}
-            render={({ field }) => (
-              <CalendarInput
-                selectedDate={field.value}
-                onDateChange={(date) =>
-                  handleDateChange(date, 'endDate')
-                }
-              />
-            )}
+            render={({ field }) => <CalendarInput selectedDate={field.value} onDateChange={(date) => handleDateChange(date, 'endDate')} />}
           />
         </div>
 
         <div className="my-6 mx-6 flex flex-wrap gap-4 items-center justify-start">
-          <ClickableIcon
-            iconName="iconPlusBlue"
-            onClick={handleClick}
-            size="sm"
-          />
-          <TextComponent
-            text="Thêm học kỳ mới:"
-            color="var(--blue-text)"
-            weight="extrabold"
-          />
+          <ClickableIcon iconName="iconPlusBlue" onClick={handleClick} size="sm" />
+          <TextComponent text="Thêm học kỳ mới:" color="var(--blue-text)" weight="extrabold" />
         </div>
         <div className="my-6 mx-6 flex flex-wrap gap-4 items-center justify-center">
           <Button
