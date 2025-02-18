@@ -11,6 +11,10 @@ import StudentRetention from '../../pages/Leadership/StudentRetention';
 import SystemSettings from '../../pages/Leadership/SystemSettings';
 import TeachingAssignment from '../../pages/Leadership/TeachingAssignment';
 
+// import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear';
+import SchoolYearAdd from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYearAdd';
+
+
 //import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear';
         import SchoolYearEditPages from "../../pages/Leadership/DeclareData/SchoolYear/SchoolYearEditPages";
 
@@ -33,6 +37,7 @@ const StudentRoutes = () => {
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
+        <Route path="add-school-year" element={<SchoolYearAdd />} />
       </Route>
     </Routes>
   );
