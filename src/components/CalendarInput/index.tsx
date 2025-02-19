@@ -62,9 +62,10 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
       onToggleCalendar?.(false);
     };
 
-  const handleClick = (date: Date) => () => {
-    handleDateClick(date);
-  };
+    const handleClick = (date: Date) => (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      handleDateClick(date);
+    };
 
   const handleDateClick = (date: Date) => {
     onDateChange?.(date);
