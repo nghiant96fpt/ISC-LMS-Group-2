@@ -22,13 +22,13 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
           <p className="text-4xl font-bold">{isLogin ? 'Đăng Nhập' : 'Cấp lại mật khẩu'}</p>
           <div className="mt-10 w-5/6 text-start">
             <p className="mb-1">Tên đăng nhập</p>
-            <Input icon={<FaRegUserCircle />} />
+            <Input  />
           </div>
           <div className="mt-5 w-5/6 text-start">
             {isLogin ? (
               <div>
                 <p className="mb-1">Mật khẩu</p>
-                <Input icon={<RiShieldKeyholeLine />} type="password" />
+                <Input  type="password" />
               </div>
             ) : (
               <div>
@@ -42,7 +42,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
               <span onClick={() => {navigator('/student/reset')}}>Quên mật khẩu</span>
             ) : (
               <span className="flex items-center justify-end">
-                <FaChevronLeft /> Quay lại trang chủ
+                 Quay lại trang chủ
               </span>
             )}
           </p>
