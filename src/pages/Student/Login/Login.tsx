@@ -3,9 +3,6 @@ import './main.css';
 import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 import logo2 from '../../../assets/images/logo2.png';
-import { FaRegUserCircle } from 'react-icons/fa';
-import { RiShieldKeyholeLine } from 'react-icons/ri';
-import { FaChevronLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 
 interface studentLoginProps {
@@ -13,7 +10,7 @@ interface studentLoginProps {
 }
 
 const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
-  const navigator =useNavigate();
+  const navigator = useNavigate();
   return (
     <div className="student-login-container">
       <img src={logo2} alt="logo" />
@@ -22,24 +19,30 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
           <p className="text-4xl font-bold">{isLogin ? 'Đăng Nhập' : 'Cấp lại mật khẩu'}</p>
           <div className="mt-10 w-5/6 text-start">
             <p className="mb-1">Tên đăng nhập</p>
-            <Input  />
+            <Input />
           </div>
           <div className="mt-5 w-5/6 text-start">
             {isLogin ? (
               <div>
                 <p className="mb-1">Mật khẩu</p>
-                <Input  type="password" />
+                <Input type="password" />
               </div>
             ) : (
               <div>
                 <p className="mb-1">Mã xác nhận</p>
-                <Input/>
+                <Input />
               </div>
             )}
           </div>
           <p className="mt-5 text-end w-5/6 text-orange-text mb-5">
             {isLogin ? (
-              <span onClick={() => {navigator('/student/reset')}}>Quên mật khẩu</span>
+              <span
+                onClick={() => {
+                  navigator('/student/reset');
+                }}
+              >
+                Quên mật khẩu
+              </span>
             ) : (
               <span onClick={() => {navigator('/student')}} className="flex items-center justify-end">
                  Quay lại trang chủ
