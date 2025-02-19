@@ -7,7 +7,7 @@ export type IconNames =
 
 export interface ClickableIconProps {
   iconName: IconNames;              // Tên biểu tượng được chọn
-  onClick: () => void;              // Hàm gọi lại khi biểu tượng được nhấp
+  onClick?: () => void;              // Hàm gọi lại khi biểu tượng được nhấp
   size?: 'sm' | 'md' | 'lg' | 'xl'; // Kích thước của biểu tượng (tùy chọn, có thể là 'sm', 'md', 'lg' hoặc 'xl')
   text?: string;                    // Văn bản đi kèm với biểu tượng (tùy chọn)
   customStyles?: {                  // Các kiểu dáng tùy chỉnh cho biểu tượng (tùy chọn)
