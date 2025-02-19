@@ -4,6 +4,7 @@ import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 import logo2 from '../../../assets/images/logo2.png';
 import { useNavigate } from 'react-router';
+import { ShieldKey, UserCircle } from './Icons';
 
 interface studentLoginProps {
   isLogin: boolean; // true là đăng nhập, false là cấp lại mật khẩu
@@ -11,6 +12,7 @@ interface studentLoginProps {
 
 const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
   const navigator = useNavigate();
+
   return (
     <div className="student-login-container">
       <img src={logo2} alt="logo" />
@@ -19,13 +21,13 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
           <p className="text-4xl font-bold">{isLogin ? 'Đăng Nhập' : 'Cấp lại mật khẩu'}</p>
           <div className="mt-10 w-5/6 text-start">
             <p className="mb-1">Tên đăng nhập</p>
-            <Input />
+            <Input icon={<UserCircle/>}/>
           </div>
           <div className="mt-5 w-5/6 text-start">
             {isLogin ? (
               <div>
                 <p className="mb-1">Mật khẩu</p>
-                <Input type="password" />
+                <Input type="password" icon={<ShieldKey/>}/>
               </div>
             ) : (
               <div>
