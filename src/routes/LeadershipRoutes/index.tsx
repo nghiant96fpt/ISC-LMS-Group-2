@@ -10,6 +10,9 @@ import StudentRetention from "../../pages/Leadership/StudentRetention";
 import SystemSettings from "../../pages/Leadership/SystemSettings";
 import TeachingAssignment from "../../pages/Leadership/TeachingAssignment";
 import DeclareDataRoutes from "../../pages/Leadership/DeclareData/DeclareDataRoutes";
+import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
+import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
+
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -19,6 +22,9 @@ const StudentRoutes = () => {
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
         <Route path="declare-data/*" element={<DeclareDataRoutes />} />
+<!--         <Route path="declare-data" element={<DeclareData />} /> -->
+        <Route path="declare-data/edit" element={<DepartmentSettings />} />
+        <Route path="declare-data/subject-list" element={<SubjectList />} />
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
