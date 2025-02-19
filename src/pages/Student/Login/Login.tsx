@@ -41,7 +41,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
             {isLogin ? (
               <span onClick={() => {navigator('/student/reset')}}>Quên mật khẩu</span>
             ) : (
-              <span className="flex items-center justify-end">
+              <span onClick={() => {navigator('/student')}} className="flex items-center justify-end">
                  Quay lại trang chủ
               </span>
             )}
