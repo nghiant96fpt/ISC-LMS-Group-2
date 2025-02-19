@@ -1,4 +1,3 @@
-
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
 import Dashboard from '../../pages/Leadership/Dashboard';
@@ -13,7 +12,9 @@ import TeachingAssignment from '../../pages/Leadership/TeachingAssignment';
 import SchoolYearAdd from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYearAdd';
 import SchoolYearEditPages from "../../pages/Leadership/DeclareData/SchoolYear/SchoolYearEditPages";
 import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYearTable';
-
+import DeclareDataRoutes from "../../pages/Leadership/DeclareData/DeclareDataRoutes";
+import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
+import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
 
 const StudentRoutes = () => {
   return (
@@ -23,7 +24,6 @@ const StudentRoutes = () => {
         <Route path="all-student-profiles" element={<AllStudentProfiles />} />
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
-        <Route path="declare-data" element={<DeclareData />} />
 
         {/*route cho school-year - group-4*/}
         <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
@@ -31,6 +31,10 @@ const StudentRoutes = () => {
         <Route path="declare-data/school-year/add-school-year" element={<SchoolYearAdd />} /> {/* url thêm niên khóa */}
         {/*  */}
         
+        <Route path="declare-data/*" element={<DeclareDataRoutes />} />
+<!--         <Route path="declare-data" element={<DeclareData />} /> -->
+        <Route path="declare-data/edit" element={<DepartmentSettings />} />
+        <Route path="declare-data/subject-list" element={<SubjectList />} />
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
