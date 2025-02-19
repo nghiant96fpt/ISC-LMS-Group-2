@@ -120,7 +120,7 @@ const ClassListWrapper: React.FC = () => {
     };
 
     const handleClose = () => {
-        navigate("/leadership/declare-data/khoa-khoi", { replace: true }); // Điều hướng đến một trang mới và thay thế trang hiện tại trong lịch sử
+        navigate("/leadership/declare-data/block-department", { replace: true }); // Điều hướng đến một trang mới và thay thế trang hiện tại trong lịch sử
     };
 
     return (

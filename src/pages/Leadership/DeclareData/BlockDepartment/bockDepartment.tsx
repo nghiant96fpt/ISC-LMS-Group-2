@@ -10,10 +10,10 @@ const BlockDepartment = () => {
     const navigate = useNavigate();
 
     const goToClassList = () => {
-        navigate("/leadership/declare-data/khoa-khoi/list");
+        navigate("/leadership/declare-data/block-department/list");
     };
     const goToEdit = (id: string) => {
-        navigate(`/leadership/declare-data/khoa-khoi/${id}`);
+        navigate(`/leadership/declare-data/block-department/${id}`);
     };
     const departments = [
         { id: "K09", name: "Khối 9" },

@@ -24,7 +24,7 @@ const EditDepartment: React.FC = () => {
   const [selectedHead, setSelectedHead] = useState('');
   const navigate = useNavigate();
   const handleClose = () => {
-    navigate("/leadership/declare-data/khoa-khoi", { replace: true });
+    navigate("/leadership/declare-data/block-department", { replace: true });
   };
 
   const handleSave = () => { };

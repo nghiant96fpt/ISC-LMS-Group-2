@@ -7,9 +7,9 @@ const DeclareDataRoutes = () => {
     return (
         <Routes>
             <Route index element={<DeclareData />} />
-            <Route path="/khoa-khoi" element={<BlockDepartment />} />
-            <Route path="/khoa-khoi/list" element={<ClassListWrapper />} />
-            <Route path="/khoa-khoi/:id" element={<EditDepartment />} />
+            <Route path="/block-department" element={<BlockDepartment />} />
+            <Route path="/block-department/list" element={<ClassListWrapper />} />
+            <Route path="/block-department/:id" element={<EditDepartment />} />
 
         </Routes>
     );
