@@ -30,9 +30,9 @@ const StudentRoutes = () => {
         <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
         <Route path="declare-data/school-year/add-school-year" element={<SchoolYearAdd />} /> {/* url thêm niên khóa */}
         {/*  */}
-        
+
         <Route path="declare-data/*" element={<DeclareDataRoutes />} />
-<!--         <Route path="declare-data" element={<DeclareData />} /> -->
+        <Route path="declare-data" element={<DeclareData />} />
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
         <Route path="exams" element={<Exams />} />
