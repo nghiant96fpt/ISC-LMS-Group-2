@@ -7,6 +7,7 @@ import './styles/tailwind.scss';
 import StudentRoutes from './routes/StudentRoutes';
 import TeacherRoutes from './routes/TeacherRoutes';
 import LedershipRoutes from './routes/LeadershipRoutes';
+import Login from './pages/Student/Login/Login';
 function App() {
   return (
     <div className="App">
@@ -18,6 +19,8 @@ function App() {
             <Route path="/student/*" element={<StudentRoutes />} />
             <Route path="/teacher/*" element={<TeacherRoutes />} />
             <Route path="/leadership/*" element={<LedershipRoutes />} />
+            <Route path='/login' element={<Login isLogin/>}/>
+            <Route path='/reset' element={<Login isLogin={false}/>}/>
           </Routes>
         </Router>
       </Provider>
