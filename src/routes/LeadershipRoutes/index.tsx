@@ -12,9 +12,12 @@ import TeachingAssignment from '../../pages/Leadership/TeachingAssignment';
 import SchoolYearAdd from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYearAdd';
 import SchoolYearEditPages from "../../pages/Leadership/DeclareData/SchoolYear/SchoolYearEditPages";
 import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYearTable';
-import DeclareDataRoutes from "../../pages/Leadership/DeclareData/DeclareDataRoutes";
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
+import BlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/bockDepartment';
+import AddDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/add';
+import ClassListWrapper from '../../pages/Leadership/DeclareData/BlockDepartment/ClassListWrapper';
+import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/edit';
 
 const StudentRoutes = () => {
   return (
@@ -30,9 +33,16 @@ const StudentRoutes = () => {
         <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
         <Route path="declare-data/school-year/add-school-year" element={<SchoolYearAdd />} /> {/* url thêm niên khóa */}
         {/*  */}
+        <Route path="declare-data" element={<DeclareData />} />
+
+        {/* Route cho block-department */}
+        <Route path="declare-data/block-department" element={<BlockDepartment />} />
+        <Route path="declare-data/block-department/add" element={<AddDepartment />} />
+        <Route path="declare-data/block-department/list" element={<ClassListWrapper />} />
+        <Route path="declare-data/block-department/:id" element={<EditDepartment />} />
+        {/*  */}
         
-        <Route path="declare-data/*" element={<DeclareDataRoutes />} />
-<!--         <Route path="declare-data" element={<DeclareData />} /> -->
+
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
         <Route path="exams" element={<Exams />} />
