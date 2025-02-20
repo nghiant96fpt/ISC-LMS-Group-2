@@ -13,7 +13,7 @@ import TeachingAssignment from '../../pages/Leadership/TeachingAssignment';
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
-
+import SectionList from '../../pages/Leadership/DeclareData/SectionList';
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -25,6 +25,7 @@ const StudentRoutes = () => {
         <Route path="declare-data" element={<DeclareData />} />
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
+        <Route path="declare-data/section-list" element={<SectionList />} />
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
