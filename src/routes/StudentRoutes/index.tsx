@@ -24,8 +24,6 @@ const StudentRoutes = () => {
         <Route path="notifications" element={<Notifications />} />
         <Route path="help" element={<Help />} />
       </Route>
-      <Route path='login' element={<Login isLogin={true}/>}/>
-      <Route path='reset' element={<Login isLogin={false}/>}/>
     </Routes>
   );
 };

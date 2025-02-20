@@ -4,7 +4,7 @@ import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 import logo2 from '../../../assets/images/logo2.png';
 import { useNavigate } from 'react-router';
-import { ShieldKey, UserCircle } from './Icons';
+import { LeftChevron, ShieldKey, UserCircle } from './Icons';
 
 interface studentLoginProps {
   isLogin: boolean; // true là đăng nhập, false là cấp lại mật khẩu
@@ -40,14 +40,19 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
             {isLogin ? (
               <span
                 onClick={() => {
-                  navigator('/student/reset');
+                  navigator('/reset');
                 }}
               >
                 Quên mật khẩu
               </span>
             ) : (
-              <span onClick={() => {navigator('/student')}} className="flex items-center justify-end">
-                 Quay lại trang chủ
+              <span
+                className="flex items-center justify-end"
+                onClick={() => {
+                  navigator('/student');
+                }}
+              >
+                <LeftChevron/> Quay lại trang chủ
               </span>
             )}
           </p>
