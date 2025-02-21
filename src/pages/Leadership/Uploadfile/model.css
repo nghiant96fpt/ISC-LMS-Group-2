@@ -1,0 +1,87 @@
+.modal-container {
+    width: 650px; /* Chiều rộng modal */
+    padding: 20px; /* Thêm padding cho modal */
+    border-radius: 10px; /* Bo tròn góc */
+    background-color: #fff; /* Nền trắng */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .modal-title {
+    font-size: 20px; /* Kích thước chữ tiêu đề */
+    margin-bottom: 15px; /* Khoảng cách dưới tiêu đề */
+    text-align: center; /* Căn giữa chữ */
+    font-weight: bold;
+  }
+  
+  .file-upload {
+    display: flex;
+    align-items: center; /* Căn giữa dọc */
+    margin-bottom: 15px; /* Khoảng cách giữa các hàng */
+    font-weight: bold;
+
+  }
+  
+  .upload-label {
+    margin-right: 10px; /* Khoảng cách bên phải nhãn */
+  }
+  
+  .file-input {
+    flex: 1; /* Chiếm không gian còn lại */
+    padding: 10px; /* Thêm padding cho ô nhập */
+    border: 1px solid #ccc; /* Đường viền */
+    border-radius: 4px; /* Bo tròn góc */
+    margin-right: 10px; /* Khoảng cách bên phải */
+  }
+  
+  .choose-button {
+    padding: 10px 15px; /* Kích thước nút */
+    background-color: #f0f0f0; /* Màu nền nút */
+    border: none; /* Không có đường viền */
+    border-radius: 4px; /* Bo tròn góc */
+    cursor: pointer; /* Con trỏ khi hover */
+    margin-left: 15px;
+  }
+  
+  .choose-button:hover {
+    background-color: #e0e0e0; /* Màu nền khi hover */
+  }
+  
+ 
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between; /* Căn giữa hai nút */
+  }
+  
+  .cancel-button{
+    padding: 12px 45px; /* Kích thước nút */
+    border: none;
+    border-radius: 4px; /* Bo tròn góc */
+    cursor: pointer; /* Con trỏ khi hover */
+    margin-left: 150px;
+  }
+  .upload-button {
+    padding: 12px 35px; /* Kích thước nút */
+    border: none;
+    border-radius: 4px; /* Bo tròn góc */
+    cursor: pointer; /* Con trỏ khi hover */
+    margin-right: 180px;
+  }
+  
+  .cancel-button {
+    background-color: #e0e0e0; /* Màu nền nút Hủy */
+    color: #333; /* Màu chữ */
+  }
+  
+  .upload-button {
+    background-color: #ffa500; /* Màu nền nút Tải lên */
+    color: white; /* Màu chữ */
+  }
+  
+  .cancel-button:hover {
+    background-color: #d0d0d0; /* Màu nền khi hover */
+  }
+  
+  .upload-button:hover {
+    background-color: #ff8c00; /* Màu nền khi hover */
+  }
