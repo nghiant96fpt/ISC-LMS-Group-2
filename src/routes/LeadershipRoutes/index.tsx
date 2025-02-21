@@ -14,6 +14,7 @@ import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartme
 
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
 import SectionList from '../../pages/Leadership/DeclareData/SectionList';
+import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -25,7 +26,8 @@ const StudentRoutes = () => {
         <Route path="declare-data" element={<DeclareData />} />
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
-        <Route path="declare-data/section-list" element={<SectionList />} />
+        <Route path="section-list" element={<SectionList />} />
+        <Route path="section-list/edit" element={<SubjectSetup />} />
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
