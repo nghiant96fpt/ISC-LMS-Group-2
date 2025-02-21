@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Section as initialSections } from './data';
+import DeleteAcademicYearModal from '../../../../components/DeleteConfirmation';
 const trash = require('../../../../assets/icons/fi_trash-2.png');
 const edit = require('../../../../assets/icons/fi_edit.png');
 const left = require('../../../../assets/icons/arrow left.png');
@@ -9,9 +10,10 @@ const arrow = require('../../../../assets/icons/u_arrow up down.png');
 
 const SectionList: React.FC = () => {
     const [selectedSections, setSelectedSections] = useState<string[]>([]);
-    const [sections] = useState(initialSections);
+    const [sections, setSections] = useState(initialSections);
     const [itemsPerPage, setItemsPerPage] = useState(8);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [deleteId, setDeleteId] = useState<string | null>(null);
     const selectAllRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -31,6 +33,24 @@ const SectionList: React.FC = () => {
         setSelectedSections((prev) =>
             prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
         );
+    };
+
+    const handleOpenModal = (id: string) => {
+        setDeleteId(id);
+        setIsModalOpen(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+        setDeleteId(null);
+    };
+
+    const handleConfirm = () => {
+        if (deleteId) {
+            setSections((prev) => prev.filter((section) => section.id !== deleteId));
+        }
+        setIsModalOpen(false);
+        setDeleteId(null);
     };
 
     return (
@@ -104,7 +124,7 @@ const SectionList: React.FC = () => {
                                 <td className="py-3 px-2 md:px-4 font-sans text-black-text text-center">{item.periodHK2}</td>
                                 <td className="py-3 px-2 md:px-4 text-center">
                                     <div className="flex justify-center space-x-2 items-center">
-                                        <button className="w-8 h-8 flex items-center justify-center">
+                                        <button onClick={() => handleOpenModal(item.id)} className="w-8 h-8 flex items-center justify-center">
                                             <img src={trash} alt="Trash" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
                                         </button>
                                         <button className="w-8 h-8 flex items-center justify-center">
@@ -118,6 +138,14 @@ const SectionList: React.FC = () => {
 
                 </table>
             </div>
+            {isModalOpen && (
+                <DeleteAcademicYearModal
+                    title="Xóa Môn học"
+                    description="Bạn có chắc chắn muốn xóa môn học này và toàn bộ thông tin bên trong? Sau khi xóa sẽ không thể hoàn tác."
+                    onCancel={handleCancel}
+                    onConfirm={handleConfirm}
+                />
+            )}
             <div className="mt-auto flex flex-wrap justify-center md:justify-between items-center px-2 md:px-10 p-4 mb-5 text-black-text font-sans italic text-sm gap-2">
                 <div className="flex items-center space-x-2 font-sans">
                     <span>Hiển thị</span>

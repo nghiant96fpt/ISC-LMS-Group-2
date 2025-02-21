@@ -3,14 +3,14 @@ import { subjectGroups as initialSubjectGroups } from './data';
 import './style.css';
 import { Link } from 'react-router';
 import { SubjectGroup } from './type';
-import DeleteAcademicYearModal from '../../../components/DeleteConfirmation';
-const edit = require('../../../assets/icons/fi_edit.png');
-const list = require('../../../assets/icons/fi_list.png');
-const trash = require('../../../assets/icons/fi_trash-2.png');
-const arrow = require('../../../assets/icons/u_arrow up down.png');
-const search = require('../../../assets/icons/fi_search.png');
-const left = require('../../../assets/icons/arrow left.png');
-const right = require('../../../assets/icons/chevron_big_right.png');
+import DeleteAcademicYearModal from '../../../../components/DeleteConfirmation';
+const edit = require('../../../../assets/icons/fi_edit.png');
+const list = require('../../../../assets/icons/fi_list.png');
+const trash = require('../../../../assets/icons/fi_trash-2.png');
+const arrow = require('../../../../assets/icons/u_arrow up down.png');
+const search = require('../../../../assets/icons/fi_search.png');
+const left = require('../../../../assets/icons/arrow left.png');
+const right = require('../../../../assets/icons/chevron_big_right.png');
 
 const DeclareData: React.FC = () => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
@@ -87,7 +87,9 @@ const DeclareData: React.FC = () => {
             ))}
           </tbody>
         </table>
-        {isDeleteModalOpen && <DeleteAcademicYearModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDelete} />}
+        {isDeleteModalOpen && <DeleteAcademicYearModal title="Xóa Tổ - Bộ môn"
+          description="Xác nhận muốn xoá Tổ - Bộ môn này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác."
+          onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDelete} />}
       </div>
 
       {/* Thanh phân trang */}

@@ -4,7 +4,7 @@ import Dashboard from '../../pages/Leadership/Dashboard';
 import AllStudentProfiles from '../../pages/Leadership/AllStudentProfiles';
 import AllTeacherProfiles from '../../pages/Leadership/AllTeacherProfiles';
 import TransferAcceptance from '../../pages/Leadership/TransferAcceptance';
-import DeclareData from '../../pages/Leadership/DeclareData/';
+import DeclareData from '../../pages/Leadership/DeclareData/DataList';
 import Exams from '../../pages/Leadership/Exams';
 import StudentRetention from '../../pages/Leadership/StudentRetention';
 import SystemSettings from '../../pages/Leadership/SystemSettings';
