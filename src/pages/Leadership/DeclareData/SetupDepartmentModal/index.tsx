@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { departmentData } from "./data";
+import React, { useState } from 'react';
+import { departmentData } from './data';
+import { Link } from 'react-router';
 
-const minus = require("../../../../assets/icons/icon_minus.png");
-const plus = require("../../../../assets/icons/icon_plus.png");
-const caretdown = require("../../../../assets/icons/caret_down.png");
+const minus = require('../../../../assets/icons/icon_minus.png');
+const plus = require('../../../../assets/icons/icon_plus.png');
+const caretdown = require('../../../../assets/icons/caret_down.png');
 
 const DepartmentSettings: React.FC = () => {
     const [selectedHead, setSelectedHead] = useState(departmentData.headOfDepartments[0]);
@@ -67,8 +68,35 @@ const DepartmentSettings: React.FC = () => {
                     </div>
                 </form>
             </div>
-        </div>
-    );
+          </div>
+          <hr className="my-6 border-gray-300" />
+          <div className="flex flex-col items-start w-full">
+            <p className="text-orange-text font-bold text-base mb-5">Danh sách môn học</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+              {departmentData.subjects.map((subject, index) => (
+                <div key={index} className="flex items-center gap-3 rounded-lg text-sm">
+                  <img src={minus} alt="Remove" className="w-5 cursor-pointer" />
+                  <span>{subject}</span>
+                </div>
+              ))}
+            </div>
+            <Link to="/leadership/declare-data/subject-list">
+              <button className="mt-4 text-blue-text font-bold flex items-center">
+                <img src={plus} alt="Add" className="w-5 mr-2" /> Thêm môn học mới
+              </button>
+            </Link>
+          </div>
+          <div className="flex flex-col md:flex-row justify-center gap-4 mt-10">
+            <Link to="/leadership/declare-data">
+              <button className="w-full md:w-40 h-12 py-2 bg-[#F2F2F2] text-black-text font-bold rounded-lg">Hủy</button>
+            </Link>
+
+            <button className="w-full md:w-40 py-2 bg-orange-text text-white font-bold rounded-lg">Lưu</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default DepartmentSettings;
