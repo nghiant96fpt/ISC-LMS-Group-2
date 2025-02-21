@@ -4,20 +4,27 @@ import './style.css';
 import { Link } from 'react-router';
 import { SubjectGroup } from './type';
 import DeleteAcademicYearModal from '../../../../components/DeleteConfirmation';
+import SearchInput from '../../../../components/SearchTable';
+import PaginationControls from '../../../../components/Pagination';
 const edit = require('../../../../assets/icons/fi_edit.png');
 const list = require('../../../../assets/icons/fi_list.png');
 const trash = require('../../../../assets/icons/fi_trash-2.png');
 const arrow = require('../../../../assets/icons/u_arrow up down.png');
-const search = require('../../../../assets/icons/fi_search.png');
+
 const left = require('../../../../assets/icons/arrow left.png');
 const right = require('../../../../assets/icons/chevron_big_right.png');
 
 const DeclareData: React.FC = () => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const totalPages = 100; // Giả định tổng số trang
   const [subjectGroups, setSubjectGroups] = useState<SubjectGroup[]>(initialSubjectGroups);
   const [selectedGroup, setSelectedGroup] = useState<SubjectGroup | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
+  const [searchValue, setSearchValue] = useState('');
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
   const handleDeleteClick = useCallback((group: SubjectGroup) => {
     setSelectedGroup(group);
     setIsDeleteModalOpen(true);
@@ -28,18 +35,14 @@ const DeclareData: React.FC = () => {
     }
     setIsDeleteModalOpen(false);
   }, [selectedGroup]);
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
   return (
     <div className="flex flex-col min-h-[752px] max-w-full bg-background-white shadow-lg rounded-lg p-4">
       <div className="flex flex-wrap justify-between items-center px-2 md:px-10 py-2 gap-2">
         <h2 className="text-lg font-sans font-bold">Tổ - Bộ môn</h2>
-        <div className="relative flex items-center w-full max-w-xs sm:w-[438px] rounded-[30px] border border-gray-300">
-          <img src={search} alt="Search" className="absolute left-3 w-6 h-6" />
-          <input
-            type="text"
-            placeholder="Tìm kiếm"
-            className="w-full h-[40px] pl-12 pr-4 rounded-[30px] border-none focus:outline-none focus:ring-0 italic"
-          />
-        </div>
+        <SearchInput value={searchValue} onChange={handleSearchChange} placeholder="Nhập từ khóa..." />
       </div>
 
       <div className="overflow-x-auto flex-grow px-2 md:px-10">
@@ -87,40 +90,25 @@ const DeclareData: React.FC = () => {
             ))}
           </tbody>
         </table>
-        {isDeleteModalOpen && <DeleteAcademicYearModal title="Xóa Tổ - Bộ môn"
-          description="Xác nhận muốn xoá Tổ - Bộ môn này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác."
-          onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDelete} />}
+        {isDeleteModalOpen && (
+          <DeleteAcademicYearModal
+            title="Xóa Tổ - Bộ môn"
+            description="Xác nhận muốn xoá Tổ - Bộ môn này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác."
+            onCancel={() => setIsDeleteModalOpen(false)}
+            onConfirm={confirmDelete}
+          />
+        )}
       </div>
 
       {/* Thanh phân trang */}
-      <div className="mt-auto flex flex-wrap justify-center md:justify-between items-center px-2 md:px-10 p-4 mb-5 text-black-text font-sans italic text-sm gap-2">
-        <div className="flex items-center space-x-2 font-sans">
-          <span>Hiển thị</span>
-          <input
-            type="number"
-            value={itemsPerPage}
-            onChange={(e) => setItemsPerPage(Number(e.target.value))}
-            className="w-12 h-7 border border-border-orange rounded-md text-center text-black-text focus:outline-none focus:ring-1 focus:ring-border-orange"
-          />
-          <span>hàng trong mỗi trang</span>
-        </div>
 
-        <div className="flex space-x-1 md:space-x-2 items-center text-black-text text-sm font-sans">
-          <button>
-            <img src={left} alt="Left" className="w-6 h-6 md:w-5 md:h-5" />
-          </button>
-          <button className="text-black-text">1</button>
-          <button className="w-[26px] h-[26px] rounded-full bg-background-orange-1 text-while-text flex items-center justify-center font-medium">
-            2
-          </button>
-          <button className="text-black">3</button>
-          <button className="text-black">...</button>
-          <button className="text-black">100</button>
-          <button>
-            <img src={right} alt="Right" className="w-6 h-6 md:w-5 md:h-5" />
-          </button>
-        </div>
-      </div>
+      <PaginationControls
+        itemsPerPage={itemsPerPage}
+        setItemsPerPage={setItemsPerPage}
+        onPageChange={handlePageChange}
+        currentPage={currentPage}
+        totalPages={totalPages}
+      />
     </div>
   );
 };
