@@ -45,7 +45,7 @@
   padding-left: 5px;
 }
 
-group-04 .calendar-icon:hover {
+.calendar-icon:hover {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   opacity: 90%;
 }
@@ -72,6 +72,8 @@ group-04 .calendar-icon:hover {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
   pointer-events: auto;
+  background: #ffffff;
+  z-index: 10;
 }
 
 /* Header Calendar */
