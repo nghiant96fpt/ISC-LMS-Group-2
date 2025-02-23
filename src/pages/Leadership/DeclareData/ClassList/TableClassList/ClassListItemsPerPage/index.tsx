@@ -46,7 +46,7 @@ const ItemsPerPage: React.FC<ItemsPerPageProps> = ({
         onKeyPress={handleKeyPress}
         className="outline-[#ff7506] min-h-[38px] py-2 px-2.5 block w-14 border border-border-orange rounded-lg text-sm text-center focus:border-[#ff7506] focus:ring-[#ff7506] 
         [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none 
-        disabled:opacity-50 disabled:pointer-events-none dark:border-border-orange dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-[#ff7506]"
+        disabled:opacity-50 disabled:pointer-events-none dark:border-border-orange dark:text-neutral-400  dark:focus:ring-[#ff7506]"
         style={{ MozAppearance: "textfield" }}
       />
       <span className="text-sm text-gray-800 whitespace-nowrap dark:text-white">
