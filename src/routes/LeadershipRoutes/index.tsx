@@ -32,7 +32,7 @@ const StudentRoutes = () => {
         <Route path="declare-data/class-list/" element={<ClassList />} />
         {/*  */}
 
-        {/* <Route path="declare-data" element={<DeclareData />} /> */}
+      
 
 
         <Route path="declare-data/*" element={<DeclareDataRoutes />} />
