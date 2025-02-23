@@ -15,7 +15,8 @@ import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYear
 import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
-import ClassList from '../../pages/Leadership/DeclareData/ClassList';
+import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
+import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
 
 const StudentRoutes = () => {
   return (
@@ -29,21 +30,17 @@ const StudentRoutes = () => {
         <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
         <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
         <Route path="declare-data/school-year/add-school-year" element={<SchoolYearAdd />} /> {/* url thêm niên khóa */}
-        <Route path="declare-data/class-list/" element={<ClassList />} />
         {/*  */}
-
-        {/* <Route path="declare-data" element={<DeclareData />} /> */}
-
-
         <Route path="declare-data/*" element={<DeclareDataRoutes />} />
-        <Route path="declare-data" element={<DeclareData />} />
-
+        {/* <Route path="declare-data" element={<DeclareData />} /> */}
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
+        <Route path='add-class' element={<NewClass />} />
+        <Route path='update-class' element={<UpdateClass />} />
       </Route>
     </Routes>
   );
