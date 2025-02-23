@@ -72,8 +72,6 @@
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
-
-  /* Cập nhật sau khi sử dung componwent - group-4-huu-phuc */
   background: #ffffff;
   z-index: 10;
 }
