@@ -4,7 +4,7 @@ import {
   IconArrowLeftDoubleLine,
   IconOutlineArrowLeftSingle,
   IconOutlineArrowRightSingle,
-} from '../../../../../components/Icons';
+} from '../../../../../../components/Icons';
 import { PaginationProps } from './type';
 import { getPageNumbers } from './utils';
 

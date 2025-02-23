@@ -2,18 +2,18 @@ import { useState } from 'react';
 import {
   Table,
   TableBody,
-} from '../../../../components/ui/tabble';
-import classListData, { ClassItem } from '../data';
+} from '../../../../../components/ui/tabble';
+import classListData, { ClassItem } from '../TableClassList/data';
 import { useCheckboxSelection } from './ClassListUseCheckboxSelection';
 import TableHeaderComponent from './ClassListTableHeader';
 import TableRowComponent from './ClassListTableRow';
-import TitleComponent from '../../../../components/Title';
+import TitleComponent from '../../../../../components/Title';
 import ClassListFromSearch from './ClassListFromSearch';
 import ItemsPerPage from './ClassListItemsPerPage';
 import Pagination from './ClassListPagination';
-import Modal from '../../../../components/common/ModalConfirmation';
-import TextComponent from '../../../../components/Text';
-import Button from '../../../../components/Button';
+import Modal from '../../../../../components/common/ModalConfirmation';
+import TextComponent from '../../../../../components/Text';
+import Button from '../../../../../components/Button';
 
 const TabbleClasslist = () => {
   const [itemsPerPage, setItemsPerPage] = useState(5);

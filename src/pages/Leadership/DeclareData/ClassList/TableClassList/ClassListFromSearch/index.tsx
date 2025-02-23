@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { ClassListFromSearchProps } from './type';
-import { IconSearchLightGrayishBlue } from '../../../../../components/Icons';
+import { IconSearchLightGrayishBlue } from '../../../../../../components/Icons';
 const ClassListFromSearch: React.FC<
   ClassListFromSearchProps
 > = ({

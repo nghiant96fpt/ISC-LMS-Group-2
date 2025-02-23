@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import TextComponent from "../../../../../components/Text";
+import TextComponent from "../../../../../../components/Text";
 import { ItemsPerPageProps } from "./type";
 
 const ItemsPerPage: React.FC<ItemsPerPageProps> = ({

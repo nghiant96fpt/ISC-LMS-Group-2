@@ -2,9 +2,9 @@ import {
   TableCell,
   TableRow,
   TableHeader,
-} from '../../../../../components/ui/tabble';
-import CheckboxComponent from '../../../../../components/CheckBox';
-import { IconArrowUpDown } from '../../../../../components/Icons';
+} from '../../../../../../components/ui/tabble';
+import CheckboxComponent from '../../../../../../components/CheckBox';
+import { IconArrowUpDown } from '../../../../../../components/Icons';
 import { ClassListTableHeaderProps } from './type';
 const ClassListTableHeader: React.FC<
   ClassListTableHeaderProps

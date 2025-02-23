@@ -1,9 +1,9 @@
 import {
   TableCell,
   TableRow,
-} from '../../../../../components/ui/tabble';
-import CheckboxComponent from '../../../../../components/CheckBox';
-import IconImages from '../../../../../components/IconImages';
+} from '../../../../../../components/ui/tabble';
+import CheckboxComponent from '../../../../../../components/CheckBox';
+import IconImages from '../../../../../../components/IconImages';
 import { ClassListTableRowProps } from './type';
 const ClassListTableRow: React.FC<
   ClassListTableRowProps

@@ -15,6 +15,7 @@ import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYear
 import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
+import ClassList from '../../pages/Leadership/DeclareData/ClassList';
 
 const StudentRoutes = () => {
   return (
@@ -28,6 +29,7 @@ const StudentRoutes = () => {
         <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
         <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
         <Route path="declare-data/school-year/add-school-year" element={<SchoolYearAdd />} /> {/* url thêm niên khóa */}
+        <Route path="declare-data/class-list/" element={<ClassList />} />
         {/*  */}
         <Route path="declare-data/*" element={<DeclareDataRoutes />} />
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
