@@ -5,6 +5,6 @@ export interface TitleProps {
   color?: string;                       // Màu chữ (HEX, RGB, hoặc biến CSS)
   className?: string;                   // Class tùy chỉnh thêm từ ngoài
   align?: "left" | "center" | "right";  // Căn lề tiêu đề
-  weight?: "thin" | "normal" | "bold";  // Độ đậm của chữ
+  weight?: "thin" | "normal" | "bold" | "extrabold";  // Độ đậm của chữ
   style?: React.CSSProperties;          // Custom style inline
 }
