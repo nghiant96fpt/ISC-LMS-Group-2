@@ -16,6 +16,8 @@ import DeclareDataRoutes from "../../pages/Leadership/DeclareData/DeclareDataRou
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
+import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
+
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -39,7 +41,8 @@ const StudentRoutes = () => {
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
-        <Route path='new-class' element={<NewClass />} />
+        <Route path='add-class' element={<NewClass />} />
+        <Route path='update-class' element={<UpdateClass />} />
       </Route>
     </Routes>
   );

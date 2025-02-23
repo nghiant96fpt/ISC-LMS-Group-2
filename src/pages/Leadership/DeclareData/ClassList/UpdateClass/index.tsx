@@ -30,7 +30,7 @@ const dataInheritanceOptions = [
     { label: "2022-2023", value: "2022-2023" }
 ];
 
-const NewClassForm: React.FC = () => {
+const UpdatelassForm: React.FC = () => {
     const [selectedClass, setSelectedClass] = useState<DropdownOption | null>(null);
     const [selectedTeacher, setSelectedTeacher] = useState<DropdownOption | null>(null);
     const [isChecked, setIsChecked] = useState(false);
@@ -55,7 +55,7 @@ const NewClassForm: React.FC = () => {
 
     return (
         <div className="flex flex-col items-center">
-            <h1 className="text-3xl font-bold text-black-text">Thêm lớp học mới</h1>
+            <h1 className="text-3xl font-bold text-black-text">Thiết lập lớp học</h1>
             <div className="w-full max-w-5xl p-6 mt-3">
                 <h3 className="text-lg font-bold text-orange-text mb-4">Thông tin chung</h3>
                 <form action="">
@@ -190,4 +190,4 @@ const NewClassForm: React.FC = () => {
     );
 };
 
-export default NewClassForm;
+export default UpdatelassForm;
