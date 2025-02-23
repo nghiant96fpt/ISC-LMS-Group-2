@@ -1,12 +1,16 @@
-
 import React from 'react';
 
-const index = () => {
+const ClassList = () => {
   return (
     <div>
-      
+      {/* Component Header Class List */}
+      <div></div>
+
+      {/* Component Class List table */}
+
+      {/* Component Phân trang */}
     </div>
   );
-}
+};
 
-export default index;
+export default ClassList;
