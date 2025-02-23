@@ -30,7 +30,9 @@ const StudentRoutes = () => {
         <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
         <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
         <Route path="declare-data/school-year/add-school-year" element={<SchoolYearAdd />} /> {/* url thêm niên khóa */}
-        {/*  */}
+        {/* route cho class-list - group-4 */}
+        <Route path="declare-data/add-class" element={<NewClass />} />
+        <Route path="declare-data/update-class" element={<UpdateClass />} />
         <Route path="declare-data/*" element={<DeclareDataRoutes />} />
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
@@ -39,8 +41,6 @@ const StudentRoutes = () => {
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
-        <Route path='add-class' element={<NewClass />} />
-        <Route path='update-class' element={<UpdateClass />} />
       </Route>
     </Routes>
   );
