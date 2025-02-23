@@ -1,12 +1,5 @@
-
-
-
 const ClassList = () => {
-  return (
-    <div className="relative max-w-screen-2xl pt-2 mx-autobg-gray-50 lg:ml-52">
-       Danh sách lớp học
-    </div>
-  );
+    return <h1 className="text-3xl font-bold text-center text-black-text">Danh sách lớp học</h1>;
 };
-
+  
 export default ClassList;

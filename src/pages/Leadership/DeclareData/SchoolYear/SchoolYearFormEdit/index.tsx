@@ -145,13 +145,13 @@ const SchoolYearFormEdit: React.FC = () => {
           {/* Cột 2 */}
           <div className="p-6 col-span-full xl:col-auto">
             <div className="flex justify-between items-center space-x-4">
-            <CheckboxComponent
-  label="Kế thừa dữ liệu"
-  isChecked={isChecked}  // Mặc định là iconCheckboxUncheckedBlue
-  onChange={handleCheckboxChange}
-  className="flex-grow"
-/>
-
+              <CheckboxComponent
+                label="Kế thừa dữ liệu"
+                iconName="iconCheckActiveBlueLarge"
+                isChecked={isChecked}
+                onChange={handleCheckboxChange}
+                className="flex-grow "
+              />
 
               <Controller
                 name="schoolYearEnd"

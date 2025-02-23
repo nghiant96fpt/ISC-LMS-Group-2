@@ -1,14 +1,16 @@
-
-
-import TabbleClasslist from './TableClassList';
+import React from 'react';
 
 const ClassList = () => {
   return (
-    <div className="relative max-w-screen-2xl pt-2 mx-autobg-gray-50 lg:ml-52">
-        <TabbleClasslist />
+    <div>
+      {/* Component Header Class List */}
+      <div></div>
+
+      {/* Component Class List table */}
+
+      {/* Component Phân trang */}
     </div>
   );
 };
-
 
 export default ClassList;

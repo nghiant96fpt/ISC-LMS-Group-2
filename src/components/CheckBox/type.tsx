@@ -2,12 +2,11 @@ export type IconNames =
   | 'iconCheckActiveBlueLarge'      // Biểu tượng kiểm tra màu xanh lớn
   | 'iconCheckActiveGrayLarge'      // Biểu tượng kiểm tra màu xám lớn
   | 'iconMinusActiveBlueLarge'      // Biểu tượng dấu trừ màu xanh lớn
-  | 'iconMinusActiveGrayLarge'
-  | 'iconCheckboxUncheckedBlue';    // Biểu tượng dấu trừ màu xám lớn
+  | 'iconMinusActiveGrayLarge';     // Biểu tượng dấu trừ màu xám lớn
 
 export type CheckboxProps = {
   label?: string;                   // Nhãn cho checkbox (tùy chọn)
-  isChecked?: boolean;               // Trạng thái đã được chọn hay chưa của checkbox
+  isChecked: boolean;               // Trạng thái đã được chọn hay chưa của checkbox
   isIndeterminate?: boolean;        // Trạng thái không xác định (indeterminate) của checkbox (tùy chọn)
   onChange: (
     event: React.ChangeEvent<HTMLInputElement>,
