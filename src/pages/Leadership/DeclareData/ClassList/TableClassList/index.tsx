@@ -74,7 +74,7 @@ const TabbleClasslist = () => {
           />
           <ClassListFromSearch
             onSearch={handleSearch}
-            placeholder="Tìm kiếm lớp học "
+            placeholder="Tìm kiếm"
             inputStyle={{
               fontFamily: 'var(--font-Mulish)',
               fontStyle: 'italic',
