@@ -52,9 +52,9 @@
 
 /* Popup */
 .calendar-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0px;
   background-color: var(--background-white);
   border: 1px solid var(--background-gray);
   border-radius: 20px;
@@ -70,7 +70,7 @@
 .calendar-popup.open {
   padding: 16px 24px;
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
+  transform: translateY(0);
   pointer-events: auto;
   background: #ffffff;
   z-index: 10;
@@ -141,7 +141,7 @@
 }
 
 .calendar-day.selected {
-  background-color: var(--background-2);
+  background-color: var(--background-2) !important;
   color: var(--while-text);
 }
 

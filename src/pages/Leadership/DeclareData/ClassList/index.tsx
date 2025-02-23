@@ -1,4 +1,5 @@
 
+
 import TabbleClasslist from './TableClassList';
 
 const ClassList = () => {
@@ -8,5 +9,6 @@ const ClassList = () => {
     </div>
   );
 };
+
 
 export default ClassList;
