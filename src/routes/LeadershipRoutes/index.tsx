@@ -11,7 +11,7 @@ import SystemSettings from '../../pages/Leadership/SystemSettings';
 import TeachingAssignment from '../../pages/Leadership/TeachingAssignment';
 import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear';
 import Uploadfile from '../../pages/Leadership/Uploadfile';
-
+// s
 const StudentRoutes = () => {
   return (
     <Routes>
