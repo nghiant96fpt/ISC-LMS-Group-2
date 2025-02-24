@@ -1,11 +1,11 @@
 import React, { useState } from "react"; 
-import AddressList from "../../../../components/AddressUrlStack/Index";   
-import Status from "../../../../components/Status";
-import { StatusProps } from "../../../../components/Status/type";  
+import AddressList from "../../../../../components/AddressUrlStack/Index";   
+import Status from "../../../../../components/Status";
+import { StatusProps } from "../../../../../components/Status/type";  
 import { Link } from "react-router";
 import {TableList } from "./Type";
-const trash = require('./../../../../assets/icons/fi_trash-2.png');
-const edit = require('./../../../../assets/icons/fi_edit.png'); 
+const trash = require('../../../../../assets/icons/fi_trash-2.png');
+const edit = require('../../../../../assets/icons/fi_edit.png'); 
 const ClassList: React.FC = () => {
   const [urls,setUrls]=useState([{link:"/",linkName:"Khai báo dữ liệu"},{link:"/",linkName:"Lớp học"},{link:"/",linkName:"Chi tiết lớp học"}])
   const [lopHoc,setLopHoc]=useState({
