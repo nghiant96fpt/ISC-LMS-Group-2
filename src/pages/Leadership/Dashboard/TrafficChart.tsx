@@ -20,8 +20,7 @@ const TrafficChart: React.FC = () => {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-orange-600">Thống kê lượng truy cập</h2>
         <CalendarInput
-          selectedDate={dateRange.start}
-          onDateChange={(newDate) => setDateRange({ ...dateRange})}
+          
         />
       </div>
       <ResponsiveContainer width="100%" height={300}>
