@@ -20,11 +20,6 @@ import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClas
 import TableClassList from '../../pages/Leadership/DeclareData/ClassList/TableClassList';
 import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
 import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile';
-import ClassList from '../../pages/Leadership/DeclareData/ClassList';
-import MyDatePicker from '../../components/CalendarInput';
-
-
-
 
 const StudentRoutes = () => {
   return (
@@ -53,7 +48,6 @@ const StudentRoutes = () => {
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
-        <Route path="test" element={<MyDatePicker />} />
       </Route>
     </Routes>
   );
