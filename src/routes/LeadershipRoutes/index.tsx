@@ -17,6 +17,7 @@ import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartme
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
 import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
+import ClassList from '../../pages/Leadership/DeclareData/ClassList';
 
 const StudentRoutes = () => {
   return (
@@ -33,6 +34,9 @@ const StudentRoutes = () => {
         {/* route cho class-list - group-4 */}
         <Route path="declare-data/add-class" element={<NewClass />} />
         <Route path="declare-data/update-class" element={<UpdateClass />} />
+        <Route path="declare-data/class-list" element={<ClassList />} />
+
+        {/*  */}
         <Route path="declare-data/*" element={<DeclareDataRoutes />} />
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
