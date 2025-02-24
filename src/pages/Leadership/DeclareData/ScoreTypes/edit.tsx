@@ -1,68 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GradeTypeFormData } from './type';
 import './style.css';
+import Button from '../../../../components/Button';
 
-interface AddGradeTypeModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onSubmit: (data: GradeTypeFormData) => void;
-    initialData?: GradeTypeFormData; // Dữ liệu truyền vào khi sửa
-}
+const EditGradeTypeModal: React.FC = () => {
+    const sampleData: GradeTypeFormData = {
+        gradeTypeName: "Kiểm tra giữa kỳ",
+        coefficient: "2",
+        semester1: "3",
+        semester2: "2"
+    };
 
-const AddGradeTypeModal: React.FC<AddGradeTypeModalProps> = ({ isOpen, onClose, onSubmit, initialData }) => {
-    const [formData, setFormData] = useState<GradeTypeFormData>({
-        gradeTypeName: '',
-        coefficient: '',
-        semester1: '',
-        semester2: '',
-    });
+    const [formData, setFormData] = useState<GradeTypeFormData>(sampleData);
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        if (initialData) {
-            setFormData(initialData); // Set dữ liệu khi sửa
-        } else {
-            setFormData({
-                gradeTypeName: '',
-                coefficient: '',
-                semester1: '',
-                semester2: '',
-            }); // Reset form khi thêm mới
-        }
-    }, [initialData, isOpen]);
+        setIsOpen(true);
+    }, []);
 
     const isFormValid = formData.gradeTypeName && formData.coefficient;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (isFormValid) {
-            onSubmit(formData); // Gửi dữ liệu về component cha
-            onClose();
+            console.log('Form submitted:', formData);
+            setIsOpen(false);
         }
     };
 
-    const handleCancel = () => {
-        onClose();
+    const handleClose = () => {
+        setIsOpen(false);
     };
 
     if (!isOpen) return null;
 
     return (
-        <div className="add-grade-modal__overlay" onClick={onClose}>
-            <div
-                className="add-grade-modal__content"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <h2 className="add-grade-modal__title">
-                    {initialData ? 'Sửa loại điểm' : 'Thêm loại điểm mới'}
-                </h2>
+        <div className="add-grade-modal__overlay" onClick={handleClose}>
+            <div className="add-grade-modal__content" onClick={(e) => e.stopPropagation()}>
+                <h2 className="add-grade-modal__title">Sửa loại điểm</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="add-grade-modal__form-row">
                         <div className="add-grade-modal__form-group gradeTypeName">
@@ -87,7 +67,7 @@ const AddGradeTypeModal: React.FC<AddGradeTypeModalProps> = ({ isOpen, onClose, 
                                 onChange={handleChange}
                                 className="add-grade-modal__select"
                             >
-                                <option value="" >Hệ số điểm</option>
+                                <option value="">Hệ số điểm</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -122,20 +102,8 @@ const AddGradeTypeModal: React.FC<AddGradeTypeModalProps> = ({ isOpen, onClose, 
                     </div>
 
                     <div className="add-grade-modal__button-group">
-                        <button
-                            type="button"
-                            onClick={handleCancel}
-                            className="add-grade-modal__button add-grade-modal__button--cancel"
-                        >
-                            Hủy
-                        </button>
-                        <button
-                            type="submit"
-                            disabled={!isFormValid}
-                            className={`add-grade-modal__button add-grade-modal__button--save ${isFormValid ? 'enabled' : 'disabled'}`}
-                        >
-                            Lưu
-                        </button>
+                        <Button onClick={handleClose} className='secondary' size='big'>Hủy</Button>
+                        <Button disabled={!isFormValid} className='primary' size='big'>Lưu</Button>
                     </div>
                 </form>
             </div>
@@ -143,4 +111,4 @@ const AddGradeTypeModal: React.FC<AddGradeTypeModalProps> = ({ isOpen, onClose, 
     );
 };
 
-export default AddGradeTypeModal;
+export default EditGradeTypeModal;
