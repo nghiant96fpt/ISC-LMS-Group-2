@@ -15,15 +15,13 @@ const AddDepartment: React.FC = () => {
     };
 
     const handleSave = () => {
-        if (!facultyCode || !facultyName || !selectedHead) {
-            alert("Vui lòng nhập đầy đủ thông tin!");
-            return;
-        }
-
         console.log("Dữ liệu đã lưu:", { facultyCode, facultyName, selectedHead });
         alert("Lưu thành công!");
         navigate("/leadership/declare-data/block-department");
     };
+
+    // Kiểm tra nếu có đầy đủ dữ liệu
+    const isDataValid = facultyCode && facultyName && selectedHead;
 
     return (
         <div className="modal-overlay">
@@ -36,7 +34,7 @@ const AddDepartment: React.FC = () => {
                         <input
                             type="text"
                             value={facultyCode}
-                            className="input"
+                            className="input-50"
                             onChange={(e) => setFacultyCode(e.target.value)}
                             placeholder="Nhập mã khoa - khối"
                         />
@@ -74,7 +72,12 @@ const AddDepartment: React.FC = () => {
                     <Button className="secondary" size="big" onClick={handleClose}>
                         Hủy
                     </Button>
-                    <Button className="primary" size="big" onClick={handleSave}>
+                    <Button
+                        className={isDataValid ? "primary" : "secondary"}
+                        size="big"
+                        onClick={handleSave}
+                        disabled={!isDataValid}
+                    >
                         Lưu
                     </Button>
                 </div>

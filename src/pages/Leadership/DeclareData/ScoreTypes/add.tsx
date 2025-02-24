@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GradeTypeFormData } from './type';
 import './style.css';
 import Button from '../../../../components/Button';
+import { useNavigate } from 'react-router';
 
 const AddGradeTypeModal: React.FC = () => {
     const [formData, setFormData] = useState<GradeTypeFormData>({
@@ -12,7 +13,7 @@ const AddGradeTypeModal: React.FC = () => {
     });
 
     const [isOpen, setIsOpen] = useState(false);
-
+    const navigate = useNavigate();
     // Mở modal khi component mount
     useEffect(() => {
         setIsOpen(true);
@@ -33,7 +34,9 @@ const AddGradeTypeModal: React.FC = () => {
             setIsOpen(false); // Đóng modal sau khi submit
         }
     };
-
+    const handleClose = () => {
+        navigate("/leadership/declare-data/score-types", { replace: true });
+    };
     return (
         <>
             {isOpen && (
@@ -100,7 +103,7 @@ const AddGradeTypeModal: React.FC = () => {
 
                             <div className="add-grade-modal__button-group">
 
-                                <Button onClick={() => setIsOpen(false)} className='secondary' size='big'>Hủy</Button>
+                                <Button onClick={handleClose} className='secondary' size='big'>Hủy</Button>
                                 <Button disabled={!isFormValid} className={`${isFormValid ? 'primary' : 'secondary'}`} size='big'>Lưu</Button>
 
 

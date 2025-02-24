@@ -61,6 +61,14 @@
   font-size: 14px;
 }
 
+.input-50 {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 40%;
+}
+
 
 .select-container select {
   appearance: none;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GradeTypeFormData } from './type';
 import './style.css';
 import Button from '../../../../components/Button';
-
+import { useNavigate } from "react-router-dom";
 const EditGradeTypeModal: React.FC = () => {
     const sampleData: GradeTypeFormData = {
         gradeTypeName: "Kiểm tra giữa kỳ",
@@ -13,7 +13,7 @@ const EditGradeTypeModal: React.FC = () => {
 
     const [formData, setFormData] = useState<GradeTypeFormData>(sampleData);
     const [isOpen, setIsOpen] = useState(false);
-
+    const navigate = useNavigate();
     useEffect(() => {
         setIsOpen(true);
     }, []);
@@ -34,7 +34,7 @@ const EditGradeTypeModal: React.FC = () => {
     };
 
     const handleClose = () => {
-        setIsOpen(false);
+        navigate("/leadership/declare-data/score-types", { replace: true });
     };
 
     if (!isOpen) return null;
