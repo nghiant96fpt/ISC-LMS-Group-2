@@ -18,7 +18,7 @@ import BlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/
 import AddDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/add';
 import ClassListWrapper from '../../pages/Leadership/DeclareData/BlockDepartment/ClassListWrapper';
 import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/edit';
-import ScoreTypes from '../../pages/Leadership/ScoreTypes/ScoreTypes';
+import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
 
 const StudentRoutes = () => {
   return (
@@ -43,10 +43,10 @@ const StudentRoutes = () => {
         <Route path="declare-data/block-department/:id" element={<EditDepartment />} />
         {/*  */}
 
-        
+
         <Route path="declare-data/score-types" element={<ScoreTypes />} />
         <Route path="declare-data/score-types/:id" element={<ScoreTypes />} />
-        
+
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
         <Route path="exams" element={<Exams />} />
