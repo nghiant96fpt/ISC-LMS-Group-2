@@ -4,7 +4,6 @@ import Dashboard from '../../pages/Leadership/Dashboard';
 import AllStudentProfiles from '../../pages/Leadership/AllStudentProfiles';
 import AllTeacherProfiles from '../../pages/Leadership/AllTeacherProfiles';
 import TransferAcceptance from '../../pages/Leadership/TransferAcceptance';
-import DeclareData from '../../pages/Leadership/DeclareData';
 import Exams from '../../pages/Leadership/Exams';
 import StudentRetention from '../../pages/Leadership/StudentRetention';
 import SystemSettings from '../../pages/Leadership/SystemSettings';
@@ -17,7 +16,8 @@ import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartme
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
 import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
-import ClassList from '../../pages/Leadership/DeclareData/ClassList';
+import TableClassList from '../../pages/Leadership/DeclareData/ClassList/TableClassList';
+import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
 
 const StudentRoutes = () => {
   return (
@@ -34,8 +34,8 @@ const StudentRoutes = () => {
         {/* route cho class-list - group-4 */}
         <Route path="declare-data/add-class" element={<NewClass />} />
         <Route path="declare-data/update-class" element={<UpdateClass />} />
-        <Route path="declare-data/class-list" element={<ClassList />} />
-
+        <Route path="declare-data/class-list" element={<TableClassList />} />
+        <Route path="declare-data/class-detail" element={<ClassDetail />} />
         {/*  */}
         <Route path="declare-data/*" element={<DeclareDataRoutes />} />
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
