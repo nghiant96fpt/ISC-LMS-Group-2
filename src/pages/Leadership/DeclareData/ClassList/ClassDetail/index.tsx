@@ -23,64 +23,68 @@ const ClassList: React.FC = () => {
     students:hocVien,
     subjects:monHoc
   })
-  return <>
+  return (
+    <>
       <AddressList addressList={urls} />
       <div className=" mt-3 rounded-lg border-2 border-orange-500 bg-orange-50 p-5 mr-2">
-          <div className="flex justify-between items-start mt-2"> 
-              <p className="font-bold text-orange-600 mb-3">Thông tin chung</p>   
-              <div className="flex gap-2">
-                <img src={edit} alt="Edit" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
-                <img src={trash} alt="Edit" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
-              </div>
-          </div> 
-          
-          <div className="flex flex-wrap  w-full w-full">
-            <div className="w-full md:w-1/2 lg:w-1/3  ">
-              <div className="flex flex-wrap items-start mt-2">
-                <p className="font-bold md:w-2/5 w-2/4">Niên khóa: </p> 
-                <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.nienKhoa} </p>   
-              </div> 
-              <div className="flex flex-wrap items-start mt-2">
-                <p className="font-bold md:w-2/5 w-2/4">Khoa khối: </p> 
-                <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.khoi}</p>   
-              </div> 
-              <div className="flex flex-wrap items-start mt-2">
-                <p className="font-bold md:w-2/5 w-2/4  ">Mã lớp học: </p> 
-                <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.maLopHoc}</p>   
-              </div> 
-              <div className="flex flex-wrap items-center mt-2">
-                <p className="font-bold md:w-2/5 w-2/4 ">Tên lớp học: </p> 
-                <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.tenLopHoc}</p>   
-              </div> 
-            </div> 
-            <div className="w-full md:w-1/2 lg:w-1/3  ">
+        <div className="flex justify-between items-start mt-2">
+          <p className="font-bold text-orange-600 mb-3">Thông tin chung</p>
+          <div className="flex gap-2">
+            <Link to={'/leadership/declare-data/update-class'}>
+              <img src={edit} alt="Edit" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
+            </Link>
+            <img src={trash} alt="Edit" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
+          </div>
+        </div>
+
+        <div className="flex flex-wrap  w-full w-full">
+          <div className="w-full md:w-1/2 lg:w-1/3  ">
             <div className="flex flex-wrap items-start mt-2">
-                <p className="font-bold md:w-2/5 w-2/4 ">GVCN: </p> 
-                <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.GVCN}</p>   
-              </div> 
-              <div className="flex flex-wrap items-start mt-2">
-                <p className="font-bold md:w-2/5 w-2/4 ">Số lượng học viên: </p> 
-                <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.soLuongHocVien}</p>   
-              </div> 
-              <div className="flex flex-wrap items-start mt-2">
-                <p className="font-bold md:w-2/5 w-2/4 ">Loại lớp học: </p> 
-                <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.loaiLop}</p>   
-              </div>  
-              <div className="flex flex-wrap items-start mt-2">
-                <p className="font-bold md:w-2/5 w-2/4 ">Số lượng môn: </p> 
-                <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.soLuongMon}</p>   
-              </div> 
-            </div> 
-            <div className="w-full md:w-1/2 lg:w-1/3  ">
-              <div className="flex flex-wrap items-start mt-2">
-                <p className="font-bold md:w-1/4 w-2/4 ">Mô tả: </p> 
-                <p className="md:w-3/4 w-2/4">{lopHoc.baseInfo.moTa}</p>   
-              </div> 
-            </div>  
-          </div> 
+              <p className="font-bold md:w-2/5 w-2/4">Niên khóa: </p>
+              <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.nienKhoa} </p>
+            </div>
+            <div className="flex flex-wrap items-start mt-2">
+              <p className="font-bold md:w-2/5 w-2/4">Khoa khối: </p>
+              <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.khoi}</p>
+            </div>
+            <div className="flex flex-wrap items-start mt-2">
+              <p className="font-bold md:w-2/5 w-2/4  ">Mã lớp học: </p>
+              <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.maLopHoc}</p>
+            </div>
+            <div className="flex flex-wrap items-center mt-2">
+              <p className="font-bold md:w-2/5 w-2/4 ">Tên lớp học: </p>
+              <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.tenLopHoc}</p>
+            </div>
+          </div>
+          <div className="w-full md:w-1/2 lg:w-1/3  ">
+            <div className="flex flex-wrap items-start mt-2">
+              <p className="font-bold md:w-2/5 w-2/4 ">GVCN: </p>
+              <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.GVCN}</p>
+            </div>
+            <div className="flex flex-wrap items-start mt-2">
+              <p className="font-bold md:w-2/5 w-2/4 ">Số lượng học viên: </p>
+              <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.soLuongHocVien}</p>
+            </div>
+            <div className="flex flex-wrap items-start mt-2">
+              <p className="font-bold md:w-2/5 w-2/4 ">Loại lớp học: </p>
+              <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.loaiLop}</p>
+            </div>
+            <div className="flex flex-wrap items-start mt-2">
+              <p className="font-bold md:w-2/5 w-2/4 ">Số lượng môn: </p>
+              <p className="md:w-3/5 w-2/4">{lopHoc.baseInfo.soLuongMon}</p>
+            </div>
+          </div>
+          <div className="w-full md:w-1/2 lg:w-1/3  ">
+            <div className="flex flex-wrap items-start mt-2">
+              <p className="font-bold md:w-1/4 w-2/4 ">Mô tả: </p>
+              <p className="md:w-3/4 w-2/4">{lopHoc.baseInfo.moTa}</p>
+            </div>
+          </div>
+        </div>
       </div>
-    <TableClassList students={lopHoc.students} subject={lopHoc.subjects} />
-  </>
+      <TableClassList students={lopHoc.students} subject={lopHoc.subjects} />
+    </>
+  );
 }; 
 const TableClassList: React.FC<TableList> = () => {
   const [tab,setTab]=useState(0);
