@@ -15,7 +15,8 @@ import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYear
 import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
-import Uploadfile from '../../pages/Leadership/Uploadfile';
+// import Uploadfile from '../../pages/Leadership/Uploadfile';
+import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile';
 
 const StudentRoutes = () => {
   return (
