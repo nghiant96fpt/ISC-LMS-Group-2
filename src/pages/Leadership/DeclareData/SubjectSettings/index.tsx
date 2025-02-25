@@ -99,7 +99,7 @@ const SubjectSetup: React.FC = () => {
         </div>
 
         <div className="flex justify-center gap-4 mt-4">
-          <Link to="/leadership/section-list">
+          <Link to="/leadership/declare-data/subject/list">
             <button className="w-[160px] h-[52px] bg-[#F2F2F2] text-black-text font-bold rounded-md">Huỷ</button>
           </Link>
 

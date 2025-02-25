@@ -32,10 +32,10 @@ const StudentRoutes = () => {
         {/*  */}
         <Route path="declare-data/*" element={<DeclareDataRoutes />} />
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
-        <Route path="declare-data/edit" element={<DepartmentSettings />} />
-        <Route path="declare-data/subject-list" element={<SubjectList />} />
-        <Route path="section-list" element={<SectionList />} />
-        <Route path="section-list/edit" element={<SubjectSetup />} />
+        {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
+        {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
+        {/* <Route path="section-list" element={<SectionList />} /> */}
+        {/* <Route path="section-list/edit" element={<SubjectSetup />} /> */}
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />

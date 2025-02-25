@@ -77,7 +77,7 @@ const DeclareData: React.FC = () => {
                       </button>
                     </Link>
                     <button className="w-8 h-8 flex items-center justify-center">
-                      <Link to="edit">
+                      <Link to="/leadership/declare-data/department/edit">
                         <img src={edit} alt="Edit" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
                       </Link>
                     </button>
