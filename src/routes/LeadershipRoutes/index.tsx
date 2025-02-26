@@ -17,6 +17,13 @@ import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartme
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
 import SectionList from '../../pages/Leadership/DeclareData/SectionList';
 import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
+import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
+import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
+
+import TableClassList from '../../pages/Leadership/DeclareData/ClassList/TableClassList';
+import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
+import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile';
+
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -29,6 +36,12 @@ const StudentRoutes = () => {
         <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
         <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
         <Route path="declare-data/school-year/add-school-year" element={<SchoolYearAdd />} /> {/* url thêm niên khóa */}
+        {/* route cho class-list - group-4 */}
+        <Route path="declare-data/add-class" element={<NewClass />} /> {/* url thêm lớp học */}
+        <Route path="declare-data/update-class" element={<UpdateClass />} /> {/* url thiết lập lớp học */}
+        <Route path="declare-data/class-list" element={<TableClassList />} />
+        <Route path="declare-data/class-detail" element={<ClassDetail />} /> {/* url bảng ds lớp học */}
+        <Route path="declare-data/file-class" element={<Uploadfile />} /> {/* url xuât file lớp học */}
         {/*  */}
         <Route path="declare-data/*" element={<DeclareDataRoutes />} />
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
