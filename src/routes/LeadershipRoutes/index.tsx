@@ -4,6 +4,7 @@ import Dashboard from '../../pages/Leadership/Dashboard';
 import AllStudentProfiles from '../../pages/Leadership/AllStudentProfiles';
 import AllTeacherProfiles from '../../pages/Leadership/AllTeacherProfiles';
 import TransferAcceptance from '../../pages/Leadership/TransferAcceptance';
+import DeclareData from '../../pages/Leadership/DeclareData/DataList';
 import Exams from '../../pages/Leadership/Exams';
 import StudentRetention from '../../pages/Leadership/StudentRetention';
 import SystemSettings from '../../pages/Leadership/SystemSettings';
@@ -14,6 +15,8 @@ import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYear
 import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
+import SectionList from '../../pages/Leadership/DeclareData/SectionList';
+import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
 import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
 
@@ -42,8 +45,10 @@ const StudentRoutes = () => {
         {/*  */}
         <Route path="declare-data/*" element={<DeclareDataRoutes />} />
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
-        <Route path="declare-data/edit" element={<DepartmentSettings />} />
-        <Route path="declare-data/subject-list" element={<SubjectList />} />
+        {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
+        {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
+        {/* <Route path="section-list" element={<SectionList />} /> */}
+        {/* <Route path="section-list/edit" element={<SubjectSetup />} /> */}
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
