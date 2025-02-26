@@ -245,10 +245,7 @@ const SchoolYearFormEdit: React.FC = () => {
                 defaultValue={null}
                 render={({ field }) => (
                   <CalendarInput
-                    selectedDate={field.value}
-                    onDateChange={(date) =>
-                      handleDateChange(date, 'startDate')
-                    }
+                   
                   />
                 )}
               />
@@ -267,10 +264,7 @@ const SchoolYearFormEdit: React.FC = () => {
                 defaultValue={null}
                 render={({ field }) => (
                   <CalendarInput
-                    selectedDate={field.value}
-                    onDateChange={(date) =>
-                      handleDateChange(date, 'endDate')
-                    }
+                    
                   />
                 )}
               />

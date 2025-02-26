@@ -74,7 +74,8 @@ const SubjectPage: React.FC = () => {
                     </span>
                   </th>
                 </tr>
-                {isModalOpen && <DeleteAcademicYearModal onCancel={() => setIsModalOpen(false)} onConfirm={handleDeleteConfirm} />}
+                {isModalOpen && <DeleteAcademicYearModal title="Xóa Tổ - Bộ môn"
+                  description="Xác nhận muốn xoá Tổ - Bộ môn này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác." onCancel={() => setIsModalOpen(false)} onConfirm={handleDeleteConfirm} />}
               </thead>
               <tbody className="divide-y divide-gray-300">
                 {subjects.map((subject, index) => (
