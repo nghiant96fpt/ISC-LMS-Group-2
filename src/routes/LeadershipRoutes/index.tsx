@@ -4,7 +4,6 @@ import Dashboard from '../../pages/Leadership/Dashboard';
 import AllStudentProfiles from '../../pages/Leadership/AllStudentProfiles';
 import AllTeacherProfiles from '../../pages/Leadership/AllTeacherProfiles';
 import TransferAcceptance from '../../pages/Leadership/TransferAcceptance';
-import DeclareData from '../../pages/Leadership/DeclareData';
 import Exams from '../../pages/Leadership/Exams';
 import StudentRetention from '../../pages/Leadership/StudentRetention';
 import SystemSettings from '../../pages/Leadership/SystemSettings';
@@ -15,6 +14,12 @@ import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYear
 import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
+import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
+import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
+
+import TableClassList from '../../pages/Leadership/DeclareData/ClassList/TableClassList';
+import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
+import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile';
 
 const StudentRoutes = () => {
   return (
@@ -28,6 +33,12 @@ const StudentRoutes = () => {
         <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
         <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
         <Route path="declare-data/school-year/add-school-year" element={<SchoolYearAdd />} /> {/* url thêm niên khóa */}
+        {/* route cho class-list - group-4 */}
+        <Route path="declare-data/add-class" element={<NewClass />} /> {/* url thêm lớp học */}
+        <Route path="declare-data/update-class" element={<UpdateClass />} /> {/* url thiết lập lớp học */}
+        <Route path="declare-data/class-list" element={<TableClassList />} />
+        <Route path="declare-data/class-detail" element={<ClassDetail />} /> {/* url bảng ds lớp học */}
+        <Route path="declare-data/file-class" element={<Uploadfile />} /> {/* url xuât file lớp học */}
         {/*  */}
         <Route path="declare-data/*" element={<DeclareDataRoutes />} />
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
