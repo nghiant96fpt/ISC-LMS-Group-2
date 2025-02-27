@@ -4,7 +4,7 @@ import Button from '../Button';
 
 const HeaderOption: React.FC = () => {
   return (
-    <div className="header-container">
+    <div className="header-container-opstion">
       <header className="header">
         <p>Khai Báo Dữ Liệu</p>
       </header>
