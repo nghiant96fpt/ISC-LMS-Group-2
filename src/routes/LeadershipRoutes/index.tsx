@@ -26,6 +26,7 @@ import SectionList from '../../pages/Leadership/DeclareData/SectionList';
 import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
 import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
+import ResignationForm from '../../pages/Leadership/AllTeacherProfiles/ResignationForm';
 
 import TableClassList from '../../pages/Leadership/DeclareData/ClassList/TableClassList';
 import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
@@ -72,6 +73,7 @@ const StudentRoutes = () => {
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
+        <Route path="resignation" element={<ResignationForm />} />
       </Route>
     </Routes>
   );
