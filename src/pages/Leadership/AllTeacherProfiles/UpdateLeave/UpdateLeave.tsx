@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../../components/Button';
-import DateInput from '../UpdateLeave/Date';
+import DateInput from '../../../../components/Date';
 import dayjs from 'dayjs';
 import { ILeaveUpdate } from './type';
 

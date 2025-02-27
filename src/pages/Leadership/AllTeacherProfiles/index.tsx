@@ -6,7 +6,7 @@ import Status from "../../../components/Status";
 import AddressList from "../../../components/AddressUrlStack/Index";
 import { Dropdown } from "antd";
 import type { MenuProps } from 'antd';
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import { ILecturerProfile } from "./type";
 import DeleteModal from "../../../components/DeleteConfirmation";
 const teachers = [
@@ -40,38 +40,22 @@ const mapStatusToType = (status: string) => {
 };
 const option_date = ["2020-2021", "2019-2020", "2018-2019", "2017-2018"];
 
-const items: MenuProps['items'] = [
+const items = [
     {
         key: '1',
-        label: (
-            <Link to="/">
-                Sửa hồ sơ
-            </Link>
-        ),
+        label: 'Sửa hồ sơ',
     },
     {
         key: '2',
-        label: (
-            <Link to="/">
-                Cập nhật nghỉ hưu
-            </Link>
-        ),
+        label: 'Cập nhật nghỉ hưu',
     },
     {
         key: '3',
-        label: (
-            <Link to="/">
-                Cập nhật nghỉ việc
-            </Link>
-        ),
+        label: 'Cập nhật nghỉ việc',
     },
     {
         key: '4',
-        label: (
-            <Link to="/">
-                Cập nhật tạm nghỉ
-            </Link>
-        ),
+        label: 'Cập nhật tạm nghỉ',
     },
 ];
 const AllTeacherProfiles: React.FC = () => {
@@ -79,7 +63,21 @@ const AllTeacherProfiles: React.FC = () => {
     const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
     const [itemsPerPage, setItemsPerPage] = useState(8);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedId, setSelectedId] = useState<string | null>(null);
+    const navigate = useNavigate();
 
+    const handleMenuClick = (key: string, id?: string) => {
+        if (key === '1') {
+            navigate(`/`);
+        } else if (key === '2') {
+
+            navigate(`/leadership/all-student-profiles/resignation/${id}`);
+        } else if (key === '3') {
+            navigate(`/leadership/all-student-profiles/retirement/${id}`);
+        } else if (key === '4') {
+            navigate(`/leadership/all-student-profiles/stop-working/${id}`);
+        }
+    };
 
     const handleDeleteClick = () => {
         setIsModalOpen(true);
@@ -98,6 +96,10 @@ const AllTeacherProfiles: React.FC = () => {
         setSelectedTeachers(prev =>
             prev.includes(id) ? prev.filter(tid => tid !== id) : [...prev, id]
         );
+    };
+
+    const handleRowClick = (id: string) => {
+        setSelectedId(id);
     };
 
     return (
@@ -240,7 +242,7 @@ const AllTeacherProfiles: React.FC = () => {
                                             </svg>
                                         </button>
 
-                                        <Dropdown menu={{ items }} placement="bottom" arrow={{ pointAtCenter: true }} className="ms-2">
+                                        <Dropdown menu={{ items, onClick: ({ key }) => handleMenuClick(key, teacher.id) }} placement="bottom" arrow={{ pointAtCenter: true }} className="ms-2">
                                             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <g clip-path="url(#clip0_2295_53360)">
                                                     <g clip-path="url(#clip1_2295_53360)">

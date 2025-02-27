@@ -22,6 +22,7 @@
   width: 884px;
   z-index: 20;
 }
+
 .form-container {
   background: #ffffff;
   padding: 40px 60px;
@@ -102,9 +103,11 @@
   display: none;
   -webkit-appearance: none;
 }
+
 .visible-input::-moz-calendar-picker-indicator {
   display: none;
 }
+
 .visible-input::-ms-clear,
 .visible-input::-ms-reveal {
   display: none;
@@ -151,7 +154,7 @@
 .calendar-icon {
   width: 24px;
   height: 24px;
-  background: url('../../../assets/icons/u_calendar-alt.png') no-repeat center;
+  background: url('../../../../assets/icons/u_calendar-alt.png') no-repeat center;
   background-size: contain;
   margin-left: 10px;
   cursor: pointer;
@@ -170,7 +173,7 @@
 .calendar-icon {
   width: 20px;
   height: 20px;
-  background: url('../../../assets/icons/u_calendar-alt.png') no-repeat center;
+  background: url('../../../../assets/icons/u_calendar-alt.png') no-repeat center;
   background-size: contain;
   margin-left: 10px;
 }
@@ -184,10 +187,12 @@ textarea {
   width: 100%;
   font-size: 14px;
 }
+
 textarea::placeholder,
 input::placeholder {
   font-style: italic;
 }
+
 .note-textarea {
   font-size: 16px;
   font-style: normal;
@@ -226,20 +231,23 @@ input::placeholder {
 .file-icon {
   width: 16px;
   height: 16px;
-  background: url('../../../assets/icons/u_paperclip.png') no-repeat center;
+  background: url('../../../../assets/icons/u_paperclip.png') no-repeat center;
   background-size: contain;
-  margin-right: 6px; /* Tạo khoảng cách với divider */
+  margin-right: 6px;
+  /* Tạo khoảng cách với divider */
 }
 
 .file-divider {
   width: 1px;
   height: 24px;
   background-color: #c9c4c0;
-  margin-right: 6px; /* Tạo khoảng cách với input */
+  margin-right: 6px;
+  /* Tạo khoảng cách với input */
 }
 
 .file-input {
-  flex: 1; /* Để input mở rộng đúng kích thước */
+  flex: 1;
+  /* Để input mở rộng đúng kích thước */
   outline: none;
   padding: 5px;
   background-color: #efefef;
@@ -248,6 +256,7 @@ input::placeholder {
 .file-hidden {
   display: none;
 }
+
 .row label .file-button {
   text-align: center;
 }

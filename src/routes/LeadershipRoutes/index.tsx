@@ -25,18 +25,27 @@ import SectionList from '../../pages/Leadership/DeclareData/SectionList';
 import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
 import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
-import ResignationForm from '../../pages/Leadership/AllTeacherProfiles/ResignationForm';
+
 
 import TableClassList from '../../pages/Leadership/DeclareData/ClassList/TableClassList';
 import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
 import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile';
+import ResignationForm from '../../pages/Leadership/AllTeacherProfiles/ResignationForm/ResignationForm';
+import LeaveUpdateModal from '../../pages/Leadership/AllTeacherProfiles/UpdateLeave/UpdateLeave';
+import RetirementUpdateModal from '../../pages/Leadership/AllTeacherProfiles/RetirementFrom/RetirementForm';
 
 const StudentRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<MainLayout role="leadership" />}>
         <Route index element={<Dashboard />} />
+        { /*Group-3 All student */}
         <Route path="all-student-profiles" element={<AllStudentProfiles />} />
+        <Route path="all-student-profiles/retirement/:id" element={<ResignationForm />} />
+        <Route path="all-student-profiles/stop-working/:id" element={<LeaveUpdateModal />} />
+        <Route path="all-student-profiles/resignation/:id" element={<RetirementUpdateModal />} />
+        {/*  */}
+
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
         {/*route cho school-year - group-4*/}
@@ -72,7 +81,7 @@ const StudentRoutes = () => {
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
-        <Route path="resignation" element={<ResignationForm />} />
+
       </Route>
     </Routes>
   );
