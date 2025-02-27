@@ -118,6 +118,7 @@ const StudentRoutes = () => {
         <Route path="study-process/update-rewards" element={<UpdateRewards />} />
         <Route path="study-process/update-discipline" element={<UpdateDiscipline />} />
         <Route path='create-student' element={<StudentCU/>}/>
+        <Route path='new-student' element={<StudentCU/>}/>
       </Route>
     </Routes>
   );
