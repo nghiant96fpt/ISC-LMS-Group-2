@@ -30,6 +30,9 @@ import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClas
 import TableClassList from '../../pages/Leadership/DeclareData/ClassList/TableClassList';
 import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
 import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile';
+import ListTransferAcceptance from '../../pages/Leadership/TransferAcceptance/ListTransferAcceptance';
+import StudentRetentionListData from '../../pages/Leadership/StudentRetention/StudentRetentionList/data';
+import StudentRetentionList from '../../pages/Leadership/StudentRetention/StudentRetentionList';
 
 const StudentRoutes = () => {
   return (
@@ -49,6 +52,9 @@ const StudentRoutes = () => {
         <Route path="declare-data/class-list" element={<TableClassList />} />
         <Route path="declare-data/class-detail" element={<ClassDetail />} /> {/* url bảng ds lớp học */}
         <Route path="declare-data/file-class" element={<Uploadfile />} /> {/* url xuât file lớp học */}
+        {/* route cho tiếp nhận chuyển trường và hồ sơ bảo lưu - group 4 */}
+        <Route path="list-transfer-acceptance" element={<ListTransferAcceptance />} />
+        <Route path="list-student-retention" element={<StudentRetentionList />} />
         {/*  */}
         <Route path="declare-data" element={<DeclareData />} />
         {/* Route cho block-department */}
