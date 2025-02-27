@@ -8,7 +8,7 @@ import React, { ReactNode, CSSProperties, useContext } from "react";
  * - `style`: Custom inline style
  */
 interface CardSectionProps {
-  children: ReactNode;
+  children?: ReactNode;
   variant?: "primary" | "dark-primary" | "default";
   className?: string;
   style?: CSSProperties;
@@ -18,12 +18,14 @@ interface CardSectionProps {
  * Props for Card component
  * - `children`: Chứa các phần Header, Body, Footer
  * - `variant`: Kiểu màu nền và chữ mặc định cho Header & Footer (primary, dark-primary, default)
+ * - `size`: Kích thước của Card (sm, md, lg, full)
  * - `className`: Custom class cho toàn bộ Card
  * - `style`: Custom inline style
  */
 interface CardProps {
   children: ReactNode;
   variant?: "primary" | "dark-primary" | "default";
+  size?: "sm" | "md" | "lg" | "full";
   className?: string;
   style?: CSSProperties;
 }
@@ -42,16 +44,34 @@ const getVariantClass = (variant?: "primary" | "dark-primary" | "default") => {
   }
 };
 
+/**
+ * Xác định width dựa vào size được truyền vào
+ */
+const getSizeClass = (size?: "sm" | "md" | "lg" | "full") => {
+  switch (size) {
+    case "sm":
+      return "max-w-[400px]";
+    case "md":
+      return "max-w-[500px]";
+    case "lg":
+      return "max-w-[750px]";
+    case "full":
+      return "w-full";
+    default:
+      return "max-w-sm";
+  }
+};
+
 const CardVariantContext = React.createContext<"primary" | "dark-primary" | "default">("primary");
 
 const Card: React.FC<CardProps> & {
   Header: React.FC<CardSectionProps>;
   Body: React.FC<CardSectionProps>;
   Footer: React.FC<CardSectionProps>;
-} = ({ children, variant = "primary", className = "", style }) => {
+} = ({ children, variant = "primary", size = "md", className = "", style }) => {
   return (
     <CardVariantContext.Provider value={variant}>
-      <div className={`rounded-[16px] border border-gray-300 overflow-hidden shadow-md w-full max-w-sm ${className}`} style={style}>
+      <div className={`rounded-[16px] border border-gray-300 overflow-hidden shadow-md ${getSizeClass(size)} ${className}`} style={style}>
         {children}
       </div>
     </CardVariantContext.Provider>

@@ -38,7 +38,7 @@ const StudentRoutes = () => {
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
-        <Route path='create-student' element={<StudentCU/>}/>
+        <Route path='new-student' element={<StudentCU/>}/>
       </Route>
     </Routes>
   );
