@@ -2,6 +2,12 @@ import { Routes, Route } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
 import Dashboard from '../../pages/Leadership/Dashboard';
 import AllStudentProfiles from '../../pages/Leadership/AllStudentProfiles';
+import ClassTransferMethod from '../../pages/Leadership/AllStudentProfiles/table/bodyTable/ClassTransferMethod';
+import ExemptionMethod from '../../pages/Leadership/AllStudentProfiles/table/bodyTable/ExemptionMethod';
+import ReservationMethod from '../../pages/Leadership/AllStudentProfiles/table/bodyTable/ReservationMethod';
+import SchoolTransferMethod from '../../pages/Leadership/AllStudentProfiles/table/bodyTable/SchoolTransferMethod';
+import DisciplinaryMethod from '../../pages/Leadership/AllStudentProfiles/table/bodyTable/DisciplinaryMethod';
+import RewardMethod from '../../pages/Leadership/AllStudentProfiles/table/bodyTable/RewardMethod';
 import AllTeacherProfiles from '../../pages/Leadership/AllTeacherProfiles';
 import TransferAcceptance from '../../pages/Leadership/TransferAcceptance';
 import DeclareData from '../../pages/Leadership/DeclareData';
@@ -22,7 +28,15 @@ const StudentRoutes = () => {
     <Routes>
       <Route path="/" element={<MainLayout role="leadership" />}>
         <Route index element={<Dashboard />} />
-        <Route path="all-student-profiles" element={<AllStudentProfiles />} />
+        {/*all-student-profiles*/}
+        <Route path="all-student-profiles/*" element={<AllStudentProfiles />} />
+        <Route path="all-student-profiles/class-transfer-method" element={<ClassTransferMethod />} />
+        <Route path="all-student-profiles/exemption-method" element={<ExemptionMethod />} />
+        <Route path="all-student-profiles/reservation-method" element={<ReservationMethod />} />
+        <Route path="all-student-profiles/school-transfer-method" element={<SchoolTransferMethod />} />
+        <Route path="all-student-profiles/disciplinary-method" element={<DisciplinaryMethod />} />
+        <Route path="all-student-profiles/reward-method" element={<RewardMethod />} />
+        {/*all-teacher-profiles*/}
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
         {/*route cho school-year - group-4*/}
