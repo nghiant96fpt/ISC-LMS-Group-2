@@ -88,10 +88,6 @@ const SchoolYearAdd: React.FC = (props) => {
                 render={({ field }) => (
                   <div className="relative inline-block">
                     <CalendarInput
-                      initialDate={new Date()}
-                      selectedDate={field.value}
-                      onDateChange={field.onChange}
-                      popupStyle={{ top: '76%', left: '73%' }}
                     />
                   </div>
                 )}
@@ -105,10 +101,7 @@ const SchoolYearAdd: React.FC = (props) => {
                 render={({ field }) => (
                   <div className="relative inline-block">
                     <CalendarInput
-                      initialDate={new Date()}
-                      selectedDate={field.value}
-                      onDateChange={field.onChange}
-                      popupStyle={{ top: '76%', left: '83%' }}
+                     
                     />
                   </div>
                 )}

@@ -5,3 +5,5 @@ export const subjectGroups: SubjectGroup[] = [
   { id: 2, name: 'Khoa học tự nhiên', head: 'Trần Thị B' },
   { id: 3, name: 'Anh Văn', head: 'Phạm Ngọc C' },
 ];
+
+

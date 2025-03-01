@@ -1,5 +1,7 @@
 import AllStudentProfilesHeader from './header';
 import TableAllStudentProfiles from './table';
+import ClassList from "../DeclareData/ClassList/ClassDetail";
+import SchoolYear from "../DeclareData/SchoolYear/SchoolYearTable";
 
 const AllStudentProfiles: React.FC = () => {
   return (
