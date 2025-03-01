@@ -10,7 +10,7 @@ export type DropdownBorder = 'visible' | 'hidden'; // Kiểu viền dropdown
 export interface DropdownProps {
   options: DropdownOption[]; // Danh sách các option hiển thị trong dropdown
 
-  onSelect?: (option: DropdownOption) => void; // Hàm callback khi chọn một option
+  onSelect: (option: DropdownOption) => void; // Hàm callback khi chọn một option
 
   placeholder?: string; // Văn bản hiển thị khi chưa chọn option nào (mặc định: "Lựa chọn")
 
