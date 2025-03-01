@@ -1,6 +1,10 @@
+.calendar-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
 .custom-datepicker {
   border-radius: 12px !important; /* Bo tròn */
-
   border: none;
   padding: 10px;
 }
