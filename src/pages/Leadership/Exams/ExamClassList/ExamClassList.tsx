@@ -81,7 +81,7 @@ const ExamClassList: React.FC = () => {
       <div className="flex justify-between items-center mb-4">
         <DropdownSelectionComponent options={option_date} width={144} />
       </div>
-      <div className="flex flex-col md:flex-row items-start gap-4 px-2  py-2">
+      <div className="flex flex-col md:flex-row items-start gap-4 py-2">
         <div className="flex flex-col w-full md:w-3/4 min-h-[752px] bg-background-white shadow-custom rounded-lg p-4 ">
           <div className="flex flex-wrap justify-between items-center px-2 md:px-10 py-2 gap-2">
             <h2 className="text-lg font-sans font-bold">Danh sách lớp tham gia</h2>

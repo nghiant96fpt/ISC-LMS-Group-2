@@ -37,3 +37,22 @@ export const IconTrash: React.FC<IconProps> = ({ width = 32, height = 32, classN
     />
   </svg>
 );
+
+export const IconDoubleArrowUpDown: React.FC<IconProps> = ({ width = 24, height = 24, className }) => (
+  <svg width={width} height={height} viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M8.41421 14C7.52331 14 7.07714 15.0771 7.70711 15.7071L11.2929 19.2929C11.6834 19.6834 12.3166 19.6834 12.7071 19.2929L16.2929 15.7071C16.9229 15.0771 16.4767 14 15.5858 14L8.41421 14Z" />
+    <path d="M8.41421 11C7.52331 11 7.07714 9.92286 7.70711 9.29289L11.2929 5.70711C11.6834 5.31658 12.3166 5.31658 12.7071 5.70711L16.2929 9.29289C16.9229 9.92286 16.4767 11 15.5858 11L8.41421 11Z" />
+  </svg>
+);
+
+export const ArrowLeftIcon: React.FC<IconProps> = ({ width = 24, height = 24, className }) => (
+  <svg width={width} height={height} viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M16.2422 18.3631C16.6327 18.7536 16.6327 19.3867 16.2422 19.7773C15.8517 20.1678 15.2185 20.1678 14.828 19.7773L7.75691 12.7062C7.36639 12.3157 7.36639 11.6825 7.75691 11.292L14.828 4.22092C15.2185 3.83039 15.8517 3.83039 16.2422 4.22092C16.6327 4.61144 16.6327 5.24461 16.2422 5.63513L10.5853 11.292C10.1948 11.6825 10.1948 12.3157 10.5853 12.7062L16.2422 18.3631Z" />
+  </svg>
+);
+
+export const ArrowRightIcon: React.FC<IconProps> = ({ width = 24, height = 24, className }) => (
+  <svg width={width} height={height} viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M7.75781 18.3631C7.36728 18.7536 7.36728 19.3867 7.75781 19.7773C8.14833 20.1678 8.7815 20.1678 9.17202 19.7773L16.2431 12.7062C16.6336 12.3157 16.6336 11.6825 16.2431 11.292L9.17202 4.22092C8.7815 3.83039 8.14833 3.83039 7.75781 4.22092C7.36728 4.61144 7.36728 5.24461 7.75781 5.63513L13.4147 11.292C13.8052 11.6825 13.8052 12.3157 13.4147 12.7062L7.75781 18.3631Z" />
+  </svg>
+);
