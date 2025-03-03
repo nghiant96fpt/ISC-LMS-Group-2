@@ -65,6 +65,7 @@ const Status: React.FC<StatusProps> = ({
     };
 
     const labelStyle: React.CSSProperties = {
+        color, // Màu chữ theo màu nền
         ...(styles?.label ?? {}),
     };
 
