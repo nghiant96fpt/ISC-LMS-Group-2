@@ -59,6 +59,34 @@ module.exports = {
       boxShadow: {
         custom: '4px 4px 25px 4px rgba(154, 202, 245, 0.5)',
       },
+
+      fontFamily: {
+        'font-Mulish': 'var(--font-Mulish)',
+        'font-Source-Sans-Pro': 'var(--font-Source-Sans-Pro)',
+      },
+      fontSize: {
+        'Mulish-1': 'var(--font-size-Mulish-1)',
+        'Mulish-2': 'var(--font-size-Mulish-2)',
+        'Mulish-3': 'var(--font-size-Mulish-3)',
+        'Mulish-4': 'var(--font-size-Mulish-4)',
+        'Source-Sans-Pro-1': 'var(--font-size-Source-Sans-Pro-1)',
+        'Source-Sans-Pro-2': 'var(--font-size-Source-Sans-Pro-2)',
+      },
+      lineHeight: {
+        'Mulish-1': 'var(--line-height-Mulish-1)',
+        'Mulish-2': 'var(--line-height-Mulish-2)',
+        'Mulish-3': 'var(--line-height-Mulish-3)',
+        'Mulish-4': 'var(--line-height-Mulish-4)',
+        'Source-Sans-Pro-1': 'var(--line-height-Source-Sans-Pro-1)',
+        'Source-Sans-Pro-2': 'var(--line-height-Source-Sans-Pro-2)',
+        'Source-Sans-Pro-3': 'var(--line-height-Source-Sans-Pro-3)',
+      },
+      fontWeight: {
+        Mulish: 'var(--weight-Mulish)',
+        'Source-Sans-Pro-1': 'var(--weight-Source-Sans-Pro-1)',
+        'Source-Sans-Pro-2': 'var(--weight-Source-Sans-Pro-2)',
+        'Source-Sans-Pro-3': 'var(--weight-Source-Sans-Pro-3)',
+      },
     },
   },
   plugins: [],

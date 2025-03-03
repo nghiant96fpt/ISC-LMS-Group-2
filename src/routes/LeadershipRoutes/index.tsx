@@ -16,6 +16,9 @@ import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRou
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
 import StudentCU from '../../pages/Leadership/StudentCUD/StudentCU';
+import StudyProcess from '../../pages/Leadership/StudyProcess';
+import UpdateRewards from '../../pages/Leadership/StudyProcess/UpdateRewards';
+import UpdateDiscipline from '../../pages/Leadership/StudyProcess/UpdateDiscipline';
 
 const StudentRoutes = () => {
   return (
@@ -38,7 +41,11 @@ const StudentRoutes = () => {
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
-        <Route path='create-student' element={<StudentCU/>}/>
+        <Route path="create-student" element={<StudentCU />} />
+        {/* */}
+        <Route path="study-process" element={<StudyProcess />} />
+        <Route path="study-process/update-rewards" element={<UpdateRewards />} />
+        <Route path="study-process/update-discipline" element={<UpdateDiscipline />} />
       </Route>
     </Routes>
   );
