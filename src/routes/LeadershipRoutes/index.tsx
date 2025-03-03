@@ -6,6 +6,7 @@ import AllTeacherProfiles from '../../pages/Leadership/AllTeacherProfiles';
 import TransferAcceptance from '../../pages/Leadership/TransferAcceptance';
 import DeclareData from '../../pages/Leadership/DeclareData/DataList';
 import Exams from '../../pages/Leadership/Exams';
+import ExamClassList from '../../pages/Leadership/Exams/ExamClassList/ExamClassList';
 import StudentRetention from '../../pages/Leadership/StudentRetention';
 import SystemSettings from '../../pages/Leadership/SystemSettings';
 import TeachingAssignment from '../../pages/Leadership/TeachingAssignment';
@@ -78,6 +79,8 @@ const StudentRoutes = () => {
         {/* <Route path="section-list" element={<SectionList />} /> */}
         {/* <Route path="section-list/edit" element={<SubjectSetup />} /> */}
         <Route path="exams" element={<Exams />} />
+        <Route path="exams/:id" element={<ExamClassList />} />
+        <Route path="exams/:examId/scoreboard/:scoreboardId" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
