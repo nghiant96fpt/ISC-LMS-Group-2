@@ -1,7 +1,7 @@
 import React from "react";
 
 export interface ButtonProps {
-    className?: 'primary' | 'secondary' | 'outline-primary' | 'outline-secondary';    /** Kiểu button */
+    className?: string;                                                               /** Kiểu button */
     icon?: React.ReactNode;                                                          /** Icon trong button */
     children: React.ReactNode;                                                      /** Nội dung button */
     onClick?: () => void;                                                          /** Sự kiện click */

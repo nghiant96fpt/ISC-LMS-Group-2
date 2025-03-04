@@ -6,6 +6,8 @@ import AllTeacherProfiles from '../../pages/Leadership/AllTeacherProfiles';
 import TransferAcceptance from '../../pages/Leadership/TransferAcceptance';
 import DeclareData from '../../pages/Leadership/DeclareData/DataList';
 import Exams from '../../pages/Leadership/Exams';
+import ExamClassList from '../../pages/Leadership/Exams/ExamClassList/ExamClassList';
+import ScoreBoard from '../../pages/Leadership/Exams/ScoreBoard/ScoreBoard';
 import StudentRetention from '../../pages/Leadership/StudentRetention';
 import SystemSettings from '../../pages/Leadership/SystemSettings';
 import TeachingAssignment from '../../pages/Leadership/TeachingAssignment';
@@ -82,9 +84,12 @@ const StudentRoutes = () => {
 
         { /*Group-3 TestManagement */}
         <Route path="exams" element={<Exams />} />
+        <Route path="exams/:id" element={<ExamClassList />} />
+        <Route path="exams/:examId/scoreboard/:scoreboardId" element={<ScoreBoard />} />
         <Route path="exams/test-management" element={<TestManagement />} />
         <Route path="exams/test-management/:id" element={<DetailTestManagement />} />
         {/*  */}
+
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
