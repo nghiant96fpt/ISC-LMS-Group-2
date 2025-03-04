@@ -51,7 +51,7 @@ const SearchResult: React.FC = () => {
         <div className="text-right">
           <p className="font-semibold mb-2 text-start">In bảng điểm:</p>
           <div className="flex items-center space-x-2">
-            <Button className="w-[113px] h-[32px] border border-orange-400 bg-orange-100 text-orange-500 rounded-md hover:bg-orange-200">Xuất file</Button>
+            <Button size='mini' className="w-[113px] h-[32px] border border-orange-400 bg-orange-100 text-orange-500 rounded-md hover:bg-orange-200">Xuất file</Button>
 
             {/* Dropdown Xuất File */}
 
@@ -60,9 +60,9 @@ const SearchResult: React.FC = () => {
               <div className="border border-gray-300 rounded px-3 h-[32px] bg-white flex justify-between items-center cursor-pointer">
 
                 <span className="text-left">{selectedFile}</span>
-             <div data-svg-wrapper>
-                      <IconArrowCaretDown />
-                    </div>
+                <div data-svg-wrapper>
+                  <IconArrowCaretDown />
+                </div>
               </div>
 
               {/* Danh sách dropdown */}

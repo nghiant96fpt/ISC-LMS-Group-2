@@ -15,10 +15,10 @@ const Button: React.FC<ButtonProps> = ({
     style,
 }) => {
     const buttonClass = useMemo(
-        () => `${className} ${disabled ? 'disabled' : ''}`,
-        [className, disabled]
+        () => `button ${className} ${size} ${disabled ? 'disabled' : ''}`,
+        [className, size, disabled]
     );
-    
+
 
     const buttonStyle = useMemo(
         () => ({ ...style, width, height }),

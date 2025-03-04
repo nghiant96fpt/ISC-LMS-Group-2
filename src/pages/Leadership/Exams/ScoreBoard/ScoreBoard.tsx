@@ -148,11 +148,12 @@ const ScoreBoard: React.FC = () => {
       <AddressList addressList={urls} />
 
       <div className="flex items-center gap-3 mb-3">
-        <DropdownSelectionComponent placeholder={'Niên khóa'} options={option_date} width={133} />
+        <DropdownSelectionComponent placeholder={'Niên khóa'} label={option_date[0]} options={option_date} width={133} />
         <DropdownSelectionComponent placeholder={'Chọn lớp'} options={option_class} width={136} />
         <DropdownSelectionComponent placeholder={'Chọn khối'} options={option_block} width={136} />
         <DropdownSelectionComponent placeholder={'Chọn môn'} options={option_subject} width={136} />
         <Button
+          size='mini'
           className="w-[113px] h-[32px] border border-orange-400 bg-orange-100 text-orange-500 rounded-md hover:bg-orange-200"
           children="Tìm kiếm"
         />
