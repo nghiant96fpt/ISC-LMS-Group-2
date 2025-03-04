@@ -16,17 +16,16 @@ import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRou
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
 import BlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/bockDepartment';
-import AddDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/add';
+// import AddDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/add';
 import ClassListWrapper from '../../pages/Leadership/DeclareData/BlockDepartment/ClassListWrapper';
 import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/edit';
-import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
-import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
-import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
+// import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
+// import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
+// import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 import SectionList from '../../pages/Leadership/DeclareData/SectionList';
 import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
 import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
-
 
 import TableClassList from '../../pages/Leadership/DeclareData/ClassList/TableClassList';
 import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
@@ -40,13 +39,12 @@ const StudentRoutes = () => {
     <Routes>
       <Route path="/" element={<MainLayout role="leadership" />}>
         <Route index element={<Dashboard />} />
-        { /*Group-3 All student */}
+        {/*Group-3 All student */}
         <Route path="all-student-profiles" element={<AllStudentProfiles />} />
         <Route path="all-student-profiles/retirement/:id" element={<ResignationForm />} />
         <Route path="all-student-profiles/stop-working/:id" element={<LeaveUpdateModal />} />
         <Route path="all-student-profiles/resignation/:id" element={<RetirementUpdateModal />} />
         {/*  */}
-
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
         {/*route cho school-year - group-4*/}
@@ -63,16 +61,15 @@ const StudentRoutes = () => {
         <Route path="declare-data" element={<DeclareData />} />
         {/* Route cho block-department */}
         <Route path="declare-data/block-department" element={<BlockDepartment />} />
-        <Route path="declare-data/block-department/add" element={<AddDepartment />} />
+        {/* <Route path="declare-data/block-department/add" element={<AddDepartment />} /> */}
         <Route path="declare-data/block-department/list" element={<ClassListWrapper />} />
         <Route path="declare-data/block-department/:id" element={<EditDepartment />} />
         {/*  */}
-        <Route path="declare-data/score-types" element={<ScoreTypes />} />
+        {/* <Route path="declare-data/score-types" element={<ScoreTypes />} />
         <Route path="declare-data/score-types/:id" element={<EditGradeTypeModal />} />
-        <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
+        <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} /> */}
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
-
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
         {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
         {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
@@ -82,7 +79,6 @@ const StudentRoutes = () => {
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
-
       </Route>
     </Routes>
   );
