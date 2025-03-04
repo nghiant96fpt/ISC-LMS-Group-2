@@ -81,7 +81,7 @@ const StudentRoutes = () => {
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
         <Route path="training-info/add" element={<AddTrainingProgram />} />
-        <Route path="training-info/list" element={<TrainingList />} />
+        <Route path="training-info" element={<TrainingList />} />
       </Route>
     </Routes>
   );

@@ -7,12 +7,16 @@ import edit from '../../../../assets/icons/orange_edit_write_outline.png';
 import fi_trash from '../../../../assets/icons/icon-fi_trash-2.png';
 import fi_search from '../../../../assets/icons/fi_search.png';
 import fi_plus from '../../../../assets/icons/fi_plus.png';
+import TrainingList from '../../TrainingInfo/TrainingList';
+import fiarrowupdown from '../../../../assets/icons/u_arrow up down.png';
+import Button from '../../../../components/Button';
+import SearchInput from '../../../../components/SearchTable';
 const Workprocess = () => {
-  const [openSection, setOpenSection] = useState<string | null>(null);
-  const [searchText, setSearchText] = useState<string>('');
+  const [openSection, setOpenSection] = useState<string | null>('work');
 
+  const [searchText, setSearchText] = useState<string>('');
   const toggleSection = (section: string) => {
-    setOpenSection(openSection === section ? null : section);
+    setOpenSection((prevSection) => (prevSection === section ? null : section));
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +33,7 @@ const Workprocess = () => {
 
   return (
     <div className="overflow-x-auto flex-grow px-2 md:px-10">
-      <div className="border rounded-lg shadow-md overflow-hidden">
+      <div className="  border rounded-lg shadow-md overflow-hidden">
         <button
           onClick={toggleSection.bind(this, 'work')}
           className={` w-full h-[58px] text-left px-4 py-2 font-semibold flex items-center justify-between transition-colors 
@@ -48,38 +52,55 @@ const Workprocess = () => {
         {openSection === 'work' && (
           <div className="p-4 w-[95%] mx-auto  ">
             <div className="mb-2 flex flex-wrap items-center justify-between gap-4">
-              {/* Ô tìm kiếm */}
               <div className="w-[438px] h-10 relative">
                 <img src={fi_search} alt="Search" className="absolute left-4 top-1/2 w-5 h-5 transform -translate-y-1/2" />
-                <input
-                  type="text"
-                  placeholder="Tìm kiếm"
-                  className="border p-2 rounded-full w-full italic pl-10"
-                  value={searchText}
-                  onChange={handleSearchChange}
-                />
-              </div>
 
-              {/* Nút thêm */}
-              <button className="w-[101px] h-8 bg-orange-500 text-white px-4 py-2 rounded flex items-center gap-2">
-                <img src={fi_plus} alt="fi_plus" />
+                <SearchInput placeholder="Tìm kiếm" value={searchText} onChange={handleSearchChange} />
+              </div>
+              <Button size="mini" className="primary">
+                <img src={fi_plus} alt="Add Icon" />
                 Thêm
-              </button>
+              </Button>
             </div>
 
-            {/* Bảng dữ liệu */}
             <div className="overflow-x-auto">
               <table className="w-full border-collapse border rounded-lg text-center overflow-hidden">
                 <thead>
                   <tr className="bg-gray-800 text-white">
-                    <th className="p-2">Cơ quan/ Đơn vị</th>
-                    <th className="p-2">Tổ/ Bộ môn</th>
-                    <th className="p-2">Chức vụ</th>
-                    <th className="p-2">Ngày bắt đầu</th>
-                    <th className="p-2">Ngày kết thúc</th>
+                    <th className="p-2 text-center">
+                      <div className="flex items-center justify-center gap-1">
+                        Cơ quan/ Đơn vị
+                        <img src={fiarrowupdown} alt="" className="w-6 h-6" />
+                      </div>
+                    </th>
+                    <th className="p-2 text-center">
+                      <div className="flex items-center justify-center gap-1">
+                        Tổ/ Bộ môn
+                        <img src={fiarrowupdown} alt="" className="w-6 h-6" />
+                      </div>
+                    </th>
+                    <th className="p-2 text-center">
+                      <div className="flex items-center justify-center gap-1">
+                        Chức vụ
+                        <img src={fiarrowupdown} alt="" className="w-6 h-6" />
+                      </div>
+                    </th>
+                    <th className="p-2 text-center">
+                      <div className="flex items-center justify-center gap-1">
+                        Ngày bắt đầu
+                        <img src={fiarrowupdown} alt="" className="w-6 h-6" />
+                      </div>
+                    </th>
+                    <th className="p-2 text-center">
+                      <div className="flex items-center justify-center gap-1">
+                        Ngày kết thúc
+                        <img src={fiarrowupdown} alt="" className="w-6 h-6" />
+                      </div>
+                    </th>
                     <th className="p-2"></th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {workHistoryData
                     .filter((row) => row.unit.toLowerCase().includes(searchText.toLowerCase()))
@@ -107,16 +128,8 @@ const Workprocess = () => {
           </div>
         )}
       </div>
-
-      {/* Thông tin đào tạo */}
-      <div className="border rounded-lg shadow-md overflow-hidden mt-4">
-        <button
-          onClick={toggleSection.bind(this, 'education')}
-          className="w-full bg-gray-200 text-left px-4 py-2 font-semibold flex items-center justify-between"
-        >
-          Thông tin đào tạo
-          <span>{openSection === 'education' ? '▼' : '▶'}</span>
-        </button>
+      <div className="pt-20">
+        <TrainingList onClick={toggleSection.bind(this, 'education')} />
       </div>
     </div>
   );
