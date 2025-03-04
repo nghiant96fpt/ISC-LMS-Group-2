@@ -39,6 +39,8 @@ import TestManagement from '../../pages/Leadership/Exams/TestManagement/TestMana
 import DetailTestManagement from '../../pages/Leadership/Exams/TestManagement/DetailTestManagement';
 import ExamDetailModal from '../../pages/Leadership/Exams/ExamsDeTai';
 import EditExamSchedule from '../../pages/Leadership/Exams/EditExams/edit';
+import ExamListTable from '../../pages/Leadership/Exams/ExamListTable';
+import CreateExamSchedule from '../../pages/Leadership/Exams/CreateExamSchedule/CreateExamSchedule';
 
 const StudentRoutes = () => {
   return (
@@ -98,6 +100,8 @@ const StudentRoutes = () => {
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
 
+        <Route path="exam-list" element={<ExamListTable />} />
+        <Route path="create-exam-schedule" element={<CreateExamSchedule />} />
       </Route>
     </Routes>
   );
