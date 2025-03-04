@@ -16,12 +16,12 @@ import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRou
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
 import BlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/bockDepartment';
-// import AddDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/add';
+import AddDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/add';
 import ClassListWrapper from '../../pages/Leadership/DeclareData/BlockDepartment/ClassListWrapper';
 import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/edit';
-// import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
-// import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
-// import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
+import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
+import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
+import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 import SectionList from '../../pages/Leadership/DeclareData/SectionList';
 import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
@@ -33,6 +33,10 @@ import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile'
 import ResignationForm from '../../pages/Leadership/AllTeacherProfiles/ResignationForm/ResignationForm';
 import LeaveUpdateModal from '../../pages/Leadership/AllTeacherProfiles/UpdateLeave/UpdateLeave';
 import RetirementUpdateModal from '../../pages/Leadership/AllTeacherProfiles/RetirementFrom/RetirementForm';
+import StudentCU from '../../pages/Leadership/StudentCUD/StudentCU';
+import StudyProcess from '../../pages/Leadership/StudyProcess';
+import UpdateRewards from '../../pages/Leadership/StudyProcess/UpdateRewards';
+import UpdateDiscipline from '../../pages/Leadership/StudyProcess/UpdateDiscipline';
 
 const StudentRoutes = () => {
   return (
@@ -79,6 +83,11 @@ const StudentRoutes = () => {
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
+        <Route path="create-student" element={<StudentCU />} />
+        {/* */}
+        <Route path="study-process" element={<StudyProcess />} />
+        <Route path="study-process/update-rewards" element={<UpdateRewards />} />
+        <Route path="study-process/update-discipline" element={<UpdateDiscipline />} />
       </Route>
     </Routes>
   );
