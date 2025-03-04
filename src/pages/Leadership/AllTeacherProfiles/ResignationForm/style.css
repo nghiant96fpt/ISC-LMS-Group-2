@@ -1,5 +1,4 @@
-/* Overlay làm mờ nền */
-.overlay {
+Overlay làm mờ nền .overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -43,7 +42,7 @@
 .row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+
   margin-bottom: 15px;
   width: 100%;
 }

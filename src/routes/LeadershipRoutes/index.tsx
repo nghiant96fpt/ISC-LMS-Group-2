@@ -35,6 +35,8 @@ import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile'
 import ResignationForm from '../../pages/Leadership/AllTeacherProfiles/ResignationForm/ResignationForm';
 import LeaveUpdateModal from '../../pages/Leadership/AllTeacherProfiles/UpdateLeave/UpdateLeave';
 import RetirementUpdateModal from '../../pages/Leadership/AllTeacherProfiles/RetirementFrom/RetirementForm';
+import TestManagement from '../../pages/Leadership/Exams/TestManagement/TestManagement';
+import DetailTestManagement from '../../pages/Leadership/Exams/TestManagement/DetailTestManagement';
 
 const StudentRoutes = () => {
   return (
@@ -79,9 +81,15 @@ const StudentRoutes = () => {
         {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
         {/* <Route path="section-list" element={<SectionList />} /> */}
         {/* <Route path="section-list/edit" element={<SubjectSetup />} /> */}
+
+        { /*Group-3 TestManagement */}
         <Route path="exams" element={<Exams />} />
         <Route path="exams/:id" element={<ExamClassList />} />
         <Route path="exams/:examId/scoreboard/:scoreboardId" element={<ScoreBoard />} />
+        <Route path="exams/test-management" element={<TestManagement />} />
+        <Route path="exams/test-management/:id" element={<DetailTestManagement />} />
+        {/*  */}
+
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />

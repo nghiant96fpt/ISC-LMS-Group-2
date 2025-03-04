@@ -82,7 +82,7 @@ const RetirementUpdateModal: React.FC = () => {
             {/* Hàng chứa label, input và nút */}
             <div className="flex items-center gap-2">
               {/* Label */}
-              <label className="font-semibold whitespace-nowrap">Quyết định nghỉ hưu:</label>
+              <label className="font-semibold whitespace-nowrap">Quyết định nghỉ việc:</label>
 
               {/* Ô hiển thị tên file (có icon) */}
               <div className="relative flex-1">
