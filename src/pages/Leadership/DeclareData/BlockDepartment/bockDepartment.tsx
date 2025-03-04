@@ -2,6 +2,7 @@ import React, { useEffect, useState, } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./style.module.css";
 import { IDepartment } from "./type";
+import DeleteAcademicYearModal from "../../../../components/DeleteConfirmation";
 
 const BlockDepartment = () => {
     const [data, setData] = useState<IDepartment[]>([]);
@@ -114,22 +115,12 @@ const BlockDepartment = () => {
                                     </svg>
                                 </button>
                                 {isModalOpen && (
-                                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                                        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-                                            <h1 className="text-2xl font-bold mb-4">Xóa Khoa - Khối</h1>
-                                            <p className="text-gray-700 mb-8 ">Xác nhận muốn xoá Khoa - Khối này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác.</p>
-                                            <div className="flex justify-center space-x-10">
-
-                                                <button onClick={setIsModalOpen.bind(null, false)} className="bg-gray-100 text-black-text font-semibold py-3 px-14 rounded-lg">
-                                                    Huỷ
-                                                </button>
-
-                                                <button onClick={confirmDelete} className="bg-background-orange-1 text-white font-semibold py-3 px-10 rounded-lg">
-                                                    Xác nhận
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <DeleteAcademicYearModal
+                                        title="Xóa Khoa - Khối"
+                                        description="Xác nhận muốn xoá Khoa - Khối này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác."
+                                        onCancel={setIsModalOpen.bind(null, false)}
+                                        onConfirm={confirmDelete}
+                                    />
                                 )}
                             </td>
                         </tr>

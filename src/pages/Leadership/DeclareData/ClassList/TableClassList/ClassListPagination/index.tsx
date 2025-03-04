@@ -8,11 +8,7 @@ import {
 import { PaginationProps } from './type';
 import { getPageNumbers } from './utils';
 
-const Pagination: React.FC<PaginationProps> = ({
-  currentPage,
-  totalPages,
-  onPageChange,
-}) => {
+const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
   const maxVisiblePages = 5;
   const pageNumbers = getPageNumbers(currentPage, totalPages, maxVisiblePages);
 
@@ -32,7 +28,7 @@ const Pagination: React.FC<PaginationProps> = ({
       {/* Các số trang */}
       <div className="flex items-center gap-x-1">
         {pageNumbers.map((page, index) =>
-          page === "..." ? (
+          page === '...' ? (
             <button
               key={index}
               type="button"
@@ -61,11 +57,11 @@ const Pagination: React.FC<PaginationProps> = ({
               className={`min-h-[38px] min-w-[38px] flex justify-center items-center border text-base font-bold
                 ${currentPage === page ? 'bg-background-orange-1 text-white' : 'border-transparent text-gray-800 hover:bg-gray-100'} 
                 py-2 px-3 text-sm rounded-full focus:outline-none focus:bg-background-orange-1 disabled:opacity-50 disabled:pointer-events-none`}
-              aria-current={currentPage === page ? "page" : undefined}
+              aria-current={currentPage === page ? 'page' : undefined}
             >
               {page}
             </button>
-          )
+          ),
         )}
       </div>
 
