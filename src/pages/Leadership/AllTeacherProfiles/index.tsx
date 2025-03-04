@@ -70,11 +70,11 @@ const AllTeacherProfiles: React.FC = () => {
             navigate(`/`);
         } else if (key === '2') {
 
-            navigate(`/leadership/all-student-profiles/resignation/${id}`);
+            navigate(`/leadership/all-teacher-profiles/resignation/${id}`);
         } else if (key === '3') {
-            navigate(`/leadership/all-student-profiles/retirement/${id}`);
+            navigate(`/leadership/all-teacher-profiles/retirement/${id}`);
         } else if (key === '4') {
-            navigate(`/leadership/all-student-profiles/stop-working/${id}`);
+            navigate(`/leadership/all-teacher-profiles/stop-working/${id}`);
         }
     };
 

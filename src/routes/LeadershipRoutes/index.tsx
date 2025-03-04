@@ -37,20 +37,24 @@ import LeaveUpdateModal from '../../pages/Leadership/AllTeacherProfiles/UpdateLe
 import RetirementUpdateModal from '../../pages/Leadership/AllTeacherProfiles/RetirementFrom/RetirementForm';
 import TestManagement from '../../pages/Leadership/Exams/TestManagement/TestManagement';
 import DetailTestManagement from '../../pages/Leadership/Exams/TestManagement/DetailTestManagement';
+import ExamDetailModal from '../../pages/Leadership/Exams/ExamsDeTai';
+import EditExamSchedule from '../../pages/Leadership/Exams/EditExams/edit';
 
 const StudentRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<MainLayout role="leadership" />}>
         <Route index element={<Dashboard />} />
-        { /*Group-3 All student */}
-        <Route path="all-student-profiles" element={<AllStudentProfiles />} />
-        <Route path="all-student-profiles/retirement/:id" element={<ResignationForm />} />
-        <Route path="all-student-profiles/stop-working/:id" element={<LeaveUpdateModal />} />
-        <Route path="all-student-profiles/resignation/:id" element={<RetirementUpdateModal />} />
-        {/*  */}
 
+        <Route path="all-student-profiles" element={<AllStudentProfiles />} />
+
+
+        { /*Group-3 All student */}
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
+        <Route path="all-teacher-profiles/retirement/:id" element={<ResignationForm />} />
+        <Route path="all-teacher-profiles/stop-working/:id" element={<LeaveUpdateModal />} />
+        <Route path="all-teacher-profiles/resignation/:id" element={<RetirementUpdateModal />} />
+        {/*  */}
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
         {/*route cho school-year - group-4*/}
         <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
@@ -82,15 +86,14 @@ const StudentRoutes = () => {
         {/* <Route path="section-list/edit" element={<SubjectSetup />} /> */}
 
         { /*Group-3 TestManagement */}
-        <Route path="exams" element={<Exams />} />
+        <Route path="exams/*" element={<Exams />} />
         <Route path="exams/:id" element={<ExamClassList />} />
         <Route path="exams/:examId/scoreboard/:scoreboardId" element={<ScoreBoard />} />
         <Route path="exams/test-management" element={<TestManagement />} />
         <Route path="exams/test-management/:id" element={<DetailTestManagement />} />
+        <Route path="exams/edit/:id" element={<EditExamSchedule />} />
+        <Route path="exams/detail" element={<ExamDetailModal />} />
         {/*  */}
-
-        <Route path="exams/:id" element={<EditExamScheduleModal />} />
-        <Route path="exams/detai" element={<ExamDetailModal />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />

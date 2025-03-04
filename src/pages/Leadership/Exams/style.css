@@ -69,7 +69,8 @@
 .exam-table th div {
   display: flex;
   align-items: center;
-  justify-content: center; /* Căn giữa cả chữ và icon */
+  justify-content: center;
+  /* Căn giữa cả chữ và icon */
   gap: 8px;
 }
 
@@ -124,6 +125,7 @@
     font-size: 16px;
   }
 }
+
 .header-cell {
   max-height: 32px;
   display: flex;

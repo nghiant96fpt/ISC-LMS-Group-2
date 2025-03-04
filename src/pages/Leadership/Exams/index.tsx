@@ -36,6 +36,7 @@ const ExamSchedule: React.FC = () => {
 
   const tabOptions = {
     labels: ['Xem theo bảng', 'Xem theo lịch '],
+    paths: ["/leadership/exams", "/leadership/exams/1"],
   };
 
   return (
@@ -47,7 +48,7 @@ const ExamSchedule: React.FC = () => {
           <DropdownSelectionComponent placeholder="Chọn lớp" options={['Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9']} width={144} />
           <DropdownSelectionComponent placeholder="Chọn khối" options={['Khối 6', 'Khối 7', 'Khối 8', 'Khối 9']} width={144} />
 
-          <SwitchTag options={tabOptions} activeTab={activeTab} handleTabClick={setActiveTab} />
+          <SwitchTag options={tabOptions} />
 
           <div className="button-container">
             <Button className="primary">Thêm mới</Button>
