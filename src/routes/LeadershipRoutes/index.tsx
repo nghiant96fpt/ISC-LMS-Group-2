@@ -36,9 +36,7 @@ import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile'
 import ResignationForm from '../../pages/Leadership/AllTeacherProfiles/ResignationForm/ResignationForm';
 import LeaveUpdateModal from '../../pages/Leadership/AllTeacherProfiles/UpdateLeave/UpdateLeave';
 import RetirementUpdateModal from '../../pages/Leadership/AllTeacherProfiles/RetirementFrom/RetirementForm';
-import TableClassList from '../../pages/Leadership/DeclareData/ClassList';
-import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
-import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile';
+
 import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/StudentRetensionUpdate';
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
 
