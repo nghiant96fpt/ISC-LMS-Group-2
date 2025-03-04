@@ -9,16 +9,16 @@
 
 .switch-tab {
   display: flex;
-  background-color: var(--color-secondary);
-  border-radius: 100px;
-  padding: 8px;
-  gap: 4px;
-  max-width: 25%;
-  margin: 0.3rem;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 48px;
+  border-radius: 32px;
+  padding: 6px;
+  background-color: #f0f0f0;
 }
 
 .tab-button {
-  flex: 1;
   border: none;
   padding: 8px 16px;
   background-color: transparent;

@@ -21,7 +21,9 @@ import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/e
 import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
 import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
 import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
-import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
+import EditExamScheduleModal from '../../pages/Leadership/Exams/EditExams/edit';
+import ExamDetailModal from '../../pages/Leadership/Exams/ExamsDeTai/index';
+// import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 import SectionList from '../../pages/Leadership/DeclareData/SectionList';
 import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
@@ -62,13 +64,15 @@ const StudentRoutes = () => {
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
-        <Route path="declare-data/*" element={<DeclareDataRoutes />} />
+        {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
         {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
         {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
         {/* <Route path="section-list" element={<SectionList />} /> */}
         {/* <Route path="section-list/edit" element={<SubjectSetup />} /> */}
         <Route path="exams" element={<Exams />} />
+        <Route path="exams/:id" element={<EditExamScheduleModal />} />
+        <Route path="exams/detai" element={<ExamDetailModal />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
