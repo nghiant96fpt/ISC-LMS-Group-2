@@ -5,12 +5,15 @@ import DateInput from "../CreateExamSchedule/Date";
 import dayjs from 'dayjs';
 import './style.css';
 import vector from "../../../../assets/icons/Vector.png";
+import { useNavigate } from "react-router";
+import Button from "../../../../components/Button";
 
 const teachers = ["Nguyễn Văn D", "Trần Thị D", "Lê Văn A", "Phạm Thị B"];
 const allClasses = ["9A1", "9A2", "9C1", "9C2", "9B1"];
 const subjects = ["Toán", "Văn", "Anh", "Lý", "Hóa", "Sinh", "Sử", "Địa", "GDCD"];
 
 const ExamScheduleForm: React.FC = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState<ExamSchedule>({
         schoolYear: "",
         grade: "",
@@ -35,6 +38,9 @@ const ExamScheduleForm: React.FC = () => {
     const [teacherSearch, setTeacherSearch] = useState("");
     const [filteredTeachers, setFilteredTeachers] = useState<string[]>([]);
     const [showTeacherDropdown, setShowTeacherDropdown] = useState(false);
+    const handleClose = () => {
+        navigate('/leadership/exams', { replace: true });
+    };
 
     const handleInputChange = (field: keyof ExamSchedule, value: any) => {
         setFormData((prev) => {
@@ -170,6 +176,7 @@ const ExamScheduleForm: React.FC = () => {
     };
 
     return (
+
         <div className="p-6 max-w-3xl mx-auto rounded-2xl space-y-4">
             <h2 className="text-2xl font-bold text-center">Thêm lịch thi mới</h2>
             <div className="grid grid-cols-2 gap-4 mt-4">
@@ -256,7 +263,7 @@ const ExamScheduleForm: React.FC = () => {
                     <button className="w-full p-3 border rounded-lg flex justify-between items-center" onClick={() => setShowSubjectDropdown(!showSubjectDropdown)}>
                         {formData.subject || "Chọn môn thi"}
                         <img src={vector} alt="Mũi tên" />
-                        </button>
+                    </button>
                     {showSubjectDropdown && (
                         <ul className="absolute w-full bg-white border rounded-lg mt-1 max-h-40 overflow-auto z-10">
                             {subjects.map((subj) => (
@@ -412,10 +419,11 @@ const ExamScheduleForm: React.FC = () => {
             </div >
             {/* Nút Hủy & Lưu */}
             <div className="mt-6 flex justify-center gap-x-4">
-                <button className="w-40 px-5 py-3 bg-gray-300 rounded-lg font-medium">Hủy</button>
+                <button className="w-40 px-5 py-3 bg-gray-300 rounded-lg font-medium" onClick={handleClose}>Hủy</button>
                 <button className="w-40 px-5 py-3 bg-gray-400 text-white rounded-lg font-medium">Lưu</button>
             </div>
         </div >
+
 
     );
 };

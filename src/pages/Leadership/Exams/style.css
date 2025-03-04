@@ -79,12 +79,6 @@
   color: gray;
 }
 
-.exam-actions {
-  display: masonry;
-  gap: 8px;
-  align-items: center;
-  text-decoration: none;
-}
 
 .icon-action {
   cursor: pointer;

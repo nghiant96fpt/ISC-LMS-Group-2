@@ -27,8 +27,6 @@ import SectionList from '../../pages/Leadership/DeclareData/SectionList';
 import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
 import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
-
-
 import TableClassList from '../../pages/Leadership/DeclareData/ClassList/TableClassList';
 import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
 import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile';
@@ -94,14 +92,15 @@ const StudentRoutes = () => {
         <Route path="exams/test-management" element={<TestManagement />} />
         <Route path="exams/test-management/:id" element={<DetailTestManagement />} />
         <Route path="exams/edit/:id" element={<EditExamSchedule />} />
-        <Route path="exams/detail" element={<ExamDetailModal />} />
+        <Route path="exams/detail/:id" element={<ExamDetailModal />} />
+        <Route path="exams/list" element={<ExamListTable />} />
+        <Route path="exams/create-exam-schedule" element={<CreateExamSchedule />} />
         {/*  */}
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
 
-        <Route path="exam-list" element={<ExamListTable />} />
-        <Route path="create-exam-schedule" element={<CreateExamSchedule />} />
+
       </Route>
     </Routes>
   );

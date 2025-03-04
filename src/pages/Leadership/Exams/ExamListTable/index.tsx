@@ -1,59 +1,58 @@
 import { useState } from "react";
 import Calendar from "./Calendar";
 import ExamList from "./ExamList";
-
+import SwitchTag from "../../../../components/SwitchTag";
+import DropdownSelectionComponent from "../../../../components/DropdownSelection";
+import Button from "../../../../components/Button";
+import AddressList from "../../../../components/AddressUrlStack/Index";
+import { useNavigate } from "react-router";
+const tabOptions = {
+    labels: ['Xem theo bảng', 'Xem theo lịch '],
+    paths: ["/leadership/exams", "/leadership/exams/list"],
+};
+const option_date = ["2020-2021", "2019-2020", "2018-2019", "2017-2018"];
+const option_selectClass = ["6A", "6B", "6C"];
+const option_selectBlock = ["Khối 6", "Khối 7", "Khối 8"];
 const ExamPage = () => {
+    const navigate = useNavigate();
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [viewMode, setViewMode] = useState<"table" | "calendar">("table");
-
+    const [urls, setUrls] = useState([{ link: "/", linkName: "Quản lý lịch thi" }])
+    const goCreate = () => {
+        navigate(`/leadership/exams/create-exam-schedule`);
+    };
     return (
-        <div className="flex flex-col gap-4 p-5 w-full max-w-6xl mx-auto">
+        <div className="flex flex-col gap-4  w-full max-w-6xl mx-auto">
             {/* Tiêu đề trang */}
-            <h1 className="text-2xl font-bold text-gray-800 text-left">Quản lý bài thi</h1>
+            <AddressList addressList={urls} />
 
             {/* Phần header quản lý lịch thi */}
             <div className="flex flex-wrap items-center justify-between gap-4 p-4">
                 {/* Group chứa select và nút công tắc */}
                 <div className="flex flex-wrap gap-2 items-center">
-                    <select className="border border-gray-300 p-2 rounded">
-                        <option>2020-2021</option>
-                    </select>
-                    <select className="border border-gray-300 p-2 rounded">
-                        <option>Chọn lớp</option>
-                    </select>
-                    <select className="border border-gray-300 p-2 rounded">
-                        <option>Chọn Khối</option>
-                    </select>
+                    <DropdownSelectionComponent placeholder="Niên khóa" label={option_date[0]} options={option_date} width={144} />
+                    <DropdownSelectionComponent
+                        label='Chọn lớp'
+                        options={option_selectClass}
+                        width={144}
+                    />
+                    <DropdownSelectionComponent
+                        label='Chọn khối'
+                        options={option_selectBlock}
+                        width={144}
+                    />
+
 
                     {/* Nút chuyển đổi dạng công tắc */}
                     <div className="flex bg-gray-200 rounded-full p-1">
-                        <button
-                            className={`px-4 py-2 rounded-full transition ${
-                                viewMode === "table"
-                                    ? "bg-black text-white"
-                                    : "text-gray-500"
-                            }`}
-                            onClick={() => setViewMode("table")}
-                        >
-                            Xem theo bảng
-                        </button>
-                        <button
-                            className={`px-4 py-2 rounded-full transition ${
-                                viewMode === "calendar"
-                                    ? "bg-black text-white"
-                                    : "text-gray-500"
-                            }`}
-                            onClick={() => setViewMode("calendar")}
-                        >
-                            Xem theo lịch
-                        </button>
+                        <SwitchTag options={tabOptions} />
                     </div>
                 </div>
 
                 {/* Nút thêm mới */}
-                <button className="bg-orange-500 text-white px-4 py-2 rounded flex items-center">
+                <Button className="bg-orange-500 text-white px-4 py-2 rounded flex items-center" onClick={goCreate}>
                     + Thêm mới
-                </button>
+                </Button>
             </div>
 
             {/* Phần nội dung */}

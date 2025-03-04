@@ -130,7 +130,7 @@ const ExamClassList: React.FC = () => {
                     <td className="py-3 px-4 text-center">
                       <div className="flex justify-center space-x-2 items-center">
                         <button className="w-8 h-8 ">
-                          <Link to={`${item.id}`}>
+                          <Link to={`/leadership/exams/edit/${item.id}`}>
                             <IconEdit className="text-orange-text" />
                           </Link>
                         </button>

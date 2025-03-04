@@ -129,6 +129,9 @@ const TestManagement: React.FC = () => {
     const goDetail = (id: number) => {
         navigate(`/leadership/exams/test-management/${id}`);
     };
+    const goCreate = () => {
+        navigate(`/leadership/exams/create-exam-schedule`);
+    };
     useEffect(() => {
         setData(teachers);
     }, []);
@@ -176,7 +179,7 @@ const TestManagement: React.FC = () => {
                     </div>
                 </div>
                 <div className="space-x-2 flex justify-between">
-                    <Button className="primary">+ Thêm mới</Button>
+                    <Button className="primary" onClick={goCreate}>+ Thêm mới</Button>
                 </div>
             </div>
 
