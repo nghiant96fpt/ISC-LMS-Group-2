@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
-import calendar from "../../../assets/icons/icon-calendar.png";
-import paper from "../../../assets/icons/u_paperclip.png";
-import plus from "../../../assets/icons/icon-plus-blue.png";
-import minus from "../../../assets/icons/icon_minus.png";
-import CheckboxComponent from "../../CheckBox";
-import Button from "../../Button";
+import calendar from "../../../../assets/icons/icon-calendar.png";
+import paper from "../../../../assets/icons/u_paperclip.png";
+import plus from "../../../../assets/icons/icon-plus-blue.png";
+import minus from "../../../../assets/icons/icon_minus.png";
+import CheckboxComponent from "../../../../components/CheckBox";
+import Button from "../../../../components/Button";
 import './style.css'
-import { DropdownOption } from "../../Dropdown/type";
+import { DropdownOption } from "../../../../components/Dropdown/type";
 import { initialFormState, options } from "./data";
 
 const AddTrainingProgram: React.FC = () => {

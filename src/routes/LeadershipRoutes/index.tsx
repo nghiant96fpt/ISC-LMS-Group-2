@@ -30,6 +30,8 @@ import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClas
 import TableClassList from '../../pages/Leadership/DeclareData/ClassList/TableClassList';
 import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
 import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile';
+import AddTrainingProgram from '../../pages/Leadership/TrainingInfo/AddTraining';
+import TrainingList from '../../pages/Leadership/TrainingInfo/TrainingList';
 
 const StudentRoutes = () => {
   return (
@@ -72,6 +74,8 @@ const StudentRoutes = () => {
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
+        <Route path="training-info/add" element={<AddTrainingProgram />} />
+        <Route path="training-info/list" element={<TrainingList />} />
       </Route>
     </Routes>
   );

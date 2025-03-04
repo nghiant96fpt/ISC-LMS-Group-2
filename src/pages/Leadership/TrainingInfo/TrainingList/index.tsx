@@ -1,13 +1,13 @@
 import React, { useRef, useState } from "react";
-import SearchInput from "../../SearchTable";
-import Button from "../../Button";
+import SearchInput from "../../../../components/SearchTable";
+import Button from "../../../../components/Button";
 
-import caretdown from "../../../assets/icons/icon-arrow-down.png";
-import fiarrowright from "../../../assets/icons/icon-arrow-right.png";
-import fiflus from "../../../assets/icons/fi_plus_white.png";
-import fitrash from "../../../assets/icons/fi_trash-2.png";
-import fiedit from "../../../assets/icons/icon-fi_edit.png";
-import fiarrowupdown from "../../../assets/icons/u_arrow up down.png";
+import caretdown from "../../../../assets/icons/icon-arrow-down.png";
+import fiarrowright from "../../../../assets/icons/icon-arrow-right.png";
+import fiflus from "../../../../assets/icons/fi_plus_white.png";
+import fitrash from "../../../../assets/icons/fi_trash-2.png";
+import fiedit from "../../../../assets/icons/icon-fi_edit.png";
+import fiarrowupdown from "../../../../assets/icons/u_arrow up down.png";
 import { trainingData } from "./data";
 
 const TrainingList: React.FC = () => {
