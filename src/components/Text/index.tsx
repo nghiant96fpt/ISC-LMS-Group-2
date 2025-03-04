@@ -2,7 +2,7 @@ import React from "react";
 import { TextProps } from "./type";
 import "./style.css";
 
-const TextComponent: React.FC<TextProps> = ({ text, size, font, color, flex, className, align, weight }) => {
+const TextComponent: React.FC<TextProps> = ({ text, size, font, color, flex, className, align, weight,italic  }) => {
   return (
     <p
       className={`text-component ${flex ? "flex-1" : ""} ${className || ""}`.trim()}
@@ -15,7 +15,8 @@ const TextComponent: React.FC<TextProps> = ({ text, size, font, color, flex, cla
         fontWeight: weight === "thin" ? "300" :
                     weight === "semibold" ? "600" :
                     weight === "bold" ? "700" :
-                    weight === "extrabold" ? "800" : "400", 
+                      weight === "extrabold" ? "800" : "400",
+         fontStyle: italic ? "italic" : "normal",
       }}
     >
       {text}

@@ -1,5 +1,11 @@
+import ListTransferAcceptance from './ListTransferAcceptance';
+
 const TransferAcceptance: React.FC = () => {
-    return <h1 className="text-3xl font-bold text-center text-black-text">Tiếp nhận chuyển trường</h1>;
+    return (
+        <div className="relative max-w-full pt-2 mr-3 mx-auto bg-gray-50 lg:ml-10">
+            <ListTransferAcceptance />
+        </div>
+    );
 };
-  
+
 export default TransferAcceptance;

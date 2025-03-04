@@ -21,6 +21,9 @@ import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/e
 import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
 import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
 import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
+
+// import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
+
 import SectionList from '../../pages/Leadership/DeclareData/SectionList';
 import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
@@ -33,6 +36,13 @@ import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile'
 import ResignationForm from '../../pages/Leadership/AllTeacherProfiles/ResignationForm/ResignationForm';
 import LeaveUpdateModal from '../../pages/Leadership/AllTeacherProfiles/UpdateLeave/UpdateLeave';
 import RetirementUpdateModal from '../../pages/Leadership/AllTeacherProfiles/RetirementFrom/RetirementForm';
+import TableClassList from '../../pages/Leadership/DeclareData/ClassList';
+import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
+import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile';
+import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/StudentRetensionUpdate';
+import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
+
+
 
 const StudentRoutes = () => {
   return (
@@ -58,6 +68,10 @@ const StudentRoutes = () => {
         <Route path="declare-data/class-list" element={<TableClassList />} />
         <Route path="declare-data/class-detail" element={<ClassDetail />} /> {/* url bảng ds lớp học */}
         <Route path="declare-data/file-class" element={<Uploadfile />} /> {/* url xuât file lớp học */}
+        {/* route cho tiếp nhận chuyển trường và hồ sơ bảo lưu - group 4 */}
+
+        <Route path="update-student-retention" element={<StudentRetensionUpdate />} />
+        <Route path="add-transfer-acceptance" element={<AddTransferAcceptance />} />
         {/*  */}
         <Route path="declare-data" element={<DeclareData />} />
         {/* Route cho block-department */}
