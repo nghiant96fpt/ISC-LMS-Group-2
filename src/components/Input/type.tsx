@@ -8,8 +8,7 @@ export interface inputProps {
   size?: 'sm' | 'md' | 'lg',
   style?: React.CSSProperties,
   className?: string,
-  type?: 'text' | 'password' | 'date',
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-  onPaste?: (event: React.ClipboardEvent<HTMLInputElement>) => void;
+  type?: 'text' | 'password',
 };
+
+// cách sử dụng ref tránh lỗi nhất (theo chatGPT): const aRef = useRef<HTMLInputElement>(null);
