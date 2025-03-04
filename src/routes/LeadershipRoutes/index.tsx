@@ -39,6 +39,7 @@ import RetirementUpdateModal from '../../pages/Leadership/AllTeacherProfiles/Ret
 
 import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/StudentRetensionUpdate';
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
+import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
 
 
 
@@ -47,13 +48,12 @@ const StudentRoutes = () => {
     <Routes>
       <Route path="/" element={<MainLayout role="leadership" />}>
         <Route index element={<Dashboard />} />
-        { /*Group-3 All student */}
+        {/*Group-3 All student */}
         <Route path="all-student-profiles" element={<AllStudentProfiles />} />
         <Route path="all-student-profiles/retirement/:id" element={<ResignationForm />} />
         <Route path="all-student-profiles/stop-working/:id" element={<LeaveUpdateModal />} />
         <Route path="all-student-profiles/resignation/:id" element={<RetirementUpdateModal />} />
         {/*  */}
-
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
         {/*route cho school-year - group-4*/}
@@ -67,9 +67,11 @@ const StudentRoutes = () => {
         <Route path="declare-data/class-detail" element={<ClassDetail />} /> {/* url bảng ds lớp học */}
         <Route path="declare-data/file-class" element={<Uploadfile />} /> {/* url xuât file lớp học */}
         {/* route cho tiếp nhận chuyển trường và hồ sơ bảo lưu - group 4 */}
-
         <Route path="update-student-retention" element={<StudentRetensionUpdate />} />
         <Route path="add-transfer-acceptance" element={<AddTransferAcceptance />} />
+        {/* route cho phân công giảng dạy và ds chủ đề - group 4 */}
+        <Route path="teaching-assignment" element={<TeachingAssignment />} /> {/* url phân công giảng */}
+        <Route path="teaching-list-topic" element={<ListTopic />} /> {/* url ds chủ đề */}
         {/*  */}
         <Route path="declare-data" element={<DeclareData />} />
         {/* Route cho block-department */}
@@ -83,7 +85,6 @@ const StudentRoutes = () => {
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
-
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
         {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
         {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
@@ -92,8 +93,6 @@ const StudentRoutes = () => {
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
-        <Route path="teaching-assignment" element={<TeachingAssignment />} />
-
       </Route>
     </Routes>
   );
