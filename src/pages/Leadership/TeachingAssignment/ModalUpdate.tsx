@@ -43,24 +43,27 @@ const UpdateModel: React.FC = () => {
                 <p className="w-full lg:w-2/6 font-bold text-left">Mô tả:</p>
                 <textarea className="w-full lg:w-4/6 text-left" />
               </div>
-            </div>
-            <div className="flex justify-center space-x-10">
-              <button
-                onClick={() => {
-                  setIsShow(!isShow);
-                }}
-                className="bg-gray-100 text-black-text font-semibold py-3 px-14 rounded-lg"
-              >
-                Huỷ
-              </button>
-              <button
-                onClick={() => {
-                  setIsShow(!isShow);
-                }}
-                className="bg-background-orange-1 text-white font-semibold py-3 px-10 rounded-lg"
-              >
-                Xác nhận
-              </button>
+              <div className="flex w-full mt-4">
+                <p className="w-full lg:w-2/6 font-bold text-left"> </p>
+                <div className="w-full lg:w-4/6 text-left flex   space-x-10">
+                  <button
+                    onClick={() => {
+                      setIsShow(!isShow);
+                    }}
+                    className="bg-gray-100 text-black-text font-semibold py-3 px-14 rounded-lg"
+                  >
+                    Huỷ
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsShow(!isShow);
+                    }}
+                    className="bg-background-orange-1 text-white font-semibold py-3 px-10 rounded-lg"
+                  >
+                    Xác nhận
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
