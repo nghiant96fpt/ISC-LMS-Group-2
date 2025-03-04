@@ -1,0 +1,135 @@
+.exam-container {
+  padding: 24px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.exam-card {
+  background-color: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.exam-title {
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.table-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.exam-filter {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.exam-table-wrapper {
+  padding: 20px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.exam-table-container {
+  overflow-x: auto;
+  border-radius: 10px;
+}
+
+.exam-table {
+  width: auto;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  min-width: 150px;
+}
+
+.exam-table thead {
+  background: #f97316;
+  color: white;
+  text-align: left;
+}
+
+.exam-table th,
+.exam-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  width: auto !important;
+}
+
+.exam-table th div {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Căn giữa cả chữ và icon */
+  gap: 8px;
+}
+
+.exam-status {
+  font-weight: bold;
+  color: gray;
+}
+
+.exam-actions {
+  display: masonry;
+  gap: 8px;
+  align-items: center;
+  text-decoration: none;
+}
+
+.icon-action {
+  cursor: pointer;
+  font-size: 18px;
+  color: #f97316;
+  transition: 0.3s;
+}
+
+.icon-action:hover {
+  color: #d65100;
+}
+
+.delete {
+  color: red;
+}
+
+.delete:hover {
+  color: darkred;
+}
+
+.button-container {
+  text-align: right;
+  width: 520px;
+}
+
+@media (max-width: 768px) {
+  .exam-table-wrapper {
+    padding: 10px;
+  }
+
+  .exam-table th,
+  .exam-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .icon-action {
+    font-size: 16px;
+  }
+}
+.header-cell {
+  max-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.shrink-0 {
+  flex-shrink: 0;
+}

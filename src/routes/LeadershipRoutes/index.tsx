@@ -75,7 +75,6 @@ const StudentRoutes = () => {
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
-
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
         {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
         {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
@@ -90,6 +89,8 @@ const StudentRoutes = () => {
         <Route path="exams/test-management/:id" element={<DetailTestManagement />} />
         {/*  */}
 
+        <Route path="exams/:id" element={<EditExamScheduleModal />} />
+        <Route path="exams/detai" element={<ExamDetailModal />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
