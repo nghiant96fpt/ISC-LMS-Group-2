@@ -63,7 +63,6 @@ const AllTeacherProfiles: React.FC = () => {
     const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
     const [itemsPerPage, setItemsPerPage] = useState(8);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedId, setSelectedId] = useState<string | null>(null);
     const navigate = useNavigate();
 
     const handleMenuClick = (key: string, id?: string) => {
@@ -98,9 +97,6 @@ const AllTeacherProfiles: React.FC = () => {
         );
     };
 
-    const handleRowClick = (id: string) => {
-        setSelectedId(id);
-    };
 
     return (
         <div className="p-3">
@@ -108,6 +104,7 @@ const AllTeacherProfiles: React.FC = () => {
 
             <div className="flex justify-between items-center mb-4">
                 <DropdownSelectionComponent
+                    label={option_date[0]}
                     options={option_date}
                     width={144}
                 />
