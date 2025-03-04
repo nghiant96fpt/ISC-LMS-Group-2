@@ -1,4 +1,5 @@
 export interface WorkHistory {
+  id: number;
   unit: string; // Cơ quan/ Đơn vị
   dept: string; // Tổ/ Bộ môn
   role: string; // Chức vụ

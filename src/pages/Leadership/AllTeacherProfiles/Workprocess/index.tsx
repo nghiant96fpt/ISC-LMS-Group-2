@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { WorkHistory } from './Types';
-import { workHistoryData } from './data';
+import { workHistoryData as initialworkHistoryData } from './data';
 import arrow_right from '../../../../assets/icons/icon-arrow-right.png';
 import arrow_down from '../../../../assets/icons/caret-down_white.png';
 import edit from '../../../../assets/icons/orange_edit_write_outline.png';
@@ -11,9 +11,13 @@ import TrainingList from '../../TrainingInfo/TrainingList';
 import fiarrowupdown from '../../../../assets/icons/u_arrow up down.png';
 import Button from '../../../../components/Button';
 import SearchInput from '../../../../components/SearchTable';
+import DeleteAcademicYearModal from '../../../../components/DeleteConfirmation';
+import { Link } from 'react-router-dom';
 const Workprocess = () => {
   const [openSection, setOpenSection] = useState<string | null>('work');
-
+  const [subjectGroups, setSubjectGroups] = useState<WorkHistory[]>(initialworkHistoryData);
+  const [selectedGroup, setSelectedGroup] = useState<WorkHistory | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [searchText, setSearchText] = useState<string>('');
   const toggleSection = (section: string) => {
     setOpenSection((prevSection) => (prevSection === section ? null : section));
@@ -23,23 +27,25 @@ const Workprocess = () => {
     setSearchText(event.target.value);
   };
 
-  const handleEdit = (data: WorkHistory) => {
-    console.log('Edit', data);
-  };
-
-  const handleDelete = (data: WorkHistory) => {
-    console.log('Delete', data);
-  };
-
+  const handleDeleteClick = useCallback((group: WorkHistory) => {
+    setSelectedGroup(group);
+    setIsDeleteModalOpen(true);
+  }, []);
+  const confirmDelete = useCallback(() => {
+    if (selectedGroup) {
+      setSubjectGroups((prev) => prev.filter((g) => g.id !== selectedGroup.id));
+    }
+    setIsDeleteModalOpen(false);
+  }, [selectedGroup]);
   return (
     <div className="overflow-x-auto flex-grow px-2 md:px-10">
       <div className="  border rounded-lg shadow-md overflow-hidden">
         <button
           onClick={toggleSection.bind(this, 'work')}
-          className={` w-full h-[58px] text-left px-4 py-2 font-semibold flex items-center justify-between transition-colors 
+          className={` w-full h-[58px] text-left px-4 py-2 flex items-center justify-between transition-colors 
         ${openSection === 'work' ? 'bg-orange-500 text-white' : 'bg-white text-black-text border border-slate-100'}`}
         >
-          <span className="flex items-center  gap-2">
+          <span className="flex items-center text-lg gap-2">
             {openSection === 'work' ? (
               <img src={arrow_down} alt="arrow down" className="w-5 h-3 transition-transform" />
             ) : (
@@ -57,10 +63,12 @@ const Workprocess = () => {
 
                 <SearchInput placeholder="Tìm kiếm" value={searchText} onChange={handleSearchChange} />
               </div>
-              <Button size="mini" className="primary">
-                <img src={fi_plus} alt="Add Icon" />
-                Thêm
-              </Button>
+              <Link to="/leadership/all-teacher-profiles/addworkprocess">
+                <Button size="mini" className="primary">
+                  <img src={fi_plus} alt="Add Icon" />
+                  Thêm
+                </Button>
+              </Link>
             </div>
 
             <div className="overflow-x-auto">
@@ -102,7 +110,7 @@ const Workprocess = () => {
                 </thead>
 
                 <tbody>
-                  {workHistoryData
+                  {subjectGroups
                     .filter((row) => row.unit.toLowerCase().includes(searchText.toLowerCase()))
                     .map((row, index) => (
                       <tr key={index} className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'} hover:bg-gray-200 transition`}>
@@ -113,10 +121,12 @@ const Workprocess = () => {
                         <td className="p-2 ">{row.end}</td>
                         <td className="p-2 text-center whitespace-nowrap space-x-4">
                           {' '}
-                          <button onClick={handleEdit.bind(this, row)}>
-                            <img src={edit} alt="edit" className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8" />
-                          </button>
-                          <button onClick={handleDelete.bind(this, row)}>
+                          <Link to="/leadership/all-teacher-profiles/addworkprocess">
+                            <button>
+                              <img src={edit} alt="edit" className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8" />
+                            </button>
+                          </Link>
+                          <button onClick={handleDeleteClick.bind(null, row)}>
                             <img src={fi_trash} alt="delete" className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8" />
                           </button>
                         </td>
@@ -131,6 +141,14 @@ const Workprocess = () => {
       <div className="pt-20">
         <TrainingList onClick={toggleSection.bind(this, 'education')} />
       </div>
+      {isDeleteModalOpen && (
+        <DeleteAcademicYearModal
+          title="Xóa Quá Trình"
+          description="Xác nhận muốn xoá Tổ - Bộ môn này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác."
+          onCancel={() => setIsDeleteModalOpen(false)}
+          onConfirm={confirmDelete}
+        />
+      )}
     </div>
   );
 };

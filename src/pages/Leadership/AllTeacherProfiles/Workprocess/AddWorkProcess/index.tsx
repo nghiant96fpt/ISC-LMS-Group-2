@@ -10,34 +10,52 @@ import { subjectGroups as initialSubjectGroups } from '../../../DeclareData/Data
 import minus from '../../../../../assets/icons/icon_minus.png';
 import plus from '../../../../../assets/icons/icon_plus.png';
 import caretdown from '../../../../../assets/icons/caret_down.png';
-import { Link } from 'react-router';
 import Input from '../../../../../components/Input';
-import DropdownSelectionComponent from '../../../../../components/DropdownSelection';
+
 import { CustomDropdownProps } from '../../../../../components/DropdownSelection/type';
-import { IconArrowCaretDown } from '../../../../../components/Icons';
 import CheckboxComponent from '../../../../../components/CheckBox';
 import { SubjectGroup } from '../../../DeclareData/DataList/type';
-import CalendarInput from '../../../../../components/CalendarInput';
+
+import { DropdownOption } from '../../../../../components/Dropdown/type';
+import { options } from '../../../TrainingInfo/AddTraining/data';
+import Button from '../../../../../components/Button';
 dayjs.extend(customParseFormat);
 const AddWorkProcess: React.FC<CustomDropdownProps> = ({
   label,
   placeholder = 'Lựa chọn',
   width = '100%',
-  options = [],
+
   onSelect,
   className = '',
 }) => {
-  const [selectedValue, setSelectedValue] = useState<string>('');
   const [selectedUnit, setSelectedUnit] = useState('');
-  const [subjectGroups, setSubjectGroups] = useState<SubjectGroup[]>(initialSubjectGroups);
-  const [date, setDate] = useState<dayjs.Dayjs | null>(null);
-  const [open, setOpen] = useState(false);
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const [subjectGroups] = useState<SubjectGroup[]>(initialSubjectGroups);
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [openStart, setOpenStart] = useState(false);
+  const [openEnd, setOpenEnd] = useState(false);
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [trainingPrograms, setTrainingPrograms] = useState<DropdownOption[]>([]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setSelectedUnit(e.target.value);
-    setSelectedValue(e.target.value);
+
     onSelect && onSelect(e.target.value);
   };
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
+  const handleOptionSelect = (option: DropdownOption) => {
+    setTrainingPrograms([...trainingPrograms, option]);
+    setIsDropdownOpen(false);
+  };
+  const removeProgram = (index: number, event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setTrainingPrograms(trainingPrograms.filter((_, i) => i !== index));
+  };
   const WorkProcess = Array.from(new Set(workHistoryData.map((item) => item.unit)));
   const Role = Array.from(new Set(workHistoryData.map((item) => item.role)));
   const subjectGroup = Array.from(new Set(subjectGroups.map((item) => item.name)));
@@ -46,13 +64,14 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
       <div className="bg-white rounded-2xl p-6 w-full max-w-[884px] shadow-lg">
         <form className="w-full pt-3 px-6 md:px-[60px] pb-10">
           <h2 className="text-black-text text-center text-2xl font-bold mb-5">Thêm mới quá trình công tác</h2>
-
           <div className="flex flex-col md:flex-row items-center justify-between mb-4">
             <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">Giảng viên:</label>
             <Input style={{ width: '700px' }} size="md" type="text" placeholder="Trịnh Trần Phương Tuấn" disabled />
           </div>
           <div className="flex flex-col md:flex-row items-center justify-between mb-4">
-            <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">Cơ quan/Đơn vị:</label>
+            <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">
+              Cơ quan/Đơn vị: <span className="text-orange-text">*</span>
+            </label>
 
             <div style={{ width }} className={`relative ${className}`}>
               {label && <label className="block mb-1 text-sm font-medium">{label}</label>}
@@ -77,12 +96,13 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
               </div>
             </div>
           </div>
-
           <div className="pl-36">
             <CheckboxComponent label="Đang làm việc tại đơn vị này" isChecked={false} onChange={(e) => console.log(e.target.checked)} />
           </div>
           <div className=" pt-3 flex flex-col md:flex-row items-center justify-between mb-4">
-            <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">Tổ/Bộ môn:</label>
+            <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">
+              Tổ/Bộ môn: <span className="text-orange-text">*</span>
+            </label>
 
             <div style={{ width }} className={`relative ${className}`}>
               {label && <label className="block mb-1 text-sm font-medium">{label}</label>}
@@ -108,7 +128,9 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
             </div>
           </div>
           <div className=" pt-3 flex flex-col md:flex-row items-center justify-between mb-4">
-            <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">Chức vụ:</label>
+            <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">
+              Chức vụ: <span className="text-orange-text">*</span>
+            </label>
 
             <div style={{ width }} className={`relative ${className}`}>
               {label && <label className="block mb-1 text-sm font-medium">{label}</label>}
@@ -134,26 +156,29 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
             </div>
           </div>
           <div className="flex flex-col md:flex-row items-center justify-between mb-4">
-            <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">Ngày bắt đầu:</label>
-
+            <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">
+              Ngày bắt đầu: <span className="text-orange-text">*</span>
+            </label>
             <DatePicker
-              className=" appearance-none w-full h-11 border border-gray-300 rounded-lg hover:border-orange-500 shadow-md px-3"
-              value={date}
+              className="appearance-none w-full h-11 border border-gray-300 rounded-lg hover:border-orange-500 shadow-md px-3"
+              value={startDate}
               onChange={(newDate) => {
-                setDate(newDate);
-                setOpen(false);
+                setStartDate(newDate);
+                setOpenStart(false);
               }}
               format={(value) => value.format('D/M/YYYY')}
               locale={locale}
               placeholder="DD/MM/YYYY"
-              open={open}
-              onOpenChange={(status) => setOpen(status)}
-              suffixIcon={<img className="w-[22px] h-[25px] cursor-pointer" src={iconCalendar} alt="calendar icon" onClick={() => setOpen(!open)} />}
+              open={openStart}
+              onOpenChange={(status) => setOpenStart(status)}
+              suffixIcon={
+                <img className="w-[22px] h-[25px] cursor-pointer" src={iconCalendar} alt="calendar icon" onClick={() => setOpenStart(!openStart)} />
+              }
               dropdownClassName="custom-datepicker"
               renderExtraFooter={() => (
                 <button
                   className="bg-orange-500 text-white px-6 mb-2 rounded-md font-semibold hover:bg-orange-600 transition"
-                  onClick={() => setOpen(false)}
+                  onClick={() => setOpenStart(false)}
                 >
                   Chọn
                 </button>
@@ -161,26 +186,30 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
             />
           </div>
           <div className="flex flex-col md:flex-row items-center justify-between mb-4">
-            <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">Ngày kết thúc:</label>
+            <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">
+              Ngày kết thúc: <span className="text-orange-text">*</span>
+            </label>
 
             <DatePicker
-              className=" appearance-none w-full h-11 border border-gray-300 rounded-lg hover:border-orange-500 shadow-md px-3"
-              value={date}
+              className="appearance-none w-full h-11 border border-gray-300 rounded-lg hover:border-orange-500 shadow-md px-3"
+              value={endDate}
               onChange={(newDate) => {
-                setDate(newDate);
-                setOpen(false);
+                setEndDate(newDate);
+                setOpenEnd(false);
               }}
               format={(value) => value.format('D/M/YYYY')}
               locale={locale}
               placeholder="DD/MM/YYYY"
-              open={open}
-              onOpenChange={(status) => setOpen(status)}
-              suffixIcon={<img className="w-[22px] h-[25px] cursor-pointer" src={iconCalendar} alt="calendar icon" onClick={() => setOpen(!open)} />}
+              open={openEnd}
+              onOpenChange={(status) => setOpenEnd(status)}
+              suffixIcon={
+                <img className="w-[22px] h-[25px] cursor-pointer" src={iconCalendar} alt="calendar icon" onClick={() => setOpenEnd(!openEnd)} />
+              }
               dropdownClassName="custom-datepicker"
               renderExtraFooter={() => (
                 <button
                   className="bg-orange-500 text-white px-6 mb-2 rounded-md font-semibold hover:bg-orange-600 transition"
-                  onClick={() => setOpen(false)}
+                  onClick={() => setOpenEnd(false)}
                 >
                   Chọn
                 </button>
@@ -188,23 +217,39 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
             />
           </div>
           <hr className="my-6 border-gray-300" />
-
-          <div className="flex flex-col items-start w-full">
-            <Link to="/leadership/declare-data/subject-list">
-              <button className="mt-1 text-blue-text font-bold flex items-center">
-                <img src={plus} alt="Add" className="w-5 mr-2" /> Thêm đơn vị công tác
-              </button>
-            </Link>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+            {trainingPrograms.map((program, index) => (
+              <div key={index} className="flex">
+                <button onClick={(e) => removeProgram(index, e)} className="text-red-500">
+                  <img src={minus} alt="Remove" className="w-6 h-6" />
+                </button>
+                <span className="flex-grow ml-3">{program.label}</span>
+              </div>
+            ))}
           </div>
+          <div className="relative pt-3">
+            <div className="text-blue-500 cursor-pointer font-bold flex items-center" onClick={toggleDropdown}>
+              <img src={plus} alt="" className="w-6 h-6 inline-block" />
+              <span className="ml-2">Thêm chương trình đào tạo</span>
+            </div>
+            {isDropdownOpen && (
+              <div className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-2 w-48">
+                {options.map((option) => (
+                  <div key={option.value} className="p-2 hover:bg-gray-200 cursor-pointer" onClick={() => handleOptionSelect(option)}>
+                    {option.label}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>{' '}
+          <div className="flex justify-center mt-4">
+            <Button className="secondary" style={{ color: '#000', margin: 2, marginRight: 20, fontWeight: 'bold' }}>
+              Hủy
+            </Button>
 
-          <div className="flex flex-col md:flex-row justify-center gap-4 mt-10">
-            <Link to="/leadership/declare-data">
-              <button className="w-full md:w-40 h-12 py-2 bg-[#F2F2F2] text-black-text font-bold rounded-lg">Hủy</button>
-            </Link>
-
-            <button type="submit" className="w-full md:w-40 py-2 bg-orange-text text-white font-bold rounded-lg">
+            <Button className="primary" style={{ margin: 2, marginLeft: 20, fontWeight: 'bold' }}>
               Lưu
-            </button>
+            </Button>
           </div>
         </form>
       </div>

@@ -11,9 +11,6 @@ const list = require('../../../../assets/icons/fi_list.png');
 const trash = require('../../../../assets/icons/fi_trash-2.png');
 const arrow = require('../../../../assets/icons/u_arrow up down.png');
 
-const left = require('../../../../assets/icons/arrow left.png');
-const right = require('../../../../assets/icons/chevron_big_right.png');
-
 const DeclareData: React.FC = () => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState<number>(1);
