@@ -137,7 +137,7 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
             <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">Ngày bắt đầu:</label>
 
             <DatePicker
-              className=" appearance-none w-full h-10 border border-gray-300 rounded-lg hover:border-orange-500 shadow-md px-3"
+              className=" appearance-none w-full h-11 border border-gray-300 rounded-lg hover:border-orange-500 shadow-md px-3"
               value={date}
               onChange={(newDate) => {
                 setDate(newDate);
@@ -164,7 +164,7 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
             <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">Ngày kết thúc:</label>
 
             <DatePicker
-              className=" appearance-none w-full h-10 border border-gray-300 rounded-lg hover:border-orange-500 shadow-md px-3"
+              className=" appearance-none w-full h-11 border border-gray-300 rounded-lg hover:border-orange-500 shadow-md px-3"
               value={date}
               onChange={(newDate) => {
                 setDate(newDate);
@@ -190,11 +190,9 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
           <hr className="my-6 border-gray-300" />
 
           <div className="flex flex-col items-start w-full">
-            <p className="text-orange-text font-bold text-base mb-5">Danh sách môn học</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full"></div>
             <Link to="/leadership/declare-data/subject-list">
-              <button className="mt-4 text-blue-text font-bold flex items-center">
-                <img src={plus} alt="Add" className="w-5 mr-2" /> Thêm môn học mới
+              <button className="mt-1 text-blue-text font-bold flex items-center">
+                <img src={plus} alt="Add" className="w-5 mr-2" /> Thêm đơn vị công tác
               </button>
             </Link>
           </div>
