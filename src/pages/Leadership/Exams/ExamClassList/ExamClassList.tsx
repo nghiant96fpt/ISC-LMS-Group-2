@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
-import DeleteModal from '../../../../components/DeleteModal';
+// import DeleteModal from '../../../../components/DeleteModal';
 import { IExamClass } from './type';
 import { IconArrowUpDown } from '../../../../components/Icons';
 import { IconTrash, IconBook, IconEdit } from '../../../../components/Icons/IconComponents';
@@ -144,14 +144,14 @@ const ExamClassList: React.FC = () => {
               </tbody>
             </table>
 
-            {isDeleteModalOpen && (
+            {/* {isDeleteModalOpen && (
               <DeleteModal
                 title="Xóa"
                 message="Xác nhận muốn xoá những thông tin đã chọn? Sau khi xoá sẽ không thể hoàn tác."
                 onCancel={handleCancelDelete}
                 onConfirm={confirmDelete}
               />
-            )}
+            )} */}
           </div>
 
           <div className="mt-auto flex flex-wrap justify-center md:justify-between items-center px-2 md:px-10 p-4 mb-5 text-black-text font-sans italic text-sm gap-2">
