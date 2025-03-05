@@ -4,11 +4,11 @@ import Dashboard from './Dashborad';
 const TeacherDashboard = () => {
   return (
     <div className="  h-full">
-      {/* Tiêu đề chính */}
+
       <div className="flex gap-2 mb-6">
         <div className="lg:w-[40%]">
           <h1 className="text-3xl font-bold text-gray-800">Tổng quan</h1>
-          {/* component tổng quan teacher*/}
+          {/* component dashboard teacher*/}
           <Dashboard/>
         </div>
         
