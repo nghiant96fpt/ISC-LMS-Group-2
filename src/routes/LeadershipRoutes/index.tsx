@@ -31,11 +31,9 @@ import TableClassList from '../../pages/Leadership/DeclareData/ClassList/TableCl
 import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
 import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile';
 
-import LeadershipElearning from '../../pages/Leadership/AllTeacherProfiles/LeadershipElearning';
-import LeadershipElearningEdit from '../../pages/Leadership/AllTeacherProfiles/LeadershipElearningEdit';
-
+import AddWorkProcess from '../../pages/Leadership/AllTeacherProfiles/Workprocess/AddWorkProcess';
 import AddTrainingProgram from '../../pages/Leadership/TrainingInfo/AddTraining';
-import TrainingList from '../../pages/Leadership/TrainingInfo/TrainingList';
+import InstructorProfile from '../../pages/Leadership/AllTeacherProfiles/InstructorProfile';
 
 const StudentRoutes = () => {
   return (
@@ -44,9 +42,9 @@ const StudentRoutes = () => {
         <Route index element={<Dashboard />} />
         <Route path="all-student-profiles" element={<AllStudentProfiles />} />
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
+        <Route path="all-teacher-profiles/addworkprocess" element={<AddWorkProcess />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
-        <Route path="LeadershipElearning" element={<LeadershipElearning />} />
-        <Route path="LeadershipElearningEdit" element={<LeadershipElearningEdit />} />
+        <Route path="InstructorProfile" element={<InstructorProfile />} />
         {/*route cho school-year - group-4*/}
         <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
         <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
@@ -71,17 +69,16 @@ const StudentRoutes = () => {
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
         {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
-        {/* <Route path="declare-data" element={<DeclareData />} /> */}
-        {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
-        {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
-        {/* <Route path="section-list" element={<SectionList />} /> */}
-        {/* <Route path="section-list/edit" element={<SubjectSetup />} /> */}
+        <Route path="declare-data" element={<DeclareData />} />
+        <Route path="declare-data/edit" element={<DepartmentSettings />} />
+        <Route path="declare-data/subject-list" element={<SubjectList />} />
+        <Route path="section-list" element={<SectionList />} />
+        <Route path="section-list/edit" element={<SubjectSetup />} />
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
         <Route path="training-info/add" element={<AddTrainingProgram />} />
-        <Route path="training-info/list" element={<TrainingList />} />
       </Route>
     </Routes>
   );

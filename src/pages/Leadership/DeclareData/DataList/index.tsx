@@ -11,9 +11,6 @@ const list = require('../../../../assets/icons/fi_list.png');
 const trash = require('../../../../assets/icons/fi_trash-2.png');
 const arrow = require('../../../../assets/icons/u_arrow up down.png');
 
-const left = require('../../../../assets/icons/arrow left.png');
-const right = require('../../../../assets/icons/chevron_big_right.png');
-
 const DeclareData: React.FC = () => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -77,7 +74,7 @@ const DeclareData: React.FC = () => {
                       </button>
                     </Link>
                     <button className="w-8 h-8 flex items-center justify-center">
-                      <Link to="/leadership/declare-data/department/edit">
+                      <Link to="edit">
                         <img src={edit} alt="Edit" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
                       </Link>
                     </button>

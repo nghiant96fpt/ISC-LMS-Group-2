@@ -2,47 +2,13 @@ import React from 'react';
 import { teacherData } from './data';
 const avatar = require('../../../../assets/images/Frame 19.png');
 const trash = require('../../../../assets/icons/fi_trash-2.png');
-const edit = require('../../../../assets/icons/fi_edit1.png');
 const down = require('../../../../assets/icons/caret_down.png');
-const right = require('../../../../assets/icons/icon-arrow-right.png');
 const calendar = require('../../../../assets/icons/icon-calendar.png');
 const plus = require('../../../../assets/icons/fi_plus.png');
 
 const TeacherProfileEdit = () => {
   return (
     <div className="w-full max-w-8xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <div className="mb-6">
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-gray-400 text-sm">Hồ sơ giảng viên</span>
-          <img src={right} alt="delete" className="w-2 h-2" />
-          <h1 className="text-3xl font-bold text-black">Chỉnh sửa thông tin giảng viên</h1>
-        </div>
-        <div className="flex justify-between items-center">
-          <div className="flex items-center justify-between w-full">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center bg-gray-100 rounded-full p-1 w-fit">
-                <button className="px-6 py-2 bg-black text-white rounded-full font-bold shadow-md">Thông tin chung</button>
-                <button className="px-6 py-2 text-gray-500 font-bold">Quá trình công tác</button>
-              </div>
-              <div className="relative">
-                <select className="appearance-none border p-2 rounded pr-8">
-                  <option>2020-2021</option>
-                  <option>2021-2022</option>
-                </select>
-                <img src={down} alt="dropdown" className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none" />
-              </div>
-            </div>
-            <div className="flex items-center gap-4 ml-auto">
-              <button className="p-1 flex items-center">
-                <img src={trash} alt="delete" className="w-6 h-6" />
-              </button>
-              <button className="p-2 px-6 bg-orange-500 text-white rounded-lg flex items-center gap-2">
-                <span className="text-white-text font-medium">Lưu</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="border rounded-lg overflow-hidden mb-6">
         <div className="bg-background-2 text-white p-4 font-bold text-lg">Thông tin chung</div>
         <div className="p-6 flex gap-x-8 items-start">
