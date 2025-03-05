@@ -1,7 +1,7 @@
 import React from 'react';
 import TitleComponent from '../../../components/Title';
 import AllCourses from './AllCourses';
-import Dashboard from './Dashborad';
+import Dashboard from './Dashboard';
 
 const TeacherDashboard = () => {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip, PieChart, Pie, Cell } from 'recharts';
-import './../index.css';
+import '../index.css';
 const data = [
   { name: 'Tổng số học sinh giỏi', value: 300 },
   { name: 'Tổng số học sinh khá', value: 125 },
