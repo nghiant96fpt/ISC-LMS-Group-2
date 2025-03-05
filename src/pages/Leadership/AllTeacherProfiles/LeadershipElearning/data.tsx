@@ -12,7 +12,7 @@ export const teacherData: TeacherProfile = {
   entryDate: 'Dd/Mm/Yy',
   nationality: 'Việt Nam',
   religion: 'Phật Giáo',
-  
+
   status: 'Đang giảng dạy',
   assignedSubjects: ['Toán', 'Vật Lý'],
   alias: 'Không',
