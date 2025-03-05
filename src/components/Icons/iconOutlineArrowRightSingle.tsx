@@ -1,29 +1,27 @@
 import React from 'react';
 
 interface IconOutlineArrowRightSingleProps {
-  className?: string;
+    className?: string;
 }
 
 const IconOutlineArrowRightSingle: React.FC<
-  IconOutlineArrowRightSingleProps
+    IconOutlineArrowRightSingleProps
 > = ({ className, ...props }) => {
-  return (
-    <svg
-    className={`shrink-0 size-5${className}`}
-    xmlns="http://www.w3.org/2000/svg"
-    width={24}
-    height={24}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <path d="m9 18 6-6-6-6" />
-  </svg>
-  );
+    return (
+        <svg
+            className={className}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="1em"
+            height="1em"
+            {...props}
+        >
+            <path
+                fill="currentColor"
+                d="M6.23 20.23L8 22l10-10L8 2L6.23 3.77L14.46 12z"
+            ></path>
+        </svg>
+    );
 };
 
 export default IconOutlineArrowRightSingle;
