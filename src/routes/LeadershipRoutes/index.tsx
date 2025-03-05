@@ -21,7 +21,7 @@ import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/e
 import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
 import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
 import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
-import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
+// import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 import SectionList from '../../pages/Leadership/DeclareData/SectionList';
 import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
@@ -30,7 +30,8 @@ import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClas
 import TableClassList from '../../pages/Leadership/DeclareData/ClassList/TableClassList';
 import ClassDetail from '../../pages/Leadership/DeclareData/ClassList/ClassDetail';
 import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile';
-
+import LeadershipElearning from '../../pages/Leadership/AllTeacherProfiles/LeadershipElearning';
+import LeadershipElearningEdit from '../../pages/Leadership/AllTeacherProfiles/LeadershipElearningEdit';
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -39,6 +40,8 @@ const StudentRoutes = () => {
         <Route path="all-student-profiles" element={<AllStudentProfiles />} />
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
+        <Route path="LeadershipElearning" element={<LeadershipElearning />} />
+        <Route path="LeadershipElearningEdit" element={<LeadershipElearningEdit />} />
         {/*route cho school-year - group-4*/}
         <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
         <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
@@ -62,7 +65,7 @@ const StudentRoutes = () => {
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
-        <Route path="declare-data/*" element={<DeclareDataRoutes />} />
+        {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
         {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
         {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
