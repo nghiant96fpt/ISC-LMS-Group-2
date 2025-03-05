@@ -2,7 +2,7 @@ import DynamicAccordion from "../../../../components/DynamicAccordion";
 import { IconChevronBigRightOrange, IconChevronBigRightWhite } from "../../../../components/Icons";
 import { data } from "./data";
 import CourseList from "./CourseList";
-import { f } from "react-router/dist/development/fog-of-war-Cm1iXIp7";
+// import { f } from "react-router/dist/development/fog-of-war-Cm1iXIp7";
 
 const AllCourses = () => {
     return (

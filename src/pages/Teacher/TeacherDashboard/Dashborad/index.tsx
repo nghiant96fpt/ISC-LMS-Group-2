@@ -6,7 +6,7 @@ import Chart from './Chart/Chart';
 const Dashboard = () => {
   return (
     <div className="">
-      <div className=" font-bold w-full rounded-xl  p-1 my-2">
+      <div className=" font-bold w-full rounded-xl  p-1 ">
         <div className="grid grid-cols-2 gap-2">
           <div className="custom-css-gird  from-background-1 to-background-2">
             <h3 className="custom-text-title">Khóa học của tôi</h3>

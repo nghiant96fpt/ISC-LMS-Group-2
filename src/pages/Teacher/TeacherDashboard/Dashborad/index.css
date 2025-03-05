@@ -20,7 +20,7 @@ color: white;
 
 /* hr */
 .custom-line{
-    @apply flex justify-between border-b border-[#823B00] pb-2 ;
+    @apply flex text-xs justify-between border-b border-[#823B00] pb-2 ;
 }
 
 

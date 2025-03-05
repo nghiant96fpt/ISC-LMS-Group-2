@@ -16,10 +16,10 @@ const GRADIENTS = [
 ];
 const Chart = () => {
   return (
-    <div className="flex  h-48">
+    <div className="flex justify-between  h-48">
       {/* Biểu đồ tròn */}
       <div className="w-[45%] flex flex-col justify-center items-center">
-        <PieChart width={200} height={200}>
+        <PieChart width={180} height={180}>
           {/* Gradient Colors */}
           <svg width="0" height="0">
             <defs>
@@ -67,7 +67,7 @@ const Chart = () => {
         {/*  */}
       </div>
       {/* Thống kê số liệu */}
-      <div className="w-[50%] flex flex-col justify-center ">
+      <div className="w-[50%] flex flex-col justify-center  gap-y-4">
         <div className="custom-line ">
           Tổng số lớp: <span className="font-bold">10</span>
         </div>
@@ -80,12 +80,12 @@ const Chart = () => {
         <div className="custom-line ">
           Tổng số học sinh trung bình: <span className="text-green-500">75</span>
         </div>
-        <div className="flex justify-between ">
+        <div className="flex text-xs justify-between ">
           Tổng số học sinh yếu: <span className="text-gray-500">0</span>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Chart;
