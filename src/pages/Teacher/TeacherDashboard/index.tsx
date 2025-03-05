@@ -1,19 +1,17 @@
 import React from 'react';
+import TitleComponent from '../../../components/Title';
+// import AllCourses from './AllCourses';
 
 const TeacherDashboard = () => {
   return (
-    <div className="p-6 bg-gray-100 h-full">
-      {/* Tiêu đề chính */}
-      <div className="flex gap-6 mb-6">
-        <div className="lg:w-[40%] bg-red-100">
-          <h1 className="text-3xl font-bold text-gray-800">Tổng quan</h1>
-          {/* component tổng quan */}
-        </div>
-        '
-        <div className="lg:w-[60%] bg-blue-100">
-          <h1 className="text-3xl font-bold text-gray-800 text-start">Tất cả khóa học</h1>
-          {/* component table */}
-        </div>
+    <div className="grid grid-cols-[1fr_2fr] px-4 pt-4 xl:grid-cols-[1fr_2fr] xl:gap-4">
+      <div className="col-span-full xl:col-auto">
+        <TitleComponent text="Tổng quan" size={30} weight="extrabold" className="mb-5" />
+      </div>
+
+      <div className="col-span-full xl:col-auto">
+        <TitleComponent text="Tấc cả khóa học" size={30} weight="extrabold" className="mb-5" />
+        {/* <AllCourses /> */}
       </div>
     </div>
   );
