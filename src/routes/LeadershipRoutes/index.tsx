@@ -25,6 +25,9 @@ import BlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/
 // import AddDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/add';
 import ClassListWrapper from '../../pages/Leadership/DeclareData/BlockDepartment/ClassListWrapper';
 import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/edit';
+
+// import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
+
 // import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
 // import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
 // import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
@@ -43,6 +46,12 @@ import StudentCU from '../../pages/Leadership/StudentCUD/StudentCU';
 import StudyProcess from '../../pages/Leadership/StudyProcess';
 import UpdateRewards from '../../pages/Leadership/StudyProcess/UpdateRewards';
 import UpdateDiscipline from '../../pages/Leadership/StudyProcess/UpdateDiscipline';
+
+import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/StudentRetensionUpdate';
+import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
+import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
+
+
 
 const StudentRoutes = () => {
   return (
@@ -76,6 +85,12 @@ const StudentRoutes = () => {
         <Route path="declare-data/class-list" element={<TableClassList />} />
         <Route path="declare-data/class-detail" element={<ClassDetail />} /> {/* url bảng ds lớp học */}
         <Route path="declare-data/file-class" element={<Uploadfile />} /> {/* url xuât file lớp học */}
+        {/* route cho tiếp nhận chuyển trường và hồ sơ bảo lưu - group 4 */}
+        <Route path="update-student-retention" element={<StudentRetensionUpdate />} />
+        <Route path="add-transfer-acceptance" element={<AddTransferAcceptance />} />
+        {/* route cho phân công giảng dạy và ds chủ đề - group 4 */}
+        <Route path="teaching-assignment" element={<TeachingAssignment />} /> {/* url phân công giảng */}
+        <Route path="teaching-list-topic" element={<ListTopic />} /> {/* url ds chủ đề */}
         {/*  */}
         <Route path="declare-data" element={<DeclareData />} />
         {/* Route cho block-department */}

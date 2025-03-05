@@ -1,16 +1,11 @@
-import StudentRetentionHeader from './header';
-import TableStudentRetention from './table';
+import StudentRetentionList from "./StudentRetentionList";
+
 const StudentRetention: React.FC = () => {
-  return (
-    <>
-      <div className="student-retention">
-        <StudentRetentionHeader />
-        <div className="content">
-          <TableStudentRetention title="Danh sách bảo lưu" />
+    return (
+        <div className="relative max-w-full pt-2 mr-3 mx-auto bg-gray-50 lg:ml-10">
+            <StudentRetentionList />
         </div>
-      </div>
-    </>
-  );
+    );
 };
 
 export default StudentRetention;
