@@ -1,5 +1,11 @@
+import StudentRetentionList from "./StudentRetentionList";
+
 const StudentRetention: React.FC = () => {
-    return <h1 className="text-3xl font-bold text-center text-black-text">Bảo Lưu</h1>;
+    return (
+        <div className="relative max-w-full pt-2 mr-3 mx-auto bg-gray-50 lg:ml-10">
+            <StudentRetentionList />
+        </div>
+    );
 };
-  
+
 export default StudentRetention;
