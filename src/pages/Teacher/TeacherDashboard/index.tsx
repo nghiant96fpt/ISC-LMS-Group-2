@@ -1,5 +1,5 @@
 import React from 'react';
-import Dashboard from './Dashborad';
+// import Dashboard from './Dashborad';
 
 const TeacherDashboard = () => {
   return (
@@ -9,7 +9,7 @@ const TeacherDashboard = () => {
         <div className="lg:w-[40%]">
           <h1 className="text-3xl font-bold text-gray-800">Tổng quan</h1>
           {/* component dashboard teacher*/}
-          <Dashboard/>
+          {/* <Dashboard/> */}
         </div>
         
         <div className="lg:w-[60%]">
