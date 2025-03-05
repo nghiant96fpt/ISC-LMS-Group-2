@@ -34,7 +34,6 @@
 }
 
 .button.primary:hover {
-    border-radius: 8px;
     background-color: var(--color-primary-hover);
     border-color: var(--color-primary-hover);
 }
@@ -48,7 +47,6 @@
 }
 
 .button.secondary:hover {
-    border-radius: 8px;
     background-color: var(--color-secondary-hover);
     border-color: var(--color-secondary-border-hover);
 }
@@ -63,7 +61,6 @@
 }
 
 .button.outline-primary:hover {
-    border-radius: 8px;
     background-color: var(--color-outline-primary);
     color: var(--text-white) !important;
 }
@@ -77,7 +74,6 @@
 }
 
 .button.outline-secondary:hover {
-    border-radius: 8px;
     background-color: var(--color-outline-secondary);
     color: var(--text-white) !important;
 }
@@ -92,6 +88,7 @@
 }
 
 .button.mini {
+    border-radius: 4px;
     height: 32px;
     width: 90px;
     font-size: 16px !important;
