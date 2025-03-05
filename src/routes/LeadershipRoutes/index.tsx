@@ -20,11 +20,17 @@ import BlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/
 import ClassListWrapper from '../../pages/Leadership/DeclareData/BlockDepartment/ClassListWrapper';
 import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/edit';
 
+// import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
+// import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
+// import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
+// import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
+
 // import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 
 // import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
 // import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
 // import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
+
 import SectionList from '../../pages/Leadership/DeclareData/SectionList';
 import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
@@ -41,7 +47,9 @@ import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/Stud
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
 import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
 
-
+import AddWorkProcess from '../../pages/Leadership/AllTeacherProfiles/Workprocess/AddWorkProcess';
+import AddTrainingProgram from '../../pages/Leadership/TrainingInfo/AddTraining';
+import InstructorProfile from '../../pages/Leadership/AllTeacherProfiles/InstructorProfile';
 
 const StudentRoutes = () => {
   return (
@@ -55,7 +63,9 @@ const StudentRoutes = () => {
         <Route path="all-student-profiles/resignation/:id" element={<RetirementUpdateModal />} />
         {/*  */}
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
+        <Route path="all-teacher-profiles/addworkprocess" element={<AddWorkProcess />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
+        <Route path="InstructorProfile" element={<InstructorProfile />} />
         {/*route cho school-year - group-4*/}
         <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
         <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
@@ -85,15 +95,17 @@ const StudentRoutes = () => {
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} /> */}
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
-        {/* <Route path="declare-data" element={<DeclareData />} /> */}
-        {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
-        {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
-        {/* <Route path="section-list" element={<SectionList />} /> */}
-        {/* <Route path="section-list/edit" element={<SubjectSetup />} /> */}
+        {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
+        <Route path="declare-data" element={<DeclareData />} />
+        <Route path="declare-data/edit" element={<DepartmentSettings />} />
+        <Route path="declare-data/subject-list" element={<SubjectList />} />
+        <Route path="section-list" element={<SectionList />} />
+        <Route path="section-list/edit" element={<SubjectSetup />} />
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
+        <Route path="training-info/add" element={<AddTrainingProgram />} />
       </Route>
     </Routes>
   );
