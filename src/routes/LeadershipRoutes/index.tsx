@@ -22,12 +22,12 @@ import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRou
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
 import BlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/bockDepartment';
-import AddDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/add';
+// import AddDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/add';
 import ClassListWrapper from '../../pages/Leadership/DeclareData/BlockDepartment/ClassListWrapper';
 import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/edit';
-import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
-import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
-import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
+// import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
+// import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
+// import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 import SectionList from '../../pages/Leadership/DeclareData/SectionList';
 import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
