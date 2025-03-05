@@ -2,7 +2,8 @@ import { TableCell, TableRow } from '../../../../../../components/ui/tabble';
 import CheckboxComponent from '../../../../../../components/CheckBox';
 import IconImages from '../../../../../../components/IconImages';
 import { ClassListTableRowProps } from './type';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
+
 const ClassListTableRow: React.FC<ClassListTableRowProps> = ({ item, index, isChecked, onItemChange, onDelete }) => {
   return (
     <TableRow key={item.id} className={index % 2 === 0 ? 'bg-[#F0F3F6] border-[#F0F3F6]' : ''}>
