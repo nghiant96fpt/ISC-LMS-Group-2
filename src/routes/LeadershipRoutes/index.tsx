@@ -20,11 +20,10 @@ import BlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/
 import ClassListWrapper from '../../pages/Leadership/DeclareData/BlockDepartment/ClassListWrapper';
 import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/edit';
 
-import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
-import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
-import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
+// import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
+// import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
+// import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 // import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
-
 
 // import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 
@@ -47,8 +46,6 @@ import RetirementUpdateModal from '../../pages/Leadership/AllTeacherProfiles/Ret
 import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/StudentRetensionUpdate';
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
 import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
-
-
 
 import AddWorkProcess from '../../pages/Leadership/AllTeacherProfiles/Workprocess/AddWorkProcess';
 import AddTrainingProgram from '../../pages/Leadership/TrainingInfo/AddTraining';
@@ -98,14 +95,12 @@ const StudentRoutes = () => {
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} /> */}
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
-
         {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
         <Route path="declare-data" element={<DeclareData />} />
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
         <Route path="section-list" element={<SectionList />} />
         <Route path="section-list/edit" element={<SubjectSetup />} />
-
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
