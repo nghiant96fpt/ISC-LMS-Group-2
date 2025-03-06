@@ -57,6 +57,7 @@ import AddForm from '../../pages/Leadership/SystemSettings/TrainingLevelManageme
 import UserManagement from '../../pages/Leadership/SystemSettings/UserManagement';
 import SettingForm from '../../pages/Leadership/SystemSettings/UserManagement/addSetting';
 import SubjectManagement from '../../pages/Leadership/SystemSettings/SubjectManagement';
+import ClassroomSettings from '../../pages/Leadership/ClassroomSettings/classroomsettings';
 
 const StudentRoutes = () => {
   return (
@@ -131,6 +132,7 @@ const StudentRoutes = () => {
         <Route path='system-settings/config' element={<Config/>}/>
         {/* Thiết lập lớp học */}
         <Route path="system-settings/subject-management" element={<SubjectManagement />} />
+        <Route path="system-settings/classroom-settings" element={<ClassroomSettings />} />
       </Route>
     </Routes>
   );
