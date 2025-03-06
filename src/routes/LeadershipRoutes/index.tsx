@@ -51,6 +51,8 @@ import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/Stud
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
 import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
 import Config from '../../pages/Leadership/SystemSettings/Config';
+import SchoolInfo from '../../pages/Leadership/SystemSettings/SchoolInfomation';
+import EditSchoolInFo from '../../pages/Leadership/SystemSettings/SchoolInfomation/EditInformation';
 
 import TrainingLevelManagement from '../../pages/Leadership/SystemSettings/TrainingLevelManagement';
 import AddForm from '../../pages/Leadership/SystemSettings/TrainingLevelManagement/addPeachLevel';
@@ -133,6 +135,10 @@ const StudentRoutes = () => {
         {/* Thiết lập lớp học */}
         <Route path="system-settings/subject-management" element={<SubjectManagement />} />
         <Route path="system-settings/classroom-settings" element={<ClassroomSettings />} />
+        <Route path='create-student' element={<StudentCU/>}/>
+        {/*Group - 1 setting*/}
+        <Route path='system-settings/school-info' element={<SchoolInfo/>}/>
+        <Route path='system-settings/school-info/edit' element={<EditSchoolInFo/>}/>
       </Route>
     </Routes>
   );
