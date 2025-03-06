@@ -4,7 +4,7 @@ import caretdown from '../../../assets/icons/caret_down.png';
 import { DatePicker } from 'antd';
 import locale from 'antd/es/date-picker/locale/vi_VN';
 import iconCalendar from '../../../assets/icons/icon-calendar.png';
-import calendaralt from '../../../assets/icons/u_calendar-alt.png';
+import calendaralt from '../../../assets/icons/u_calendar-white.png';
 import right from '../../../assets/icons/icon-arrow-right.png';
 import eye from '../../../assets/icons/orange_eye_outline.png';
 import eyeoff from '../../../assets/icons/visibility_off.png';
