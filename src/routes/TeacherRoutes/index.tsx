@@ -11,13 +11,21 @@ import ScoreBoard from "../../pages/Teacher/ScoreBoard";
 import ExamSchedule from "../../pages/Teacher/ExamSchedule";
 import Notifications from "../../pages/Teacher/Notifications";
 import Help from "../../pages/Teacher/Help";
+import ClassDetail from "../../pages/Teacher/ClassList/ClassDetail/ClassDeatail";
+import ClassInformation from "../../pages/Teacher/ClassList/ClassInformation/ClassInformation";
+
 import Classroom from "../../pages/Teacher/ClassList/Classroom/index";
 const TeacherRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<MainLayout role="teacher" />}>
         <Route index element={<TeacherDashboard />} />
+        {/* Group-3 Class Detail */}
         <Route path="class-list" element={<ClassList />} />
+        <Route path="class-list/class-detail/:id" element={<ClassDetail />} />
+        <Route path="class-list/class-information-done" element={<ClassInformation />} />
+        {/*  */}
+
         <Route path="add-class" element={<AddClass />} />
         <Route path="join-class" element={<JoinClass />} />
         <Route path="test-list" element={<TestList />} />
