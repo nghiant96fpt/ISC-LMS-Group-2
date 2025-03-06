@@ -22,9 +22,9 @@ const TeacherRoutes = () => {
         {/* Group-3 Class Detail */}
         <Route path="class-list" element={<ClassList />} />
         <Route path="class-list/class-detail/:id" element={<ClassDetail />} />
-
-        {/*  */}
         <Route path="class-list/class-information-done" element={<ClassInformation />} />
+        {/*  */}
+
         <Route path="add-class" element={<AddClass />} />
         <Route path="join-class" element={<JoinClass />} />
         <Route path="test-list" element={<TestList />} />

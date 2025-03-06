@@ -60,7 +60,7 @@ const ExamSchedule: React.FC = () => {
 
   return (
     <>
-      <div className="ml-20 p-4">
+      <div className="p-4">
         <AddressList addressList={urls} />
       </div>
       <div className="p-4 ml-20">
