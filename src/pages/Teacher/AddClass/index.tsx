@@ -50,7 +50,7 @@ const FormComponent = () => {
         <h1 className="text-3xl font-bold text-black">Thêm buổi học mới</h1>
       </div>
 
-      <div className="bg-white p-12 rounded-lg shadow-lg w-full  mx-auto max-w-6xl">
+      <div className="text-black-text font-bold bg-white p-12 rounded-lg shadow-lg w-full  mx-auto max-w-6xl">
         <div className="space-y-4">
           <div className="flex items-center">
             <label htmlFor="topic" className="w-1/4 text-gray-700">
@@ -217,8 +217,8 @@ const FormComponent = () => {
             </div>
           </div>
 
-          <div className="flex items-start">
-            <label htmlFor="security" className="w-1/4 text-gray-700 font-semibold">
+          <div className="flex  items-start">
+            <label htmlFor="security" className="w-1/4 text-gray-700 ">
               Cài đặt khác
             </label>
 
