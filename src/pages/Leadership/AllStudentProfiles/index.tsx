@@ -1,14 +1,27 @@
-import ClassList from "../DeclareData/ClassList/ClassDetail";
-import SchoolYear from "../DeclareData/SchoolYear/SchoolYearTable";
+import React, { useState } from 'react';
+import AllStudentProfilesHeader from './header';
+import TableAllStudentProfiles from './table';
+import RewardProfiles from './RewardProfiles';
+import DisciplineProfiles from './DisciplineProfiles';
 
 const AllStudentProfiles: React.FC = () => {
-  return (
-    // <h1 className="text-3xl font-bold text-center text-black-text">
-    //   Tất cả hồ sơ học viên
-    // </h1>
-    // <SchoolYear/>
-    <ClassList/>
+  const [activeTab, setActiveTab] = useState<string>('all');
 
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+  };
+
+  return (
+    <>
+      <div className="student-retention">
+        <AllStudentProfilesHeader onTabChange={handleTabChange} />
+        <div className="content">
+          {activeTab === 'all' && <TableAllStudentProfiles title="Danh sách học viên" />}
+          {activeTab === 'reward' && <RewardProfiles />}
+          {activeTab === 'discipline' && <DisciplineProfiles />}
+        </div>
+      </div>
+    </>
   );
 };
 

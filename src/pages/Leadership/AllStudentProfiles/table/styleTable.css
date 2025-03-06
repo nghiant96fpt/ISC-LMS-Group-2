@@ -1,0 +1,139 @@
+/* General table styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.table.full-width {
+  width: 100%;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+.table tbody tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Header styles */
+.TableStudentRetention-Header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.header-search {
+  display: flex;
+  align-items: center;
+}
+
+.header-search .title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.header-search .title.small {
+  font-size: 1.25rem;
+}
+
+.header-search .search-box {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.header-search .search-box .search-icon {
+  position: absolute;
+  right: 10px;
+  width: 1rem;
+  height: 1rem;
+}
+
+.header-search .search-box .search-input {
+  padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
+}
+
+/* Footer styles */
+.TableStudentRetention-Footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.rows-per-page {
+  display: flex;
+  align-items: center;
+}
+
+.rows-per-page span {
+  margin: 0 0.5rem;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+}
+
+.pagination button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 0 0.25rem;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination .sort-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.pagination .active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* Container styles */
+.container {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Full width card */
+.full-width-card {
+  max-width: 100%;
+}
