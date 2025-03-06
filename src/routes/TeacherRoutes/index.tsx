@@ -14,6 +14,7 @@ import Help from "../../pages/Teacher/Help";
 import ClassDetail from "../../pages/Teacher/ClassList/ClassDetail/ClassDeatail";
 import ClassInformation from "../../pages/Teacher/ClassList/ClassInformation/ClassInformation";
 
+import Classroom from "../../pages/Teacher/ClassList/Classroom/index";
 const TeacherRoutes = () => {
   return (
     <Routes>
@@ -34,6 +35,7 @@ const TeacherRoutes = () => {
         <Route path="exam-schedule" element={<ExamSchedule />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="help" element={<Help />} />
+        <Route path="classroom" element={<Classroom />} />
       </Route>
     </Routes>
   );
