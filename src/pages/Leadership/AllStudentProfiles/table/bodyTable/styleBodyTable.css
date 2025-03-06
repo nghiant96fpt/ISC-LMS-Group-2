@@ -20,7 +20,7 @@ td {
   text-align: center;
 }
 
-.dropdown-menu {
+/* .dropdown-menu {
   position: absolute;
   top: 80%;
   left: 50%;
@@ -31,6 +31,23 @@ td {
   border-radius: 6px;
   padding: 0 15px;
   z-index: 10;
+  min-width: 120px;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+} */
+
+.dropdown-menu {
+  position: fixed;
+  top: 65%;
+  left: 84%;
+  transform: translate(-50%, -50%);
+  background: var(--background-while);
+  border: 1px solid var(--background-white);
+  box-shadow: 0px 4px 6px var(--background-black);
+  border-radius: 6px;
+  padding: 0 15px;
+  z-index: 1000;
   min-width: 120px;
   max-width: 200px;
   white-space: nowrap;
@@ -46,7 +63,6 @@ td {
   border-bottom: 1px solid var(--orange-text); /* Chỉ thêm viền dưới cho các dòng ở giữa */
 }
 
-
 .dropdown-menu button {
   display: block;
   width: 100%;
@@ -55,16 +71,16 @@ td {
   border: none;
   padding: 8px 12px;
   cursor: pointer;
-  font-size: 16px
+  font-size: 16px;
 }
 
-.icon-container button {
+/* .icon-container button {
   background: none;
   border: none;
   padding: 4px;
   cursor: pointer;
   display: inline-block;
-}
+} */
 
 .icon-container img {
   width: 20px;
@@ -72,7 +88,9 @@ td {
   vertical-align: middle;
   margin: 0 4px;
 }
-
+.text-center p {
+  white-space: pre-line;
+}
 .icon-container img {
   object-fit: contain;
 }
@@ -123,4 +141,51 @@ td {
 .status-dropped {
   background-color: var(--background-while);
   border-color: var(--red-status);
+}
+
+.th-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.sort-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.student-table {
+  width: 98%;
+  border-collapse: collapse;
+  padding-right: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.student-table th,
+.student-table td {
+  padding: 10px;
+  text-align: left;
+}
+
+.student-table tbody tr:nth-child(odd) {
+  background-color: #ffff; /* Màu hàng lẻ */
+}
+
+.student-table tbody tr:nth-child(even) {
+  background-color: #f0f3f6; /* Màu hàng chẵn */
+}
+
+.student-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.th-content {
+  color: var(--while-text);
+}
+
+button .bg-opacity-50 {
+  opacity: 0.4;
 }
