@@ -52,6 +52,10 @@ import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/Add
 import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
 import Config from '../../pages/Leadership/SystemSettings/Config';
 
+import TrainingLevelManagement from '../../pages/Leadership/SystemSettings/TrainingLevelManagement';
+import AddForm from '../../pages/Leadership/SystemSettings/TrainingLevelManagement/addPeachLevel';
+import UserManagement from '../../pages/Leadership/SystemSettings/UserManagement';
+import SettingForm from '../../pages/Leadership/SystemSettings/UserManagement/addSetting';
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -110,7 +114,11 @@ const StudentRoutes = () => {
         {/* <Route path="section-list/edit" element={<SubjectSetup />} /> */}
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
-        <Route path="system-settings" element={<SystemSettings />}/>
+        <Route path="system-settings" element={<SystemSettings />} />
+        <Route path="system-settings/training-level-management" element={<TrainingLevelManagement />} />
+        <Route path="system-settings/training-level-management/add" element={<AddForm />} />
+        <Route path="system-settings/user-management" element={<UserManagement />} />
+        <Route path="system-settings/user-management/settings" element={<SettingForm />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
         {/* */}
         <Route path="study-process" element={<StudyProcess />} />
