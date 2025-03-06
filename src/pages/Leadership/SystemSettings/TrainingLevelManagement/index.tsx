@@ -11,6 +11,7 @@ import Pagination from './pagination';
 import AddressList from '../../../../components/AddressUrlStack/Index';
 import Button from '../../../../components/Button';
 import { useNavigate } from 'react-router-dom';
+import DropdownSelectionComponent from '../../../../components/DropdownSelection';
 const TrainingLevelManagement = () => {
   const navigate = useNavigate();
   const [itemsPerPage, setItemsPerPage] = useState(8);
@@ -48,11 +49,13 @@ const TrainingLevelManagement = () => {
   return (
     <>
       <AddressList addressList={urls} />
-      <div className="flex justify-end mr-10 mb-5">
+      <div className="flex justify-between items-center mr-10 mb-5">
+        <DropdownSelectionComponent options={['2020', '2021', '2022', '2023']} width={144} className="flex-grow" />
         <Button size="big" type="button" className="primary" onClick={handleAddItem}>
           + Thêm mới
         </Button>
       </div>
+
       <section className="rounded-lg bg-background-white shadow-[4px_4px_25px_4px_rgba(154,201,245,0.25)] sm:p-5 antialiased">
         <div className="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4 dark:border-gray-700">
           <TitleComponent text="Danh mục Các bậc đào tạo" size={22} weight="extrabold" style={{ fontFamily: 'var(--font-Mulish)' }} />
