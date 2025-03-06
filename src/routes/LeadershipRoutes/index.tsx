@@ -50,8 +50,7 @@ import UpdateDiscipline from '../../pages/Leadership/StudyProcess/UpdateDiscipli
 import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/StudentRetensionUpdate';
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
 import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
-
-
+import ClassroomSettings from '../../pages/Leadership/ClassroomSettings/classroomsettings';
 
 const StudentRoutes = () => {
   return (
@@ -117,8 +116,9 @@ const StudentRoutes = () => {
         <Route path="study-process" element={<StudyProcess />} />
         <Route path="study-process/update-rewards" element={<UpdateRewards />} />
         <Route path="study-process/update-discipline" element={<UpdateDiscipline />} />
-        <Route path='create-student' element={<StudentCU/>}/>
-        <Route path='new-student' element={<StudentCU/>}/>
+        <Route path="create-student" element={<StudentCU />} />
+        <Route path="new-student" element={<StudentCU />} />
+        <Route path="system-settings/classroom-settings" element={<ClassroomSettings />} />
       </Route>
     </Routes>
   );

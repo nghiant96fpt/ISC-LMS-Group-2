@@ -120,7 +120,7 @@ const StudyProcessContent: React.FC = () => {
                 </tbody>
               </table>
 
-              <div className="mt-4 w-xs">
+              <div className="mt-4 SwitchTag-StudyProcessContent">
                 <SwitchTag options={options} activeTab={activeTab} handleTabClick={handleTabClick} />
               </div>
 
@@ -185,36 +185,38 @@ const StudyProcessContent: React.FC = () => {
               </button>
               <input type="text" className="search-input" placeholder="Tìm kiếm..." />
             </div>
-            <div className="w-full overflow-y-auto max-h-64">
-              <table className="w-full rounded-lg ">
-                <thead className="bg-black-text text-white">
-                  <tr>
-                    <th className="text-center sticky top-0 bg-black-text">STT</th>
-                    <th className="text-left sticky top-0 bg-black-text">Nội dung khen thưởng</th>
-                    <th className="text-left sticky top-0 bg-black-text">Quyết định khen thưởng</th>
-                    <th className="text-left sticky top-0 bg-black-text">Ngày quyết định</th>
-                    <th className="sticky top-0 bg-black-text"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {academicHonorRoll.map((student, index) => (
-                    <tr key={student.stt} className={`odd:bg-gray-100 even:bg-gray-200`}>
-                      <td className="text-center">{student.stt}</td>
-                      <td className="text-left break-words">{student.content}</td>
-                      <td className="text-left">{student.decision}</td>
-                      <td className="text-left">{student.date}</td>
-                      <td className="text-center flex">
-                        <Link to="update-rewards" className="search-button">
-                          <img src={edit} alt="edit" className="icon-search" />
-                        </Link>
-                        <Link to={`/delete/${student.stt}`} className="search-button">
-                          <img src={trash} alt="trash" className="icon-search" />
-                        </Link>
-                      </td>
+            <div className="w-full overflow-hidden rounded-lg border border-gray-300">
+              <div className="max-h-64 overflow-y-auto custom-scrollbar">
+                <table className="w-full border-collapse">
+                  <thead className="bg-black-text text-white  sticky top-0 z-10">
+                    <tr>
+                      <th className="text-center">STT</th>
+                      <th className="text-left">Nội dung Kỷ luật</th>
+                      <th className="text-left">Quyết định Kỷ luật</th>
+                      <th className="text-left">Ngày quyết định</th>
+                      <th className="text-center"></th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {academicHonorRoll.map((student, index) => (
+                      <tr key={student.stt} className="odd:bg-gray-100 even:bg-gray-200">
+                        <td className="text-center">{student.stt}</td>
+                        <td className="text-left break-words">{student.content}</td>
+                        <td className="text-left">{student.decision}</td>
+                        <td className="text-left">{student.date}</td>
+                        <td className="text-center flex">
+                          <Link to="update-discipline" className="p-1">
+                            <img src={edit} alt="edit" className="w-5 h-5" />
+                          </Link>
+                          <Link to={`/delete/${student.stt}`} className="p-1">
+                            <img src={trash} alt="trash" className="w-5 h-5" />
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </p>
         </Collapsible>
@@ -228,36 +230,38 @@ const StudyProcessContent: React.FC = () => {
               </button>
               <input type="text" className="search-input" placeholder="Tìm kiếm..." />
             </div>
-            <div className="w-full overflow-y-auto max-h-64">
-              <table className="w-full rounded-lg ">
-                <thead className="bg-black-text text-white">
-                  <tr>
-                    <th className="text-center sticky top-0 bg-black-text">STT</th>
-                    <th className="text-left sticky top-0 bg-black-text">Nội dung Kỷ luật</th>
-                    <th className="text-left sticky top-0 bg-black-text">Quyết định Kỷ luật</th>
-                    <th className="text-left sticky top-0 bg-black-text">Ngày quyết định</th>
-                    <th className="sticky top-0 bg-black-text"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {academicHonorRoll.map((student, index) => (
-                    <tr key={student.stt} className={`odd:bg-gray-100 even:bg-gray-200`}>
-                      <td className="text-center">{student.stt}</td>
-                      <td className="text-left break-words">{student.content}</td>
-                      <td className="text-left">{student.decision}</td>
-                      <td className="text-left">{student.date}</td>
-                      <td className="text-center flex">
-                        <Link to="update-discipline" className="search-button">
-                          <img src={edit} alt="edit" className="icon-search" />
-                        </Link>
-                        <Link to={`/delete/${student.stt}`} className="search-button">
-                          <img src={trash} alt="trash" className="icon-search" />
-                        </Link>
-                      </td>
+            <div className="w-full overflow-hidden rounded-lg border border-gray-300">
+              <div className="max-h-64 overflow-y-auto custom-scrollbar">
+                <table className="w-full border-collapse">
+                  <thead className="bg-black-text text-white  sticky top-0 z-10">
+                    <tr>
+                      <th className="text-center">STT</th>
+                      <th className="text-left">Nội dung Kỷ luật</th>
+                      <th className="text-left">Quyết định Kỷ luật</th>
+                      <th className="text-left">Ngày quyết định</th>
+                      <th className="text-center"></th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {academicHonorRoll.map((student, index) => (
+                      <tr key={student.stt} className="odd:bg-gray-100 even:bg-gray-200">
+                        <td className="text-center">{student.stt}</td>
+                        <td className="text-left break-words">{student.content}</td>
+                        <td className="text-left">{student.decision}</td>
+                        <td className="text-left">{student.date}</td>
+                        <td className="text-center flex">
+                          <Link to="update-discipline" className="p-1">
+                            <img src={edit} alt="edit" className="w-5 h-5" />
+                          </Link>
+                          <Link to={`/delete/${student.stt}`} className="p-1">
+                            <img src={trash} alt="trash" className="w-5 h-5" />
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </p>
         </Collapsible>
