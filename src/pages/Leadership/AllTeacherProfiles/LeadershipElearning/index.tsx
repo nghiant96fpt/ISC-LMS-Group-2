@@ -79,53 +79,6 @@ const TeacherProfile = () => {
         </div>
       </div>
 
-      {/* <div className="border rounded-lg overflow-hidden mb-6">
-        <div className="p-6">
-          <strong className="text-orange-text block mb-4 text-left ml-[300px]">Thông tin cá nhân</strong>
-          <div className="grid grid-cols-3 gap-4">
-            <div className="col-span-2 col-start-2 ml-[-125px] grid grid-cols-3 gap-4">
-              <div className="grid gap-2">
-                <p>
-                  <strong className="text-gray-500">CMND/CCCD:</strong> <span className="text-gray-500">{teacherData.personalId}</span>
-                </p>
-                <p>
-                  <strong className="text-gray-500">Ngày cấp:</strong> <span className="text-gray-500">{teacherData.issueDate}</span>
-                </p>
-                <p>
-                  <strong className="text-gray-500">Nơi cấp:</strong> <span className="text-gray-500">{teacherData.issuePlace}</span>
-                </p>
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center gap-2">
-                  <input type="checkbox" />
-                  <span className="text-gray-500">Đoàn viên</span>
-                </div>
-                <p>
-                  <strong className="text-gray-500">Ngày vào đoàn:</strong>
-                  <span className="text-gray-500"> {teacherData.personalId}</span>
-                </p>
-                <p>
-                  <strong className="text-gray-500">Nơi vào đoàn:</strong> <span className="text-gray-500">{teacherData.partyJoinDate}</span>
-                </p>
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center gap-2">
-                  <input type="checkbox" />
-                  <span className="text-gray-500">Đảng viên</span>
-                </div>
-                <p>
-                  <strong className="text-gray-500">Ngày vào đảng:</strong>
-                  <span className="text-gray-500"> {teacherData.personalId}</span>
-                </p>
-                <p>
-                  <strong className="text-gray-500">Nơi vào đảng:</strong> <span className="text-gray-500">{teacherData.partyJoinDate}</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-
       <div className="border rounded-lg flex justify-center overflow-hidden mb-6">
         <div className="p-6">
           <strong className="text-orange-text block mb-4 text-center sm:text-left">Thông tin cá nhân</strong>
@@ -174,37 +127,6 @@ const TeacherProfile = () => {
         </div>
       </div>
 
-      {/* <div className="border rounded-lg overflow-hidden mb-6">
-        <div className="p-6">
-          <strong className="text-orange-text block mb-4 text-left ml-[275px]">Thông tin gia đình</strong>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2 col-start-2 ml-[-355px] grid grid-cols-3 gap-4">
-              <div className="grid gap-2">
-                <p>
-                  <strong className="text-gray-500">Người liên hệ:</strong> <span className="text-gray-500">{teacherData.name1}</span>
-                </p>
-                <p>
-                  <strong className="text-gray-500">Địa chỉ:</strong> <span className="text-gray-500">{teacherData.address1}</span>
-                </p>
-                <p>
-                  <strong className="text-gray-500">SĐT:</strong> <span className="text-gray-500">{teacherData.phone1}</span>
-                </p>
-              </div>
-              <div className="grid gap-2">
-                <p>
-                  <strong className="text-gray-500">Người liên hệ 2:</strong> <span className="text-gray-500">{teacherData.name2}</span>
-                </p>
-                <p>
-                  <strong className="text-gray-500">Địa chỉ:</strong> <span className="text-gray-500">{teacherData.address2}</span>
-                </p>
-                <p>
-                  <strong className="text-gray-500">SĐT:</strong> <span className="text-gray-500">{teacherData.phone2}</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <div className="border rounded-lg overflow-hidden mb-6   flex justify-center">
         <div className="p-6 mr-[800px]">
           <strong className="text-orange-text block mb-4 text-center sm:text-left">Thông tin gia đình</strong>
