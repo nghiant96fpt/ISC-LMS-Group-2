@@ -50,9 +50,8 @@ import UpdateDiscipline from '../../pages/Leadership/StudyProcess/UpdateDiscipli
 import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/StudentRetensionUpdate';
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
 import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
+import Config from '../../pages/Leadership/SystemSettings/Config';
 
-import TrainingLevelManagement from '../../pages/Leadership/SystemSettings/TrainingLevelManagement';
-import AddForm from '../../pages/Leadership/SystemSettings/TrainingLevelManagement/addPeachLevel';
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -111,16 +110,15 @@ const StudentRoutes = () => {
         {/* <Route path="section-list/edit" element={<SubjectSetup />} /> */}
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
-        <Route path="system-settings" element={<SystemSettings />} />
-        <Route path="system-settings/training-level-management" element={<TrainingLevelManagement />} />
-        <Route path="system-settings/training-level-management/add" element={<AddForm />} />
+        <Route path="system-settings" element={<SystemSettings />}/>
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
         {/* */}
         <Route path="study-process" element={<StudyProcess />} />
         <Route path="study-process/update-rewards" element={<UpdateRewards />} />
         <Route path="study-process/update-discipline" element={<UpdateDiscipline />} />
-        <Route path='create-student' element={<StudentCU/>}/>
-        <Route path='new-student' element={<StudentCU/>}/>
+        <Route path="create-student" element={<StudentCU />} />
+        <Route path="new-student" element={<StudentCU />} />
+        <Route path='system-settings/config' element={<Config/>}/>
       </Route>
     </Routes>
   );

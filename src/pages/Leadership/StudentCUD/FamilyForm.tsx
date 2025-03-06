@@ -7,25 +7,25 @@ function FamilyForm() {
       <div className="w-full flex justify-between">
         <div className="w-[30%] max-w-[30%]">
           <div className="w-full flex items-center mb-3 justify-between">
-            <p className="w-[118px]">Họ tên cha</p>
+            <p className="w-[118px] pb-0">Họ tên cha</p>
             <Input className="max-h-[40px] min-w-[200px]" placeholder="Họ tên cha" />
           </div>
           <div className="w-full flex items-center mb-3 justify-between">
-            <p className="w-[118px]">Họ tên mẹ</p>
+            <p className="w-[118px] pb-0">Họ tên mẹ</p>
             <Input className="max-h-[40px] min-w-[200px]" placeholder="Họ tên mẹ" />
           </div>
           <div className="w-full flex items-center mb-3 justify-between">
-            <p className="w-[118px]">Người giám hộ</p>
+            <p className="w-[118px] pb-0">Người giám hộ</p>
             <Input className="max-h-[40px] min-w-[200px]" placeholder="Họ tên người giám hộ" />
           </div>
         </div>
         <div className="w-[30%] max-w-[30%]">
           <div className="w-full flex items-center mb-3 justify-between">
-            <p className="w-[118px]">Năm sinh cha</p>
+            <p className="w-[118px] pb-0">Năm sinh cha</p>
             <Input className="max-h-[40px]" size="sm" placeholder="Năm sinh cha" />
           </div>
           <div className="w-full flex items-center mb-3 justify-between">
-            <p className="w-[118px]">Năm sinh mẹ</p>
+            <p className="w-[118px] pb-0">Năm sinh mẹ</p>
             <Input className="max-h-[40px]" size="sm" placeholder="Năm sinh cha" />
           </div>
           <div className="w-full flex items-center mb-3 justify-between">

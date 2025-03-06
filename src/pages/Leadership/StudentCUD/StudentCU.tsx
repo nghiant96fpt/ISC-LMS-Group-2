@@ -3,18 +3,14 @@ import AddressList from '../../../components/AddressUrlStack/Index';
 import Card from '../../../components/Card';
 import UserDefaultAVT from '../../../assets/images/people/leadership/user-default-avt.png';
 import CameraEdit from '../../../assets/images/people/leadership/camera edit.png';
-import Input from '../../../components/Input';
-import CalendarInput from '../../../components/CalendarInput';
 import { DropdownOption } from '../../../components/Dropdown/type';
-import Dropdown from '../../../components/Dropdown';
-import RightForm from './RightForm';
+import Button from '../../../components/Button';
 import LeftForm from './LeftForm';
+import RightForm from './RightForm';
 import AddressForm from './AddressForm';
 import FamilyForm from './FamilyForm';
-import Button from '../../../components/Button';
 
-
-const StudentCU: React.FC = () => {
+const StudentCU = () => {
   const addressList = [
     { linkName: 'Hồ sơ học viên', link: '/leadership/all-student-profiles' },
     { linkName: 'Thêm học viên', link: '/leadership/new-student' },
@@ -132,7 +128,7 @@ const StudentCU: React.FC = () => {
 
       <Card size="full" variant="dark-primary" className="shadow-xl mb-5 overflow-auto">
         <Card.Header className="py-2">
-          <p className="px-8 text-2xl font-bold">Thông tin chung</p>
+          <p className="px-8 text-2xl font-bold text-white pb-0">Thông tin chung</p>
         </Card.Header>
         <Card.Body>
           <div className="px-8 flex justify-between mb-5">
@@ -184,7 +180,7 @@ const StudentCU: React.FC = () => {
           </div>
         </Card.Body>
         <Card.Header className="py-2 mt-[30px]">
-          <p className="px-8 text-2xl font-bold">Thông tin gia đình</p>
+          <p className="px-8 text-2xl font-bold text-white pb-0">Thông tin gia đình</p>
         </Card.Header>
         <Card.Body>
           <div className="px-8">
