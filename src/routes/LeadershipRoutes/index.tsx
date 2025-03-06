@@ -41,8 +41,8 @@ import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/Stud
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
 import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
 
-
-
+import TrainingLevelManagement from '../../pages/Leadership/SystemSettings/TrainingLevelManagement';
+import AddForm from '../../pages/Leadership/SystemSettings/TrainingLevelManagement/addPeachLevel';
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -93,6 +93,8 @@ const StudentRoutes = () => {
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
+        <Route path="system-settings/training-level-management" element={<TrainingLevelManagement />} />
+        <Route path="system-settings/training-level-management/add" element={<AddForm />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
       </Route>
     </Routes>
