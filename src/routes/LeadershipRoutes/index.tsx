@@ -56,6 +56,8 @@ import TrainingLevelManagement from '../../pages/Leadership/SystemSettings/Train
 import AddForm from '../../pages/Leadership/SystemSettings/TrainingLevelManagement/addPeachLevel';
 import UserManagement from '../../pages/Leadership/SystemSettings/UserManagement';
 import SettingForm from '../../pages/Leadership/SystemSettings/UserManagement/addSetting';
+import SubjectManagement from '../../pages/Leadership/SystemSettings/SubjectManagement';
+
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -127,6 +129,8 @@ const StudentRoutes = () => {
         <Route path="create-student" element={<StudentCU />} />
         <Route path="new-student" element={<StudentCU />} />
         <Route path='system-settings/config' element={<Config/>}/>
+        {/* Thiết lập lớp học */}
+        <Route path="system-settings/subject-management" element={<SubjectManagement />} />
       </Route>
     </Routes>
   );

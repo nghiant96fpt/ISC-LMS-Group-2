@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { DropdownOption } from '../../../../components/Dropdown/type';
 import trash from '../../../../assets/icons/icon-fi_trash-2.png';
-import plus from '../../../../assets/icons/icon_plus.png';
+import plus from '../../../../assets/icons/Plus.jpg';
 import Dropdown from '../../../../components/Dropdown';
 import Button from '../../../../components/Button';
 // import Tag from '../../../../components/Tag';
@@ -57,7 +57,7 @@ const AllStudentProfilesHeader: React.FC = () => {
               <Tag text="Khen thưởng" isActive={false} onClick={() => console.log('Clicked!')} />
               <Tag text="Kỷ luật" isActive={false} onClick={() => console.log('Clicked!')} />
             </div> */}
-          <div className="flex gap-3 button-group">
+          <div className="activeButton flex gap-3">
             {buttons.map((btn) => (
               <button key={btn.value} className={`btn ${activeButton === btn.value ? 'active' : ''}`} onClick={() => setActiveButton(btn.value)}>
                 {btn.label}
