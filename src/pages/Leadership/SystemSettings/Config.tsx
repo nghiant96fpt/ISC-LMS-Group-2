@@ -26,12 +26,12 @@ function Config() {
   }, [data]);
 
   const theme = [
-    { title: 'Default', codeHex: '#ECF7FD', value: 0 },
-    { title: 'Primary', codeHex: '#FF7506', value: 1 },
-    { title: 'Primary subtle', codeHex: '#FFA75E', value: 2 },
-    { title: 'Skyblue', codeHex: '#0B80EC', value: 3 },
-    { title: 'Browne', codeHex: '#823B00', value: 4 },
-    { title: 'Dark', codeHex: '#373839', value: 5 },
+    { title: 'Default', codeHex: '#ECF7FD' },
+    { title: 'Primary', codeHex: '#FF7506'},
+    { title: 'Primary subtle', codeHex: '#FFA75E'},
+    { title: 'Skyblue', codeHex: '#0B80EC'},
+    { title: 'Browne', codeHex: '#823B00'},
+    { title: 'Dark', codeHex: '#373839'},
   ];
 
   const pRef = useRef<HTMLParagraphElement | null>(null);
@@ -78,12 +78,14 @@ function Config() {
           </div>
           <div className="w-px bg-gray-300 h-full"></div>
           <div className="flex-[5] h-full">
-            <div className="w-full flex justify-around flex-wrap gap-y-2">
+            <div className="w-full flex justify-around flex-wrap gap-y-2 mt-3">
               {theme.map((item, index) => (
-                <div key={index} className={`w-[218px] h-[125px]`} onClick={handleSetData.bind(null, 'theme', item?.codeHex)}>
-                  <div className={`w-full h-[80%] bg-[${item?.codeHex}]`}></div>
+                <button key={index} className={`w-[218px] h-[125px] rounded-lg`} onClick={handleSetData.bind(null, 'theme', item?.codeHex)}>
+                  <div className={`w-full h-[80%] flex justify-center items-center rounded-lg`} style={{backgroundColor: String(item?.codeHex)}}>
+                    <p className={`pb-0 ${item?.title!=='Default'&&'text-white'}`}>AaBbCc</p>
+                  </div>
                   <p className="text-center text-xl font-bold">{item?.title}</p>
-                </div>
+                </button>
               ))}
             </div>
           </div>

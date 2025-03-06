@@ -24,6 +24,9 @@ const SystemSettings: React.FC = () => {
           <p className="text-white font-bold">Thông tin chung của trường, các cơ sở</p>
         </div>
       ),
+      handle: () => {
+        navigator('/leadership/system-settings/school-info');
+      }
     },
     {
       variant: 'orange',
@@ -33,6 +36,9 @@ const SystemSettings: React.FC = () => {
           <p className="text-white font-bold px-2">Phần nhóm người dùng, quản lý thông tin người dùng và phân quyền sử dụng</p>
         </div>
       ),
+      handle: () => {
+        navigator('/leadership/system-settings/user-management');
+      }
     },
     {
       variant: 'primary',
@@ -42,6 +48,9 @@ const SystemSettings: React.FC = () => {
           <p className="text-white font-bold">Loại lớp cơ bản, nâng cao</p>
         </div>
       ),
+      handle: () => {
+        navigator('/leadership/system-settings/classroom-settings');
+      }
     },
     {
       variant: 'primary',
@@ -63,6 +72,9 @@ const SystemSettings: React.FC = () => {
           <p className="text-white font-bold">Thông tin các hệ đào tạo của trường</p>
         </div>
       ),
+      handle: () => {
+        navigator('/leadership/system-settings/training-level-management');
+      }
     },
   ];
   return (
@@ -71,7 +83,7 @@ const SystemSettings: React.FC = () => {
         <p className="text-3xl font-bold mb-5">Cài đặt hệ thống</p>
         <div className="w-full flex justify-around flex-wrap">
           {buttons.map((item, index) => (
-            <div
+            <button
               key={index}
               className={`w-[340px] h-[120px] mb-4 ${
                 item?.variant === 'orange' ? 'bg-gradient-to-r from-[#F17F21] to-[#FF5400]' : 'bg-gradient-to-r from-[#56CCF2] to-[#2F80ED]'
@@ -79,7 +91,7 @@ const SystemSettings: React.FC = () => {
               onClick={item?.handle}
             >
               {item?.title}
-            </div>
+            </button>
           ))}
         </div>
       </div>
