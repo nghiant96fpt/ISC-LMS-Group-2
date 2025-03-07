@@ -6,8 +6,6 @@ import AddClass from '../../pages/Teacher/AddClass';
 import JoinClass from '../../pages/Teacher/JoinClass';
 import TestList from '../../pages/Teacher/TestList';
 import AddTest from '../../pages/Teacher/AddTest';
-import EnterScores from '../../pages/Teacher/EnterScores';
-import ScoreBoard from '../../pages/Teacher/ScoreBoard';
 import ExamSchedule from '../../pages/Teacher/ExamSchedule';
 import Notifications from '../../pages/Teacher/Notifications';
 import Help from '../../pages/Teacher/Help';
@@ -24,14 +22,12 @@ const TeacherRoutes = () => {
         <Route path="join-class" element={<JoinClass />} />
         <Route path="test-list" element={<TestList />} />
         <Route path="add-test" element={<AddTest />} />
-        <Route path="enter-scores" element={<EnterScores />} />
-        <Route path="score-board" element={<ScoreBoard />} />
         <Route path="exam-schedule" element={<ExamSchedule />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="help" element={<Help />} />
         <Route path="classroom" element={<Classroom />} />
-        <Route path="TeacherScoring" element={<TeacherScoring />} />
-        <Route path="Transcript" element={<Transcript />} />
+        <Route path="enter-scores" element={<TeacherScoring />} />
+        <Route path="score-board" element={<Transcript />} />
       </Route>
     </Routes>
   );

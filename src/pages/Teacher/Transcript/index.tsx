@@ -20,8 +20,8 @@ const Transcript = () => {
   const [selectedClass, setSelectedClass] = useState('10C1');
 
   return (
-    <div className="bg-white p-8">
-      <div className="flex items-center">
+    <div className="bg-white px-8 pb-8 pt-0">
+      <div className="pb-5 flex items-center gap-2 mb-4">
         <span className="text-gray-400 text-sm mr-2">Quản lý bài kiểm tra</span>
         <img src={right} alt="right" className="w-4 h-4 mr-2" />
         <h1 className="text-3xl font-bold text-black">Chấm điểm</h1>
@@ -178,8 +178,8 @@ const Transcript = () => {
           </select>
         </div>
       </div>
-      <div className="flex justify-between items-center w-full">
-        <div className="flex space-x-2">
+      <div className="pt-5 flex justify-between items-center w-full">
+        <div className=" flex space-x-2 ">
           <strong>Bảng điểm của lớp -</strong>
           <strong className="text-green-500">35/40 học viên đạt</strong>
         </div>
