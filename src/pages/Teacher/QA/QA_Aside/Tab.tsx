@@ -7,7 +7,6 @@ interface TabProps {
   tag: string | number;
   handleChangTab: (id: number) => void;
 }
-
 const Tab: React.FC<TabProps> = ({ tabId, TabChoose, title, tag, handleChangTab }) => {
   return (
     <div

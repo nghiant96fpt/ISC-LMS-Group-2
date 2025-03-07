@@ -15,7 +15,6 @@ const TeacherQA: React.FC = () => {
   const handleClickChangeTopic = () => {
     alert('Đổi topic');
   };
-
   const handleClickChangeTabChat = () => {
     alert('Đổi tab chat mới');
   };

@@ -12,5 +12,4 @@ type TopicType = {
   handleClick: () => void;
   cardData: Topic;
 };
-
 export default TopicType;

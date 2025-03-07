@@ -2,8 +2,8 @@ import TopicType from './TopicType';
 
 const TopicCard: React.FC<TopicType> = ({ handleClick, cardData, cardIndexChoose, index }) => {
   return (
-    <div className="p-4 rounded-lg border">
-      <h3 className="font-bold text-lg">{cardData.title}</h3>
+    <div className={`p-4 rounded-lg border ${cardIndexChoose === index ? 'bg-gray-200' : ''}`}>
+      <h3 className="font-bold text-gray-500 text-lg">{cardData.title}</h3>
       <p className="text-sm text-gray-600">{Array.isArray(cardData.content) ? cardData.content.join(', ') : cardData.content}</p>
       <div className="flex justify-between items-center text-sm text-gray-500">
         <span>👁 {cardData.views}</span>
@@ -13,5 +13,4 @@ const TopicCard: React.FC<TopicType> = ({ handleClick, cardData, cardIndexChoose
     </div>
   );
 };
-
 export default TopicCard;

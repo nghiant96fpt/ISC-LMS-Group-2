@@ -37,5 +37,4 @@ const ChatCart: React.FC<ChatType> = ({ cardData, cardIndexChoose, handleClick, 
     </div>
   );
 };
-
 export default ChatCart;

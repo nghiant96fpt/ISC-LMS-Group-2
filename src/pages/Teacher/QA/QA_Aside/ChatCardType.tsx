@@ -6,7 +6,6 @@ type Chat = {
   seen: number;
   active: boolean;
 };
-
 type ChatType = {
   index: number;
   cardIndexChoose: number;
