@@ -10,7 +10,7 @@ const TeacherDashboard = () => {
         <TitleComponent text="Tổng quan" size={30} weight="extrabold" className="" />
         <Dashboard />
       </div>
-
+{/*  */}
       <div className="col-span-full xl:col-auto">
         <TitleComponent text="Tấc cả khóa học" size={30} weight="extrabold" className="mb-5" />
         <AllCourses />
