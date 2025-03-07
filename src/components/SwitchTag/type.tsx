@@ -14,4 +14,5 @@ export interface SwitchTagOptions {
  */
 export interface SwitchTagProps {
   options: SwitchTagOptions;
+  className?: string;
 }
