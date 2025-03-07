@@ -12,6 +12,7 @@ import ExamSchedule from "../../pages/Teacher/ExamSchedule";
 import Notifications from "../../pages/Teacher/Notifications";
 import Help from "../../pages/Teacher/Help";
 import Classroom from "../../pages/Teacher/ClassList/Classroom/index";
+import AddTopic from "../../pages/Teacher/QA/AddTopic";
 const TeacherRoutes = () => {
   return (
     <Routes>
@@ -27,7 +28,7 @@ const TeacherRoutes = () => {
         <Route path="exam-schedule" element={<ExamSchedule />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="help" element={<Help />} />
-        <Route path="classroom" element={<Classroom />} />
+        <Route path="add-topic" element={<AddTopic />} />
       </Route>
     </Routes>
   );
