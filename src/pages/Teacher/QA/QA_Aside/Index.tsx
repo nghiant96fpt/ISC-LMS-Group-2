@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Tab from './Tab';
-import AddressList from '../../../components/AddressUrlStack/Index';
+import AddressList from '../../../../components/AddressUrlStack/Index';
 import ChatCart from './ChatCart';
 import './teacherQA.css';
 import TopicCard from './TopicCard';
@@ -37,7 +37,7 @@ const TeacherQA: React.FC = () => {
       avatar:
         'https://cdn.colombia.com/sdi/2022/11/25/avatar-the-way-of-water-seria-la-pelicula-mas-cara-dela-historia-luego-de-que-se-filtrara-su-presupusto-1091233.jpg',
       seen: 22,
-      selected: true,
+      active: true,
     },
     {
       name: 'Lor',
@@ -46,6 +46,7 @@ const TeacherQA: React.FC = () => {
       avatar:
         'https://cdn.colombia.com/sdi/2022/11/25/avatar-the-way-of-water-seria-la-pelicula-mas-cara-dela-historia-luego-de-que-se-filtrara-su-presupusto-1091233.jpg',
       seen: 10,
+      active: true,
     },
     {
       name: 'Binz',
@@ -54,6 +55,7 @@ const TeacherQA: React.FC = () => {
       avatar:
         'https://cdn.colombia.com/sdi/2022/11/25/avatar-the-way-of-water-seria-la-pelicula-mas-cara-dela-historia-luego-de-que-se-filtrara-su-presupusto-1091233.jpg',
       seen: 20,
+      active: true,
     },
     {
       name: 'Lê Đan',
@@ -62,30 +64,7 @@ const TeacherQA: React.FC = () => {
       avatar:
         'https://cdn.colombia.com/sdi/2022/11/25/avatar-the-way-of-water-seria-la-pelicula-mas-cara-dela-historia-luego-de-que-se-filtrara-su-presupusto-1091233.jpg',
       seen: 22,
-    },
-    {
-      name: 'Khazik',
-      message: 'Hỏi gì hỏi lẹ đi má :)',
-      time: '3 tháng 10',
-      avatar:
-        'https://cdn.colombia.com/sdi/2022/11/25/avatar-the-way-of-water-seria-la-pelicula-mas-cara-dela-historia-luego-de-que-se-filtrara-su-presupusto-1091233.jpg',
-      seen: 10,
-    },
-    {
-      name: 'Wowy',
-      message: 'Hỏi gì hỏi lẹ đi má :)',
-      time: '3 tháng 10',
-      avatar:
-        'https://cdn.colombia.com/sdi/2022/11/25/avatar-the-way-of-water-seria-la-pelicula-mas-cara-dela-historia-luego-de-que-se-filtrara-su-presupusto-1091233.jpg',
-      seen: 10,
-    },
-    {
-      name: 'Suboi',
-      message: 'Hỏi gì hỏi lẹ đi má :)',
-      time: '3 tháng 10',
-      avatar:
-        'https://cdn.colombia.com/sdi/2022/11/25/avatar-the-way-of-water-seria-la-pelicula-mas-cara-dela-historia-luego-de-que-se-filtrara-su-presupusto-1091233.jpg',
-      seen: 22,
+      active: true,
     },
   ]);
 
@@ -93,22 +72,22 @@ const TeacherQA: React.FC = () => {
     {
       title: 'Tại sao nước biển lại mặn',
       content: 'Thảo luận xem vì sao? Thích thì mặn hong thích thì mặn :)) Sed lobortis purus dui.',
-      comment: 9,
-      view: 9,
+      comments: 9,
+      views: 9,
       createdDate: '15 th2',
     },
     {
       title: 'Tại sao nước biển lại mặn',
       content: 'Thảo luận xem vì sao? Thích thì mặn hong thích thì mặn :)) Sed lobortis purus dui.',
-      comment: 9,
-      view: 9,
+      comments: 9,
+      views: 9,
       createdDate: '15 th2',
     },
     {
       title: 'Tại sao nước biển lại mặn',
       content: 'Thảo luận xem vì sao? Thích thì mặn hong thích thì mặn :)) Sed lobortis purus dui.',
-      comment: 9,
-      view: 9,
+      comments: 9,
+      views: 9,
       createdDate: '15 th2',
     },
   ]);
@@ -159,11 +138,11 @@ const TeacherQA: React.FC = () => {
             <div className="max-h-[330px] p-2  rounded-lg overflow-y-auto space-y-2  scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
               {tabId < 3 &&
                 tabChat.map((chat, index) => (
-                  <ChatCart cartIndexChoose={cartIndexChoose} handleClick={handleClickChangeTabChat} chat={chat} index={index} />
+                  <ChatCart cardIndexChoose={cartIndexChoose} handleClick={handleClickChangeTabChat} cardData={chat} index={index} />
                 ))}
               {tabId === 3 &&
                 topics.map((v, index) => {
-                  return <TopicCard cartIndexChoose={cartIndexChoose} handleClick={handleClickChangeTopic} index={index} topic={v} />;
+                  return <TopicCard cardData={v} cardIndexChoose={cartIndexChoose} handleClick={handleClickChangeTopic} index={index} />;
                 })}
             </div>
           </div>
