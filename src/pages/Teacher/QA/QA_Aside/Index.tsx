@@ -17,7 +17,7 @@ const TeacherQA: React.FC = () => {
   };
 
   const handleClickChangeTabChat = () => {
-    alert('Đổi tab chat');
+    alert('Đổi tab chat mới');
   };
 
   const [tabChat, setTabChat] = useState([
