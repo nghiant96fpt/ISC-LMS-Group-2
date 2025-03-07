@@ -27,11 +27,7 @@ const Question: React.FC = () => {
                   onClick={() => setIsReplying(true)}
                 />
               ) : (
-                <button
-                  children="Hủy"
-                  className="w-24 h-8 font-bold text-orange-text"
-                  onClick={() => setIsReplying(false)}
-                />
+                <button children="Hủy" className="w-24 h-8 font-bold text-orange-text" onClick={() => setIsReplying(false)} />
               )}
             </div>
             <p className="ml-10 text-black-text mb-10">{item.question}</p>
@@ -67,11 +63,7 @@ const Question: React.FC = () => {
               alt="Icon"
               className="w-6 h-6 mt-1 opacity-50 filter invert-[40%] sepia-[80%] saturate-[500%] hue-rotate-[10deg] brightness-[90%] contrast-[90%]"
             />
-            <textarea
-              placeholder="Nhập câu trả lời..."
-              className="flex-1 outline-none bg-transparent text-gray-600 resize-none p-2 mx-3"
-              rows={3}
-            />
+            <textarea placeholder="Nhập câu trả lời..." className="flex-1 outline-none bg-transparent text-gray-600 resize-none p-2 mx-3" rows={3} />
             <button className="text-orange-500">
               <img src={icon.send} alt="icon" className="w-6 h-6" />
             </button>
