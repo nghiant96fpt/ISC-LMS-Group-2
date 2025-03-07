@@ -12,6 +12,8 @@ import AllTeacherProfiles from '../../pages/Leadership/AllTeacherProfiles';
 import TransferAcceptance from '../../pages/Leadership/TransferAcceptance';
 import DeclareData from '../../pages/Leadership/DeclareData/DataList';
 import Exams from '../../pages/Leadership/Exams';
+import ExamClassList from '../../pages/Leadership/Exams/ExamClassList/ExamClassList';
+import ScoreBoard from '../../pages/Leadership/Exams/ScoreBoard/ScoreBoard';
 import StudentRetention from '../../pages/Leadership/StudentRetention';
 import SystemSettings from '../../pages/Leadership/SystemSettings';
 import TeachingAssignment from '../../pages/Leadership/TeachingAssignment';
@@ -26,11 +28,17 @@ import BlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/
 import ClassListWrapper from '../../pages/Leadership/DeclareData/BlockDepartment/ClassListWrapper';
 import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/edit';
 
+// import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
+// import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
+// import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
+// import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
+
 // import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 
 // import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
 // import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
 // import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
+
 import SectionList from '../../pages/Leadership/DeclareData/SectionList';
 import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
@@ -46,6 +54,12 @@ import StudentCU from '../../pages/Leadership/StudentCUD/StudentCU';
 import StudyProcess from '../../pages/Leadership/StudyProcess';
 import UpdateRewards from '../../pages/Leadership/StudyProcess/UpdateRewards';
 import UpdateDiscipline from '../../pages/Leadership/StudyProcess/UpdateDiscipline';
+import TestManagement from '../../pages/Leadership/Exams/TestManagement/TestManagement';
+import DetailTestManagement from '../../pages/Leadership/Exams/TestManagement/DetailTestManagement';
+import ExamDetailModal from '../../pages/Leadership/Exams/ExamsDeTai';
+import EditExamSchedule from '../../pages/Leadership/Exams/EditExams/edit';
+import ExamListTable from '../../pages/Leadership/Exams/ExamListTable';
+import CreateExamSchedule from '../../pages/Leadership/Exams/CreateExamSchedule/CreateExamSchedule';
 
 import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/StudentRetensionUpdate';
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
@@ -60,12 +74,22 @@ import UserManagement from '../../pages/Leadership/SystemSettings/UserManagement
 import SettingForm from '../../pages/Leadership/SystemSettings/UserManagement/addSetting';
 import SubjectManagement from '../../pages/Leadership/SystemSettings/SubjectManagement';
 import ClassroomSettings from '../../pages/Leadership/ClassroomSettings/classroomsettings';
+import AddWorkProcess from '../../pages/Leadership/AllTeacherProfiles/Workprocess/AddWorkProcess';
+import AddTrainingProgram from '../../pages/Leadership/TrainingInfo/AddTraining';
+import InstructorProfile from '../../pages/Leadership/AllTeacherProfiles/InstructorProfile';
 
 const StudentRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<MainLayout role="leadership" />}>
         <Route index element={<Dashboard />} />
+        <Route path="all-student-profiles" element={<AllStudentProfiles />} />
+        {/*Group-3 All student */}
+        <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
+        <Route path="all-teacher-profiles/retirement/:id" element={<ResignationForm />} />
+        <Route path="all-teacher-profiles/stop-working/:id" element={<LeaveUpdateModal />} />
+        <Route path="all-teacher-profiles/resignation/:id" element={<RetirementUpdateModal />} />
+        {/*  */}
         {/*Group-3 All student */}
         <Route path="all-student-profiles" element={<AllStudentProfiles />} />
         <Route path="all-student-profiles/retirement/:id" element={<ResignationForm />} />
@@ -82,7 +106,9 @@ const StudentRoutes = () => {
         <Route path="all-student-profiles/reward-method" element={<RewardMethod />} />
         {/*all-teacher-profiles*/}
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
+        <Route path="all-teacher-profiles/addworkprocess" element={<AddWorkProcess />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
+        <Route path="InstructorProfile" element={<InstructorProfile />} />
         {/*route cho school-year - group-4*/}
         <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
         <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
@@ -117,6 +143,26 @@ const StudentRoutes = () => {
         {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
         {/* <Route path="section-list" element={<SectionList />} /> */}
         {/* <Route path="section-list/edit" element={<SubjectSetup />} /> */}
+        {/*Group-3 TestManagement */}
+        <Route path="exams/*" element={<Exams />} />
+        <Route path="exams/:id" element={<ExamClassList />} />
+        <Route path="exams/:examId/scoreboard/:scoreboardId" element={<ScoreBoard />} />
+        <Route path="exams/test-management" element={<TestManagement />} />
+        <Route path="exams/test-management/:id" element={<DetailTestManagement />} />
+        <Route path="exams/edit/:id" element={<EditExamSchedule />} />
+        <Route path="exams/detail/:id" element={<ExamDetailModal />} />
+        <Route path="exams/list" element={<ExamListTable />} />
+        <Route path="exams/create-exam-schedule" element={<CreateExamSchedule />} />
+        {/*  */}
+        <Route path="student-retention" element={<StudentRetention />} />
+        <Route path="system-settings" element={<SystemSettings />} />
+        <Route path="teaching-assignment" element={<TeachingAssignment />} />
+        {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
+        <Route path="declare-data" element={<DeclareData />} />
+        <Route path="declare-data/edit" element={<DepartmentSettings />} />
+        <Route path="declare-data/subject-list" element={<SubjectList />} />
+        <Route path="section-list" element={<SectionList />} />
+        <Route path="section-list/edit" element={<SubjectSetup />} />
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
@@ -139,6 +185,7 @@ const StudentRoutes = () => {
         {/*Group - 1 setting*/}
         <Route path='system-settings/school-info' element={<SchoolInfo/>}/>
         <Route path='system-settings/school-info/edit' element={<EditSchoolInFo/>}/>
+        <Route path="training-info/add" element={<AddTrainingProgram />} />
       </Route>
     </Routes>
   );
