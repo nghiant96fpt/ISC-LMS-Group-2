@@ -13,6 +13,7 @@ import Notifications from "../../pages/Teacher/Notifications";
 import Help from "../../pages/Teacher/Help";
 import ClassDetail from "../../pages/Teacher/ClassList/ClassDetail/ClassDeatail";
 import ClassInformation from "../../pages/Teacher/ClassList/ClassInformation/ClassInformation";
+import TestContent from "../../pages/Teacher/TestList/TestContent/TestContent";
 
 import Classroom from "../../pages/Teacher/ClassList/Classroom/index";
 const TeacherRoutes = () => {
@@ -30,6 +31,7 @@ const TeacherRoutes = () => {
         <Route path="join-class" element={<JoinClass />} />
         <Route path="test-list" element={<TestList />} />
         <Route path="add-test" element={<AddTest />} />
+        <Route path="test-list/test-content/:id" element={<TestContent />} />
         <Route path="enter-scores" element={<EnterScores />} />
         <Route path="score-board" element={<ScoreBoard />} />
         <Route path="exam-schedule" element={<ExamSchedule />} />
