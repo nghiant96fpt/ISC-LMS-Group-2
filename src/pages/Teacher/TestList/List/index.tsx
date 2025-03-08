@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import AddressList from "../../../../components/AddressUrlStack/Index";
 import { Table, TableBody, TableHeader, TableRow, TableCell } from "../../../../components/ui/tabble";
 import Button from "../../../../components/Button";
 import PaginationControls from "../../../../components/Pagination";
@@ -14,10 +13,6 @@ import { DropdownOption } from "../../../../components/Dropdown/type";
 
 const ListTableTest: React.FC = () => {
   const [filter, setFilter] = useState("");
-  const [urls, setUrls] = useState([
-    { link: "/teacher/test-list", linkName: "Bài Kiểm tra" },
-    { link: "/teacher/test-list", linkName: "Danh sách bài kiểm tra" }
-  ]);
   const [activeButton, setActiveButton] = useState("all");
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,16 +26,15 @@ const ListTableTest: React.FC = () => {
   };
 
   return (
-    <div className="w-full py-2">
-      <AddressList addressList={urls} />
-      <div className="pt-[32px]">
+    <div className="w-full max-w-[1680px] mx-auto py-5">
+      <div className="max-w-[1680px]">
         <div className="flex max-w-[1680px] gap-4 border-b border-gray-200">
           <div className="flex w-full justify-between items-center">
-            <div className="flex gap-4 mb-0 border-b border-gray-200">
+            <div className="flex gap-4 border-b border-gray-200">
               <button
                 className={`w-[207px] h-[69px] px-1 font-bold text-[18px] rounded-t-lg border-2 border-b-0 ${activeButton === "all"
-                  ? "bg-orange-500 text-white border-orange-500"
-                  : "bg-white text-black border-orange-500"
+                  ? "bg-orange-500 text-while-text border-orange-500"
+                  : "bg-white text-black-text border-orange-500"
                   }`}
                 onClick={() => handleButtonClick("all")}
               >
@@ -48,8 +42,8 @@ const ListTableTest: React.FC = () => {
               </button>
               <button
                 className={`w-[207px] h-[69px] px-1 font-bold text-[18px] rounded-t-lg border-2 border-b-0 ${activeButton === "upcoming"
-                  ? "bg-orange-500 text-white border-orange-500"
-                  : "bg-white text-black border-orange-500"
+                  ? "bg-orange-500 text-while-text border-orange-500"
+                  : "bg-white text-black-text border-orange-500"
                   }`}
                 onClick={() => handleButtonClick("upcoming")}
               >
@@ -57,8 +51,8 @@ const ListTableTest: React.FC = () => {
               </button>
               <button
                 className={`w-[207px] h-[69px] px-1 font-bold text-[18px] rounded-t-lg border-2 border-b-0 ${activeButton === "graded"
-                  ? "bg-orange-500 text-white border-orange-500"
-                  : "bg-white text-black border-orange-500"
+                  ? "bg-orange-500 text-while-text border-orange-500"
+                  : "bg-white text-black-text border-orange-500"
                   }`}
                 onClick={() => handleButtonClick("graded")}
               >
@@ -66,8 +60,8 @@ const ListTableTest: React.FC = () => {
               </button>
               <button
                 className={`w-[207px] h-[69px] px-1 font-bold text-[18px] rounded-t-lg border-2 border-b-0 ${activeButton === "ungraded"
-                  ? "bg-orange-500 text-white border-orange-500"
-                  : "bg-white text-black border-orange-500"
+                  ? "bg-orange-500 text-while-text border-orange-500"
+                  : "bg-white text-black-text border-orange-500"
                   }`}
                 onClick={() => handleButtonClick("ungraded")}
               >
@@ -75,7 +69,7 @@ const ListTableTest: React.FC = () => {
               </button>
             </div>
 
-            <button className="bg-orange-500 text-white px-6 py-3 rounded-lg font-bold">
+            <button className="bg-orange-500 text-while-text px-6 py-3 rounded-lg font-bold">
               Thêm bài kiểm tra
             </button>
           </div>
@@ -112,9 +106,10 @@ const ListTableTest: React.FC = () => {
                 <label className="font-bold">Chọn Ngày</label>
                 <CalendarInput />
               </div>
-              <button className="bg-orange-500 max-h-[40px] text-white px-6 py-2 rounded-lg font-bold ml-12">
+              <button className="bg-orange-500 text-white px-6 py-2 rounded-lg font-bold text-center max-h-[40px] min-w-[120px] max-w-[200px] whitespace-nowrap flex items-center justify-center ml-12">
                 Lọc kết quả
               </button>
+
             </div>
 
             <SearchInput
@@ -126,7 +121,7 @@ const ListTableTest: React.FC = () => {
           <div className="pt-[24px] pb-[66px]">
             <Table className="w-full  table-fixed border-collapse rounded-lg overflow-hidden">
               <TableHeader>
-                <TableRow className="bg-orange-500 text-white">
+                <TableRow className="bg-orange-500 text-while-text">
                   <TableCell isHeader className="p-2 text-center">
                     <div className="flex items-center justify-center gap-1">
                       Lớp
@@ -144,13 +139,13 @@ const ListTableTest: React.FC = () => {
                   <TableCell isHeader className="text-center">Thời lượng</TableCell>
                   <TableCell isHeader className="text-center">Trạng thái</TableCell>
                   <TableCell isHeader className="text-center">Bài làm</TableCell>
-                  <TableCell isHeader className="text-center">&nbsp</TableCell>
+                  <TableCell isHeader className="text-center"> </TableCell>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {exams.map((exam, index) => (
                   <TableRow key={index} className="even:bg-gray-100 odd:bg-white">
-                    <TableCell className="p-2 text-center align-middle">{exam.class}</TableCell>
+                    <TableCell className=" text-center align-middle">{exam.class}</TableCell>
                     <TableCell className="text-center align-middle">{exam.content}</TableCell>
                     <TableCell className="text-center align-middle">{exam.subject}</TableCell>
                     <TableCell className="text-center align-middle">{exam.date}</TableCell>
@@ -165,17 +160,19 @@ const ListTableTest: React.FC = () => {
                     </TableCell>
                     <TableCell className="text-center align-middle">
                       {exam.status === "Đã kết thúc" ? (
-                        <button className="bg-yellow-500 w-[142px] text-white px-3 py-1 rounded">Chấm điểm</button>
+                        <button className="bg-yellow-500  w-[142px] text-while-text px-3 py-1 rounded">Chấm điểm</button>
                       ) : exam.status === "Đang tiến hành" ? (
                         <button className="bg-gray-300 w-[142px] text-gray-500 px-3 py-1 rounded" disabled>Chấm điểm</button>
                       ) : exam.status === "Chưa bắt đầu" ? (
-                        <button className="bg-orange-500 w-[142px] text-white px-3 py-1 rounded">Bắt đầu</button>
+                        <button className="bg-orange-500 w-[142px] text-while-text px-3 py-1 rounded">Bắt đầu</button>
                       ) : null}
                     </TableCell>
 
-                    <TableCell className="flex justify-center gap-2 p-2">
-                      <img src={fiedit} className="max-w-[32px] max-h-[32px]" />
-                      <img src={infooutline} className="max-w-[32px] max-h-[32px]" />
+                    <TableCell className="text-center align-middle">
+                      <div className="flex justify-center gap-2">
+                        <img src={fiedit} className="w-[34px] h-[32px] object-contain shrink-0" />
+                        <img src={infooutline} className="w-[32px] h-[32px] object-contain shrink-0" />
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
