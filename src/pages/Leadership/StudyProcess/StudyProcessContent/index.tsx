@@ -13,6 +13,7 @@ const StudyProcessContent: React.FC = () => {
 
   const options = {
     labels: ['Học kỳ I', 'Học kỳ II'],
+    paths: ['', ''],
   };
 
   const handleTabClick = (index: number) => {
@@ -121,7 +122,11 @@ const StudyProcessContent: React.FC = () => {
               </table>
 
               <div className="mt-4 SwitchTag-StudyProcessContent">
-                <SwitchTag options={options} activeTab={activeTab} handleTabClick={handleTabClick} />
+                <SwitchTag
+                  options={options}
+                  // activeTab={activeTab}
+                  // handleTabClick={handleTabClick}
+                />
               </div>
 
               <table className="w-full mt-4 border-collapse shadow-custom rounded-lg">

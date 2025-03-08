@@ -12,6 +12,7 @@ const StudyProcessHeader: React.FC = () => {
 
   const options = {
     labels: ['Thông tin chung', 'quá trình học tập'],
+    paths: ['', ''],
   };
 
   const handleTabClick = (index: number) => {
@@ -55,7 +56,11 @@ const StudyProcessHeader: React.FC = () => {
       </div>
       <div className="tab-dropdown-btn">
         <div className="tab">
-          <SwitchTag options={options} activeTab={activeTab} handleTabClick={handleTabClick} />
+          <SwitchTag
+            options={options}
+            // activeTab={activeTab}
+            // handleTabClick={handleTabClick}
+          />
         </div>
         <div className="dropdown">
           <Dropdown
