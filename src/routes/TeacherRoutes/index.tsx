@@ -6,7 +6,6 @@ import AddClass from '../../pages/Teacher/AddClass';
 import JoinClass from '../../pages/Teacher/JoinClass';
 import TestList from '../../pages/Teacher/TestList';
 import AddTest from '../../pages/Teacher/AddTest';
-import PopUp from '../../pages/Teacher/AddTest/Popup/popup';
 import EnterScores from '../../pages/Teacher/EnterScores';
 import ScoreBoard from '../../pages/Teacher/ScoreBoard';
 import ExamSchedule from '../../pages/Teacher/ExamSchedule';
@@ -16,6 +15,7 @@ import ClassDetail from '../../pages/Teacher/ClassList/ClassDetail/ClassDeatail'
 import ClassInformation from '../../pages/Teacher/ClassList/ClassInformation/ClassInformation';
 
 import Classroom from '../../pages/Teacher/ClassList/Classroom/index';
+import TestContent from '../../pages/Teacher/TestList/TestContent/TestContent';
 const TeacherRoutes = () => {
   return (
     <Routes>
