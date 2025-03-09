@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import userCircle from '../../assets/images/people/user_circle.png';
 import './style.css';
-import { useNavigate } from 'react-router';
+
 
 const Header: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);

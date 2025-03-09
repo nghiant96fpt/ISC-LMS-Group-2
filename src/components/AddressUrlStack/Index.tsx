@@ -2,7 +2,8 @@ import React from 'react';
 import AddressType from './type';
 import arrow from '../../assets/images/chevron_big_right.png';
 import './Style.css';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
+
 const AddressList: React.FC<AddressType> = ({ addressList, type = true }) => {
   let size = addressList.length;
   function processArray() {
