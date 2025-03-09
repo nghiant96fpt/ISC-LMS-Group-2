@@ -3,10 +3,12 @@ import iconCheckActiveGrayLarge from '../../assets/icons/icon-check-active-gray-
 import iconMinusActiveBlueLarge from '../../assets/icons/icon-minus-active-blue-large.png';
 import iconMinusActiveGrayLarge from '../../assets/icons/icon-minus-active-gray-large.png';
 import iconPlusBlue from '../../assets/icons/icon-plus-blue.png';
-import OrangeEyeOutline from'../../assets/icons/orange_eye_outline.png';
-import OrangeEditWriteOutline from'../../assets/icons/orange_edit_write_outline.png';
-import iconCheckboxUncheckedBlue from'../../assets/icons/icon_checkbox_unchecked_blue.png';
-import iconTrashBinOutlineOrange from'../../assets/icons/icon_trashbin_outline_orange.png';
+import OrangeEyeOutline from '../../assets/icons/orange_eye_outline.png';
+import OrangeEditWriteOutline from '../../assets/icons/orange_edit_write_outline.png';
+import iconCheckboxUncheckedBlue from '../../assets/icons/icon_checkbox_unchecked_blue.png';
+import iconTrashBinOutlineOrange from '../../assets/icons/icon_trashbin_outline_orange.png';
+import iconXCancel from '../../assets/icons/fi_x-cancel.png';
+import iconSearch from '../../assets/icons/fi_search_primary.png';
 // IconImages này để import các icon dạng ảnh
 const IconImages = {
   iconCheckActiveBlueLarge,
@@ -17,8 +19,9 @@ const IconImages = {
   OrangeEyeOutline,
   OrangeEditWriteOutline,
   iconCheckboxUncheckedBlue,
-  iconTrashBinOutlineOrange
-  
+  iconTrashBinOutlineOrange,
+  iconXCancel,
+  iconSearch,
 };
 
 export default IconImages;
