@@ -6,17 +6,17 @@ const AddForm = () => {
   const [selectedOption, setSelectedOption] = useState('nienche');
 
   return (
-    <div className="education-form">
+    <div className="education-form-add">
       <h2 className="title">Thiết lập Bậc đào tạo</h2>
-      <div className="form-group">
+      <div className="form-group-education-add">
         <label>Trình độ đào tạo:</label>
         <input className="TDDT" type="text" placeholder="Trung học cơ sở" />
       </div>
-      <div className="form-group">
+      <div className="form-group-education-add">
         <label>Hình thức đào tạo:</label>
         <input className="HTDT" type="text" placeholder="Tư nhân" />
       </div>
-      <div className="form-group">
+      <div className="form-group-education-add">
         <label>
           <div className="checkbox-group">
             <input type="checkbox" checked={selectedOption === 'nienche'} onChange={() => setSelectedOption('nienche')} />
@@ -36,7 +36,7 @@ const AddForm = () => {
         <p>Mỗi năm học thường được tổ chức thành hai học kỳ</p>
       </div>
 
-      <div className="form-group">
+      <div className="form-group-education-add">
         <label>
           <div className="checkbox-group">
             <input type="checkbox" checked={selectedOption === 'tinchi'} onChange={() => setSelectedOption('tinchi')} />
@@ -53,12 +53,12 @@ const AddForm = () => {
         )}
       </div>
 
-      <div className="form-group">
+      <div className="form-group-education-add">
         <label>Ghi chú:</label>
         <textarea placeholder="Nhập ghi chú..."></textarea>
       </div>
 
-      <div className="form-group">
+      <div className="form-group-education-add">
         <label>
           <div className="checkbox-group">
             <input type="checkbox" />
