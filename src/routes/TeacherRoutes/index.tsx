@@ -16,6 +16,7 @@ import Classroom from '../../pages/Teacher/ClassList/Classroom/index';
 import ClassroomInfomation from '../../pages/Teacher/ClassList/ClassroomInfomation';
 import CombinedSidebarQAContact from '../../pages/Teacher/ClassList/ClassroomInfomation/ClassroomInfomationQA';
 import ClassroomInfomationHistory from '../../pages/Teacher/ClassList/ClassroomInfomation/ClassroomInfomationHistory';
+import AddTopic from '../../pages/Teacher/QA/AddTopic';
 
 const TeacherRoutes = () => {
   return (
@@ -41,6 +42,7 @@ const TeacherRoutes = () => {
           <Route path="history" element={<ClassroomInfomationHistory />} />
           <Route path="qa" element={<CombinedSidebarQAContact />} />
         </Route>
+        <Route path="add-topic" element={<AddTopic />} />
       </Route>
     </Routes>
   );
