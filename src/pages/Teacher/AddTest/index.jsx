@@ -1,7 +1,8 @@
 import React from 'react';
+import CreateTest from './CreateTest/index';
 
 const AddTest = () => {
-  return <div className="text-3xl font-bold text-center text-black-text">Thêm bài kiểm tra mới</div>;
+  return <CreateTest />;
 };
 
 export default AddTest;
