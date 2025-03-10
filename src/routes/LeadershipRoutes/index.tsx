@@ -77,6 +77,7 @@ import ClassroomSettings from '../../pages/Leadership/ClassroomSettings/classroo
 import AddWorkProcess from '../../pages/Leadership/AllTeacherProfiles/Workprocess/AddWorkProcess';
 import AddTrainingProgram from '../../pages/Leadership/TrainingInfo/AddTraining';
 import InstructorProfile from '../../pages/Leadership/AllTeacherProfiles/InstructorProfile';
+import TestComponent from '../../pages/Leadership/TestComponent';
 
 const StudentRoutes = () => {
   return (
@@ -186,6 +187,7 @@ const StudentRoutes = () => {
         <Route path='system-settings/school-info' element={<SchoolInfo/>}/>
         <Route path='system-settings/school-info/edit' element={<EditSchoolInFo/>}/>
         <Route path="training-info/add" element={<AddTrainingProgram />} />
+        <Route path='test-component' element={<TestComponent/>}/>
       </Route>
     </Routes>
   );
