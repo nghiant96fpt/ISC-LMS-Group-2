@@ -2,6 +2,12 @@ import { Routes, Route } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
 import Dashboard from '../../pages/Leadership/Dashboard';
 import AllStudentProfiles from '../../pages/Leadership/AllStudentProfiles';
+import ClassTransferMethod from '../../pages/Leadership/AllStudentProfiles/table/bodyTable/ClassTransferMethod';
+import ExemptionMethod from '../../pages/Leadership/AllStudentProfiles/table/bodyTable/ExemptionMethod';
+import ReservationMethod from '../../pages/Leadership/AllStudentProfiles/table/bodyTable/ReservationMethod';
+import SchoolTransferMethod from '../../pages/Leadership/AllStudentProfiles/table/bodyTable/SchoolTransferMethod';
+import DisciplinaryMethod from '../../pages/Leadership/AllStudentProfiles/table/bodyTable/DisciplinaryMethod';
+import RewardMethod from '../../pages/Leadership/AllStudentProfiles/table/bodyTable/RewardMethod';
 import AllTeacherProfiles from '../../pages/Leadership/AllTeacherProfiles';
 import TransferAcceptance from '../../pages/Leadership/TransferAcceptance';
 import DeclareData from '../../pages/Leadership/DeclareData/DataList';
@@ -44,6 +50,10 @@ import Uploadfile from '../../pages/Leadership/DeclareData/ClassList/Uploadfile'
 import ResignationForm from '../../pages/Leadership/AllTeacherProfiles/ResignationForm/ResignationForm';
 import LeaveUpdateModal from '../../pages/Leadership/AllTeacherProfiles/UpdateLeave/UpdateLeave';
 import RetirementUpdateModal from '../../pages/Leadership/AllTeacherProfiles/RetirementFrom/RetirementForm';
+import StudentCU from '../../pages/Leadership/StudentCUD/StudentCU';
+import StudyProcess from '../../pages/Leadership/StudyProcess';
+import UpdateRewards from '../../pages/Leadership/StudyProcess/UpdateRewards';
+import UpdateDiscipline from '../../pages/Leadership/StudyProcess/UpdateDiscipline';
 import TestManagement from '../../pages/Leadership/Exams/TestManagement/TestManagement';
 import DetailTestManagement from '../../pages/Leadership/Exams/TestManagement/DetailTestManagement';
 import ExamDetailModal from '../../pages/Leadership/Exams/ExamsDeTai';
@@ -54,7 +64,16 @@ import CreateExamSchedule from '../../pages/Leadership/Exams/CreateExamSchedule/
 import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/StudentRetensionUpdate';
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
 import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
+import Config from '../../pages/Leadership/SystemSettings/Config';
+import SchoolInfo from '../../pages/Leadership/SystemSettings/SchoolInfomation';
+import EditSchoolInFo from '../../pages/Leadership/SystemSettings/SchoolInfomation/EditInformation';
 
+import TrainingLevelManagement from '../../pages/Leadership/SystemSettings/TrainingLevelManagement';
+import AddForm from '../../pages/Leadership/SystemSettings/TrainingLevelManagement/addPeachLevel';
+import UserManagement from '../../pages/Leadership/SystemSettings/UserManagement';
+import SettingForm from '../../pages/Leadership/SystemSettings/UserManagement/addSetting';
+import SubjectManagement from '../../pages/Leadership/SystemSettings/SubjectManagement';
+import ClassroomSettings from '../../pages/Leadership/ClassroomSettings/classroomsettings';
 import AddWorkProcess from '../../pages/Leadership/AllTeacherProfiles/Workprocess/AddWorkProcess';
 import AddTrainingProgram from '../../pages/Leadership/TrainingInfo/AddTraining';
 import InstructorProfile from '../../pages/Leadership/AllTeacherProfiles/InstructorProfile';
@@ -77,6 +96,15 @@ const StudentRoutes = () => {
         <Route path="all-student-profiles/stop-working/:id" element={<LeaveUpdateModal />} />
         <Route path="all-student-profiles/resignation/:id" element={<RetirementUpdateModal />} />
         {/*  */}
+        {/*all-student-profiles*/}
+        <Route path="all-student-profiles/*" element={<AllStudentProfiles />} />
+        <Route path="all-student-profiles/class-transfer-method" element={<ClassTransferMethod />} />
+        <Route path="all-student-profiles/exemption-method" element={<ExemptionMethod />} />
+        <Route path="all-student-profiles/reservation-method" element={<ReservationMethod />} />
+        <Route path="all-student-profiles/school-transfer-method" element={<SchoolTransferMethod />} />
+        <Route path="all-student-profiles/disciplinary-method" element={<DisciplinaryMethod />} />
+        <Route path="all-student-profiles/reward-method" element={<RewardMethod />} />
+        {/*all-teacher-profiles*/}
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
         <Route path="all-teacher-profiles/addworkprocess" element={<AddWorkProcess />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
@@ -138,7 +166,25 @@ const StudentRoutes = () => {
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
+        <Route path="system-settings/training-level-management" element={<TrainingLevelManagement />} />
+        <Route path="system-settings/training-level-management/add" element={<AddForm />} />
+        <Route path="system-settings/user-management" element={<UserManagement />} />
+        <Route path="system-settings/user-management/settings" element={<SettingForm />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
+        {/* */}
+        <Route path="study-process" element={<StudyProcess />} />
+        <Route path="study-process/update-rewards" element={<UpdateRewards />} />
+        <Route path="study-process/update-discipline" element={<UpdateDiscipline />} />
+        <Route path="create-student" element={<StudentCU />} />
+        <Route path="new-student" element={<StudentCU />} />
+        <Route path='system-settings/config' element={<Config/>}/>
+        {/* Thiết lập lớp học */}
+        <Route path="system-settings/subject-management" element={<SubjectManagement />} />
+        <Route path="system-settings/classroom-settings" element={<ClassroomSettings />} />
+        <Route path='create-student' element={<StudentCU/>}/>
+        {/*Group - 1 setting*/}
+        <Route path='system-settings/school-info' element={<SchoolInfo/>}/>
+        <Route path='system-settings/school-info/edit' element={<EditSchoolInFo/>}/>
         <Route path="training-info/add" element={<AddTrainingProgram />} />
       </Route>
     </Routes>
