@@ -1,23 +1,10 @@
-// import { Routes, Route } from "react-router-dom";
-// import MainLayout from "../../layouts/MainLayout";
-// import TeacherDashboard from "../../pages/Teacher/TeacherDashboard";
-// import ClassList from "../../pages/Teacher/ClassList";
-// import AddClass from "../../pages/Teacher/AddClass";
-// import JoinClass from "../../pages/Teacher/JoinClass";
-// import TestList from "../../pages/Teacher/TestList";
-// import AddTest from "../../pages/Teacher/AddTest";
-// import EnterScores from "../../pages/Teacher/EnterScores";
-// import ScoreBoard from "../../pages/Teacher/ScoreBoard";
-// import ExamSchedule from "../../pages/Teacher/ExamSchedule";
-// import Notifications from "../../pages/Teacher/Notifications";
-// import Help from "../../pages/Teacher/Help";
-// import ClassDetail from "../../pages/Teacher/ClassList/ClassDetail/ClassDeatail";
-// import ClassInformation from "../../pages/Teacher/ClassList/ClassInformation/ClassInformation";
+import { Routes, Route } from 'react-router-dom';
+import ClassroomInfomation from '../../pages/Teacher/ClassList/ClassroomInfomation';
+import CombinedSidebarQAContact from '../../pages/Teacher/ClassList/ClassroomInfomation/ClassroomInfomationQA';
+import ClassroomInfomationHistory from '../../pages/Teacher/ClassList/ClassroomInfomation/ClassroomInfomationHistory';
+import AddTopic from '../../pages/Teacher/QA/AddTopic';
 import TeacherScoring from '../../pages/Teacher/TeacherScoring';
 import Transcript from '../../pages/Teacher/Transcript';
-// import Classroom from "../../pages/Teacher/ClassList/Classroom/index";
-
-import { Routes, Route } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
 import TeacherDashboard from '../../pages/Teacher/TeacherDashboard';
 import ClassList from '../../pages/Teacher/ClassList';
@@ -25,8 +12,6 @@ import AddClass from '../../pages/Teacher/AddClass';
 import JoinClass from '../../pages/Teacher/JoinClass';
 import TestList from '../../pages/Teacher/TestList';
 import AddTest from '../../pages/Teacher/AddTest';
-// import EnterScores from '../../pages/Teacher/EnterScores';
-// import ScoreBoard from '../../pages/Teacher/ScoreBoard';
 import ExamSchedule from '../../pages/Teacher/ExamSchedule';
 import Notifications from '../../pages/Teacher/Notifications';
 import Help from '../../pages/Teacher/Help';
@@ -35,6 +20,7 @@ import ClassInformation from '../../pages/Teacher/ClassList/ClassInformation/Cla
 
 import Classroom from '../../pages/Teacher/ClassList/Classroom/index';
 import TestContent from '../../pages/Teacher/TestList/TestContent/TestContent';
+
 const TeacherRoutes = () => {
   return (
     <Routes>
@@ -42,8 +28,7 @@ const TeacherRoutes = () => {
         <Route index element={<TeacherDashboard />} />
         {/* Group-3 Class Detail */}
         <Route path="class-list" element={<ClassList />} />
-        <Route path="class-list/class-detail/:id" element={<ClassDetail />} />
-        <Route path="class-list/class-information-done" element={<ClassInformation />} />
+
         {/*  */}
 
         <Route path="add-class" element={<AddClass />} />
@@ -57,6 +42,11 @@ const TeacherRoutes = () => {
         <Route path="notifications" element={<Notifications />} />
         <Route path="help" element={<Help />} />
         <Route path="classroom" element={<Classroom />} />
+        <Route path="classroom-information" element={<ClassroomInfomation />}>
+          <Route path="history" element={<ClassroomInfomationHistory />} />
+          <Route path="qa" element={<CombinedSidebarQAContact />} />
+        </Route>
+        <Route path="add-topic" element={<AddTopic />} />
         <Route path="enter-scores" element={<TeacherScoring />} />
         <Route path="score-board" element={<Transcript />} />
       </Route>
