@@ -73,7 +73,7 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
 
   return (
     <nav
-      className={`shadow-md h-screen p-2 flex flex-col duration-100 ${
+      className={`shadow-md h-full p-2 flex flex-col duration-100 ${
         open ? 'bg-background-white text-black-text' : 'bg-background-1 text-while-text'
       } ${open ? 'w-80' : 'w-20'}`}
     >

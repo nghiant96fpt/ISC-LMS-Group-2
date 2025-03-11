@@ -9,7 +9,7 @@ import ExamSchedule from '../../pages/Student/ExamSchedule';
 import Notifications from '../../pages/Student/Notifications';
 import Help from '../../pages/Student/Help';
 import Login from '../../pages/Student/Login/Login';
-import AllScourses from '../../pages/Student/AllScourses';
+import AllScourses from '../../pages/Student/Dashboard/AllScourses';
 
 const StudentRoutes = () => {
   return (
