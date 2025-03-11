@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { courses } from './data';
 
-const down = require('../../../assets/icons/caret-down_white.png');
-const right = require('../../../assets/icons/icon-arrow-right.png');
-const union = require('../../../assets/icons/Union.png');
+const down = require('../../../../assets/icons/caret-down_white.png');
+const right = require('../../../../assets/icons/icon-arrow-right.png');
+const union = require('../../../../assets/icons/Union.png');
 
 const AllScourses = () => {
   const [isOpenSemester1, setIsOpenSemester1] = useState(true);
@@ -28,7 +28,7 @@ const AllScourses = () => {
         }`}
         onClick={toggleSemester1}
       >
-        <img src={isOpenSemester1 ? down : right} alt="icon" className="w-5 h-4 mr-2 transition-transform" />
+        <img src={isOpenSemester1 ? down : right} alt="icon" className={`mr-2 transition-transform ${isOpenSemester1 ? 'w-5 h-4' : 'w-4 h-5'}`} />
         Học kỳ II - 2020
       </div>
 
@@ -64,7 +64,7 @@ const AllScourses = () => {
         }`}
         onClick={toggleSemester2}
       >
-        <img src={isOpenSemester2 ? down : right} alt="icon" className="w-5 h-4 mr-2 transition-transform" />
+        <img src={isOpenSemester2 ? down : right} alt="icon" className={`mr-2 transition-transform ${isOpenSemester2 ? 'w-5 h-4' : 'w-4 h-5'}`} />
         Học kỳ I - 2020
       </div>
 

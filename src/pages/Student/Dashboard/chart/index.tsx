@@ -1,5 +1,6 @@
 import React from 'react';
 import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+import { stats } from './data';
 import './style.css';
 const data = [
   { name: 'Đã hoàn thành', value: 7 },
@@ -10,10 +11,19 @@ const COLORS = ['#4A90E2', '#F5A623'];
 
 const StudentAchievementChart = () => {
   return (
-    <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg mx-auto">
-      <h2 className="text-xl font-semibold text-gray-800 text-center mb-4">Thống kê kết quả học tập của học viên</h2>
-
-      <div className="flex items-center justify-between">
+    <div className="  rounded-2xl p-6 w-full max-w-2xl ml-0">
+      {' '}
+      <h1 className="text-3xl font-bold pb-5 text-black-text">Tổng quan</h1>
+      <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto ml-0 pb-10">
+        {stats.map((stat, index) => (
+          <div key={index} className={`p-8 w-full h-32 rounded-2xl shadow-lg text-white ${stat.color} text-center flex flex-col justify-center`}>
+            <p className="text-xl font-semibold text-white">{stat.title}</p>
+            <p className="text-4xl font-bold text-white">{stat.value}</p>
+          </div>
+        ))}
+      </div>
+      <h2 className="text-xl font-bold text-gray-800  mb-4">Thống kê kết quả học tập của học viên</h2>
+      <div className=" bg-white shadow-lg rounded-2xl p-6 w-full max-w-2xl  flex items-center justify-between">
         <div className="flex-shrink-0">
           <PieChart width={180} height={180}>
             <Pie
