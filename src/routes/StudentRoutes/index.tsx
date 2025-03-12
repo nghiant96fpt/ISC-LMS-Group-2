@@ -9,7 +9,9 @@ import ExamSchedule from '../../pages/Student/ExamSchedule';
 import Notifications from '../../pages/Student/Notifications';
 import Help from '../../pages/Student/Help';
 import Login from '../../pages/Student/Login/Login';
+import HistoryClass from '../../pages/Student/ClassList/historyclass';
 import AllScourses from '../../pages/Student/Dashboard/AllScourses';
+
 
 const StudentRoutes = () => {
   return (
@@ -23,6 +25,7 @@ const StudentRoutes = () => {
         <Route path="score-board" element={<ScoreBoard />} />
         <Route path="exam-schedule" element={<ExamSchedule />} />
         <Route path="notifications" element={<Notifications />} />
+        <Route path="class-history" element={<HistoryClass />} />
         <Route path="allScourses" element={<AllScourses />} />
         <Route path="help" element={<Help />} />
       </Route>
