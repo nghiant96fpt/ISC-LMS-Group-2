@@ -7,7 +7,7 @@ import FileUploadSection from './FileUploadSection';
 import EssayTextArea from './EssayTextArea';
 import Button from '../../../../components/Button';
 
-
+// 
 const EssayPage = () => {
     const [editorContent, setEditorContent] = useState<string>('');
     const fileInputRef = useRef<HTMLInputElement | null>(null);
