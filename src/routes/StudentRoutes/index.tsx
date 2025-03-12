@@ -10,6 +10,8 @@ import Notifications from '../../pages/Student/Notifications';
 import Help from '../../pages/Student/Help';
 import Login from '../../pages/Student/Login/Login';
 
+import ExamInfo from '../../pages/Student/ExamInfo';
+
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -23,6 +25,8 @@ const StudentRoutes = () => {
         <Route path="exam-schedule" element={<ExamSchedule />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="help" element={<Help />} />
+
+        <Route path="exam" element={<ExamInfo />} />
       </Route>
     </Routes>
   );
