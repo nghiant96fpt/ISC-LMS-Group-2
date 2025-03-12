@@ -112,7 +112,7 @@ const HistoryClass: React.FC = () => {
             </div>
           </div>
 
-          <div className="relative pl-10  flex items-center justify-center">
+          <div className="relative  flex items-center justify-center">
             <button className="left-4 md:left-16 top-1/2 transform -translate-y-1/2 hidden md:block">
               <img src={arrowleftgray} alt="Scroll Left" className="w-5 h-5" />
             </button>
@@ -122,7 +122,7 @@ const HistoryClass: React.FC = () => {
               <div className="flex gap-4 whitespace-nowrap p-4 overflow-x-auto scrollbar-hide max-w-[1200px]">
                 {classScheduleData.sessions.slice(0, 7).map((session) => {
                   let bgColor = 'bg-gray-400';
-                  let textColor = 'text-gray-400'; // Màu chữ mặc định
+                  let textColor = 'text-gray-400';
 
                   if (session.status === 'current') {
                     bgColor = 'bg-orange-500';
@@ -133,11 +133,13 @@ const HistoryClass: React.FC = () => {
                   }
                   return (
                     <div key={session.id} className={`p-4 mx-2 rounded-lg text-center min-w-[120px] shadow-md text-white ${bgColor}`}>
-                      <p className={`font-bold bg-white border border-white rounded-full px-4 py-1 inline-block ${textColor}`}>
+                      <p className={`font-bold bg-white border border-white rounded-full px-6 py-1 inline-block ${textColor} mb-4`}>
                         Buổi {session.title}
                       </p>
-                      <p className="text-sm">{session.date}</p>
-                      <p className="text-sm">{session.time}</p>
+                      <div className="flex flex-col items-center gap-1">
+                        <div className="text-sm text-white font-bold">{session.date}</div>
+                        <div className="text-2xl text-white font-bold">{session.time}</div>
+                      </div>
                     </div>
                   );
                 })}

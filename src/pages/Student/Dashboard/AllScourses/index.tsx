@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { courses } from './data';
+import { Link } from 'react-router';
 
 const down = require('../../../../assets/icons/caret-down_white.png');
 const right = require('../../../../assets/icons/icon-arrow-right.png');
@@ -48,7 +49,9 @@ const AllScourses = () => {
                   <td className="p-2 h-12 text-gray-800">{course.duration}</td>
                   <td className={`p-2 h-12 italic ${course.status === 'Chưa hoàn thành' ? 'text-red-500' : 'text-green-500'}`}>{course.status}</td>
                   <td className="p-2 h-12">
-                    <img className="w-6 h-6" src={union} alt="icon" />
+                    <Link to="class-history">
+                      <img className="w-6 h-6" src={union} alt="icon" />
+                    </Link>
                   </td>
                 </tr>
               ))}
@@ -84,7 +87,9 @@ const AllScourses = () => {
                   <td className="p-2 h-12 text-gray-800">{course.duration}</td>
                   <td className={`p-2 h-12 italic ${course.status === 'Chưa hoàn thành' ? 'text-red-500' : 'text-green-500'}`}>{course.status}</td>
                   <td className="p-2 h-12">
-                    <img className="w-6 h-6" src={union} alt="icon" />
+                    <Link to="class-history">
+                      <img className="w-6 h-6" src={union} alt="icon" />
+                    </Link>
                   </td>
                 </tr>
               ))}
