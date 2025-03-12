@@ -6,6 +6,7 @@ import FileRules from './FileRules';
 import FileUploadSection from './FileUploadSection';
 import EssayTextArea from './EssayTextArea';
 import Button from '../../../../components/Button';
+import ExamInfo from '../ExamInfo';
 
 
 const EssayPage = () => {
@@ -32,6 +33,7 @@ const EssayPage = () => {
 
     return (
         <div className="relative max-w-full pt-2 mr-0 mx-auto bg-gray-50 lg:ml-10">
+            <ExamInfo/>
             <div className="ml-5 col-span-full xl:mb-2">
                 <TitleComponent text="Phần trả lời của học sinh" size={20} className="[&_p]:pb-0" />
             </div>
