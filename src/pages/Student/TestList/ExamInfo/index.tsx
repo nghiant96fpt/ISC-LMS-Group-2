@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import AddressList from '../../../components/AddressUrlStack/Index';
+import AddressList from '../../../../components/AddressUrlStack/Index';
 import paperclip from '../../../assets/icons/u_paperclip.png';
 import { useTimer } from 'react-timer-hook';
 
