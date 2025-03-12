@@ -28,11 +28,10 @@ import BlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/
 import ClassListWrapper from '../../pages/Leadership/DeclareData/BlockDepartment/ClassListWrapper';
 import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/edit';
 
-import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
-import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
-import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
+// import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
+// import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
+// import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 // import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
-
 
 // import ScoreTypes from '../../pages/Leadership/DeclareData/ScoreTypes/ScoreTypes';
 // import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
@@ -144,10 +143,7 @@ const StudentRoutes = () => {
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} /> */}
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
-
         {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
-
-
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
         {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
         {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
@@ -187,14 +183,14 @@ const StudentRoutes = () => {
         <Route path="study-process/update-discipline" element={<UpdateDiscipline />} />
         <Route path="create-student" element={<StudentCU />} />
         <Route path="new-student" element={<StudentCU />} />
-        <Route path='system-settings/config' element={<Config/>}/>
+        <Route path="system-settings/config" element={<Config />} />
         {/* Thiết lập lớp học */}
         <Route path="system-settings/subject-management" element={<SubjectManagement />} />
         <Route path="system-settings/classroom-settings" element={<ClassroomSettings />} />
-        <Route path='create-student' element={<StudentCU/>}/>
+        <Route path="create-student" element={<StudentCU />} />
         {/*Group - 1 setting*/}
-        <Route path='system-settings/school-info' element={<SchoolInfo/>}/>
-        <Route path='system-settings/school-info/edit' element={<EditSchoolInFo/>}/>
+        <Route path="system-settings/school-info" element={<SchoolInfo />} />
+        <Route path="system-settings/school-info/edit" element={<EditSchoolInFo />} />
         <Route path="training-info/add" element={<AddTrainingProgram />} />
       </Route>
     </Routes>
