@@ -10,6 +10,7 @@ import IconInfoOutline from './IconInfoOutline';
 import IconOutlineArrowLeftSingle from './iconOutlineArrowLeftSingle';
 import IconOutlineArrowRightSingle from './iconOutlineArrowRightSingle';
 import IconSearchLightGrayishBlue from './iconSearchLightGrayishBlue';
+import { IconTablerCircleXFilled } from './IconTablerCircleXFilled';
 
 
 export {
@@ -24,7 +25,7 @@ export {
     IconOutlineArrowLeftSingle,
     IconChevronBigRightOrange,
     IconChevronBigRightWhite,
-    IconnEye16
-
+    IconnEye16,
+    IconTablerCircleXFilled
 };
 
