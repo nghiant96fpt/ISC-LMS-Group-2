@@ -13,6 +13,8 @@ import Login from '../../pages/Student/Login/Login';
 import MyCourse from '../../pages/Student/MyCourse/Index';
 import EssayPage from '../../pages/Student/TestList/essay';
 
+import ExamInfo from '../../pages/Student/TestList/ExamInfo';
+
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -27,8 +29,10 @@ const StudentRoutes = () => {
         <Route path="notifications" element={<Notifications />} />
         <Route path="help" element={<Help />} />
 
+
         <Route path="my-course" element={<MyCourse />} />
         <Route path="essay" element={<EssayPage />} />
+
       </Route>
     </Routes>
   );
