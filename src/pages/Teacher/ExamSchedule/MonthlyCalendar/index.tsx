@@ -2,7 +2,8 @@ import { useState } from "react";
 import Calendar from "./Calendar";
 import ExamList from "./ExamList";
 import Filter from "./Filter";
-
+import AddressList from "../../../../components/AddressUrlStack/Index";
+const labels = [{ link: '', linkName: 'Lịch thi' }];
 const ExamPage = () => {
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [viewMode, setViewMode] = useState<"table" | "calendar">("table");
@@ -18,14 +19,14 @@ const ExamPage = () => {
     const handleGradeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedGrade(e.target.value);
     };
-    
+
     return (
         <div className="flex flex-col gap-4 p-5 w-full max-w-6xl mx-auto">
-            <h1 className="text-2xl font-bold text-gray-800 text-left">Lịch thi</h1>
-    
+            <AddressList addressList={labels} />
+
             <div className="flex flex-wrap items-center justify-between gap-4 p-4">
                 <div className="flex flex-wrap gap-2 items-center">
-                    <select 
+                    <select
                         className="border border-gray-300 p-2 rounded"
                         value={selectedGrade}
                         onChange={handleGradeChange}
@@ -37,7 +38,7 @@ const ExamPage = () => {
                     </select>
                 </div>
             </div>
-    
+
             <div className="flex flex-col md:flex-row gap-4 justify-center w-full">
                 <div className="w-full md:w-3/4">
                     <Calendar setSelectedDate={setSelectedDate} filters={filters} selectedGrade={selectedGrade} />
@@ -53,7 +54,7 @@ const ExamPage = () => {
             </div>
         </div>
     );
-    
+
 };
 
 export default ExamPage;

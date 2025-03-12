@@ -3,7 +3,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import AddressList from '../../../components/AddressUrlStack/Index';
 import Button from '../../../components/Button';
 
-const labels = [{ link: '/', linkName: 'Bạn có thắc mắc?' }];
+const labels = [{ link: '', linkName: 'Bạn có thắc mắc?' }];
 
 const Help = () => {
   const [formData, setFormData] = useState({

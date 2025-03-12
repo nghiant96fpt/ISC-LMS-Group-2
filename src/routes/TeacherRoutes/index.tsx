@@ -9,7 +9,6 @@ import AddTest from '../../pages/Teacher/AddTest';
 import EnterScores from '../../pages/Teacher/EnterScores';
 import ScoreBoard from '../../pages/Teacher/ScoreBoard';
 import ExamSchedule from '../../pages/Teacher/ExamSchedule';
-import ExamCalendar from '../../pages/Teacher/ExamSchedule/MonthlyCalendar';
 import Notifications from '../../pages/Teacher/Notifications';
 import Help from '../../pages/Teacher/Help';
 import ClassDetail from '../../pages/Teacher/ClassList/ClassDetail/ClassDeatail';
@@ -36,7 +35,7 @@ const TeacherRoutes = () => {
         <Route path="enter-scores" element={<EnterScores />} />
         <Route path="score-board" element={<ScoreBoard />} />
         <Route path="exam-schedule" element={<ExamSchedule />} />
-        <Route path="exam-schedule/calendar" element={<ExamCalendar />} />
+
         <Route path="notifications" element={<Notifications />} />
         <Route path="help" element={<Help />} />
         <Route path="classroom" element={<Classroom />} />
