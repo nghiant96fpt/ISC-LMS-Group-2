@@ -8,8 +8,10 @@ import ScoreBoard from '../../pages/Student/ScoreBoard';
 import ExamSchedule from '../../pages/Student/ExamSchedule';
 import Notifications from '../../pages/Student/Notifications';
 import Help from '../../pages/Student/Help';
+
 import Login from '../../pages/Student/Login/Login';
 import MyCourse from '../../pages/Student/MyCourse/Index';
+import EssayPage from '../../pages/Student/TestList/essay';
 
 const StudentRoutes = () => {
   return (
@@ -26,9 +28,10 @@ const StudentRoutes = () => {
         <Route path="help" element={<Help />} />
 
         <Route path="my-course" element={<MyCourse />} />
+        <Route path="essay" element={<EssayPage />} />
       </Route>
     </Routes>
   );
-};
 
+}
 export default StudentRoutes;
