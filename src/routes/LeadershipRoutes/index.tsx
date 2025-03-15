@@ -10,7 +10,7 @@ import DisciplinaryMethod from '../../pages/Leadership/AllStudentProfiles/table/
 import RewardMethod from '../../pages/Leadership/AllStudentProfiles/table/bodyTable/RewardMethod';
 import AllTeacherProfiles from '../../pages/Leadership/AllTeacherProfiles';
 import TransferAcceptance from '../../pages/Leadership/TransferAcceptance';
-import DeclareData from '../../pages/Leadership/DeclareData/DataList';
+import DeclareData from '../../pages/Leadership/DeclareData/DataList/Datalist';
 import Exams from '../../pages/Leadership/Exams';
 import ExamClassList from '../../pages/Leadership/Exams/ExamClassList/ExamClassList';
 import ScoreBoard from '../../pages/Leadership/Exams/ScoreBoard/ScoreBoard';
@@ -22,7 +22,7 @@ import SchoolYearEditPages from '../../pages/Leadership/DeclareData/SchoolYear/S
 import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYearTable';
 import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
-import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
+import SubjectList from '../../pages/Leadership/DeclareData/SubjectList/subject';
 import BlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/bockDepartment';
 // import AddDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/add';
 import ClassListWrapper from '../../pages/Leadership/DeclareData/BlockDepartment/ClassListWrapper';
@@ -45,7 +45,7 @@ import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/e
 // import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 
 import SectionList from '../../pages/Leadership/DeclareData/SectionList';
-import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings';
+import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings/subjectedit';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
 import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
 

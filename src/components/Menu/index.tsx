@@ -75,7 +75,7 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
     <nav
       className={`shadow-md h-full p-2 flex flex-col duration-100 ${
         open ? 'bg-background-white text-black-text' : 'bg-background-1 text-while-text'
-      } ${open ? 'w-80' : 'w-20'}`}
+      } ${open ? 'w-60' : 'w-20'}`}
     >
       {/* Header */}
       <div className="relative px-3 py-2 h-20 flex flex-col justify-center items-center">
@@ -107,12 +107,12 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
                   open ? 'gap-4 items-center' : 'flex-col items-center '
                 } relative group ${
                   open
-                    ? 'hover:bg-slate-100  hover:border-r-8 hover:border-border-orange w-[300px] '
+                    ? 'hover:bg-slate-100  hover:border-r-8 hover:border-border-orange w-[232px] '
                     : 'hover:bg-orange-300 hover:text-while-text hover:scale-105 '
                 } ${
                   activeParentIndex === index
                     ? open
-                      ? 'bg-slate-200 text-orange-text border-r-8 border-border-orange w-[300px] '
+                      ? 'bg-slate-200 text-orange-text border-r-8 border-border-orange w-[232px] '
                       : 'bg-orange-200 '
                     : ''
                 }`}
