@@ -75,10 +75,10 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
     <nav
       className={`shadow-md h-screen p-2 flex flex-col duration-100 ${
         open ? 'bg-background-white text-black-text' : 'bg-background-1 text-while-text'
-      } ${open ? 'w-80' : 'w-20'}`}
+      } ${open ? 'w-[230px]' : 'w-[80px]'}`}
     >
       {/* Header */}
-      <div className="relative px-3 py-2 h-20 flex flex-col justify-center items-center">
+      <div className="relative px-3 py-1 h-20 flex flex-col justify-center items-center">
         {open && (
           <img
             src={arrow}
@@ -93,6 +93,7 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
           src={open ? logo2 : logo}
           alt="Logo"
           className={`duration-300 rounded-md absolute top-[40px] ${open ? 'w-[75px] h-[43px]' : 'w-[60px] h-[30px]'}`}
+          onClick={() => setOpen(true)}
         />
       </div>
 
@@ -103,16 +104,16 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
             <Link to={item?.path || '#'}>
               <div
                 onClick={handleParentMenuClick.bind(this, index)}
-                className={`px-4 py-2 rounded-md duration-300 cursor-pointer flex ${
+                className={`px-3 py-1 rounded-md duration-300 cursor-pointer flex ${
                   open ? 'gap-4 items-center' : 'flex-col items-center '
                 } relative group ${
                   open
-                    ? 'hover:bg-slate-100  hover:border-r-8 hover:border-border-orange w-[300px] '
+                    ? 'hover:bg-slate-100  hover:border-r-8 hover:border-border-orange w-[220px] '
                     : 'hover:bg-orange-300 hover:text-while-text hover:scale-105 '
                 } ${
                   activeParentIndex === index
                     ? open
-                      ? 'bg-slate-200 text-orange-text border-r-8 border-border-orange w-[300px] '
+                      ? 'bg-slate-200 text-orange-text border-r-8 border-border-orange w-[220px] '
                       : 'bg-orange-200 '
                     : ''
                 }`}
@@ -127,7 +128,7 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
                   }`}
                 />
 
-                <p className={`${open ? '' : 'hidden'}  overflow-hidden`}>{item.title}</p>
+                <p className={`${open ? '' : 'hidden'}  overflow-hidden pb-0`}>{item.title}</p>
               </div>
             </Link>
 
