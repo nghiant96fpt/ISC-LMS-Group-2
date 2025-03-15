@@ -14,6 +14,8 @@ import MyCourse from '../../pages/Student/MyCourse/Index';
 import EssayPage from '../../pages/Student/TestList/essay';
 
 import ExamInfo from '../../pages/Student/TestList/ExamInfo';
+import HistoryClass from '../../pages/Student/ClassList/historyclass';
+import AllScourses from '../../pages/Student/Dashboard/AllScourses';
 
 const StudentRoutes = () => {
   return (
