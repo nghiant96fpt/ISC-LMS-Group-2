@@ -174,8 +174,8 @@ const TestContent: React.FC = () => {
                                 const isUpcoming = isUpcomingSession(formatDate(test.date), test.time);
                                 return (
                                     <div>
-                                        <div key={test.id} className={`p-3 rounded-lg text-center min-w-[120px] h-[120px] shadow-sm  ${bgColor}`}>
-                                            <p className={`font-bold text-base bg-white rounded-[14px] h-[27px] flex items-center justify-center ${textColor}`}>
+                                        <div key={test.id} className={`p-3 rounded-lg text-center min-w-[124px] h-[120px] shadow-sm  ${bgColor}`}>
+                                            <p className={`font-bold text-base bg-white rounded-[14px] h-[27px] items-center justify-center ${textColor}`}>
                                                 Buổi {test.title}
                                             </p>
                                             <p className="text-base text-center font-bold text-white">

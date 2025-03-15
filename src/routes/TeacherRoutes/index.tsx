@@ -39,6 +39,7 @@ const TeacherRoutes = () => {
         {/* <Route path="enter-scores" element={<EnterScores />} />
         <Route path="score-board" element={<ScoreBoard />} /> */}
         <Route path="exam-schedule" element={<ExamSchedule />} />
+
         <Route path="notifications" element={<Notifications />} />
         <Route path="help" element={<Help />} />
         <Route path="classroom" element={<Classroom />} />

@@ -1,7 +1,7 @@
 import React from 'react';
-
+import MonthlyCalendar from './MonthlyCalendar/index';
 const ExamSchedule = () => {
-  return <div className="text-3xl font-bold text-center text-black-text">Lịch thi</div>;
+  return <MonthlyCalendar />;
 };
 
 export default ExamSchedule;
