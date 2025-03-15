@@ -127,7 +127,7 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
                   }`}
                 />
 
-                <p className={`${open ? '' : 'hidden'}  overflow-hidden`}>{item.title}</p>
+                <p className={`${open ? '' : 'hidden'}  overflow-hidden pb-0`}>{item.title}</p>
               </div>
             </Link>
 

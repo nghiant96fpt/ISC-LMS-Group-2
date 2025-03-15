@@ -9,6 +9,7 @@ import ExamSchedule from '../../pages/Student/ExamSchedule';
 import Notifications from '../../pages/Student/Notifications';
 import Help from '../../pages/Student/Help';
 import Login from '../../pages/Student/Login/Login';
+import Questions from '../../pages/Student/Quiz/Questions';
 
 const StudentRoutes = () => {
   return (
@@ -23,6 +24,7 @@ const StudentRoutes = () => {
         <Route path="exam-schedule" element={<ExamSchedule />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="help" element={<Help />} />
+        <Route path='quiz' element={<Questions/>}/>
       </Route>
     </Routes>
   );

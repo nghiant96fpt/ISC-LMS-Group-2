@@ -102,7 +102,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ classname }) => {
                 <button className="text-orange-500 text-xl">➤</button>
               </div>
             </div>
-          )}
+          )} 
         </div>
       </div>
     </div>
@@ -114,5 +114,4 @@ export default ChatBox;
 interface ChatBoxProps {
   classname?: String;
   style?: React.CSSProperties;
-  position?: 'top-left' | 'bottom-left' | 'top-right' | 'left-right' | 'middle-left' | 'middle-right';
 }
