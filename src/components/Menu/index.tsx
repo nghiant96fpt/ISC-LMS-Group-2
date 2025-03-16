@@ -103,31 +103,27 @@ const Menu: React.FC<MenuProps> = ({ role }) => {
             <Link to={item?.path || '#'}>
               <div
                 onClick={handleParentMenuClick.bind(this, index)}
-                className={`px-4 py-2 rounded-md duration-300 cursor-pointer flex ${
+                className={`px-4 py-1 rounded-md duration-300 cursor-pointer flex ${
                   open ? 'gap-4 items-center' : 'flex-col items-center '
                 } relative group ${
                   open
-                    ? 'hover:bg-slate-100  hover:border-r-8 hover:border-border-orange w-[232px] '
+                    ? 'hover:bg-slate-100  hover:border-r-8 hover:border-border-orange w-56 '
                     : 'hover:bg-orange-300 hover:text-while-text hover:scale-105 '
                 } ${
-                  activeParentIndex === index
-                    ? open
-                      ? 'bg-slate-200 text-orange-text border-r-8 border-border-orange w-[232px] '
-                      : 'bg-orange-200 '
-                    : ''
+                  activeParentIndex === index ? (open ? 'bg-slate-200 text-orange-text border-r-8 border-border-orange w-56 ' : 'bg-orange-200 ') : ''
                 }`}
               >
                 <img
                   src={item.icon || 'default-icon.png'}
                   alt={item.title}
-                  className={`duration-300 ${
+                  className={` duration-300 ${
                     open
                       ? `w-8 h-8 ${activeParentIndex === index ? 'custom-orange-filter' : 'custom-black-filter'}`
                       : `w-7 h-7 ${activeParentIndex === index ? 'custom-orange-filter' : ''}`
                   }`}
                 />
 
-                <p className={`${open ? '' : 'hidden'}  overflow-hidden`}>{item.title}</p>
+                <p className={`pb-0  ${open ? '' : 'hidden'} overflow-hidden`}>{item.title}</p>
               </div>
             </Link>
 
