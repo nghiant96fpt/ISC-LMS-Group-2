@@ -56,7 +56,7 @@ const UserManagement = () => {
   return (
     <>
       <AddressList addressList={urls} />
-      <div className="flex justify-between items-center mb-5">
+      <div className="flex justify-between items-center mb-5 mr-7">
         <div className="flex items-center gap-4">
           <DropdownSelectionComponent
             label="Chọn kỳ"
@@ -112,7 +112,7 @@ const UserManagement = () => {
       </div>
 
       {selectedTab === 'user-groups' && (
-        <section className="rounded-lg bg-background-white shadow-[4px_4px_25px_4px_rgba(154,201,245,0.25)] sm:p-5 antialiased">
+        <section className="rounded-lg bg-background-white shadow-[4px_4px_25px_4px_rgba(154,201,245,0.25)] sm:p-5 antialiased mr-7">
           <div className="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4 dark:border-gray-700">
             <TitleComponent text="Danh sách các nhóm người dùng" size={22} weight="extrabold" style={{ fontFamily: 'var(--font-Mulish)' }} />
             <ClassListFromSearch
