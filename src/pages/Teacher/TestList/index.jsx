@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ListTableTest from './List';
+import AddressList from '../../../components/AddressUrlStack/Index';
 
 const TestList = () => {
-  return <div className="text-3xl font-bold text-center text-black-text">Danh sách bài kiểm tra</div>;
+    const [urls, setUrls] = useState([
+      { link: "/teacher/test-list", linkName: "Bài Kiểm tra" },
+      { link: "/teacher/test-list", linkName: "Danh sách bài kiểm tra" }
+    ]);
+  return <>
+  <AddressList addressList={urls} />
+    <ListTableTest />
+  </>;
 };
 
 export default TestList;
