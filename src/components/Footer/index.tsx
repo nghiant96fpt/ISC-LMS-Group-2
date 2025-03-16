@@ -4,8 +4,10 @@ import { FooterProps } from './type';
 
 const Footer: React.FC<FooterProps> = ({ year = new Date().getFullYear(), company = 'ISC' }) => {
   return (
-    <footer className="footer">
-      <p>&copy;{year} Copyright by {company} Company</p>
+    <footer className="border opacity-70">
+      <p className="pb-0">
+        &copy;{year} Copyright by {company} Company
+      </p>
     </footer>
   );
 };
