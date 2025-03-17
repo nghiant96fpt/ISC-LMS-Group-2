@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TabSwitch from '../../../../components/TabSwitch/TabSwitch';
 import { tabs } from './data';
+import { useSearchParams } from 'react-router';
 const right = require('../../../../assets/icons/icon-arrow-right.png');
 
 const InstructorProfile = () => {
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<string>('general');
-
+  const tabFromURL = searchParams.get('tab') || 'general';
+  useEffect(() => {
+    setActiveTab(tabFromURL); // Cập nhật nếu URL thay đổi
+  }, [tabFromURL]);
   return (
     <div>
       {activeTab === 'edit' ? (
