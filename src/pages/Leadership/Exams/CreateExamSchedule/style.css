@@ -1,0 +1,3 @@
+.placeholder-italic::placeholder {
+    font-style: italic;
+}

@@ -15,7 +15,7 @@ module.exports = {
         // Status colors
         'red-status': 'var(--red-status)',
         'blue-status': 'var(--blue-status)',
-        'green-status': 'var(--green-statu)',
+        'green-status': 'var(--green-status)',
 
         // Background colors
         'background-1': 'var(--background-1)',
@@ -53,10 +53,41 @@ module.exports = {
         'br-gradient-sheet': 'linear-gradient(to right, var(--background-3), var(--background-4))',
         'br-gradient-blue': 'linear-gradient(to right, var(--background-5), var(--background-6))',
         'br-gradient-green': 'linear-gradient(to right, var(--background-8), var(--background-7))',
+      },
 
+      // shadow custom
+      boxShadow: {
+        custom: '4px 4px 25px 4px rgba(154, 202, 245, 0.5)',
+      },
+
+      fontFamily: {
+        'font-Mulish': 'var(--font-Mulish)',
+        'font-Source-Sans-Pro': 'var(--font-Source-Sans-Pro)',
+      },
+      fontSize: {
+        'Mulish-1': 'var(--font-size-Mulish-1)',
+        'Mulish-2': 'var(--font-size-Mulish-2)',
+        'Mulish-3': 'var(--font-size-Mulish-3)',
+        'Mulish-4': 'var(--font-size-Mulish-4)',
+        'Source-Sans-Pro-1': 'var(--font-size-Source-Sans-Pro-1)',
+        'Source-Sans-Pro-2': 'var(--font-size-Source-Sans-Pro-2)',
+      },
+      lineHeight: {
+        'Mulish-1': 'var(--line-height-Mulish-1)',
+        'Mulish-2': 'var(--line-height-Mulish-2)',
+        'Mulish-3': 'var(--line-height-Mulish-3)',
+        'Mulish-4': 'var(--line-height-Mulish-4)',
+        'Source-Sans-Pro-1': 'var(--line-height-Source-Sans-Pro-1)',
+        'Source-Sans-Pro-2': 'var(--line-height-Source-Sans-Pro-2)',
+        'Source-Sans-Pro-3': 'var(--line-height-Source-Sans-Pro-3)',
+      },
+      fontWeight: {
+        Mulish: 'var(--weight-Mulish)',
+        'Source-Sans-Pro-1': 'var(--weight-Source-Sans-Pro-1)',
+        'Source-Sans-Pro-2': 'var(--weight-Source-Sans-Pro-2)',
+        'Source-Sans-Pro-3': 'var(--weight-Source-Sans-Pro-3)',
       },
     },
   },
   plugins: [],
-
 };

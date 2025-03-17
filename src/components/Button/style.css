@@ -1,13 +1,14 @@
 :root {
-    --color-primary: #FF7506;
-    --color-primary-hover: #FF7506;
-    --color-secondary: #C9C4C0;
-    --color-secondary-hover: #C9C4C0;
-    --color-secondary-border-hover: #C9C4C0;
-    --color-outline-primary: #FF7506;
-    --color-outline-secondary: #C9C4C0;
-    --color-disabled-bg: #e9ecef;
-    --color-disabled-text: #C9C4C0;
+    --color-primary: theme(colors.background-orange-1);
+    --color-primary-hover: theme(colors.background-orange-1);
+    --color-secondary: theme(colors.background-gray);
+    --color-secondary-hover: theme(colors.background-gray);
+    --color-secondary-border-hover: theme(colors.background-gray);
+    --color-outline-primary: theme(colors.background-orange-1);
+    --color-outline-secondary: theme(colors.background-gray);
+    --color-disabled-bg: theme(colors.background-gray);
+    --color-disabled-text: theme(colors.background-gray);
+    --text-white: theme(colors.while-text)
 }
 
 
@@ -27,13 +28,12 @@
 
 .button.primary {
     border-radius: 8px;
-    color: #fff;
+    color: var(--text-white);
     background-color: var(--color-primary);
     border-color: var(--color-outline-primary);
 }
 
 .button.primary:hover {
-    border-radius: 8px;
     background-color: var(--color-primary-hover);
     border-color: var(--color-primary-hover);
 }
@@ -41,13 +41,12 @@
 
 .button.secondary {
     border-radius: 8px;
-    color: #fff;
+    color: var(--text-white);
     background-color: var(--color-secondary);
     border-color: var(--color-secondary);
 }
 
 .button.secondary:hover {
-    border-radius: 8px;
     background-color: var(--color-secondary-hover);
     border-color: var(--color-secondary-border-hover);
 }
@@ -62,9 +61,8 @@
 }
 
 .button.outline-primary:hover {
-    border-radius: 8px;
     background-color: var(--color-outline-primary);
-    color: #fff !important;
+    color: var(--text-white) !important;
 }
 
 
@@ -76,13 +74,12 @@
 }
 
 .button.outline-secondary:hover {
-    border-radius: 8px;
     background-color: var(--color-outline-secondary);
-    color: #fff !important;
+    color: var(--text-white) !important;
 }
 
 .button.disabled {
-    color: white;
+    color: var(--text-white);
     border-radius: 8px;
     background-color: vavar(--color-disabled-bg);
     border-color: var(--color-disabled-bg);
@@ -91,6 +88,7 @@
 }
 
 .button.mini {
+    border-radius: 4px;
     height: 32px;
     width: 90px;
     font-size: 16px !important;

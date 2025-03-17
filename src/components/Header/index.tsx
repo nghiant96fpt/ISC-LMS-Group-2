@@ -1,47 +1,39 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import userCircle from '../../assets/images/people/user_circle.png';
+import './style.css';
 
-const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  };
+const Header: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
 
+  const navigator = useNavigate();
   const handleLogin = () => {
     setIsLoggedIn(true);
+    navigator('/login');
   };
+  const handleLogout = () => setIsLoggedIn(false);
 
   return (
-    <header className=" flex items-center justify-between px-6 py-4 h-16">
+    <header className="header">
       <div></div>
-      <div className="flex items-center space-x-4">
+      <div className="user-section">
         {isLoggedIn ? (
           <>
-            <img src={userCircle} alt="User Avatar" className="w-10 h-10 rounded-full object-cover" />
-            <span className="text-gray-500 font-semibold">Hiền Mai</span>
-            <span className="border-l h-6" style={{ borderColor: '#823B00' }}></span>
-            <button
-              className="text-orange-500 font-medium underline hover:text-orange-500"
-              style={{ textUnderlineOffset: '5px' }}
-              onClick={handleLogout}
-            >
+            <img src={userCircle} alt="User Avatar" className="user-avatar" />
+            <span className="user-name">Hiền Mai</span>
+            <span className="divider"></span>
+            <button className="logout-button" onClick={handleLogout}>
               Đăng xuất
             </button>
           </>
         ) : (
           <>
-            <button
-              className="text-orange-500 font-bold underline hover:text-orange-500"
-              style={{ textUnderlineOffset: '5px' }}
-              onClick={handleLogin}
-            >
+            <button className="login-button" onClick={handleLogin}>
               Đăng nhập
             </button>
-            <span className="border-l h-6" style={{ borderColor: '#823B00' }}></span>
-            <button className="text-orange-500 font-medium underline hover:text-orange-500" style={{ textUnderlineOffset: '5px' }}>
-              Đăng ký
-            </button>
+            <span className="divider"></span>
+            <button className="register-button">Đăng ký</button>
           </>
         )}
       </div>
