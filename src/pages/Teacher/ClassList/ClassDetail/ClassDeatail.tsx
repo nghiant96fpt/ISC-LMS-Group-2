@@ -204,8 +204,8 @@ const ClassDetail: React.FC = () => {
                                 const isUpcoming = isUpcomingSession(formatDate(session.date), session.time);
                                 return (
                                     <div>
-                                        <div key={session.id} className={`p-3 rounded-lg text-center min-w-[120px] h-[120px] shadow-sm  ${bgColor}`}>
-                                            <p className={`font-bold text-base bg-white rounded-[14px] h-[27px] flex items-center justify-center ${textColor}`}>
+                                        <div key={session.id} className={`p-3 rounded-lg text-center min-w-[124px] h-[120px] shadow-sm  ${bgColor}`}>
+                                            <p className={`font-bold text-base bg-white rounded-[14px] h-[27px] items-center justify-center ${textColor}`}>
                                                 Buổi {session.sessions}
                                             </p>
                                             <p className="text-base text-center font-bold text-white">

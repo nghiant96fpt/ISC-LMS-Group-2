@@ -60,10 +60,10 @@ const ExamSchedule: React.FC = () => {
 
   return (
     <>
-      <div className="p-4">
+      <div className="p-3">
         <AddressList addressList={urls} />
       </div>
-      <div className="p-4 ml-20">
+      <div className="p-3">
         {labels.map((label, index) => {
           const isActive = activeTab === index;
           return (
@@ -132,7 +132,7 @@ const ExamSchedule: React.FC = () => {
             <div className="flex gap-3 overflow-x-auto">
               {mockExamData.sessions.map((session) => (
                 <div key={session.id} className="bg-background-gray p-3 rounded-lg text-center min-w-[120px] shadow-sm">
-                  <p className=" font-bold text-base text-grey-text bg-white rounded-[14px] h-[27px] flex items-center justify-center">
+                  <p className=" font-bold text-base text-grey-text bg-white rounded-[14px] h-[27px] items-center justify-center">
                     Buổi {session.sessions}
                   </p>
                   <p className="text-base text-while-text font-bold">{session.date}</p>

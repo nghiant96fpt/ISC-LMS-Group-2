@@ -16,7 +16,7 @@ const DropdownSelectionComponent: React.FC<CustomDropdownProps> = ({
   const [isOpen, setIsOpen] = useState(false);     // Trạng thái mở/đóng của dropdown
   const [selected, setSelected] = useState(label); // Giá trị được chọn
 
-  
+
   const handleSelect = (value: string) => {
     setSelected(value);                             // Cập nhật giá trị được chọn
     setIsOpen(false);                               // Đóng dropdown
@@ -31,10 +31,10 @@ const DropdownSelectionComponent: React.FC<CustomDropdownProps> = ({
           ? typeof width === 'number'
             ? `${width}px`
             : width
-          : '144px', 
+          : '144px',
       }}
     >
-    
+
       <div
         className="custom-dropdown h-8 px-2 bg-white rounded border border-gray-700 flex justify-between items-center cursor-pointer hover:bg-gray-100"
         onClick={() => setIsOpen(!isOpen)}
@@ -55,11 +55,10 @@ const DropdownSelectionComponent: React.FC<CustomDropdownProps> = ({
           {options.map((option, index) => (
             <li
               key={index}
-              className={`px-2 py-1 hover:bg-gray-200 cursor-pointer ${
-                option === selected
+              className={`px-2 py-1 hover:bg-gray-200 cursor-pointer ${option === selected
                   ? 'custom-dropdown-option-selected'
                   : ''
-              }`}
+                }`}
               onClick={() => handleSelect(option)}
             >
               {option}
