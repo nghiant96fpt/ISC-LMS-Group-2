@@ -1,14 +1,12 @@
-import SchoolYearFormEdit from '../SchoolYearFormEdit';
-const SchoolYearEditPages: React.FC = () => {
+import PageLayout from '../../../../../components/PageLayout';
+import SchoolYearEditPages from './main';
+
+const MainSchoolYearEditPages = () => {
   return (
-    <div className="max-w-screen-xl pt-2 px-4 mx-auto lg:px-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-6 gap-x-8 items-start">
-        <div className="col-span-full">
-          <SchoolYearFormEdit />
-        </div>
-      </div>
-    </div>
+    <>
+      <PageLayout layout={<SchoolYearEditPages />} />
+    </>
   );
 };
 
-export default SchoolYearEditPages;
+export default MainSchoolYearEditPages;
