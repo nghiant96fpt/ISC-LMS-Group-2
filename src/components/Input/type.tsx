@@ -12,4 +12,8 @@ export interface inputProps {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onPaste?: (event: React.ClipboardEvent<HTMLInputElement>) => void;
+
+  // react hook form
+  name?: string,
+  error?: string
 };

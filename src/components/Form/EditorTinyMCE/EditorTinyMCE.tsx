@@ -15,7 +15,7 @@ const EditorTinyMCE: React.FC<EditorTinyMCEProps> = ({ handleEditorContentChange
         <div className={editorClass}>
             <Editor
                 apiKey={tinymceApiKey}
-                onInit={(evt, editor) => editor.current = editor}
+                // onInit={(evt, editor) => editor.current = editor}
                 init={tinymceConfig}
                 onEditorChange={(content, editor) => handleEditorContentChange(content)}
             />
