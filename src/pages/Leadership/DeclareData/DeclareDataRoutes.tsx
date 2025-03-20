@@ -5,9 +5,9 @@ import EditDepartment from './BlockDepartment/edit';
 import ClassListWrapper from './BlockDepartment/ClassListWrapper';
 import SubjectSetup from './SubjectSettings';
 import SectionList from './SectionList';
-import SubjectList from './SubjectList';
-import Departmentedit from './SetupDepartmentModal';
-import Departmentlist from './DataList';
+import SubjectList from './SubjectList/SubjectList';
+import Departmentedit from './SetupDepartmentModal/SetupDepartmentModal';
+import Departmentlist from './DataList/DataList';
 const DeclareDataRoutes = () => {
   return (
     <Routes>
