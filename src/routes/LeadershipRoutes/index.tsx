@@ -109,6 +109,7 @@ const StudentRoutes = () => {
         <Route path="all-teacher-profiles/addworkprocess" element={<AddWorkProcess />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
         <Route path="InstructorProfile/:id" element={<InstructorProfile />} />
+        <Route path="InstructorProfile" element={<InstructorProfile />} />
         {/*route cho school-year - group-4*/}
         <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
         <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
