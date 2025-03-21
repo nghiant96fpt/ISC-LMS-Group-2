@@ -9,7 +9,7 @@ const InstructorProfile = () => {
   const [activeTab, setActiveTab] = useState<string>('general');
   const tabFromURL = searchParams.get('tab') || 'general';
   useEffect(() => {
-    setActiveTab(tabFromURL); // Cập nhật nếu URL thay đổi
+    setActiveTab(tabFromURL);
   }, [tabFromURL]);
   return (
     <div>
