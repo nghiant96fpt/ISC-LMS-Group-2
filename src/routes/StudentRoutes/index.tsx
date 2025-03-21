@@ -15,6 +15,7 @@ import MyCourse from '../../pages/Student/MyCourse/Index';
 import EssayPage from '../../pages/Student/TestList/essay';
 
 import ExamInfo from '../../pages/Student/TestList/ExamInfo';
+import TestResults from '../../pages/Student/TestResults';
 
 const StudentRoutes = () => {
   return (
@@ -29,12 +30,12 @@ const StudentRoutes = () => {
         <Route path="exam-schedule" element={<ExamSchedule />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="help" element={<Help />} />
-        <Route path='quiz' element={<Questions/>}/>
+        <Route path="quiz" element={<Questions />} />
         <Route path="my-course" element={<MyCourse />} />
         <Route path="essay" element={<EssayPage />} />
+        <Route path="test-results" element={<TestResults />} />
       </Route>
     </Routes>
   );
-
-}
+};
 export default StudentRoutes;
