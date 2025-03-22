@@ -3,7 +3,7 @@ import { DeleteAcademicYearModalProps } from './type';
 
 const DeleteModal: React.FC<DeleteAcademicYearModalProps> = ({ title, description, onCancel, onConfirm }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10">
       <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
         <h1 className="text-2xl font-bold mb-4">{title}</h1>
         <p className="text-gray-700 mb-8">{description}</p>

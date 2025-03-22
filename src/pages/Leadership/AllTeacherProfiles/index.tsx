@@ -9,18 +9,8 @@ import type { MenuProps } from 'antd';
 import { useNavigate } from "react-router";
 import { ILecturerProfile } from "./type";
 import DeleteModal from "../../../components/DeleteConfirmation";
-const teachers = [
-    { id: "2020-6A", name: "Nguyễn Văn A", dob: "12/02/1998", gender: "Nam", department: "Kinh", position: 'Giáo viên', status: "Đang làm việc" },
-    { id: "2020-6B", name: "Phạm Thị C", dob: "12/02/1998", gender: "Nữ", department: "Kinh", position: 'Giáo viên', status: "Đang làm việc" },
-    { id: "2020-6C", name: "Trần Hoàng A", dob: "12/02/1998", gender: "Nữ", department: "Kinh", position: 'Giáo viên', status: "Đang làm việc" },
-    { id: "2020-7A", name: "Charlie", dob: "12/02/1998", gender: "Nam", department: "Mèo", position: 'Giáo viên', status: "Tạm nghỉ" },
-    { id: "2020-7C", name: "Trần Hoàng A", dob: "12/02/1998", gender: "Nam", department: "Kinh", position: 'Giáo viên', status: "Tạm nghỉ" },
-    { id: "2020-8A", name: "Phạm Thị C", dob: "12/02/1998", gender: "Nữ", department: "Kinh", position: 'Giáo viên', status: "Tạm nghỉ" },
-    { id: "2020-8B", name: "Trần Hoàng A", dob: "12/02/1998", gender: "Nam", department: "Khơme", position: 'Giáo viên', status: "Tạm nghỉ" },
-    { id: "2020-9A", name: "Nguyễn Văn A", dob: "12/02/1998", gender: "Nam", department: "Kinh", position: 'Giáo viên', status: "Đã nghỉ việc" },
-    { id: "2020-8C", name: "Phạm Thị C", dob: "12/02/1998", gender: "Nữ", department: "H’Mông", position: 'Giáo viên', status: "Nghỉ hưu" },
-    { id: "2020-9B", name: "Trần Hoàng A", dob: "12/02/1998", gender: "Nữ", department: "Kinh", position: 'Giáo viên', status: "Đã thôi học" }
-];
+
+
 
 const mapStatusToType = (status: string) => {
     switch (status) {
@@ -63,8 +53,20 @@ const AllTeacherProfiles: React.FC = () => {
     const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
     const [itemsPerPage, setItemsPerPage] = useState(8);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAllDeleteModal, setIsAllDeleteModal] = useState(false)
     const navigate = useNavigate();
-
+    const [teachers, setTeachers] = useState([
+        { id: "2020-6A", name: "Nguyễn Văn A", dob: "12/02/1998", gender: "Nam", department: "Kinh", position: 'Giáo viên', status: "Đang làm việc" },
+        { id: "2020-6B", name: "Phạm Thị C", dob: "12/02/1998", gender: "Nữ", department: "Kinh", position: 'Giáo viên', status: "Đang làm việc" },
+        { id: "2020-6C", name: "Trần Hoàng A", dob: "12/02/1998", gender: "Nữ", department: "Kinh", position: 'Giáo viên', status: "Đang làm việc" },
+        { id: "2020-7A", name: "Charlie", dob: "12/02/1998", gender: "Nam", department: "Mèo", position: 'Giáo viên', status: "Tạm nghỉ" },
+        { id: "2020-7C", name: "Trần Hoàng A", dob: "12/02/1998", gender: "Nam", department: "Kinh", position: 'Giáo viên', status: "Tạm nghỉ" },
+        { id: "2020-8A", name: "Phạm Thị C", dob: "12/02/1998", gender: "Nữ", department: "Kinh", position: 'Giáo viên', status: "Tạm nghỉ" },
+        { id: "2020-8B", name: "Trần Hoàng A", dob: "12/02/1998", gender: "Nam", department: "Khơme", position: 'Giáo viên', status: "Tạm nghỉ" },
+        { id: "2020-9A", name: "Nguyễn Văn A", dob: "12/02/1998", gender: "Nam", department: "Kinh", position: 'Giáo viên', status: "Đã nghỉ việc" },
+        { id: "2020-8C", name: "Phạm Thị C", dob: "12/02/1998", gender: "Nữ", department: "H’Mông", position: 'Giáo viên', status: "Nghỉ hưu" },
+        { id: "2020-9B", name: "Trần Hoàng A", dob: "12/02/1998", gender: "Nữ", department: "Kinh", position: 'Giáo viên', status: "Đã thôi học" }
+    ]);
     const handleMenuClick = (key: string, id?: string) => {
         if (key === '1') {
             navigate(`/`);
@@ -82,21 +84,45 @@ const AllTeacherProfiles: React.FC = () => {
         setIsModalOpen(true);
     };
 
-    const confirmDelete = () => {
-        console.log("Đã xóa thành công!");
-        setIsModalOpen(false);
-    };
 
     const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setItemsPerPage(Number(e.target.value));
     };
 
-    const handleSelectTeacher = (id: string) => {
-        setSelectedTeachers(prev =>
-            prev.includes(id) ? prev.filter(tid => tid !== id) : [...prev, id]
-        );
+    const handleSelectTeacher = (teacherId: string) => {
+        setSelectedTeachers((prev) => {
+            if (prev.includes(teacherId)) {
+                // Bỏ chọn giáo viên đó
+                return prev.filter((id) => id !== teacherId);
+            } else {
+                // Chọn thêm giáo viên
+                return [...prev, teacherId];
+            }
+        });
+    };
+    const handleCheckboxChange = (teacherId: string) => {
+        handleSelectTeacher(teacherId);
+    };
+    const handleSelectAll = () => {
+        if (selectedTeachers.length === teachers.length) {
+            // Nếu đã chọn hết, bỏ chọn tất cả
+            setSelectedTeachers([]);
+        } else {
+            // Nếu chưa chọn hết, chọn tất cả
+            setSelectedTeachers(teachers.map((t) => t.id));
+        }
     };
 
+    const handleDeleteClickAll = () => {
+        if (selectedTeachers.length === 0) return; // Không làm gì nếu chưa chọn
+
+        setIsModalOpen(true); // Hiện modal xác nhận
+    };
+    const handleConfirmDeleteAll = () => {
+        setTeachers((prev) => prev.filter((t) => !selectedTeachers.includes(t.id))); // Xóa các mục đã chọn
+        setSelectedTeachers([]); // Reset danh sách chọn
+        setIsModalOpen(false); // Đóng modal
+    };
 
     return (
         <div className="p-3">
@@ -112,13 +138,14 @@ const AllTeacherProfiles: React.FC = () => {
                     <button
                         className="border-r-[2px]"
                         title="Xóa"
+                        onClick={handleDeleteClickAll}
                     >
                         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fillRule="evenodd" clipRule="evenodd" d="M12.3906 4.39118C12.6407 4.14113 12.9798 4.00065 13.3334 4.00065H18.6667C19.0204 4.00065 19.3595 4.14113 19.6096 4.39118C19.8596 4.64122 20.0001 4.98036 20.0001 5.33398V6.66732H12.0001V5.33398C12.0001 4.98036 12.1406 4.64122 12.3906 4.39118ZM9.33341 6.66732V5.33398C9.33341 4.27312 9.75484 3.2557 10.505 2.50556C11.2551 1.75541 12.2725 1.33398 13.3334 1.33398H18.6667C19.7276 1.33398 20.745 1.75541 21.4952 2.50556C22.2453 3.2557 22.6667 4.27312 22.6667 5.33398V6.66732H25.3334H28.0001C28.7365 6.66732 29.3334 7.26427 29.3334 8.00065C29.3334 8.73703 28.7365 9.33398 28.0001 9.33398H26.6667V26.6673C26.6667 27.7282 26.2453 28.7456 25.4952 29.4957C24.745 30.2459 23.7276 30.6673 22.6667 30.6673H9.33341C8.27255 30.6673 7.25513 30.2459 6.50499 29.4957C5.75484 28.7456 5.33341 27.7282 5.33341 26.6673V9.33398H4.00008C3.2637 9.33398 2.66675 8.73703 2.66675 8.00065C2.66675 7.26427 3.2637 6.66732 4.00008 6.66732H6.66675H9.33341ZM8.00008 9.33398V26.6673C8.00008 27.0209 8.14056 27.3601 8.39061 27.6101C8.64065 27.8602 8.97979 28.0006 9.33341 28.0006H22.6667C23.0204 28.0006 23.3595 27.8602 23.6096 27.6101C23.8596 27.3601 24.0001 27.0209 24.0001 26.6673V9.33398H8.00008ZM18.6667 13.334C19.4031 13.334 20.0001 13.9309 20.0001 14.6673V22.6673C20.0001 23.4037 19.4031 24.0007 18.6667 24.0007C17.9304 24.0007 17.3334 23.4037 17.3334 22.6673V14.6673C17.3334 13.9309 17.9304 13.334 18.6667 13.334ZM14.6667 14.6673C14.6667 13.9309 14.0698 13.334 13.3334 13.334C12.597 13.334 12.0001 13.9309 12.0001 14.6673V22.6673C12.0001 23.4037 12.597 24.0007 13.3334 24.0007C14.0698 24.0007 14.6667 23.4037 14.6667 22.6673V14.6673Z" fill="#FF7506" />
                         </svg>
                     </button>
                     <Button className="outline-primary">Xuất file</Button>
-                    <Button className="primary">+ Thêm mới</Button>
+                    <Button className="primary" >+ Thêm mới</Button>
                 </div>
             </div>
 
@@ -143,8 +170,8 @@ const AllTeacherProfiles: React.FC = () => {
                             <tr>
                                 <th className="py-3 px-4 text-center w-[50px] ">
                                     <CheckboxComponent
-                                        isChecked={selectedTeachers.length === teachers.length}
-                                        onChange={() => setSelectedTeachers(selectedTeachers.length === teachers.length ? [] : teachers.map(t => t.id))}
+                                        isChecked={selectedTeachers.length === teachers.length && teachers.length > 0}
+                                        onChange={handleSelectAll}
                                     />
                                 </th>
                                 <th className="py-3 px-4 text-left ">
@@ -214,14 +241,15 @@ const AllTeacherProfiles: React.FC = () => {
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="whitespace-nowrap">
                             {teachers.map((teacher, index) => (
                                 <tr key={index} className={`border-b ${index % 2 === 1 ? 'bg-gray-100' : ''}`}>
                                     <td className="py-3 px-4 text-center">
                                         <CheckboxComponent
                                             isChecked={selectedTeachers.includes(teacher.id)}
-                                            onChange={() => handleSelectTeacher(teacher.id)}
+                                            onChange={handleCheckboxChange.bind(null, teacher.id)}
                                         />
+
                                     </td>
                                     <td className="py-3 px-4 text-black-text ">{teacher.id}</td>
                                     <td className="py-3 px-4 text-black-text ">{teacher.name}</td>
@@ -274,7 +302,9 @@ const AllTeacherProfiles: React.FC = () => {
                         </tbody>
                     </table>
                     {isModalOpen && <DeleteModal title='Xóa' description='Xác nhận muốn xoá những thông tin đã chọn? Sau khi xoá sẽ không thể hoàn tác.' onCancel={setIsModalOpen.bind(null, false)}
-                        onConfirm={confirmDelete} />}
+                        onConfirm={handleConfirmDeleteAll} />}
+                    {isAllDeleteModal && <DeleteModal title='Xóa' description='Xác nhận muốn xoá những thông tin đã chọn? Sau khi xoá sẽ không thể hoàn tác.' onCancel={setIsAllDeleteModal.bind(null, false)}
+                        onConfirm={handleConfirmDeleteAll} />}
                 </div>
 
                 <div className="mt-auto flex flex-wrap justify-center md:justify-between items-center px-2 md:px-10 p-4 mb-5 text-black-text font-sans italic text-sm gap-2">

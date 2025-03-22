@@ -48,20 +48,20 @@ const Help = () => {
               value={formData.subject}
               onChange={handleChange}
             />
-
-            <Editor
-              apiKey="g2iyjej12q33eo50eowchns9r0c5fhvijleqryphx5hi0y24"
-              value={formData.message}
-              init={{
-                height: 320,
-                menubar: false,
-                plugins: 'lists link',
-                toolbar: 'bold italic underline | bullist numlist | alignleft aligncenter alignright',
-                placeholder: 'Để lại lời nhắn của bạn tại đây...',
-              }}
-              onEditorChange={handleEditorChange}
-            />
-
+            <div className="border border-gray-300 rounded-lg p-2">
+              <Editor
+                apiKey="g2iyjej12q33eo50eowchns9r0c5fhvijleqryphx5hi0y24"
+                value={formData.message}
+                init={{
+                  height: 320,
+                  menubar: false,
+                  plugins: 'lists link',
+                  toolbar: 'bold italic underline | bullist numlist | alignleft aligncenter alignright',
+                  placeholder: 'Để lại lời nhắn của bạn tại đây...',
+                }}
+                onEditorChange={handleEditorChange}
+              />
+            </div>
             <div className="flex justify-center mt-4">
               <Button className={`${isFormValid ? 'primary' : 'secondary'}`} disabled={!isFormValid}>
                 Gửi
