@@ -20,8 +20,6 @@ const AllScourses = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-3xl font-bold mb-4">Tất cả khóa học</h1>
-
       {/* Học kỳ II */}
       <div
         className={`p-3 font-bold rounded-md mb-2 flex items-center cursor-pointer transition-all ${
@@ -35,7 +33,7 @@ const AllScourses = () => {
 
       {isOpenSemester1 && (
         <div className="overflow-x-auto mb-4">
-          <table className="w-full min-w-[600px] border-collapse border border-gray-200">
+          <table className="w-full  border-collapse border border-gray-200">
             <tbody>
               {courses.map((course, index) => (
                 <tr key={index} className="border even:bg-gray-100">
