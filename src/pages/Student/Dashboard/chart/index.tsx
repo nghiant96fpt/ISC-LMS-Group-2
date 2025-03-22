@@ -11,9 +11,8 @@ const COLORS = ['#4A90E2', '#F5A623'];
 
 const StudentAchievementChart = () => {
   return (
-    <div className="  rounded-2xl p-6 w-full max-w-2xl ml-0">
+    <div className=" ">
       {' '}
-      <h1 className="text-3xl font-bold pb-5 text-black-text">Tổng quan</h1>
       <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto ml-0 pb-10">
         {stats.map((stat, index) => (
           <div key={index} className={`p-8 w-full h-32 rounded-2xl shadow-lg text-white ${stat.color} text-center flex flex-col justify-center`}>
