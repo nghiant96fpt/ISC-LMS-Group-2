@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './App.css';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
@@ -9,19 +9,20 @@ import TeacherRoutes from './routes/TeacherRoutes';
 import LedershipRoutes from './routes/LeadershipRoutes';
 import Login from './pages/Student/Login/Login';
 import { CookiesProvider } from 'react-cookie';
-import AuthProvider from './pages/Student/Login/AuthContext';
+import AuthProvider, { AuthContext } from './pages/Student/Login/AuthContext';
 import ProtectedRoute from './pages/Student/Login/ProtectedRoute';
 import { ToastContainer } from 'react-toastify';
+import RootRedirect from './pages/Student/Login/RootRedirect';
 function App() {
+  const { role } = useContext(AuthContext);
   return (
     <CookiesProvider>
       <div className="App">
         <Provider store={store}>
-          {/* Gr01 - Hoài Thọ: <AppRoutes/> hoặc các component nếu muốn sử dụng redux phải nằm trong này ! */}
           <AuthProvider>
             <Router>
               <Routes>
-                <Route path="/" element={<Navigate to="/student" replace />} />
+                <Route path="/" element={<RootRedirect />} />
                 <Route element={<ProtectedRoute allowRole={3} />}>
                   <Route path="/student/*" element={<StudentRoutes />} />
                 </Route>
@@ -37,7 +38,7 @@ function App() {
             </Router>
           </AuthProvider>
         </Provider>
-        <ToastContainer/>
+        <ToastContainer />
       </div>
     </CookiesProvider>
   );
