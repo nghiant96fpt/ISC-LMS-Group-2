@@ -1,17 +1,17 @@
 export type SubjectDetails = {
-    class: string;
-    schedule: string;
-    dateRange: string;
-    status: "Chưa hoàn thành" | "Đang học" | "Đã hoàn thành";
+  class: string;
+  schedule: string;
+  dateRange: string;
+  status: 'Chưa hoàn thành' | 'Đang học' | 'Đã hoàn thành';
 };
 
 export type Subject = {
-    id: string;
-    title: string;
-    details: SubjectDetails;
+  id: string;
+  title: string;
+  details: SubjectDetails;
 };
 
 export type SemesterData = {
-    semester: string;
-    subjects: Subject[];
+  semester: string;
+  subjects: Subject[];
 };
