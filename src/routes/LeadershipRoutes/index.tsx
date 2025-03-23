@@ -111,7 +111,7 @@ const StudentRoutes = () => {
         <Route path="InstructorProfile" element={<InstructorProfile />} />
         {/*route cho school-year - group-4*/}
         <Route path="declare-data/school-year" element={<SchoolYear />} /> {/* url table niên khóa */}
-        <Route path="declare-data/school-year/edit-school-year" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
+        <Route path="declare-data/school-year/edit-school-year/:id" element={<SchoolYearEditPages />} /> {/* url sửa niên khóa */}
         <Route path="declare-data/school-year/add-school-year" element={<SchoolYearAdd />} /> {/* url thêm niên khóa */}
         {/* route cho class-list - group-4 */}
         <Route path="declare-data/add-class" element={<NewClass />} /> {/* url thêm lớp học */}
@@ -177,14 +177,14 @@ const StudentRoutes = () => {
         <Route path="study-process/update-discipline" element={<UpdateDiscipline />} />
         <Route path="create-student" element={<StudentCU />} />
         <Route path="new-student" element={<StudentCU />} />
-        <Route path='system-settings/config' element={<Config/>}/>
+        <Route path="system-settings/config" element={<Config />} />
         {/* Thiết lập lớp học */}
         <Route path="system-settings/subject-management" element={<SubjectManagement />} />
         <Route path="system-settings/classroom-settings" element={<ClassroomSettings />} />
-        <Route path='create-student' element={<StudentCU/>}/>
+        <Route path="create-student" element={<StudentCU />} />
         {/*Group - 1 setting*/}
-        <Route path='system-settings/school-info' element={<SchoolInfo/>}/>
-        <Route path='system-settings/school-info/edit' element={<EditSchoolInFo/>}/>
+        <Route path="system-settings/school-info" element={<SchoolInfo />} />
+        <Route path="system-settings/school-info/edit" element={<EditSchoolInFo />} />
         <Route path="training-info/add" element={<AddTrainingProgram />} />
       </Route>
     </Routes>
