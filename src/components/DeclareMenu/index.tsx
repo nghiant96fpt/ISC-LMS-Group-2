@@ -1,21 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './style.scss';
-// import { OptiosnMenuProps } from './type';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const DeclareMenu: React.FC = () => {
+  const location = useLocation();
   const [selectedSchool, setSelectedSchool] = useState('THCS');
   const [selectedYear, setSelectedYear] = useState('2020 - 2021');
-  const [activeMenu, setActiveMenu] = useState('Niên khóa');
+  const [activeMenu, setActiveMenu] = useState('Tổ - Bộ môn');
 
   const menuItems = [
-    { label: 'Niên khóa', path: '#' },
-    { label: 'Tổ - Bộ môn', path: '#' },
-    { label: 'Khoa - Khối', path: '#' },
+    {
+      label: 'Tổ - Bộ môn',
+      path: '/leadership/declare-data',
+      pathEdit: '/leadership/declare-data/edit',
+      pathAdd: '/leadership/declare-data/add-declare-data',
+    },
+    {
+      label: 'Niên khóa',
+      path: '/leadership/declare-data/school-year',
+      pathEdit: '/leadership/declare-data/school-year/edit-school-year',
+      pathAdd: '/leadership/declare-data/school-year/add-school-year',
+    },
+    {
+      label: 'Khoa - Khối',
+      path: '/leadership/declare-data/block-department',
+      pathEdit: '/leadership/declare-data/block-department/edit',
+      pathAdd: '/leadership/declare-data/block-department/add-block-department',
+    },
     { label: 'Môn học', path: '#' },
-    { label: 'Lớp học', path: '#' },
+    {
+      label: 'Lớp học',
+      path: '/leadership/declare-data/class-list',
+      pathEdit: '/leadership/declare-data/class-list/edit',
+      pathAdd: '/leadership/declare-data/class-list/add-class-list',
+    },
     { label: 'Loại điểm', path: '#' },
   ];
+
+  useEffect(() => {
+    const activeItem = menuItems.find(
+      (item) => location.pathname === item.path || location.pathname === item.pathEdit || location.pathname === item.pathAdd,
+    );
+    if (activeItem) {
+      setActiveMenu(activeItem.label);
+    }
+  }, [location.pathname]);
 
   return (
     <div className="declare-menu">

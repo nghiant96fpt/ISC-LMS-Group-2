@@ -8,7 +8,7 @@ const SchoolYearTable = ({ data, onDelete }: { data: ISchoolYear[]; onDelete: (i
     <div className=" rounded-lg overflow-hidden">
       {/* tb head */}
       <table className="w-full table-fixed overflow-hidden rounded-t-lg">
-        <thead className="h-8 sm:h-6 md:h-7 lg:h-8 xl:h-10 sm:text-[8px] md:text-[10px]  xl:text-[16px] bg-gradient-to-r from-[#F17F21] to-[#FF5400] text-white sticky top-0 z-1">
+        <thead className="h-8 sm:h-6 md:h-7 lg:h-8 xl:h-10 sm:text-[4px] md:text-[10px]  xl:text-[16px] bg-gradient-to-r from-[#F17F21] to-[#FF5400] text-white sticky top-0 z-1">
           <tr>
             <th className="w-1/12 p-1 sm:p-1 md:p-2 xl:p-3 first:rounded-tl-lg ">
               <div className="flex items-center justify-center gap-2 cursor-pointer">
