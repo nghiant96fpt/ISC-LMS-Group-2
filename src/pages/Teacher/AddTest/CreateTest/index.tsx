@@ -144,6 +144,7 @@ const AddTest: React.FC = () => {
                   {['10A1', '10A2', '10A3', '10A4'].map((className) => (
                     <button
                       key={className}
+                      type='button'
                       onClick={() => toggleClass(className)}
                       className={`px-4 py-2 rounded-lg transition-colors duration-200 ${selectedClasses.includes(className) ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'
                         }`}

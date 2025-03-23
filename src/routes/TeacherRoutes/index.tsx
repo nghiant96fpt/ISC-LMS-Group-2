@@ -28,6 +28,7 @@ const TeacherRoutes = () => {
         <Route index element={<TeacherDashboard />} />
         {/* Group-3 Class Detail */}
         <Route path="class-list" element={<ClassList />} />
+        {/* <Route path="class-list/:id" element={<ClassDetail />} /> */}
 
         {/*  */}
 
