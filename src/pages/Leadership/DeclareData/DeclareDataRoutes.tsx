@@ -4,7 +4,7 @@ import BlockDepartment from './BlockDepartment/bockDepartment';
 import EditDepartment from './BlockDepartment/edit';
 import ClassListWrapper from './BlockDepartment/ClassListWrapper';
 import SubjectSetup from './SubjectSettings/subjectedit';
-import SectionList from './SectionList';
+import SectionList from './SectionList/SectionList';
 import SubjectList from './SubjectList/subject';
 import Departmentedit from './SetupDepartmentModal';
 import Departmentlist from './DataList/Datalist';

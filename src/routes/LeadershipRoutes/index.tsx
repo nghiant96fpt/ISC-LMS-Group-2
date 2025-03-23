@@ -44,7 +44,7 @@ import EditDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/e
 // import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
 // import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 
-import SectionList from '../../pages/Leadership/DeclareData/SectionList';
+import SectionList from '../../pages/Leadership/DeclareData/SectionList/SectionList';
 import SubjectSetup from '../../pages/Leadership/DeclareData/SubjectSettings/subjectedit';
 import NewClass from '../../pages/Leadership/DeclareData/ClassList/NewClass';
 import UpdateClass from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
