@@ -2,7 +2,7 @@ export type SubjectDetails = {
   class: string;
   schedule: string;
   dateRange: string;
-  status: 'Chưa hoàn thành' | 'Đang học' | 'Đã hoàn thành';
+  status: 'Chưa hoàn thành' | 'Đang học' | 'Đã hoàn thành' | 'Đã lên lịch';
 };
 
 export type Subject = {
