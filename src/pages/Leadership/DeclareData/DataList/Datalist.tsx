@@ -1,4 +1,4 @@
-import DeclareData from './DataList';
+import DeclareData from './DeclareData';
 import PageLayout from '../../../../components/PageLayout';
 
 const MainDeclareData = () => {
