@@ -23,7 +23,7 @@ interface CardSectionProps {
  * - `style`: Custom inline style
  */
 interface CardProps {
-  children: ReactNode;
+  children?: ReactNode;
   variant?: "primary" | "dark-primary" | "default";
   size?: "sm" | "md" | "lg" | "full";
   className?: string;
@@ -40,7 +40,7 @@ const getVariantClass = (variant?: "primary" | "dark-primary" | "default") => {
     case "dark-primary":
       return "bg-[#CC5C00] text-white";
     default:
-      return "bg-white text-black";
+      return "bg-[#F0F3F6] text-black";
   }
 };
 
@@ -71,7 +71,7 @@ const Card: React.FC<CardProps> & {
 } = ({ children, variant = "primary", size = "md", className = "", style }) => {
   return (
     <CardVariantContext.Provider value={variant}>
-      <div className={`rounded-[16px] border border-gray-300 overflow-hidden shadow-md ${getSizeClass(size)} ${className}`} style={style}>
+      <div className={`${className} rounded-[16px] border border-gray-300 overflow-hidden shadow-md ${getSizeClass(size)}`} style={style}>
         {children}
       </div>
     </CardVariantContext.Provider>
