@@ -6,21 +6,9 @@ import Status from '../../../components/Status';
 import AddressList from '../../../components/AddressUrlStack/Index';
 import { Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { ILecturerProfile } from './type';
 import DeleteModal from '../../../components/DeleteConfirmation';
-const teachers = [
-  { id: '2020-6A', name: 'Nguyễn Văn A', dob: '12/02/1998', gender: 'Nam', department: 'Kinh', position: 'Giáo viên', status: 'Đang làm việc' },
-  { id: '2020-6B', name: 'Phạm Thị C', dob: '12/02/1998', gender: 'Nữ', department: 'Kinh', position: 'Giáo viên', status: 'Đang làm việc' },
-  { id: '2020-6C', name: 'Trần Hoàng A', dob: '12/02/1998', gender: 'Nữ', department: 'Kinh', position: 'Giáo viên', status: 'Đang làm việc' },
-  { id: '2020-7A', name: 'Charlie', dob: '12/02/1998', gender: 'Nam', department: 'Mèo', position: 'Giáo viên', status: 'Tạm nghỉ' },
-  { id: '2020-7C', name: 'Trần Hoàng A', dob: '12/02/1998', gender: 'Nam', department: 'Kinh', position: 'Giáo viên', status: 'Tạm nghỉ' },
-  { id: '2020-8A', name: 'Phạm Thị C', dob: '12/02/1998', gender: 'Nữ', department: 'Kinh', position: 'Giáo viên', status: 'Tạm nghỉ' },
-  { id: '2020-8B', name: 'Trần Hoàng A', dob: '12/02/1998', gender: 'Nam', department: 'Khơme', position: 'Giáo viên', status: 'Tạm nghỉ' },
-  { id: '2020-9A', name: 'Nguyễn Văn A', dob: '12/02/1998', gender: 'Nam', department: 'Kinh', position: 'Giáo viên', status: 'Đã nghỉ việc' },
-  { id: '2020-8C', name: 'Phạm Thị C', dob: '12/02/1998', gender: 'Nữ', department: 'H’Mông', position: 'Giáo viên', status: 'Nghỉ hưu' },
-  { id: '2020-9B', name: 'Trần Hoàng A', dob: '12/02/1998', gender: 'Nữ', department: 'Kinh', position: 'Giáo viên', status: 'Đã thôi học' },
-];
 
 const mapStatusToType = (status: string) => {
   switch (status) {
@@ -66,8 +54,20 @@ const AllTeacherProfiles: React.FC = () => {
   const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAllDeleteModal, setIsAllDeleteModal] = useState(false);
   const navigate = useNavigate();
-
+  const [teachers, setTeachers] = useState([
+    { id: '2020-6A', name: 'Nguyễn Văn A', dob: '12/02/1998', gender: 'Nam', department: 'Kinh', position: 'Giáo viên', status: 'Đang làm việc' },
+    { id: '2020-6B', name: 'Phạm Thị C', dob: '12/02/1998', gender: 'Nữ', department: 'Kinh', position: 'Giáo viên', status: 'Đang làm việc' },
+    { id: '2020-6C', name: 'Trần Hoàng A', dob: '12/02/1998', gender: 'Nữ', department: 'Kinh', position: 'Giáo viên', status: 'Đang làm việc' },
+    { id: '2020-7A', name: 'Charlie', dob: '12/02/1998', gender: 'Nam', department: 'Mèo', position: 'Giáo viên', status: 'Tạm nghỉ' },
+    { id: '2020-7C', name: 'Trần Hoàng A', dob: '12/02/1998', gender: 'Nam', department: 'Kinh', position: 'Giáo viên', status: 'Tạm nghỉ' },
+    { id: '2020-8A', name: 'Phạm Thị C', dob: '12/02/1998', gender: 'Nữ', department: 'Kinh', position: 'Giáo viên', status: 'Tạm nghỉ' },
+    { id: '2020-8B', name: 'Trần Hoàng A', dob: '12/02/1998', gender: 'Nam', department: 'Khơme', position: 'Giáo viên', status: 'Tạm nghỉ' },
+    { id: '2020-9A', name: 'Nguyễn Văn A', dob: '12/02/1998', gender: 'Nam', department: 'Kinh', position: 'Giáo viên', status: 'Đã nghỉ việc' },
+    { id: '2020-8C', name: 'Phạm Thị C', dob: '12/02/1998', gender: 'Nữ', department: 'H’Mông', position: 'Giáo viên', status: 'Nghỉ hưu' },
+    { id: '2020-9B', name: 'Trần Hoàng A', dob: '12/02/1998', gender: 'Nữ', department: 'Kinh', position: 'Giáo viên', status: 'Đã thôi học' },
+  ]);
   const handleMenuClick = (key: string, id?: string) => {
     if (key === '1') {
       navigate(`/leadership/InstructorProfile/${id}?tab=edit`);
@@ -84,17 +84,43 @@ const AllTeacherProfiles: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const confirmDelete = () => {
-    console.log('Đã xóa thành công!');
-    setIsModalOpen(false);
-  };
-
   const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setItemsPerPage(Number(e.target.value));
   };
 
-  const handleSelectTeacher = (id: string) => {
-    setSelectedTeachers((prev) => (prev.includes(id) ? prev.filter((tid) => tid !== id) : [...prev, id]));
+  const handleSelectTeacher = (teacherId: string) => {
+    setSelectedTeachers((prev) => {
+      if (prev.includes(teacherId)) {
+        // Bỏ chọn giáo viên đó
+        return prev.filter((id) => id !== teacherId);
+      } else {
+        // Chọn thêm giáo viên
+        return [...prev, teacherId];
+      }
+    });
+  };
+  const handleCheckboxChange = (teacherId: string) => {
+    handleSelectTeacher(teacherId);
+  };
+  const handleSelectAll = () => {
+    if (selectedTeachers.length === teachers.length) {
+      // Nếu đã chọn hết, bỏ chọn tất cả
+      setSelectedTeachers([]);
+    } else {
+      // Nếu chưa chọn hết, chọn tất cả
+      setSelectedTeachers(teachers.map((t) => t.id));
+    }
+  };
+
+  const handleDeleteClickAll = () => {
+    if (selectedTeachers.length === 0) return; // Không làm gì nếu chưa chọn
+
+    setIsModalOpen(true); // Hiện modal xác nhận
+  };
+  const handleConfirmDeleteAll = () => {
+    setTeachers((prev) => prev.filter((t) => !selectedTeachers.includes(t.id))); // Xóa các mục đã chọn
+    setSelectedTeachers([]); // Reset danh sách chọn
+    setIsModalOpen(false); // Đóng modal
   };
 
   return (
@@ -104,7 +130,7 @@ const AllTeacherProfiles: React.FC = () => {
       <div className="flex justify-between items-center mb-4">
         <DropdownSelectionComponent label={option_date[0]} options={option_date} width={144} />
         <div className="space-x-2 flex justify-between">
-          <button className="border-r-[2px]" title="Xóa">
+          <button className="border-r-[2px]" title="Xóa" onClick={handleDeleteClickAll}>
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 fillRule="evenodd"
@@ -149,10 +175,7 @@ const AllTeacherProfiles: React.FC = () => {
             <thead className="bg-gradient-to-r from-background-orange-1 to-background-1 text-white">
               <tr>
                 <th className="py-3 px-4 text-center w-[50px] ">
-                  <CheckboxComponent
-                    isChecked={selectedTeachers.length === teachers.length}
-                    onChange={() => setSelectedTeachers(selectedTeachers.length === teachers.length ? [] : teachers.map((t) => t.id))}
-                  />
+                  <CheckboxComponent isChecked={selectedTeachers.length === teachers.length && teachers.length > 0} onChange={handleSelectAll} />
                 </th>
                 <th className="py-3 px-4 text-left ">
                   <div className="flex items-center font-sans">
@@ -262,11 +285,11 @@ const AllTeacherProfiles: React.FC = () => {
                 <th></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="whitespace-nowrap">
               {teachers.map((teacher, index) => (
                 <tr key={index} className={`border-b ${index % 2 === 1 ? 'bg-gray-100' : ''}`}>
                   <td className="py-3 px-4 text-center">
-                    <CheckboxComponent isChecked={selectedTeachers.includes(teacher.id)} onChange={() => handleSelectTeacher(teacher.id)} />
+                    <CheckboxComponent isChecked={selectedTeachers.includes(teacher.id)} onChange={handleCheckboxChange.bind(null, teacher.id)} />
                   </td>
                   <td className="py-3 px-4 text-black-text ">{teacher.id}</td>
                   <td className="py-3 px-4 text-black-text ">{teacher.name}</td>
@@ -278,16 +301,15 @@ const AllTeacherProfiles: React.FC = () => {
                     <Status type={mapStatusToType(teacher.status)} label={teacher.status} />
                   </td>
                   <td className="flex justify-between ">
-                    <Link to="/leadership/InstructorProfile">
-                      <button>
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path
-                            d="M29.2268 15.4663C26.5334 9.21301 21.4668 5.33301 16.0001 5.33301C10.5334 5.33301 5.46676 9.21301 2.77342 15.4663C2.7 15.6346 2.66211 15.8161 2.66211 15.9997C2.66211 16.1832 2.7 16.3648 2.77342 16.533C5.46676 22.7863 10.5334 26.6663 16.0001 26.6663C21.4668 26.6663 26.5334 22.7863 29.2268 16.533C29.3002 16.3648 29.3381 16.1832 29.3381 15.9997C29.3381 15.8161 29.3002 15.6346 29.2268 15.4663ZM16.0001 23.9997C11.7734 23.9997 7.77342 20.9463 5.46676 15.9997C7.77342 11.053 11.7734 7.99967 16.0001 7.99967C20.2268 7.99967 24.2268 11.053 26.5334 15.9997C24.2268 20.9463 20.2268 23.9997 16.0001 23.9997ZM16.0001 10.6663C14.9453 10.6663 13.9141 10.9791 13.037 11.5652C12.16 12.1512 11.4764 12.9842 11.0727 13.9587C10.6691 14.9332 10.5634 16.0056 10.7692 17.0402C10.975 18.0747 11.483 19.025 12.2289 19.7709C12.9747 20.5168 13.925 21.0247 14.9596 21.2305C15.9942 21.4363 17.0665 21.3307 18.0411 20.927C19.0156 20.5234 19.8486 19.8398 20.4346 18.9627C21.0206 18.0857 21.3334 17.0545 21.3334 15.9997C21.3334 14.5852 20.7715 13.2286 19.7713 12.2284C18.7711 11.2282 17.4146 10.6663 16.0001 10.6663ZM16.0001 18.6663C15.4727 18.6663 14.9571 18.5099 14.5186 18.2169C14.08 17.9239 13.7382 17.5074 13.5364 17.0202C13.3346 16.5329 13.2818 15.9967 13.3847 15.4794C13.4876 14.9622 13.7415 14.487 14.1145 14.1141C14.4874 13.7411 14.9626 13.4871 15.4798 13.3842C15.9971 13.2814 16.5333 13.3342 17.0206 13.536C17.5078 13.7378 17.9243 14.0796 18.2173 14.5182C18.5104 14.9567 18.6668 15.4723 18.6668 15.9997C18.6668 16.7069 18.3858 17.3852 17.8857 17.8853C17.3856 18.3854 16.7073 18.6663 16.0001 18.6663Z"
-                            fill="#FF7506"
-                          />
-                        </svg>
-                      </button>
-                    </Link>
+                    <button>
+                      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M29.2268 15.4663C26.5334 9.21301 21.4668 5.33301 16.0001 5.33301C10.5334 5.33301 5.46676 9.21301 2.77342 15.4663C2.7 15.6346 2.66211 15.8161 2.66211 15.9997C2.66211 16.1832 2.7 16.3648 2.77342 16.533C5.46676 22.7863 10.5334 26.6663 16.0001 26.6663C21.4668 26.6663 26.5334 22.7863 29.2268 16.533C29.3002 16.3648 29.3381 16.1832 29.3381 15.9997C29.3381 15.8161 29.3002 15.6346 29.2268 15.4663ZM16.0001 23.9997C11.7734 23.9997 7.77342 20.9463 5.46676 15.9997C7.77342 11.053 11.7734 7.99967 16.0001 7.99967C20.2268 7.99967 24.2268 11.053 26.5334 15.9997C24.2268 20.9463 20.2268 23.9997 16.0001 23.9997ZM16.0001 10.6663C14.9453 10.6663 13.9141 10.9791 13.037 11.5652C12.16 12.1512 11.4764 12.9842 11.0727 13.9587C10.6691 14.9332 10.5634 16.0056 10.7692 17.0402C10.975 18.0747 11.483 19.025 12.2289 19.7709C12.9747 20.5168 13.925 21.0247 14.9596 21.2305C15.9942 21.4363 17.0665 21.3307 18.0411 20.927C19.0156 20.5234 19.8486 19.8398 20.4346 18.9627C21.0206 18.0857 21.3334 17.0545 21.3334 15.9997C21.3334 14.5852 20.7715 13.2286 19.7713 12.2284C18.7711 11.2282 17.4146 10.6663 16.0001 10.6663ZM16.0001 18.6663C15.4727 18.6663 14.9571 18.5099 14.5186 18.2169C14.08 17.9239 13.7382 17.5074 13.5364 17.0202C13.3346 16.5329 13.2818 15.9967 13.3847 15.4794C13.4876 14.9622 13.7415 14.487 14.1145 14.1141C14.4874 13.7411 14.9626 13.4871 15.4798 13.3842C15.9971 13.2814 16.5333 13.3342 17.0206 13.536C17.5078 13.7378 17.9243 14.0796 18.2173 14.5182C18.5104 14.9567 18.6668 15.4723 18.6668 15.9997C18.6668 16.7069 18.3858 17.3852 17.8857 17.8853C17.3856 18.3854 16.7073 18.6663 16.0001 18.6663Z"
+                          fill="#FF7506"
+                        />
+                      </svg>
+                    </button>
+
                     <Dropdown
                       menu={{ items, onClick: ({ key }) => handleMenuClick(key, teacher.id) }}
                       placement="bottom"
@@ -348,7 +370,15 @@ const AllTeacherProfiles: React.FC = () => {
               title="Xóa"
               description="Xác nhận muốn xoá những thông tin đã chọn? Sau khi xoá sẽ không thể hoàn tác."
               onCancel={setIsModalOpen.bind(null, false)}
-              onConfirm={confirmDelete}
+              onConfirm={handleConfirmDeleteAll}
+            />
+          )}
+          {isAllDeleteModal && (
+            <DeleteModal
+              title="Xóa"
+              description="Xác nhận muốn xoá những thông tin đã chọn? Sau khi xoá sẽ không thể hoàn tác."
+              onCancel={setIsAllDeleteModal.bind(null, false)}
+              onConfirm={handleConfirmDeleteAll}
             />
           )}
         </div>

@@ -35,10 +35,10 @@ const SubjectPage: React.FC = () => {
     setIsModalOpen(false);
   };
   return (
-    <div className="flex justify-center items-center max-h-screen bg-background-gray-100 p-4">
-      <div className="p-6 bg-background-white rounded-lg shadow-lg w-full max-w-4xl">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold text-center w-full p-4">Danh sách môn học</h2>
+    <div className="flex justify-center items-center max-h-screen">
+      <div className="p-6 bg-background-white rounded-lg w-full">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-semibold text-center w-full mb-4">Danh sách môn học</h2>
           <button
             className={`delete-btn ${selectedSubjects.length > 0 ? 'active' : ''}`}
             onClick={() => setIsModalOpen(true)}
@@ -74,8 +74,14 @@ const SubjectPage: React.FC = () => {
                     </span>
                   </th>
                 </tr>
-                {isModalOpen && <DeleteAcademicYearModal title="Xóa Tổ - Bộ môn"
-                  description="Xác nhận muốn xoá Tổ - Bộ môn này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác." onCancel={() => setIsModalOpen(false)} onConfirm={handleDeleteConfirm} />}
+                {isModalOpen && (
+                  <DeleteAcademicYearModal
+                    title="Xóa Tổ - Bộ môn"
+                    description="Xác nhận muốn xoá Tổ - Bộ môn này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác."
+                    onCancel={() => setIsModalOpen(false)}
+                    onConfirm={handleDeleteConfirm}
+                  />
+                )}
               </thead>
               <tbody className="divide-y divide-gray-300">
                 {subjects.map((subject, index) => (

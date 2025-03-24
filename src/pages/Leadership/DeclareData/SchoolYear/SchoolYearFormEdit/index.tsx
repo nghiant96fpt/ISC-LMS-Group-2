@@ -27,16 +27,10 @@ const SchoolYearFormEdit: React.FC = () => {
     setSemesters([...semesters, semesters.length + 1]);
   };
   const removeSemester = (indexToRemove: number) => {
-    setSemesters((prevSemesters) =>
-      prevSemesters.filter(
-        (_, index) => index !== indexToRemove,
-      ),
-    );
+    setSemesters((prevSemesters) => prevSemesters.filter((_, index) => index !== indexToRemove));
   };
 
-  const handleCheckboxChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
   };
 
@@ -44,34 +38,19 @@ const SchoolYearFormEdit: React.FC = () => {
     console.log('Form submitted', data);
   };
 
-  const handleDateChange = (
-    date: Date | null,
-    fieldName: keyof FormData,
-  ) => {
+  const handleDateChange = (date: Date | null, fieldName: keyof FormData) => {
     setValue(fieldName, date);
   };
 
   return (
-    <form
-      encType="multipart/form-data"
-      onSubmit={handleSubmit(handleFormSubmit)}
-    >
-      <div className="p-6 sm:p-8 md:p-10 bg-white rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 w-full">
-        <TitleComponent
-          text="Thiết lập niên khóa"
-          size={30}
-          align="center"
-          weight="bold"
-        />
+    <form encType="multipart/form-data" onSubmit={handleSubmit(handleFormSubmit)}>
+      <div className="bg-white rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 w-full pb-2">
+        <TitleComponent text="Thiết lập niên khóa" size={30} align="center" weight="bold" />
         {/* Layout 2 cột */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
           {/* Cột 1 */}
           <div className="p-6 col-span-full xl:col-auto">
-            <TitleComponent
-              text="Niên khóa"
-              size={20}
-              className="mb-4"
-            />
+            <TitleComponent text="Niên khóa" size={20} className="mb-4" />
 
             <div className="flex items-center gap-4">
               <div className="flex-grow-0">
@@ -87,20 +66,11 @@ const SchoolYearFormEdit: React.FC = () => {
                       <DropdownSelectionComponent
                         {...field}
                         placeholder="Niên khóa"
-                        options={[
-                          '2020',
-                          '2021',
-                          '2022',
-                          '2023',
-                        ]}
+                        options={['2020', '2021', '2022', '2023']}
                         width={200}
                         onSelect={field.onChange}
                       />
-                      {errors.schoolYearStart && (
-                        <span className="text-red-500 absolute top-full mt-1">
-                          {errors.schoolYearStart.message}
-                        </span>
-                      )}
+                      {errors.schoolYearStart && <span className="text-red-500 absolute top-full mt-1">{errors.schoolYearStart.message}</span>}
                     </div>
                   )}
                 />
@@ -121,20 +91,11 @@ const SchoolYearFormEdit: React.FC = () => {
                       <DropdownSelectionComponent
                         {...field}
                         placeholder="Niên khóa"
-                        options={[
-                          '2020',
-                          '2021',
-                          '2022',
-                          '2023',
-                        ]}
+                        options={['2020', '2021', '2022', '2023']}
                         width={200}
                         onSelect={field.onChange}
                       />
-                      {errors.schoolYearEnd && (
-                        <span className="text-red-500 absolute top-full mt-1">
-                          {errors.schoolYearEnd.message}
-                        </span>
-                      )}
+                      {errors.schoolYearEnd && <span className="text-red-500 absolute top-full mt-1">{errors.schoolYearEnd.message}</span>}
                     </div>
                   )}
                 />
@@ -165,20 +126,11 @@ const SchoolYearFormEdit: React.FC = () => {
                     <DropdownSelectionComponent
                       {...field}
                       placeholder="Niên khóa"
-                      options={[
-                        '2020',
-                        '2021',
-                        '2022',
-                        '2023',
-                      ]}
+                      options={['2020', '2021', '2022', '2023']}
                       width={200}
                       onSelect={field.onChange}
                     />
-                    {errors.schoolYearEnd && (
-                      <span className="text-red-500 absolute top-full mt-1">
-                        {errors.schoolYearEnd.message}
-                      </span>
-                    )}
+                    {errors.schoolYearEnd && <span className="text-red-500 absolute top-full mt-1">{errors.schoolYearEnd.message}</span>}
                   </div>
                 )}
               />
@@ -193,34 +145,15 @@ const SchoolYearFormEdit: React.FC = () => {
         <hr className="mx-6 border-t border-gray-300" />
 
         <div className="dark:bg-gray-700 rounded-lg">
-          <TitleComponent
-            text="Cài đặt thời gian"
-            size={20}
-            align="left"
-            weight="bold"
-            color="#CC5C00"
-            className="m-6"
-          />
+          <TitleComponent text="Cài đặt thời gian" size={20} align="left" weight="bold" color="#CC5C00" className="m-6" />
         </div>
 
         {/* Flexbox cho dropdown */}
-        {errors.semester && (
-          <span className="my-6 mx-6 text-red-500">
-            {errors.semester.message}
-          </span>
-        )}
+        {errors.semester && <span className="my-6 mx-6 text-red-500">{errors.semester.message}</span>}
         {semesters.map((semester, index) => (
-          <div
-            key={index}
-            className="my-6 mx-6 grid grid-cols-[150px,1fr,auto,auto] gap-4 items-center"
-          >
+          <div key={index} className="my-6 mx-6 grid grid-cols-[150px,1fr,auto,auto] gap-4 items-center">
             <div className="">
-              <ClickableIcon
-                iconName="iconMinusActiveBlueLarge"
-                size="sm"
-                text="Tên học kỳ:"
-                onClick={() => removeSemester(index)}
-              />
+              <ClickableIcon iconName="iconMinusActiveBlueLarge" size="sm" text="Tên học kỳ:" onClick={() => removeSemester(index)} />
             </div>
 
             <input
@@ -233,41 +166,13 @@ const SchoolYearFormEdit: React.FC = () => {
             />
 
             <div className="flex items-center gap-4">
-              <TextComponent
-                text="từ"
-                color="var(--black-text)"
-                weight="thin"
-                className="text-right"
-              />
-              <Controller
-                name="startDate"
-                control={control}
-                defaultValue={null}
-                render={({ field }) => (
-                  <CalendarInput
-                   
-                  />
-                )}
-              />
+              <TextComponent text="từ" color="var(--black-text)" weight="thin" className="text-right" />
+              <Controller name="startDate" control={control} defaultValue={null} render={({ field }) => <CalendarInput />} />
             </div>
 
             <div className="flex items-center gap-4">
-              <TextComponent
-                text="đến"
-                color="var(--black-text)"
-                weight="thin"
-                className="text-right"
-              />
-              <Controller
-                name="endDate"
-                control={control}
-                defaultValue={null}
-                render={({ field }) => (
-                  <CalendarInput
-                    
-                  />
-                )}
-              />
+              <TextComponent text="đến" color="var(--black-text)" weight="thin" className="text-right" />
+              <Controller name="endDate" control={control} defaultValue={null} render={({ field }) => <CalendarInput />} />
             </div>
           </div>
         ))}
@@ -284,7 +189,7 @@ const SchoolYearFormEdit: React.FC = () => {
           />
         </div>
 
-        <div className="my-6 mx-6 flex flex-wrap gap-4 items-center justify-center">
+        <div className="flex flex-wrap gap-4 items-center justify-center">
           <Button
             size="big"
             type="button"
@@ -297,10 +202,7 @@ const SchoolYearFormEdit: React.FC = () => {
               fontFamily: 'var(--font-Mulish)',
             }}
           >
-            <Link
-              to="/leadership/declare-data/school-year/"
-              className="no-underline text-black"
-            >
+            <Link to="/leadership/declare-data/school-year" className="no-underline text-black">
               Hủy
             </Link>
           </Button>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Button from '../../../../components/Button';
 import { SearchData, IFileOption } from './type';
 import { IconArrowCaretDown } from '../../../../components/Icons';
 
@@ -28,14 +27,14 @@ const SearchResult: React.FC = () => {
       <div className="flex justify-between">
         {/* Thông tin lớp học */}
         <div className="space-y-2">
-          <p>
-            <span className="font-semibold">Môn học:</span> {searchData.subject}
+          <p className="font-semibold">
+            Môn học: <span className="font-normal ml-8">{searchData.subject}</span>
           </p>
-          <p>
-            <span className="font-semibold">Lớp:</span> {searchData.class}
+          <p className="font-semibold">
+            Lớp: <span className="font-normal ml-16">{searchData.class}</span>
           </p>
-          <p>
-            <span className="font-semibold">Mã lớp:</span> {searchData.classId}
+          <p className="font-semibold">
+            Mã lớp: <span className="font-normal ml-10">{searchData.classId}</span>
           </p>
         </div>
 
@@ -44,21 +43,22 @@ const SearchResult: React.FC = () => {
           <p>
             <span className="font-semibold">Thời gian bắt đầu:</span> {searchData.startTime}
           </p>
-          <p className="ml-24">{searchData.startHour}</p>
+          <p className="ml-32">{searchData.startHour}</p>
         </div>
 
         {/* Nút Xuất file */}
         <div className="text-right">
           <p className="font-semibold mb-2 text-start">In bảng điểm:</p>
           <div className="flex items-center space-x-2">
-            <Button size='mini' className="w-[113px] h-[32px] border border-orange-400 bg-orange-100 text-orange-500 rounded-md hover:bg-orange-200">Xuất file</Button>
+            <button className="w-[113px] h-[32px] border border-orange-600 bg-orange-200 text-black-text font-semibold rounded-lg hover:bg-orange-300">
+              Xuất file
+            </button>
 
             {/* Dropdown Xuất File */}
 
             <div className="relative" style={{ width: '136px', height: '32px' }} onClick={() => setIsFileDropdownOpen(!isFileDropdownOpen)}>
               {/* Ô chọn */}
               <div className="border border-gray-300 rounded px-3 h-[32px] bg-white flex justify-between items-center cursor-pointer">
-
                 <span className="text-left">{selectedFile}</span>
                 <div data-svg-wrapper>
                   <IconArrowCaretDown />

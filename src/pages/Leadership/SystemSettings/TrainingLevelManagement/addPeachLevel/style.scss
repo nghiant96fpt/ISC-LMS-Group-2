@@ -1,5 +1,5 @@
 @import './../../../../../styles/variables';
-.education-form {
+.education-form-add {
   width: 95%;
   margin: auto;
   background: $background-while;
@@ -14,7 +14,7 @@
     margin-bottom: 16px;
   }
 
-  .form-group {
+  .form-group-education-add {
     display: flex;
     align-items: center;
     gap: 10px;

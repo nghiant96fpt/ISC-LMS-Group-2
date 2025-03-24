@@ -119,7 +119,7 @@ const SectionList: React.FC = () => {
                 <td className="py-3 px-2 md:px-4 font-sans text-black-text text-center">{item.periodHK2}</td>
                 <td className="py-3 px-2 md:px-4 text-center">
                   <div className="flex justify-center space-x-2 items-center">
-                    <Link to="edit">
+                    <Link to="/leadership/declare-data/section-list/edit">
                       <button className="w-8 h-8 flex items-center justify-center">
                         <img src={edit} alt="Edit" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
                       </button>

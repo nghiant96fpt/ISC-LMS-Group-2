@@ -31,7 +31,7 @@ const TrainingList: React.FC<TrainingItem> = ({ onClick }) => {
   };
 
   return (
-    <div className="bg-white  border border-gray-300 rounded-lg  shadow max-w-full max-h-[464px] w-full overflow-hidden">
+    <div className="bg-background-white border border-gray-300 rounded-lg overflow-x-auto flex-grow w-full my-5">
       <div
         ref={headerRef}
         className={`h-14 flex items-center px-4 rounded-t-lg cursor-pointer border-b border-gray-300 bg-white text-black-text`}
