@@ -89,6 +89,8 @@ import MainNewClassForm from '../../pages/Leadership/DeclareData/ClassList/NewCl
 import MainUpdatelassForm from '../../pages/Leadership/DeclareData/ClassList/UpdateClass';
 import MainClassList from '../../pages/Leadership/DeclareData/ClassList';
 import MainBlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment';
+import MainSectionList from '../../pages/Leadership/DeclareData/SectionList/SectionListData';
+import MainSetupSubjectedit from '../../pages/Leadership/DeclareData/SubjectSettings/SubjecteditData';
 
 const StudentRoutes = () => {
   return (
@@ -171,11 +173,11 @@ const StudentRoutes = () => {
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
         {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
-        {/* <Route path="declare-data" element={<DeclareData />} /> */}
+        <Route path="declare-data" element={<DeclareData />} />
         {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
         {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
-        <Route path="section-list" element={<SectionList />} />
-        <Route path="section-list/edit" element={<SubjectSetup />} />
+        <Route path="declare-data/section-list" element={<MainSectionList />} />
+        <Route path="declare-data/section-list/edit" element={<MainSetupSubjectedit />} />
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
