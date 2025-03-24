@@ -6,8 +6,8 @@ import { DeleteConfirmation } from '../SchoolYearDelete/SchoolYearDelete';
 import SchoolYearTable from './SchoolYearTable';
 import Panigation from '../SchoolYearPanigation/Panigation';
 import axios from 'axios';
-import { Link } from 'react-router';
-import { toast, ToastContainer } from 'react-toastify';
+import { Link } from 'react-router-dom'; // Sửa import
+import { toast } from 'react-toastify';
 
 const SchoolYear = () => {
   const [originalData, setOriginalData] = useState<ISchoolYear[]>([]);
@@ -15,50 +15,31 @@ const SchoolYear = () => {
   const [data, setData] = useState<ISchoolYear[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [numPage, setNumPage] = useState(4);
-  const [index, setIndex] = useState(1); // Mặc định trang đầu tiên
-  const [size, setSize] = useState(7); // Mặc định 7 phần tử mỗi trang
+  const [numPage, setNumPage] = useState(1);
+  const [index, setIndex] = useState(1);
+  const [size, setSize] = useState(7);
   const [totalItems, setTotalItems] = useState(0);
 
-  // const handleDelete = () => {
-  //   if (selectedId !== null) {
-  //     setData((prev) => prev.filter((item) => item.id !== selectedId));
-  //     setShowPopup(false);
-  //   }
-  // };
-  
-
+  // Xóa niên khóa thành công
   const handleDeleteSuccess = () => {
-    toast.success('Xóa niên khóa thành công!', {
-      position: 'top-right',
-      autoClose: 3000,
-      theme: 'colored',
-    });
-
+    toast.success('Xóa niên khóa thành công!', { position: 'top-right', autoClose: 3000, theme: 'colored' });
     setData((prev) => prev.filter((item) => item.id !== selectedId));
     setShowPopup(false);
   };
 
-  const handleShowPopup = () => {
-    setShowPopup(false);
-  };
+  // Ẩn popup
+  const handleShowPopup = () => setShowPopup(false);
 
-  const fetchData = async (pageNumber = 1, pageSize = 5) => {
+  // Lấy dữ liệu từ API
+  const fetchData = async (pageNumber = 1, pageSize = 7) => {
     try {
-      const url = `https://fivefood.shop/api/academic-years?page=${pageNumber}&pageSize=${pageSize}`;
-      const response = await axios.get(url);
-
-      setData(response.data.data); // Cập nhật dữ liệu hiển thị
-      setOriginalData(response.data.data); // Lưu dữ liệu gốc để tìm kiếm
-
-      if (response.data.totalPages) {
-        setNumPage(response.data.totalPages);
-      }
-      if (response.data.totalItems) {
-        setTotalItems(response.data.totalItems);
-      }
+      const response = await axios.get(`https://fivefood.shop/api/academic-years?page=${pageNumber}&pageSize=${pageSize}`);
+      setData(response.data.data);
+      setOriginalData(response.data.data);
+      setNumPage(response.data.totalPages || 1);
+      setTotalItems(response.data.totalItems || 0);
     } catch (error) {
-      console.error(error);
+      console.error('Lỗi khi lấy dữ liệu:', error);
     }
   };
 
@@ -66,37 +47,26 @@ const SchoolYear = () => {
     fetchData(index, size);
   }, [index, size]);
 
+  // Xử lý tìm kiếm
   const handleSearch = (value: string) => {
     setSearchTerm(value.trim());
-    if (value.trim() === '') {
-      setData(originalData); 
+    if (!value.trim()) {
+      setData(originalData);
     } else {
-      const filteredData = originalData.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()));
-      setData(filteredData);
+      setData(originalData.filter((item) => item.name.toLowerCase().includes(value.toLowerCase())));
     }
   };
 
-
+  // Cập nhật số lượng phần tử mỗi trang
   const handleSizeChange = (newSize: number) => {
     if (newSize > 0) {
       setSize(newSize);
-      setIndex(1); 
+      setIndex(1);
     }
   };
 
   return (
     <div className="py-6 px-14 bg-background-white shadow-custom rounded-[16px]">
-      {/* <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      /> */}
       <div className="flex justify-end items-center mb-4">
         <Link to={'/leadership/declare-data/school-year/add-school-year'}>
           <button className="bg-orange-500 px-8 py-3 text-white rounded-md font-medium">Thêm mới</button>
@@ -130,13 +100,7 @@ const SchoolYear = () => {
       <Panigation indexChoose={index} numPage={numPage} setNumpage={setNumPage} setIndex={setIndex} size={size} setSize={handleSizeChange} />
 
       {/* Popup delete */}
-      {showPopup && selectedId !== null && (
-        <DeleteConfirmation
-          id={selectedId}
-          onDeleteSuccess={handleDeleteSuccess} // ✅ Dùng một lần
-          onCancel={handleShowPopup}
-        />
-      )}
+      {showPopup && selectedId !== null && <DeleteConfirmation id={selectedId} onDeleteSuccess={handleDeleteSuccess} onCancel={handleShowPopup} />}
     </div>
   );
 };

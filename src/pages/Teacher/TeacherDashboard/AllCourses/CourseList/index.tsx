@@ -22,7 +22,7 @@ const CourseList = ({ subjects }: { subjects: Subject[] }) => {
                     </span>
                     <span
                         className={`px-4 py-3 text-start text-xs md:text-sm lg:text-base italic
-                        ${subject.details.status === "Đang học" ? "text-[#49c510]" : ""}
+                a        ${subject.details.status === "Đang học" ? "text-[#49c510]" : ""}
                         ${subject.details.status === "Chưa hoàn thành" ? "text-red-status" : ""}
                         ${subject.details.status === "Đã hoàn thành" ? "text-blue-status" : ""}`}>
                         {subject.details.status}
