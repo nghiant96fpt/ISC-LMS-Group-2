@@ -14,7 +14,6 @@ import ProtectedRoute from './pages/Student/Login/ProtectedRoute';
 import { ToastContainer } from 'react-toastify';
 import RootRedirect from './pages/Student/Login/RootRedirect';
 function App() {
-  const { role } = useContext(AuthContext);
   return (
     <CookiesProvider>
       <div className="App">

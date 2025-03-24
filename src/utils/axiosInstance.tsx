@@ -4,7 +4,6 @@ import { Cookies } from "react-cookie";
 const BASE_URL = "https://fivefood.shop/";
 const cookies = new Cookies();
 
-// Hàm lấy token từ cookies
 const getToken = () => cookies.get("accessToken");
 
 const createAxiosInstance = (useAuth: boolean = true): AxiosInstance => {
@@ -15,7 +14,6 @@ const createAxiosInstance = (useAuth: boolean = true): AxiosInstance => {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
-    // withCredentials: true, // Quan trọng nếu API sử dụng cookies
   });
 
   instance.interceptors.request.use(
@@ -28,7 +26,33 @@ const createAxiosInstance = (useAuth: boolean = true): AxiosInstance => {
       }
       return config;
     },
-    (error: AxiosError) => {
+    (error: AxiosError) => Promise.reject(error)
+  );
+
+  instance.interceptors.response.use(
+    (response) => response,
+    async (error: AxiosError) => {
+      const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+        try {
+          const refreshToken = cookies.get("refreshToken");
+          if (!refreshToken) {
+            return Promise.reject(error);
+          }
+          const refreshResponse = await axios.get(`${BASE_URL}api/auth/GetAccessToken?token=${refreshToken}`);
+          const newAccessToken = refreshResponse.data?.data?.accessToken;
+          if (newAccessToken) {
+            cookies.set("accessToken", newAccessToken, { maxAge: 60 * 15 });
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+            return instance(originalRequest);
+          }
+        } catch (refreshError) {
+          console.error("Refresh token thất bại:", refreshError);
+          return Promise.reject(refreshError);
+        }
+      }
       return Promise.reject(error);
     }
   );

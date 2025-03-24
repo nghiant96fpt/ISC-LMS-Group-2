@@ -51,8 +51,8 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
       const response = await axiosInstance.post('api/auth/login', data);
       const info = response.data?.data; // lưu thông tin vào biến info
       setInfo(info);
-      setCookies('accessToken', info?.accessToken, { maxAge: 60 * 15 });
-      setCookies('refreshToken', info?.refreshToken, { maxAge: 60 * 60 * 10 });
+      setCookies('accessToken', info?.accessToken, { maxAge: 60 * 15, path: '/' });
+      setCookies('refreshToken', info?.refreshToken?.token, { maxAge: 60 * 60 * 10, path: '/' });      
 
       // Xử lý role ngay ở đây
       if (info?.user?.role === 'ADMIN') {

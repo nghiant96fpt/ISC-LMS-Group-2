@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import createAxiosInstance from '../../../utils/axiosInstance';
+import { Cookies, useCookies } from 'react-cookie';
 
 interface AuthContextType {
   role: number | null;
@@ -23,7 +24,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     axiosInstance
       .get('api/auth/verify-token')
       .then((response) => {
-        setRole(response?.data?.data?.roleId);
+        setRole(response?.data?.result?.data?.roleId);
       })
       .catch((err) => {
         console.error('Lấy quyền thất bại', err);
