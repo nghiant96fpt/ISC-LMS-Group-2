@@ -24,7 +24,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     axiosInstance
       .get('api/auth/verify-token')
       .then((response) => {
-        setRole(response?.data?.result?.data?.roleId);
+        setRole(response?.data?.data?.roleId);
       })
       .catch((err) => {
         console.error('Lấy quyền thất bại', err);
