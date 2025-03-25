@@ -42,7 +42,7 @@ const SchoolYearFormEdit: React.FC = () => {
       axiosInstance
         .get(`https://fivefood.shop/api/academic-years/${id}`)
         .then((response) => {
-          console.log('📌 Dữ liệu academic year:', response.data);
+          // console.log('📌 Dữ liệu academic year:', response.data);
           const data = response.data.data;
 
           // Set academic year data
@@ -51,7 +51,7 @@ const SchoolYearFormEdit: React.FC = () => {
             schoolYearEnd: new Date(data.endTime).getFullYear().toString(),
             startDate: dayjs(data.startTime),
             endDate: dayjs(data.endTime),
-            schoolId: data.schoolId || 2 ,
+            schoolId: data.schoolId || 2,
             semesters: data.semesters.map((semester: any) => ({
               id: semester.id,
               name: semester.name,
@@ -61,7 +61,7 @@ const SchoolYearFormEdit: React.FC = () => {
           });
         })
         .catch((error) => {
-          console.error('❌ Lỗi khi lấy niên khóa:', error.response?.data || error);
+          // console.error('❌ Lỗi khi lấy niên khóa:', error.response?.data || error);
           toast.error('Không thể tải thông tin niên khóa. Vui lòng thử lại sau.');
         });
     }
@@ -123,7 +123,7 @@ const SchoolYearFormEdit: React.FC = () => {
         navigate('/leadership/declare-data/school-year');
       }, 1000);
     } catch (error: any) {
-      console.error('Lỗi khi cập nhật:', error.response?.data || error);
+      // console.error('Lỗi khi cập nhật:', error.response?.data || error);
       toast.error('Lỗi khi cập nhật! Vui lòng thử lại.');
     }
   };

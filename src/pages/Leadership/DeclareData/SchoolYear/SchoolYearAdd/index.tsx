@@ -68,7 +68,7 @@ const SchoolYearAdd: React.FC = () => {
   };
 
   const handleCancel = () => {
-    console.log('Cancel clicked');
+    // console.log('Cancel clicked');
     toast.info('Đã hủy thao tác');
     navigate('/leadership/declare-data/school-year'); // Quay lại trang trước
   };
@@ -153,23 +153,23 @@ const SchoolYearAdd: React.FC = () => {
         schoolId: 2,
       };
 
-      console.log('📌 Gửi dữ liệu niên khóa:', academicYearPayload);
+      // console.log('📌 Gửi dữ liệu niên khóa:', academicYearPayload);
 
       const response = await axios.post('https://fivefood.shop/api/academic-years', academicYearPayload, {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
       });
       toast.dismiss(loadingToast);
 
-      console.log('📌 Phản hồi từ server (niên khóa):', response.data);
+      // console.log('📌 Phản hồi từ server (niên khóa):', response.data);
 
       if (response.status === 200 || response.status === 201) {
         toast.success('Thêm niên khóa thành công!');
 
         const academicYearId = response.data?.data?.id;
-        console.log('✅ ID niên khóa nhận được:', academicYearId);
+        // console.log('✅ ID niên khóa nhận được:', academicYearId);
 
         if (!academicYearId) {
-          console.error('❌ API không trả về ID của niên khóa!');
+          // console.error('❌ API không trả về ID của niên khóa!');
           toast.error('Không thể thêm học kỳ vì thiếu ID niên khóa!');
           return;
         }
@@ -177,7 +177,7 @@ const SchoolYearAdd: React.FC = () => {
         // Thêm các học kỳ
         for (let index = 0; index < semesterData.length; index++) {
           const semester = semesterData[index];
-          console.log(semester.name, semester.startDate, semester.endDate);
+          // console.log(semester.name, semester.startDate, semester.endDate);
 
           if (!semester.startDate || !semester.endDate) {
             toast.error(`Vui lòng nhập đầy đủ ngày bắt đầu và kết thúc cho ${semester.name}`);
@@ -199,14 +199,14 @@ const SchoolYearAdd: React.FC = () => {
             academicYearId: academicYearId,
           };
 
-          console.log('📌 Gửi dữ liệu học kỳ:', semesterPayload);
+          // console.log('📌 Gửi dữ liệu học kỳ:', semesterPayload);
 
           try {
             const semResponse = await axios.post('https://fivefood.shop/api/semesters', semesterPayload, {
               headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
             });
 
-            console.log('📌 Phản hồi từ server (học kỳ):', semResponse.data);
+            // console.log('📌 Phản hồi từ server (học kỳ):', semResponse.data);
 
             if (semResponse.status === 200 || semResponse.status === 201) {
               toast.success(`Đã thêm ${semesterPayload.name}`);
@@ -214,7 +214,7 @@ const SchoolYearAdd: React.FC = () => {
               toast.error(`Lỗi khi thêm ${semesterPayload.name}: ${semResponse.status}`);
             }
           } catch (error: any) {
-            console.error(`Lỗi khi thêm ${semesterPayload.name}:`, error.response?.data || error);
+            // console.error(`Lỗi khi thêm ${semesterPayload.name}:`, error.response?.data || error);
             toast.error(`Lỗi khi thêm ${semesterPayload.name}: ${error.response?.data?.message || 'Đã xảy ra lỗi'}`);
           }
         }
@@ -224,7 +224,7 @@ const SchoolYearAdd: React.FC = () => {
         }, 2000); // Tăng thời gian để đảm bảo tất cả toast thông báo được hiển thị
       }
     } catch (error: any) {
-      console.error('Lỗi từ server:', error.response?.data || error);
+      // console.error('Lỗi từ server:', error.response?.data || error);
       toast.error(`Lỗi: ${error.response?.status} - ${error.response?.data?.message || 'Đã xảy ra lỗi'}`);
     }
   };
