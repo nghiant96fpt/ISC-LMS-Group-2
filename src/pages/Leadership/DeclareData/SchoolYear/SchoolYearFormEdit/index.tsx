@@ -97,30 +97,45 @@ const SchoolYearFormEdit: React.FC = () => {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
   };
-
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     try {
-      // Prepare academic year payload
-      const academicYearPayload = {
-        startTime: formData.startDate?.format('YYYY-MM-DDTHH:mm:ss'),
-        endTime: formData.endDate?.format('YYYY-MM-DDTHH:mm:ss'),
-        schoolId: formData.schoolId,
-      };
+      // 1. Prepare academic year payload
+      const academicYearPayload = [
+        {
+          id: parseInt(id || '0'),
+          name: `${formData.schoolYearStart}-${formData.schoolYearEnd}`,
+          startline: formData.startDate?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
+          address: formData.endDate?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
+        },
+      ];
 
-      console.log('📌 Payload niên khóa:', academicYearPayload);
-
-      // Update academic year with all semesters in one request
+      // 2. Update academic year
       await axiosInstance.put(`https://fivefood.shop/api/academic-years/${id}`, academicYearPayload);
+
+      // 3. Update each semester
+      const semesterUpdates = formData.semesters.map(async (semester) => {
+        if (semester.id) {
+          const semesterPayload = {
+            name: semester.name,
+            startline: semester.startTime?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
+            outline: semester.endTime?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
+            content: { overId: formData.schoolId }, // Assuming this is needed based on API doc
+          };
+          await axiosInstance.put(`https://fivefood.shop/api/semesters/${semester.id}`, semesterPayload);
+        }
+      });
+
+      await Promise.all(semesterUpdates);
 
       toast.success('Cập nhật thành công! 🎉');
       setTimeout(() => {
         navigate('/leadership/declare-data/school-year');
       }, 1000);
     } catch (error: any) {
-      // console.error('Lỗi khi cập nhật:', error.response?.data || error);
-      toast.error('Lỗi khi cập nhật! Vui lòng thử lại.');
+      console.error('Lỗi khi cập nhật:', error.response?.data || error);
+      toast.error(`Lỗi khi cập nhật: ${error.response?.data?.message || error.message}`);
     }
   };
 
