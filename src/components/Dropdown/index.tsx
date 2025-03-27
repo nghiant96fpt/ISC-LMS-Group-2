@@ -2,10 +2,19 @@ import React, { useState } from 'react';
 import './style.css';
 import { DropdownProps, DropdownOption } from './type';
 
-const Dropdown: React.FC<DropdownProps & { 
-  selectedOption: DropdownOption | null; 
+interface CustomDropdownProps extends DropdownProps {
+  selectedOption: DropdownOption | null;
   handleOptionClick: (option: DropdownOption) => void;
-}> = ({
+  // Thêm prop tùy chỉnh cho container, header và list
+  className?: string;
+  style?: React.CSSProperties;
+  headerClassName?: string;
+  headerStyle?: React.CSSProperties;
+  listClassName?: string;
+  listStyle?: React.CSSProperties;
+}
+
+const Dropdown: React.FC<CustomDropdownProps> = ({
   options,
   onSelect,
   selectedOption,
@@ -13,7 +22,7 @@ const Dropdown: React.FC<DropdownProps & {
   placeholder = 'Lựa chọn',
   border = 'visible',
   borderColor,
-  size = 'medium',
+  size = '',
   iconLeft,
   iconColor,
   status = 'normal',
@@ -21,6 +30,12 @@ const Dropdown: React.FC<DropdownProps & {
   showArrow = true,
   backgroundColorSelected = 'rgb(79 164 204)',
   backgroundColor,
+  className = '',
+  style = {},
+  headerClassName = '',
+  headerStyle = {},
+  listClassName = '',
+  listStyle = {},
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -39,17 +54,19 @@ const Dropdown: React.FC<DropdownProps & {
     backgroundColor: selectedOption?.value === option.value ? backgroundColorSelected : 'transparent',
   });
 
-  const dropdownClass = `dropdown ${status} ${size} ${disabled ? 'disabled' : ''}`;
+  // Kết hợp class nội bộ với class tùy chỉnh từ bên ngoài
+  const dropdownClass = `dropdown ${status} ${disabled ? 'disabled' : ''} ${className}`;
   const placeholderClass = selectedOption ? 'dropdown-selected' : 'dropdown-placeholder';
 
   return (
-    <div className={dropdownClass}>
+    <div className={dropdownClass} style={style}>
       <div
-        className="dropdown-header"
+        className={`dropdown-header ${size} ${headerClassName} `}
         onClick={handleToggle}
         style={{
           backgroundColor: status === 'error' ? 'white' : backgroundColor,
           border: border === 'visible' ? `1px solid ${status === 'error' ? 'red' : borderColor || '#ccc'}` : 'none',
+          ...headerStyle,
         }}
       >
         {iconLeft && (
@@ -57,7 +74,9 @@ const Dropdown: React.FC<DropdownProps & {
             {iconLeft}
           </span>
         )}
-        <span className={placeholderClass}>{selectedOption ? selectedOption.label : placeholder}</span>
+        <span className={placeholderClass}>
+          {selectedOption ? selectedOption.label : placeholder}
+        </span>
         {showArrow && (
           <span className={`dropdown-arrow ${isOpen ? 'open' : ''}`} style={{ color: iconColor }}>
             <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -70,12 +89,12 @@ const Dropdown: React.FC<DropdownProps & {
         )}
       </div>
       {isOpen && !disabled && (
-        <ul className="dropdown-list">
+        <ul className={`dropdown-list ${listClassName}`} style={listStyle}>
           {options.map((option) => (
             <li
               key={option.value}
               className={`dropdown-item ${selectedOption?.value === option.value ? 'selected' : ''}`}
-              onClick={handleOptionClickInternal.bind(null, option)}
+              onClick={() => handleOptionClickInternal(option)}
               style={getItemStyle(option)}
             >
               {option.label}
