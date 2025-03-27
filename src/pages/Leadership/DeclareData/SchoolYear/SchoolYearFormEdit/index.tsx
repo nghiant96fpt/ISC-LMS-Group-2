@@ -104,16 +104,12 @@ const SchoolYearFormEdit: React.FC = () => {
     try {
       // Prepare academic year payload
       const academicYearPayload = {
-        startTime: formData.startDate?.format('YYYY-MM-DD'),
-        endTime: formData.endDate?.format('YYYY-MM-DD'),
+        startTime: formData.startDate?.format('YYYY-MM-DDTHH:mm:ss'),
+        endTime: formData.endDate?.format('YYYY-MM-DDTHH:mm:ss'),
         schoolId: formData.schoolId,
-        semesters: formData.semesters.map((semester) => ({
-          id: semester.id,
-          name: semester.name,
-          startTime: semester.startTime?.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
-          endTime: semester.endTime?.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
-        })),
       };
+
+      console.log('📌 Payload niên khóa:', academicYearPayload);
 
       // Update academic year with all semesters in one request
       await axiosInstance.put(`https://fivefood.shop/api/academic-years/${id}`, academicYearPayload);
