@@ -5,7 +5,6 @@ import { IconDoubleArrowUpDown, ArrowLeftIcon, ArrowRightIcon } from '../../../.
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import AddressList from '../../../../components/AddressUrlStack/Index';
 import DropdownSelectionComponent from '../../../../components/DropdownSelection';
-import Button from '../../../../components/Button';
 import SearchResult from '../SearchResult/SearchResult';
 
 const scoreBoardData: IScoreBoard[] = [
@@ -152,11 +151,9 @@ const ScoreBoard: React.FC = () => {
         <DropdownSelectionComponent placeholder={'Chọn lớp'} options={option_class} width={136} />
         <DropdownSelectionComponent placeholder={'Chọn khối'} options={option_block} width={136} />
         <DropdownSelectionComponent placeholder={'Chọn môn'} options={option_subject} width={136} />
-        <Button
-          size='mini'
-          className="w-[113px] h-[32px] border border-orange-400 bg-orange-100 text-orange-500 rounded-md hover:bg-orange-200"
-          children="Tìm kiếm"
-        />
+        <button className="w-[136px] h-[40px] border border-orange-600 bg-orange-200 text-black-text font-semibold rounded-lg hover:bg-orange-300">
+          Tìm kiếm
+        </button>
       </div>
 
       <hr className="border-t border-gray-300  mt-[29px] mb-[29px]" />

@@ -1,8 +1,5 @@
 import { useState } from 'react';
-import {
-  Table,
-  TableBody,
-} from '../../../../../components/ui/tabble';
+import { Table, TableBody } from '../../../../../components/ui/tabble';
 import classListData, { ClassItem } from '../TableClassList/data';
 import { useCheckboxSelection } from './ClassListUseCheckboxSelection';
 import TableHeaderComponent from './ClassListTableHeader';
@@ -20,16 +17,9 @@ const TabbleClasslist = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState(classListData); // Thêm trạng thái cho dữ liệu
   const [isModalOpen, setIsModalOpen] = useState(false); // Trạng thái mở/đóng Modal
-  const [itemToDelete, setItemToDelete] =
-    useState<ClassItem | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<ClassItem | null>(null);
 
-  const {
-    selectAll,
-    indeterminate,
-    selectedItems,
-    handleSelectAllChange,
-    handleItemChange,
-  } = useCheckboxSelection(classListData.length);
+  const { selectAll, indeterminate, selectedItems, handleSelectAllChange, handleItemChange } = useCheckboxSelection(classListData.length);
 
   const handleSearch = (query: string) => {
     console.log('Searching for:', query);
@@ -40,9 +30,7 @@ const TabbleClasslist = () => {
   const endIndex = startIndex + itemsPerPage;
   const displayedData = data.slice(startIndex, endIndex);
 
-  const totalPages = Math.ceil(
-    classListData.length / itemsPerPage,
-  );
+  const totalPages = Math.ceil(classListData.length / itemsPerPage);
   const handleDelete = (item: ClassItem) => {
     const formattedItem = {
       id: item.id,
@@ -55,23 +43,16 @@ const TabbleClasslist = () => {
 
   const confirmDelete = () => {
     if (itemToDelete) {
-      setData((prevData) =>
-        prevData.filter((d) => d.id !== itemToDelete.id),
-      );
+      setData((prevData) => prevData.filter((d) => d.id !== itemToDelete.id));
     }
     setIsModalOpen(false);
   };
 
   return (
     <>
-      <section className="rounded-lg bg-background-white shadow-[4px_4px_25px_4px_rgba(154,201,245,0.25)] sm:p-5 antialiased mb-10">
-        <div className="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4 dark:border-gray-700">
-          <TitleComponent
-            text="Lớp học"
-            size={22}
-            weight="extrabold"
-            style={{ fontFamily: 'var(--font-Mulish)' }}
-          />
+      <section className="rounded-lg bg-background-white shadow-[4px_4px_25px_4px_rgba(154,201,245,0.25)] antialiased">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between dark:border-gray-700">
+          <TitleComponent text="Lớp học" size={22} weight="extrabold" style={{ fontFamily: 'var(--font-Mulish)' }} />
           <ClassListFromSearch
             onSearch={handleSearch}
             placeholder="Tìm kiếm"
@@ -94,13 +75,7 @@ const TabbleClasslist = () => {
                   className="min-w-full h-auto table-fixed w-full border-collapse overflow-hidden rounded-t-lg"
                 >
                   {/* Header */}
-                  <TableHeaderComponent
-                    selectAll={selectAll}
-                    indeterminate={indeterminate}
-                    onSelectAllChange={
-                      handleSelectAllChange
-                    }
-                  />
+                  <TableHeaderComponent selectAll={selectAll} indeterminate={indeterminate} onSelectAllChange={handleSelectAllChange} />
 
                   {/* Body */}
                   <TableBody className="divide-y divide-[#F0F3F6] bg-white dark:divide-white/[0.05]">
@@ -109,9 +84,7 @@ const TabbleClasslist = () => {
                         key={item.id}
                         item={item}
                         index={startIndex + index} // Giữ nguyên index theo dữ liệu gốc
-                        isChecked={
-                          selectedItems[startIndex + index]
-                        }
+                        isChecked={selectedItems[startIndex + index]}
                         onItemChange={handleItemChange}
                         onDelete={() => handleDelete(item)}
                       />
@@ -134,13 +107,7 @@ const TabbleClasslist = () => {
 
                   {/* Phân trang */}
                   <div className="flex items-center gap-x-2">
-                    <Pagination
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      onPageChange={(page) =>
-                        setCurrentPage(page)
-                      }
-                    />
+                    <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => setCurrentPage(page)} />
                   </div>
                 </div>
               </div>
@@ -192,10 +159,7 @@ const TabbleClasslist = () => {
           </div>
         }
       >
-        <TextComponent
-          text="Xác nhận muốn xóa nhưng thông tin đã chọn? sau khi xóa sẽ không thể hoàn tác"
-          size={16}
-        />
+        <TextComponent text="Xác nhận muốn xóa nhưng thông tin đã chọn? sau khi xóa sẽ không thể hoàn tác" size={16} />
       </Modal>
     </>
   );
