@@ -20,7 +20,6 @@ import TeachingAssignment from '../../pages/Leadership/TeachingAssignment';
 import SchoolYearAdd from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYearAdd';
 import SchoolYearEditPages from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYearEditPages';
 import SchoolYear from '../../pages/Leadership/DeclareData/SchoolYear/SchoolYearTable';
-import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 import DepartmentSettings from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 import SubjectList from '../../pages/Leadership/DeclareData/SubjectList';
 import BlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment/bockDepartment';

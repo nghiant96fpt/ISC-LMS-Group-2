@@ -1,16 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
 import Panigation from '../DeclareData/SchoolYear/SchoolYearPanigation/Panigation';
 import DeleteModal from '../../../components/DeleteConfirmation';
-import UpdateModel from './ModalUpdate';
 import AddressList from '../../../components/AddressUrlStack/Index';
-const list = require('../../../assets/icons/fi_list.png');
-const trash = require('../../../assets/icons/fi_trash-2.png');
 
 const ListTopic: React.FC = () => {
   const teachers = ['Hoàng Mỹ Trưng', 'Nguyễn Kỷ Nguyên', 'Mộc Tâm Tâm'];
   const [idDelete, setIdDelete] = useState<number | String | null>(null);
-  const [data, setData] = useState([
+  const [data] = useState([
     { chuDe: 'Nullam malesuada posuere justo, in dictum ipsum', moTa: 'Nullam malesuada posuere justo, in dictum ipsum', ngayKetThuc: '2022-22-02' },
     { chuDe: 'Nullam malesuada posuere justo, in dictum ipsum', moTa: 'Nullam malesuada posuere justo, in dictum ipsum', ngayKetThuc: '2022-22-02' },
   ]);

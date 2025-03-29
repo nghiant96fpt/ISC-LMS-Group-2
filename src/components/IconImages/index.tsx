@@ -14,7 +14,7 @@ import iconImageJPG from '../../assets/images/file/JPG.png';
 import iconDefault from '../../assets/images/file/JPG.png';
 import iconSelected from '../../assets/images/success/Selected.png';
 import iconTablerCircleXFilled from '../../assets/images/errors/CircleXFilled.png';
-
+import iconClipboardList from '../../assets/icons/clipboard-list.png';
 // IconImages này để import các icon dạng ảnh
 const IconImages = {
     iconCheckActiveBlueLarge,
@@ -32,7 +32,8 @@ const IconImages = {
     iconImageJPG,
     iconDefault,
     iconSelected,
-    iconTablerCircleXFilled
+    iconTablerCircleXFilled,
+    iconClipboardList
 };
 
 export default IconImages;
