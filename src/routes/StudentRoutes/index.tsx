@@ -10,10 +10,14 @@ import Notifications from '../../pages/Student/Notifications';
 import Help from '../../pages/Student/Help';
 
 import Login from '../../pages/Student/Login/Login';
+import Questions from '../../pages/Student/Quiz/Questions';
 import MyCourse from '../../pages/Student/MyCourse/Index';
 import EssayPage from '../../pages/Student/TestList/essay';
 
 import ExamInfo from '../../pages/Student/TestList/ExamInfo';
+import HistoryClass from '../../pages/Student/ClassList/historyclass';
+import AllScourses from '../../pages/Student/Dashboard/AllScourses';
+import TestResults from '../../pages/Student/TestResults';
 
 const StudentRoutes = () => {
   return (
@@ -27,15 +31,15 @@ const StudentRoutes = () => {
         <Route path="score-board" element={<ScoreBoard />} />
         <Route path="exam-schedule" element={<ExamSchedule />} />
         <Route path="notifications" element={<Notifications />} />
+        <Route path="class-history" element={<HistoryClass />} />
+        <Route path="allScourses" element={<AllScourses />} />
         <Route path="help" element={<Help />} />
-
-
+        <Route path="quiz" element={<Questions />} />
         <Route path="my-course" element={<MyCourse />} />
         <Route path="essay" element={<EssayPage />} />
-
+        <Route path="test-results" element={<TestResults />} />
       </Route>
     </Routes>
   );
-
-}
+};
 export default StudentRoutes;
