@@ -2,6 +2,7 @@ import React from 'react';
 import { ModalProps } from './type';
 import TitleComponent from '../../Title';
 import './style.css';
+import { IconCloseCircleFill } from '../../Icons';
 
 const Modal: React.FC<ModalProps> = ({
     isOpen,
@@ -11,7 +12,7 @@ const Modal: React.FC<ModalProps> = ({
     size = '',
     position = 'center',
     footerContent,
-    titleAlign = 'left',
+    titleAlign = 'center',
     showCloseButton = true,
 }) => {
     if (!isOpen) return null;
@@ -21,13 +22,14 @@ const Modal: React.FC<ModalProps> = ({
             <div className={`modalWrapper size-${size} position-${position}`} onClick={(e) => e.stopPropagation()}>
                 <div className="modalContent">
                     {/* HEADER */}
-                    <div className="modalHeader">
-                        <TitleComponent text={title || ''} size={28} weight="extrabold" align={titleAlign} className="flex-1" />
+                    <div className="modalHeader flex items-center relative">
+                        <div className={`flex-1 flex  text-${titleAlign}`}>
+                            <TitleComponent text={title || ''} size={28} weight="extrabold" />
+                        </div>
+
                         {showCloseButton && (
-                            <button className="block cursor-pointer" onClick={onClose}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7.75732 7.75739L16.2426 16.2427M16.2426 7.75739L7.75732 16.2427" stroke="black" strokeWidth="1.6" strokeLinecap="round"></path>
-                                </svg>
+                            <button className="absolute right-4  block cursor-pointer" onClick={onClose}>
+                                <IconCloseCircleFill className='size-5 text-red-300'/>
                             </button>
                         )}
                     </div>

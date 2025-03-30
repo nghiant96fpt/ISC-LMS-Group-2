@@ -4,7 +4,7 @@
 }
 
 .modalWrapper {
-  @apply relative max-h-screen overflow-auto transform transition-all duration-300 flex flex-col justify-center items-center m-4;
+  @apply relative max-h-screen overflow-auto transform transition-all duration-300 flex flex-col m-4 bg-white rounded-lg shadow-xl w-full;
   max-width: 90vw;
   max-height: 90vh;
   animation: slideFadeIn 0.25s ease-out;
@@ -31,16 +31,16 @@
 }
 
 /* Kích thước modal */
-.modalWrapper.size-extra-small { @apply max-w-xs; }
-.modalWrapper.size-small { @apply max-w-sm; }
-.modalWrapper.size-medium { @apply max-w-md; }
-.modalWrapper.size-large { @apply max-w-lg; }
-.modalWrapper.size-extra-large { @apply max-w-xl; }
-.modalWrapper.size-2x-large { @apply max-w-2xl; }
-.modalWrapper.size-3x-large { @apply max-w-3xl; }
-.modalWrapper.size-4x-large { @apply max-w-4xl; }
-.modalWrapper.size-5x-large { @apply max-w-5xl; }
-.modalWrapper.size-full-screen { @apply w-full h-full; }
+.size-extra-small { max-width: 20rem; } /* 320px */
+.size-small { max-width: 24rem; } /* 384px */
+.size-medium { max-width: 28rem; } /* 448px */
+.size-large { max-width: 32rem; } /* 512px */
+.size-extra-large { max-width: 36rem; } /* 576px */
+.size-2x-large { max-width: 42rem; } /* 672px */
+.size-3x-large { max-width: 48rem; } /* 768px */
+.size-4x-large { max-width: 56rem; } /* 896px */
+.size-5x-large { max-width: 64rem; } /* 1024px */
+
 
 /* Vị trí hiển thị */
 .modalWrapper.position-top { @apply justify-start mt-8; }
