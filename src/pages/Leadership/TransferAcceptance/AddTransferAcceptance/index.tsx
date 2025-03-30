@@ -5,11 +5,13 @@ import CalendarInput from '../../../../components/CalendarInput';
 import Button from '../../../../components/Button';
 // import searchIcon from '../../../../assets/icons/fi_search_primary.png';
 import attachIcon from '../../../../assets/icons/u_paperclip.png';
-import './index.css'
+import './index.css';
+import DateInput from '../../../../components/Date';
+import dayjs from 'dayjs';
 const AddTransferAcceptance = () => {
   const { register, handleSubmit } = useForm();
   const [fileName, setFileName] = useState('');
-
+  const [transferDate, setTransferDate] = useState<dayjs.Dayjs | null>(null);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
       setFileName(event.target.files[0].name);
@@ -21,7 +23,7 @@ const AddTransferAcceptance = () => {
   };
 
   return (
-    <div className="w-full mx-auto bg-white rounded-lg shadow-md max-w-[800px] px-8 pb-2">
+    <div className="w-full mx-auto bg-white rounded-lg shadow-md max-w-[800px] p-10 pb-2">
       <h2 className="text-2xl font-semibold text-center mb-2">Tiếp nhận chuyển trường</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -58,7 +60,7 @@ const AddTransferAcceptance = () => {
             Ngày chuyển đến: <span className="text-red-500">*</span>
           </label>
           <div className="custom w-full md:w-[585px]">
-            <CalendarInput />
+            <DateInput value={transferDate} onChange={(date) => setTransferDate(date)} />
           </div>
         </div>
 
@@ -67,7 +69,7 @@ const AddTransferAcceptance = () => {
           <label className="block font-medium">
             Học kỳ chuyển: <span className="text-red-500">*</span>
           </label>
-          <DropdownSelectionComponent width="585px" options={['Học kỳ I', 'Học kỳ II']} placeholder="Học kỳ I" />
+          <DropdownSelectionComponent width="585px" options={['Học kỳ I', 'Học kỳ II', 'Học kỳ III']} placeholder="Học kỳ I" />
         </div>
 
         {/* Tỉnh/Thành */}
@@ -75,7 +77,11 @@ const AddTransferAcceptance = () => {
           <label className="block font-medium">
             Tỉnh/Thành: <span className="text-red-500">*</span>
           </label>
-          <DropdownSelectionComponent width="585px" options={['Hà Nội', 'TP. Hồ Chí Minh', 'Đà Nẵng']} placeholder="Lựa chọn" />
+          <input
+            {...register('fromSchool')}
+            placeholder="Tỉnh/Thành"
+            className="w-full md:w-[585px] p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
+          />
         </div>
 
         {/* Quận/Huyện */}
@@ -83,7 +89,11 @@ const AddTransferAcceptance = () => {
           <label className="block font-medium">
             Quận/Huyện: <span className="text-red-500">*</span>
           </label>
-          <DropdownSelectionComponent width="585px" options={['Quận 1', 'Quận 2', 'Quận 3']} placeholder="Lựa chọn" />
+          <input
+            {...register('fromSchool')}
+            placeholder="Quận/Huyện"
+            className="w-full md:w-[585px] p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
+          />
         </div>
 
         {/* Chuyển từ */}
@@ -93,7 +103,7 @@ const AddTransferAcceptance = () => {
           </label>
           <input
             {...register('fromSchool')}
-            placeholder="Cần ZTho"
+            placeholder="Tỉnh/Thành"
             className="w-full md:w-[585px] p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
           />
         </div>
@@ -132,8 +142,8 @@ const AddTransferAcceptance = () => {
         {/* Buttons */}
         <div className="flex justify-center space-x-4 mt-4">
           <button className="w-40 h-12 bg-gray-200 rounded-lg font-semibold">Hủy</button>
-          <Button className="secondary" size="mini" width="160px" height="48px" style={{ color: 'white', fontWeight: '600' }}>
-            Tiếp theo
+          <Button className="bg-orange-500 hover:bg-orange-600 text-white text-md" size="mini" width="160px" height="48px" >
+            Lưu lại
           </Button>
         </div>
       </form>

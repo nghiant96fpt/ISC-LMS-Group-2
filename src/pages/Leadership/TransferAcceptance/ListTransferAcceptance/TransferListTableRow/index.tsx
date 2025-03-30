@@ -1,36 +1,45 @@
-import { TableCell, TableRow } from '../../../../../components/ui/tabble';
-import IconImages from '../../../../../components/IconImages';
-import { TransferListTableRowProps } from './type';
-import { Link } from 'react-router-dom';
-import { columns } from '../tableColumns';
+import { SchoolTransferListItem } from '../data';
 
-const TransferListTableRow: React.FC<TransferListTableRowProps> = ({
-    item,
-    index,
-}) => {
-    return (
-        <TableRow key={item.id} className={index % 2 === 0 ? 'bg-[#F0F3F6] border-[#F0F3F6]' : ''}>
-            {columns.map((col) => (
-                <TableCell
-                    key={col.key}
-                    className="px-4 py-3 text-black-text text-start text-xs md:text-sm lg:text-base "
-                >
-                    {col.isDate ? new Date(item[col.key]).toLocaleDateString() : item[col.key]}
-                </TableCell>
-            ))}
+interface TableRowProps {
+  item: SchoolTransferListItem;
+  index: number;
+}
 
-            {/* Cột chứa nút chức năng */}
-            <TableCell className="px-4 py-3 text-start w-[150px]">
-                <div className="flex gap-2">
-                    <button>
-                        <Link to={`/student-transfer/${item.id}`}>
-                            <img src={IconImages.OrangeEyeOutline} alt="Xem" className="w-4 md:w-5 lg:w-6" />
-                        </Link>
-                    </button>
-                </div>
-            </TableCell>
-        </TableRow>
-    );
+const TableRowComponent = ({ item, index }: TableRowProps) => {
+  return (
+    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-[#F0F3F6]'}>
+      {/* Mã học sinh */}
+      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.studentId || 'N/A'}</td>
+
+      {/* Họ và tên */}
+      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.fullName}</td>
+
+      {/* Ngày sinh */}
+      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{new Date(item.dateOfBirth).toLocaleDateString('vi-VN')}</td>
+
+      {/* Giới tính */}
+      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.gender}</td>
+
+      {/* Trường chuyển từ */}
+      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.transferToSchool || 'Không xác định'}</td>
+
+      {/* Học kỳ chuyển */}
+      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.transferSemester || 'Không xác định'}</td>
+
+      {/* Lớp */}
+      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.grade}</td>
+
+      {/* Ngày chuyển */}
+      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{new Date(item.transferDate).toLocaleDateString('vi-VN')}</td>
+
+      {/* Các nút thao tác */}
+      <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
+        <div className="flex justify-end space-x-2">
+          <button className="text-blue-600 hover:text-blue-900">Xem</button>
+        </div>
+      </td>
+    </tr>
+  );
 };
 
-export default TransferListTableRow;
+export default TableRowComponent;
