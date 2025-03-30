@@ -1,5 +1,16 @@
-const ScoreBoard = () => {
-    return <h1 className="text-3xl font-bold text-center text-black-text">Bảng điểm</h1>;
+import ScoreBoardHeader from './header';
+import TableScoreBoard from './table';
+const ScoreBoard: React.FC = () => {
+  return (
+    <>
+      <div className="student-retention">
+        <ScoreBoardHeader />
+        <div className="content">
+          <TableScoreBoard />
+        </div>
+      </div>
+    </>
+  );
 };
-  
+
 export default ScoreBoard;

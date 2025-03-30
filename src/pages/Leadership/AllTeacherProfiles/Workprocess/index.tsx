@@ -138,7 +138,7 @@ const Workprocess = () => {
           </div>
         )}
       </div>
-      <div className="pt-20">
+      <div className="pt-10">
         <TrainingList onClick={toggleSection.bind(this, 'education')} />
       </div>
       {isDeleteModalOpen && (

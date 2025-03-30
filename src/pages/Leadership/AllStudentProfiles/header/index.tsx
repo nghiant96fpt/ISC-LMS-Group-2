@@ -6,6 +6,7 @@ import Dropdown from '../../../../components/Dropdown';
 import Button from '../../../../components/Button';
 // import Tag from '../../../../components/Tag';
 import './style.css';
+import { useNavigate } from 'react-router';
 
 const AllStudentProfilesHeader: React.FC = () => {
   const [selectedGradeOption, setSelectedGradeOption] = useState<DropdownOption | null>(null);
@@ -29,6 +30,8 @@ const AllStudentProfilesHeader: React.FC = () => {
     { label: 'Khen thưởng', value: 'reward' },
     { label: 'Kỷ luật', value: 'year' },
   ];
+
+  const navigator = useNavigate();
 
   return (
     <>
@@ -71,7 +74,7 @@ const AllStudentProfilesHeader: React.FC = () => {
             <img src={trash} alt="trash" className="trash-icon" />
           </button>
           <button className="export-btn">Xuất file</button>
-          <Button className="primary" size="big">
+          <Button className="primary" size="big" onClick={() => navigator('/leadership/new-student')}>
             <img src={plus} alt="" />
             Thêm mới
           </Button>
