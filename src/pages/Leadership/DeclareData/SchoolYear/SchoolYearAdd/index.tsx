@@ -112,22 +112,25 @@ const SchoolYearAdd: React.FC = () => {
   };
 
   const handleDateChange = (semesterId: number, field: 'startDate' | 'endDate', value: string | null) => {
+    // console.log(`Cập nhật ${field} của Học kỳ ${semesterId}:`, value);
     setSemesterData((prev) => prev.map((s) => (s.id === semesterId ? { ...s, [field]: value } : s)));
   };
 
   const handleSave = async () => {
-    const startDate = getValues('startDate');
-    const endDate = getValues('endDate');
+    const startDate = semesterData[0]?.startDate;
+    const endDate = semesterData[semesterData.length - 1]?.endDate;
 
     if (!selectedStartYear || !selectedEndYear) {
       toast.error('Vui lòng chọn niên khóa!');
       return;
     }
+    // console.log('Start Date:', startDate);
+    // console.log('End Date:', endDate);
 
-    if (!validateYearRange(selectedStartYear, selectedEndYear)) {
-      toast.error(yearRangeError || 'Niên khóa phải kéo dài ít nhất 1 năm và nhiều nhất 5 năm');
-      return;
-    }
+    // if (!validateYearRange(selectedStartYear, selectedEndYear)) {
+    //   toast.error(yearRangeError || 'Niên khóa phải kéo dài ít nhất 1 năm và nhiều nhất 5 năm');
+    //   return;
+    // }
 
     if (!startDate || !endDate) {
       toast.error('Vui lòng nhập đầy đủ ngày bắt đầu và ngày kết thúc!');
@@ -137,11 +140,11 @@ const SchoolYearAdd: React.FC = () => {
     const start = dayjs(startDate).startOf('day');
     const end = dayjs(endDate).startOf('day');
 
-    const durationInYears = end.diff(start, 'year', true);
-    if (durationInYears < 1 || durationInYears > 5) {
-      toast.error('Niên khóa phải kéo dài ít nhất 1 năm và nhiều nhất 5 năm');
-      return;
-    }
+    // const durationInYears = end.diff(start, 'year', true);
+    // if (durationInYears < 1 || durationInYears > 5) {
+    //   toast.error('Niên khóa phải kéo dài ít nhất 1 năm và nhiều nhất 5 năm');
+    //   return;
+    // }
 
     try {
       const loadingToast = toast.loading('Đang xử lý...');
@@ -286,32 +289,31 @@ const SchoolYearAdd: React.FC = () => {
 
             <div className="flex items-center space-x-2">
               <p className="text-sm">Từ</p>
-
               <Controller
-                name="startDate"
+                name={`semester_${semester.id}_startDate` as keyof FormData}
                 control={control}
-                defaultValue={null}
+                defaultValue={semester.startDate || ''}
                 render={({ field }) => (
                   <DateInput
                     value={field.value ? dayjs(field.value) : null}
                     onChange={(date) => {
                       const formattedDate = date ? date.format('YYYY/MM/DD') : null;
-                      field.onChange(date ? date.toDate() : null);
+                      field.onChange(formattedDate);
                       handleDateChange(semester.id, 'startDate', formattedDate);
                     }}
                   />
                 )}
               />
               <Controller
-                name="endDate"
+                name={`semester_${semester.id}_endDate` as keyof FormData}
                 control={control}
-                defaultValue={null}
+                defaultValue={semester.endDate || ''}
                 render={({ field }) => (
                   <DateInput
                     value={field.value ? dayjs(field.value) : null}
                     onChange={(date) => {
                       const formattedDate = date ? date.format('YYYY/MM/DD') : null;
-                      field.onChange(date ? date.toDate() : null);
+                      field.onChange(formattedDate);
                       handleDateChange(semester.id, 'endDate', formattedDate);
                     }}
                   />
