@@ -1,26 +1,23 @@
 import React from 'react';
 import { Tooltip, PieChart, Pie, Cell } from 'recharts';
 import '../index.css';
-const data = [
-  { name: 'Tổng số học sinh giỏi', value: 300 },
-  { name: 'Tổng số học sinh khá', value: 125 },
-  { name: 'Tổng số học sinh trung bình', value: 75 },
-  { name: 'Yếu', value: 0 },
-];
-
 const GRADIENTS = [
   ['#2F80ED', '#56CCF2'],
   ['#FDC830', '#F37335'],
   ['#45B649', '#DCE35B'],
   ['#9CA3AF', '#D1D5DB'],
 ];
-const Chart = () => {
+
+interface ChartProps {
+  data: { name: string; value: number }[];
+  totalClasses: number;
+}
+
+const Chart: React.FC<ChartProps> = ({ data, totalClasses }) => {
   return (
-    <div className="flex justify-between  h-48">
-      {/* Biểu đồ tròn */}
+    <div className="flex justify-between h-48 mt-5">
       <div className="w-[45%] flex flex-col justify-center items-center">
         <PieChart width={180} height={180}>
-          {/* Gradient Colors */}
           <svg width="0" height="0">
             <defs>
               {GRADIENTS.map((colors, index) => (
@@ -63,27 +60,20 @@ const Chart = () => {
           </Pie>
           <Tooltip />
         </PieChart>
+      </div>
 
-        {/*  */}
+      <div className="w-[50%] flex flex-col justify-center gap-y-4">
+        <div className="custom-line">
+          Tổng số lớp: <span className="font-bold">{totalClasses}</span>
+        </div>
+        {data.map((item, index) => (
+          <div key={index} className="custom-line">
+            {item.name}: <span className="font-bold">{item.value}</span>
+          </div>
+        ))}
       </div>
-      {/* Thống kê số liệu */}
-      <div className="w-[50%] flex flex-col justify-center  gap-y-4">
-        <div className="custom-line ">
-          Tổng số lớp: <span className="font-bold">10</span>
-        </div>
-        <div className="custom-line ">
-          Tổng số học sinh giỏi: <span className="text-blue-500">300</span>
-        </div>
-        <div className="custom-line ">
-          Tổng số học sinh khá: <span className="text-orange-500">125</span>
-        </div>
-        <div className="custom-line ">
-          Tổng số học sinh trung bình: <span className="text-green-500">75</span>
-        </div>
-        <div className="flex text-xs justify-between ">
-          Tổng số học sinh yếu: <span className="text-gray-500">0</span>
-        </div>
-      </div>
+
+      
     </div>
   );
 };
