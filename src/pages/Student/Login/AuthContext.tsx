@@ -27,7 +27,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         setRole(response?.data?.data?.roleId);
       })
       .catch((err) => {
-        console.error('Lấy quyền thất bại', err);
         setRole(null);
       })
       .finally(() => {
