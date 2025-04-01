@@ -58,7 +58,10 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
             setValue('birthday', e);
             clearError('birthday');
           }}
-          {...register('birthday', { required: 'Vui lòng chọn thông tin ngày sinh !' })}
+          {...register('birthday', {
+            required: 'Vui lòng chọn thông tin ngày sinh !',
+            validate: (value: Date) => new Date(value) <= new Date() || 'Ngày sinh không được sau ngày hôm nay !',
+          })}
         />
       </div>
       {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.birthday?.message}</p>}

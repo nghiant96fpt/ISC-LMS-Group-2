@@ -19,6 +19,13 @@ import { formatDate } from '../../../utils/formatDate';
 const StudentCU = () => {
   const [loading, setLoading] = useState(false);
 
+  type familyMembers = {
+    guardianName: string;
+    guardianRole: number | null;
+    guardianBornDate: Date | null;
+    guardianPhone: string;
+    guardianJob: string;
+  };
   type formType = {
     fullname: string;
     gender: DropdownOption | null;
@@ -35,7 +42,16 @@ const StudentCU = () => {
     status: DropdownOption | null;
     entry: DropdownOption | null;
 
+    province: DropdownOption | null;
+    district: DropdownOption | null;
+    ward: DropdownOption | null;
+    addressDetail: string;
+    email: string;
+    phone: string;
+
     birthdayString: string;
+
+    family: familyMembers[] | null;
   };
   const {
     register,
@@ -59,9 +75,16 @@ const StudentCU = () => {
       class: null,
       birthdayString: '',
       code: '',
-      enrollmentDate: null,
+      enrollmentDate: new Date(),
       status: null,
       entry: null,
+      province: null,
+      district: null,
+      ward: null,
+      addressDetail: '',
+      email: '',
+      phone: '',
+      family: [{ guardianName: '', guardianRole: null, guardianBornDate: null, guardianJob: '', guardianPhone: '' }],
     },
   });
 
@@ -79,7 +102,14 @@ const StudentCU = () => {
       'code',
       'enrollmentDate',
       'status',
-      'entry'
+      'entry',
+      'province',
+      'district',
+      'ward',
+      'addressDetail',
+      'email',
+      'phone',
+      'family',
     ]);
   };
 
@@ -109,6 +139,14 @@ const StudentCU = () => {
   const [courses, setCourses] = useState<DropdownOption[]>([]);
   const [grades, setGrades] = useState<DropdownOption[]>([]);
   const [classes, setClasses] = useState<DropdownOption[]>([]);
+  const [entries, setEntries] = useState<DropdownOption[]>([]);
+  const [statuses, setStatuses] = useState<DropdownOption[]>([]);
+
+  const [provinces, setProvinces] = useState<DropdownOption[]>([]);
+  const [districts, setDistricts] = useState<DropdownOption[]>([]);
+  const [wards, setWards] = useState<DropdownOption[]>([]);
+
+  const [studentCount, setStudentCount] = useState<number>(0);
 
   // Niên khóa
   const handleGetAcademicYears = async () => {
@@ -142,11 +180,81 @@ const StudentCU = () => {
     }
   };
 
+  // Hình thức nhập học
+  const handleGetEntry = async () => {
+    const response = await axiosTrue.get(`api/entrytype?page=1&sortColumn=Id&sortOrder=asc`);
+    const data = response?.data?.data?.map((item: { id: number; name: string }) => ({
+      label: item?.name,
+      value: item?.id,
+    }));
+    setEntries(data);
+  };
+
+  // Trạng thái nhập học
+  const handleGetStatuses = async () => {
+    const response = await axiosTrue.get(`api/user-statuses?page=1&sortColumn=Id&sortOrder=asc`);
+    const data = response?.data?.data?.map((item: { id: number; name: string }) => ({
+      label: item?.name,
+      value: item?.id,
+    }));
+    setStatuses(data);
+  };
+
+  // Tỉnh/thành phố
+  const handleGetProvinces = async () => {
+    const response = await axiosTrue.get(`api/address/provinces`);
+    const data = response?.data?.data?.map((item: { provinceId: number; provinceName: string }) => ({
+      label: item?.provinceName,
+      value: item?.provinceId,
+    }));
+    setProvinces(data);
+  };
+
+  // Huyện/quận
+  const handleGetDistricts = async (provinceId:any) => {
+    const isValid = await trigger('province');
+    if (isValid) {
+      const response = await axiosTrue.get(`api/address/districts?provinceId=${provinceId?.value}`);
+      const data = response?.data?.data?.map((item: { districtId: number; districtName: string }) => ({
+        label: item?.districtName,
+        value: item?.districtId,
+      }));
+      setDistricts(data);
+    }
+  };
+
+  // Xã/phường
+  const handleGetWards = async (districtId:any) => {
+    const isValid = await trigger('district');
+    if (isValid) {
+      const response = await axiosTrue.get(`api/address/wards?districtId=${districtId?.value}`);
+      const data = response?.data?.data?.map((item: { wardCode: number; wardName: string }) => ({
+        label: item?.wardName,
+        value: item?.wardCode,
+      }));
+      setWards(data);
+    }
+  };
+
+  // Học viên
+  const handleGetStudents = async () => {
+    const response = await axiosTrue.get('api/users?page=1&search=&sortColumn=id&sortOrder=asc');
+    const data = response?.data?.data?.filter((item: any) => item?.roleId === 3);
+    setStudentCount(data?.length);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        await Promise.all([handleGetAcademicYears(), handleGetGrades()]);
+        await Promise.all([
+          handleGetAcademicYears(),
+          handleGetGrades(),
+          handleGetEntry(),
+          handleGetStatuses(),
+          handleGetProvinces(),
+          handleGetStudents(),
+        ]);
       } catch (error) {
         console.log(error);
         toast.error('Có lỗi khi lấy dữ liệu!');
@@ -154,7 +262,6 @@ const StudentCU = () => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
@@ -164,6 +271,20 @@ const StudentCU = () => {
       handleGetClasses();
     }
   }, [selectedGrade]);
+
+  const selectedProvince = getValues('province');
+  useEffect(() => {
+    if (selectedProvince) {
+      handleGetDistricts(selectedProvince);
+    }
+  }, [selectedProvince]);
+
+  const selectedDistrict = getValues('district');
+  useEffect(() => {
+    if (selectedDistrict) {
+      handleGetWards(selectedDistrict);
+    }
+  }, [selectedDistrict]);
 
   const [isChecked, setIsChecked] = useState(false);
   const handleCheckTuSinhMa = () => {
@@ -182,7 +303,7 @@ const StudentCU = () => {
 
   useEffect(() => {
     if (isChecked) {
-      let code = generateStudentCode(0);
+      let code = generateStudentCode(studentCount);
       setValue('code', code);
       clearErrors('code');
     } else {
@@ -214,11 +335,7 @@ const StudentCU = () => {
             <div className="w-[15%] flex justify-center items-center relative h-max" onClick={handleActiveCameraEdit}>
               <img src={selectedImage} alt="default-avt" className="w-[160px] h-[160px] object-cover rounded-full" />
               <input id="cameraEdit" type="file" accept="image/*" ref={cameraEditRef} hidden onChange={handleImageChange} />
-              <img
-                src={CameraEdit}
-                alt="camera-edit"
-                className="absolute bottom-0 size-12 translate-y-1/2 cursor-pointer"
-              />
+              <img src={CameraEdit} alt="camera-edit" className="absolute bottom-0 size-12 translate-y-1/2 cursor-pointer" />
             </div>
             <div className="w-[81%]">
               <p className="font-bold text-[#CC5C00] mb-3">Thông tin học viên</p>
@@ -228,7 +345,6 @@ const StudentCU = () => {
                 <RightForm
                   isChecked={isChecked}
                   handleCheckTuSinhMa={handleCheckTuSinhMa}
-
                   register={register}
                   errors={errors}
                   watch={watch}
@@ -239,6 +355,8 @@ const StudentCU = () => {
                   filteredClasses={classes}
                   grades={grades}
                   selectedGrade={selectedGrade}
+                  entries={entries}
+                  statuses={statuses}
                 />
               </div>
             </div>
@@ -249,7 +367,18 @@ const StudentCU = () => {
           <div className="px-8 flex justify-end">
             <div className="w-[81%]">
               <p className="font-bold text-[#CC5C00] mb-3">Địa chỉ liên hệ</p>
-              <AddressForm />
+              <AddressForm
+                register={register}
+                watch={watch}
+                errors={errors}
+                clearError={clearErrors}
+                setValue={setValue}
+                provineces={provinces}
+                selectedProvince={selectedProvince}
+                districts={districts}
+                selectedDistrict={selectedDistrict}
+                wards={wards}
+              />
             </div>
           </div>
         </Card.Body>
@@ -258,7 +387,7 @@ const StudentCU = () => {
         </Card.Header>
         <Card.Body>
           <div className="px-8">
-            <FamilyForm />
+            <FamilyForm register={register} watch={watch} errors={errors} clearError={clearErrors} setValue={setValue} />
           </div>
         </Card.Body>
       </Card>

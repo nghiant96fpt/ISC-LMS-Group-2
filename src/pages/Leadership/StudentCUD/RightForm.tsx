@@ -20,6 +20,8 @@ export interface RightFormProps {
   grades: DropdownOption[];
   filteredClasses: DropdownOption[];
   selectedGrade: DropdownOption | null;
+  entries: DropdownOption[];
+  statuses: DropdownOption[];
 }
 
 const RightForm: React.FC<RightFormProps> = ({
@@ -30,13 +32,14 @@ const RightForm: React.FC<RightFormProps> = ({
   errors,
   setValue,
   watch,
-  setError,
   clearError,
 
   courses,
   grades,
   filteredClasses,
   selectedGrade,
+  entries,
+  statuses
 }) => {
   return (
     <div className="w-[47%]">
@@ -72,7 +75,7 @@ const RightForm: React.FC<RightFormProps> = ({
         />
         <div className="ms-2">
           <Dropdown
-            size="short"
+            size="medium"
             options={filteredClasses}
             selectedOption={watch('class')}
             handleOptionClick={(e) => {
@@ -130,8 +133,8 @@ const RightForm: React.FC<RightFormProps> = ({
       <div className="flex items-center mb-1">
         <p className="w-[118px]">Hình thức</p>
         <Dropdown
-          size="short"
-          options={[{ label: 'Trúng tuyển', value: '1' }]}
+          size="medium"
+          options={entries}
           selectedOption={watch('entry')}
           handleOptionClick={(e) => {
             setValue('entry', e);
@@ -146,13 +149,8 @@ const RightForm: React.FC<RightFormProps> = ({
       <div className="flex items-center mb-1">
         <p className="w-[118px]">Trạng thái</p>
         <Dropdown
-          size="short"
-          options={[
-            { label: 'Đang theo học', value: '0' },
-            { label: 'Đã chuyển lớp', value: '1' },
-            { label: 'Đã chuyển trường', value: '2' },
-            { label: 'Đã thôi học', value: '3' },
-          ]}
+          size="medium"
+          options={statuses}
           selectedOption={watch('status')}
           handleOptionClick={(e) => {
             setValue('status', e);

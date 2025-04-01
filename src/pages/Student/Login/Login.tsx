@@ -25,7 +25,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
     formState: { errors },
     getValues,
     setError,
-    clearErrors
+    clearErrors,
   } = useForm();
 
   const axiosInstance = createAxiosInstance(false);
@@ -52,7 +52,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
       const info = response.data?.data; // lưu thông tin vào biến info
       setInfo(info);
       setCookies('accessToken', info?.accessToken, { maxAge: 60 * 15, path: '/' });
-      setCookies('refreshToken', info?.refreshToken?.token, { maxAge: 60 * 60 * 10, path: '/' });      
+      setCookies('refreshToken', info?.refreshToken?.token, { maxAge: 60 * 60 * 10, path: '/' });
 
       // Xử lý role ngay ở đây
       if (info?.user?.role === 'ADMIN') {
@@ -69,7 +69,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
       }
     } catch (error) {
       toast.error('Đăng nhập không thành công !');
-      setError('loginFailed', {message: 'Tài khoản hoặc mật khẩu không đúng !'});
+      setError('loginFailed', { message: 'Tài khoản hoặc mật khẩu không đúng !' });
       console.log('Lỗi khi đăng nhập!', error);
     } finally {
       setLoading(false);
@@ -115,7 +115,10 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
             ) : (
               <div>
                 <p className="mb-1 pb-0">Mã xác nhận</p>
-                <Input placeholder="Nhập mã xác nhận" />
+                <div className='flex items-center'>
+                  <Input placeholder="Nhập mã xác nhận" />
+                  <button className='bg-[#FF7506] ms-2 px-2 py-1 text-white rounded rounded-3'>Gửi mã</button>
+                </div>
               </div>
             )}
           </div>
