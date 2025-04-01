@@ -36,7 +36,7 @@ const SchoolYearTable = ({ data, onDelete }: { data: ISchoolYear[]; onDelete: (i
       </table>
 
       {/* tb body */}
-      <div className="border border-gray-100 overflow-y-auto max-h-[250px] sm:max-h-[250px] md:max-h-[250px] lg:max-h-[270px] xl:max-h-[370px] min-h-[400px] custom-scrollbar">
+      <div className="border border-gray-100 overflow-y-auto max-h-[250px] sm:max-h-[250px] md:max-h-[250px] lg:max-h-[270px] xl:max-h-[570px] min-h-[400px] custom-scrollbar">
         <table className="w-full overflow-hidden rounded-t-lg">
           <tbody>
             {data.map((row, index) => (

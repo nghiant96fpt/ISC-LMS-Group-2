@@ -17,7 +17,7 @@ const SchoolYear = () => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [numPage, setNumPage] = useState(1);
   const [index, setIndex] = useState(1);
-  const [size, setSize] = useState(7);
+  const [size, setSize] = useState(8);
   const [totalItems, setTotalItems] = useState(0);
 
   // Xóa niên khóa thành công

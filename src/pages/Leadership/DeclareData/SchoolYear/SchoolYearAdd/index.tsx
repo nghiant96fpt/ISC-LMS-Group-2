@@ -81,34 +81,34 @@ const SchoolYearAdd: React.FC = () => {
     // toast.success(`Đã thêm học kì ${newId}`);
   };
 
-  const validateYearRange = (startYear: string | null, endYear: string | null) => {
-    if (startYear && endYear) {
-      const start = parseInt(startYear);
-      const end = parseInt(endYear);
-      const yearDiff = end - start;
+  // const validateYearRange = (startYear: string | null, endYear: string | null) => {
+  //   if (startYear && endYear) {
+  //     const start = parseInt(startYear);
+  //     const end = parseInt(endYear);
+  //     const yearDiff = end - start;
 
-      if (yearDiff < 1) {
-        setYearRangeError('Niên khóa phải kéo dài ít nhất 1 năm');
-        return false;
-      } else if (yearDiff > 5) {
-        setYearRangeError('Niên khóa không được kéo dài quá 5 năm');
-        return false;
-      } else {
-        setYearRangeError(null);
-        return true;
-      }
-    }
-    return false;
-  };
+  //     if (yearDiff < 1) {
+  //       setYearRangeError('Niên khóa phải kéo dài ít nhất 1 năm');
+  //       return false;
+  //     } else if (yearDiff > 5) {
+  //       setYearRangeError('Niên khóa không được kéo dài quá 5 năm');
+  //       return false;
+  //     } else {
+  //       setYearRangeError(null);
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // };
 
   const handleStartYearChange = (value: string) => {
     setSelectedStartYear(value);
-    validateYearRange(value, selectedEndYear);
+    // validateYearRange(value, selectedEndYear);
   };
 
   const handleEndYearChange = (value: string) => {
     setSelectedEndYear(value);
-    validateYearRange(selectedStartYear, value);
+    // validateYearRange(selectedStartYear, value);
   };
 
   const handleDateChange = (semesterId: number, field: 'startDate' | 'endDate', value: string | null) => {

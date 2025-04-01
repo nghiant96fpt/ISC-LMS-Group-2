@@ -101,27 +101,22 @@ const SchoolYearFormEdit: React.FC = () => {
     event.preventDefault();
 
     try {
-      // 1. Prepare academic year payload
-      const academicYearPayload = [
-        {
-          id: parseInt(id || '0'),
-          name: `${formData.schoolYearStart}-${formData.schoolYearEnd}`,
-          startline: formData.startDate?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
-          address: formData.endDate?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
-        },
-      ];
+      const academicYearPayload = {
+        id: parseInt(id || '0'),
+        name: `${formData.schoolYearStart}-${formData.schoolYearEnd}`,
+        startTime: formData.startDate?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
+        endTime: formData.endDate?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
+      };
 
-      // 2. Update academic year
-      await axiosInstance.put(`https://fivefood.shop/api/academic-years/${id}`, academicYearPayload);
+      await axiosInstance.put(`https://fivefood.shop/api/academic-years/${id}`, [academicYearPayload]);
 
-      // 3. Update each semester
       const semesterUpdates = formData.semesters.map(async (semester) => {
         if (semester.id) {
           const semesterPayload = {
             name: semester.name,
-            startline: semester.startTime?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
-            outline: semester.endTime?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
-            content: { overId: formData.schoolId }, // Assuming this is needed based on API doc
+            startTime: semester.startTime?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
+            endTime: semester.endTime?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
+            academicYearId: parseInt(id || '0'),
           };
           await axiosInstance.put(`https://fivefood.shop/api/semesters/${semester.id}`, semesterPayload);
         }
