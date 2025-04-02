@@ -11,8 +11,13 @@ import IconOutlineArrowLeftSingle from './iconOutlineArrowLeftSingle';
 import IconOutlineArrowRightSingle from './iconOutlineArrowRightSingle';
 import IconSearchLightGrayishBlue from './iconSearchLightGrayishBlue';
 import { IconTablerCircleXFilled } from './IconTablerCircleXFilled';
-
-
+import { IconWarningFill } from './iconWarningFill';
+import { IconSuccessFilled } from './iconSuccessFilled';
+import { IconOutlineErrorOutline } from './iconOutlineErrorOutline';
+import { IconCloseCircleFill } from './iconCloseCircleFill';
+import { IconCalendarOutline } from './iconCalendarOutline';
+import { IconChevronDown } from './iconChevronDown';
+import { IconChevronUp } from './iconChevronUp';
 export {
     IconArrowCaretDown,
     IconCheck,
@@ -26,6 +31,13 @@ export {
     IconChevronBigRightOrange,
     IconChevronBigRightWhite,
     IconnEye16,
-    IconTablerCircleXFilled
+    IconTablerCircleXFilled,
+    IconWarningFill,
+    IconSuccessFilled,
+    IconOutlineErrorOutline,
+    IconCloseCircleFill,
+    IconCalendarOutline,
+    IconChevronDown,
+    IconChevronUp
 };
 
