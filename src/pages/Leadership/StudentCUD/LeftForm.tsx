@@ -33,8 +33,8 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
         <Dropdown
           size="short"
           options={[
-            { label: 'Nam', value: 0 },
-            { label: 'Nữ', value: 1 },
+            { label: 'Nam', value: false },
+            { label: 'Nữ', value: true },
           ]}
           selectedOption={watch('gender')}
           handleOptionClick={(e) => {

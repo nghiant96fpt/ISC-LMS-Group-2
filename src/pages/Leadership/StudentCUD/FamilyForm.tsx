@@ -79,7 +79,7 @@ const FamilyForm: React.FC<formProps> = ({ register, errors, setValue, watch, cl
             <CalendarInput
               placeholder="Chọn ngày sinh"
               style={{ maxWidth: 300 }}
-              inputStyle={{ border: `${errors?.family && errors?.family[0] ? '2px solid #EF4444' : '1px solid #6b7280'}` }}
+              inputStyle={{ border: `${errors?.family && errors?.family[1] ? '2px solid #EF4444' : '1px solid #6b7280'}` }}
               selectedDate={watch('family[1].guardianBornDate')}
               onDateChange={(e) => {
                 setValue('family[1].guardianBornDate', e);
@@ -94,7 +94,7 @@ const FamilyForm: React.FC<formProps> = ({ register, errors, setValue, watch, cl
             <CalendarInput
               placeholder="Chọn ngày sinh"
               style={{ maxWidth: 300 }}
-              inputStyle={{ border: `${errors?.family && errors?.family[0] ? '2px solid #EF4444' : '1px solid #6b7280'}` }}
+              inputStyle={{ border: `${errors?.family && errors?.family[2] ? '2px solid #EF4444' : '1px solid #6b7280'}` }}
               selectedDate={watch('family[2].guardianBornDate')}
               onDateChange={(e) => {
                 setValue('family[2].guardianBornDate', e);
@@ -155,19 +155,49 @@ const FamilyForm: React.FC<formProps> = ({ register, errors, setValue, watch, cl
         <div className="w-[30%]">
           <div className="w-full flex items-center mb-3 justify-between">
             <p className="">Điện thoại cha</p>
-            <Input className="max-h-[40px]" placeholder="Điện thoại cha" />
+            <Input
+              className="max-h-[40px]"
+              placeholder="Điện thoại cha"
+              {...register('family[0].guardianPhone')}
+              onChange={(e) => {
+                setValue('family[0].guardianPhone', e.currentTarget.value);
+                clearError('family[0].guardianPhone');
+              }}
+              error={errors?.family && errors?.family[0].guardianPhone?.message}
+              disabled={!watch('family[0].guardianName')}
+            />
           </div>
         </div>
         <div className="w-[30%]">
           <div className="w-full flex items-center mb-3 justify-between">
             <p className="">Điện thoại mẹ</p>
-            <Input className="max-h-[40px]" placeholder="Điện thoại mẹ" />
+            <Input
+              className="max-h-[40px]"
+              placeholder="Điện thoại mẹ"
+              {...register('family[1].guardianPhone')}
+              onChange={(e) => {
+                setValue('family[1].guardianPhone', e.currentTarget.value);
+                clearError('family[1].guardianPhone');
+              }}
+              error={errors?.family && errors?.family[1].guardianPhone?.message}
+              disabled={!watch('family[1].guardianName')}
+            />
           </div>
         </div>
         <div className="w-[30%]">
           <div className="w-full flex items-center mb-3 justify-between">
             <p className="">Điện thoại GH</p>
-            <Input className="max-h-[40px]" placeholder="Điện thoại giám hộ" />
+            <Input
+              className="max-h-[40px]"
+              placeholder="Điện thoại giám hộ"
+              {...register('family[2].guardianPhone')}
+              onChange={(e) => {
+                setValue('family[2].guardianPhone', e.currentTarget.value);
+                clearError('family[2].guardianPhone');
+              }}
+              error={errors?.family && errors?.family[2].guardianPhone?.message}
+              disabled={!watch('family[2].guardianName')}
+            />
           </div>
         </div>
       </div>

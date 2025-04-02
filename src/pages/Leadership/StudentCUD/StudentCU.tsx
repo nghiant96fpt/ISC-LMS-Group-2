@@ -14,7 +14,8 @@ import './styles.css';
 import createAxiosInstance from '../../../utils/axiosInstance';
 import Loading from '../../../components/Loading';
 import { toast } from 'react-toastify';
-import { formatDate } from '../../../utils/formatDate';
+import { imageToBase64 } from '../../../utils/base64Encode';
+import { handleCreateUser } from './services';
 
 const StudentCU = () => {
   const [loading, setLoading] = useState(false);
@@ -126,10 +127,10 @@ const StudentCU = () => {
       cameraEditRef.current.click();
     }
   };
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
+      const imageUrl = await imageToBase64(file);
       setSelectedImage(imageUrl);
     }
   };
@@ -211,28 +212,38 @@ const StudentCU = () => {
   };
 
   // Huyện/quận
-  const handleGetDistricts = async (provinceId:any) => {
+  const handleGetDistricts = async (provinceId: any) => {
     const isValid = await trigger('province');
     if (isValid) {
-      const response = await axiosTrue.get(`api/address/districts?provinceId=${provinceId?.value}`);
-      const data = response?.data?.data?.map((item: { districtId: number; districtName: string }) => ({
-        label: item?.districtName,
-        value: item?.districtId,
-      }));
-      setDistricts(data);
+      try {
+        setLoading(true);
+        const response = await axiosTrue.get(`api/address/districts?provinceId=${provinceId?.value}`);
+        const data = response?.data?.data?.map((item: { districtId: number; districtName: string }) => ({
+          label: item?.districtName,
+          value: item?.districtId,
+        }));
+        setDistricts(data);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   // Xã/phường
-  const handleGetWards = async (districtId:any) => {
+  const handleGetWards = async (districtId: any) => {
     const isValid = await trigger('district');
     if (isValid) {
-      const response = await axiosTrue.get(`api/address/wards?districtId=${districtId?.value}`);
-      const data = response?.data?.data?.map((item: { wardCode: number; wardName: string }) => ({
-        label: item?.wardName,
-        value: item?.wardCode,
-      }));
-      setWards(data);
+      try {
+        setLoading(true);
+        const response = await axiosTrue.get(`api/address/wards?districtId=${districtId?.value}`);
+        const data = response?.data?.data?.map((item: { wardCode: number; wardName: string }) => ({
+          label: item?.wardName,
+          value: item?.wardCode,
+        }));
+        setWards(data);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -314,10 +325,9 @@ const StudentCU = () => {
   const handleCreate = async () => {
     const isValid = await validTrigger();
     if (isValid) {
-      const date = getValues('birthday');
-      const formattedDate = formatDate(date as Date);
-      setValue('birthdayString', formattedDate);
-      console.log(getValues());
+      const data = getValues();
+
+      handleCreateUser({ data, isValid, selectedImage, UserDefaultAVT, setLoading });
     }
   };
 
