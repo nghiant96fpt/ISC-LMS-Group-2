@@ -1,8 +1,18 @@
 export interface WorkHistory {
   id: number;
-  unit: string; // Cơ quan/ Đơn vị
-  dept: string; // Tổ/ Bộ môn
-  role: string; // Chức vụ
-  start: string; // Ngày bắt đầu
-  end: string; // Ngày kết thúc
+  organization: string; // Cơ quan/ Đơn vị
+  position: string; // Chức vụ
+  startDate: string; // Ngày bắt đầu (ISO 8601)
+  endDate: string; // Ngày kết thúc (ISO 8601)
+  isCurrent: boolean; // Công việc hiện tại (true nếu vẫn đang làm)
+  subjectGroupsId: number; // ID của tổ/ bộ môn
+  teacherId: number; // ID của giáo viên
+}
+export interface Lecturer {
+  teacherId: string;
+  guardianName: string;
+}
+export interface Schoolslist {
+  id: number;
+  name: string;
 }

@@ -18,8 +18,9 @@ import arrow from '../../../../assets/icons/u_arrow up down.png';
 
 const DeclareData: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { teachers, error } = useSelector((state: RootState) => state.teacher);
-  const totalPages = useSelector((state: RootState) => state.teacher.totalPages);
+
+  const { data, error, totalPages, pageSize, page } = useSelector((state: RootState) => state.teacher);
+  console.log(data);
 
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,7 +62,7 @@ const DeclareData: React.FC = () => {
       </div>
 
       <div className="overflow-x-auto flex-grow px-2 md:px-10">
-        {error ? (
+        {error === 'Không tìm thấy kết quả' ? (
           <p className="text-center text-red-500">{error}</p>
         ) : (
           <table className="w-full border-collapse overflow-hidden rounded-t-lg">
@@ -83,11 +84,11 @@ const DeclareData: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {teachers && teachers.length > 0 ? (
-                teachers.map((teacher, index) => (
+              {data && data.length > 0 ? (
+                data.map((teacher, index) => (
                   <tr key={teacher.id} className={`border-b ${index % 2 === 1 ? 'bg-gray-100' : ''}`}>
-                    <td className="py-3 px-2 md:px-4">{teacher.fullName || '---'}</td>
-                    <td className="py-3 px-2 md:px-4">{teacher.subjectGroupName || 'Chưa có dữ liệu'}</td>
+                    <td className="py-3 px-2 md:px-4">{teacher.name || '---'}</td>
+                    <td className="py-3 px-2 md:px-4">{teacher.fullName || 'Chưa có dữ liệu'}</td>
                     <td className="py-3 px-2 md:px-4 text-center">
                       <div className="flex justify-center space-x-2">
                         <Link to={`/subject-list/${teacher.id}`}>
@@ -128,15 +129,13 @@ const DeclareData: React.FC = () => {
         />
       )}
 
-      {totalPages > 1 && currentPage <= totalPages && (
-        <PaginationControls
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-          itemsPerPage={itemsPerPage}
-          setItemsPerPage={setItemsPerPage}
-        />
-      )}
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        itemsPerPage={itemsPerPage}
+        setItemsPerPage={setItemsPerPage}
+      />
     </div>
   );
 };

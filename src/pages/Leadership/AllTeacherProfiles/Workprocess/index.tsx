@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { WorkHistory } from './Types';
-import { workHistoryData as initialworkHistoryData } from './data';
+// import { workHistoryData as initialworkHistoryData } from './data';
 import arrow_right from '../../../../assets/icons/icon-arrow-right.png';
 import arrow_down from '../../../../assets/icons/caret-down_white.png';
 import edit from '../../../../assets/icons/orange_edit_write_outline.png';
@@ -12,31 +12,105 @@ import fiarrowupdown from '../../../../assets/icons/u_arrow up down.png';
 import Button from '../../../../components/Button';
 import SearchInput from '../../../../components/SearchTable';
 import DeleteAcademicYearModal from '../../../../components/DeleteConfirmation';
+import dayjs from 'dayjs';
+
+// import createAxiosInstance from '';
 import { Link } from 'react-router-dom';
+import PaginationControls from '../../../../components/Pagination';
+import createAxiosInstance from '../../../../utils/axiosInstance';
 const Workprocess = () => {
   const [openSection, setOpenSection] = useState<string | null>('work');
-  const [subjectGroups, setSubjectGroups] = useState<WorkHistory[]>(initialworkHistoryData);
+  const [subjectGroups, setSubjectGroups] = useState<WorkHistory[]>([]);
+
   const [selectedGroup, setSelectedGroup] = useState<WorkHistory | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [searchText, setSearchText] = useState<string>('');
+  const [subjectGroupsList, setSubjectGroupsList] = useState<Record<number, string>>({});
+  const [originalData, setOriginalData] = useState<WorkHistory[]>([]);
+  const [searchValue, setSearchValue] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  useEffect(() => {
+    fetchWorkProcess();
+  }, [searchValue, currentPage, itemsPerPage]);
+  useEffect(() => {
+    fetchSubjectGroups();
+  }, []);
+
+  const axiosInstance = createAxiosInstance();
+  const fetchWorkProcess = async () => {
+    try {
+      const response = await axiosInstance.get('/api/work-process', {
+        params: {
+          page: currentPage,
+          pageSize: itemsPerPage,
+          sortColumn: 'Id',
+          sortOrder: 'asc',
+          search: searchValue,
+        },
+      });
+
+      setSubjectGroups(response.data.data || []);
+      setTotalPages(response.data.totalPages || 1);
+    } catch (error) {
+      console.error('Lỗi khi tải dữ liệu:', error);
+    }
+  };
+  const fetchSubjectGroups = async () => {
+    try {
+      const response = await axiosInstance.get('/api/subject-groups');
+      const data = response.data.data || [];
+
+      // Chuyển đổi danh sách thành object { id: name }
+      const subjectMap = data.reduce((acc: any, item: any) => {
+        acc[item.id] = item.name;
+        return acc;
+      }, {} as Record<number, string>);
+
+      setSubjectGroupsList(subjectMap);
+    } catch (error) {
+      console.error('Lỗi khi tải nhóm môn học:', error);
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+    setCurrentPage(1);
+  };
   const toggleSection = (section: string) => {
     setOpenSection((prevSection) => (prevSection === section ? null : section));
   };
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.target.value);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   const handleDeleteClick = useCallback((group: WorkHistory) => {
     setSelectedGroup(group);
     setIsDeleteModalOpen(true);
   }, []);
-  const confirmDelete = useCallback(() => {
-    if (selectedGroup) {
+
+  const confirmDelete = useCallback(async () => {
+    if (!selectedGroup) return;
+
+    try {
+      const axiosInstance = createAxiosInstance();
+      await axiosInstance.delete(`/api/work-process/${selectedGroup.id}`);
+
+      // Cập nhật lại danh sách sau khi xóa thành công
       setSubjectGroups((prev) => prev.filter((g) => g.id !== selectedGroup.id));
+
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      console.error('Lỗi khi xóa:', error);
     }
-    setIsDeleteModalOpen(false);
   }, [selectedGroup]);
+
+  // const confirmDelete = useCallback(() => {
+  //   if (selectedGroup) {
+  //     setSubjectGroups((prev) => prev.filter((g) => g.id !== selectedGroup.id));
+  //   }
+  //   setIsDeleteModalOpen(false);
+  // }, [selectedGroup]);
   return (
     <div className="overflow-x-auto flex-grow px-2 md:px-10">
       <div className="  border rounded-lg shadow-md overflow-hidden">
@@ -61,7 +135,7 @@ const Workprocess = () => {
               <div className="w-[438px] h-10 relative">
                 <img src={fi_search} alt="Search" className="absolute left-4 top-1/2 w-5 h-5 transform -translate-y-1/2" />
 
-                <SearchInput placeholder="Tìm kiếm" value={searchText} onChange={handleSearchChange} />
+                <SearchInput placeholder="Tìm kiếm" value={searchValue} onChange={handleSearchChange} />
               </div>
               <Link to="/leadership/all-teacher-profiles/addworkprocess">
                 <Button size="mini" className="primary">
@@ -108,43 +182,51 @@ const Workprocess = () => {
                     <th className="p-2"></th>
                   </tr>
                 </thead>
-
                 <tbody>
-                  {subjectGroups
-                    .filter((row) => row.unit.toLowerCase().includes(searchText.toLowerCase()))
-                    .map((row, index) => (
-                      <tr key={index} className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'} hover:bg-gray-200 transition`}>
-                        <td className="p-2 ">{row.unit}</td>
-                        <td className="p-2 ">{row.dept}</td>
-                        <td className="p-2 ">{row.role}</td>
-                        <td className="p-2 ">{row.start}</td>
-                        <td className="p-2 ">{row.end}</td>
-                        <td className="p-2 text-center whitespace-nowrap space-x-4">
-                          {' '}
-                          <Link to="/leadership/all-teacher-profiles/addworkprocess">
-                            <button>
-                              <img src={edit} alt="edit" className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8" />
-                            </button>
-                          </Link>
-                          <button onClick={handleDeleteClick.bind(null, row)}>
-                            <img src={fi_trash} alt="delete" className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8" />
+                  {subjectGroups.map((row, index) => (
+                    <tr key={index} className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'} hover:bg-gray-200 transition`}>
+                      <td className="p-2">{row.organization}</td>
+
+                      {/* Thay subjectGroupsId bằng tên nhóm môn học */}
+                      <td className="p-2">{subjectGroupsList[row.subjectGroupsId] || 'Đang tải...'}</td>
+                      <td className="p-2">{row.position}</td>
+                      <td className="p-2">{dayjs(row.startDate).format('DD/MM/YYYY')}</td>
+                      <td className="p-2">{dayjs(row.endDate).format('DD/MM/YYYY')}</td>
+                      <td className="p-2 text-center whitespace-nowrap space-x-4">
+                        <Link to="/leadership/all-teacher-profiles/addworkprocess">
+                          <button>
+                            <img src={edit} alt="edit" className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8" />
                           </button>
-                        </td>
-                      </tr>
-                    ))}
+                        </Link>
+                        <button onClick={handleDeleteClick.bind(null, row)}>
+                          <img src={fi_trash} alt="delete" className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
           </div>
         )}
+        {totalPages > 1 && currentPage <= totalPages && (
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            itemsPerPage={itemsPerPage}
+            setItemsPerPage={setItemsPerPage}
+          />
+        )}
       </div>
+
       <div className="pt-10">
         <TrainingList onClick={toggleSection.bind(this, 'education')} />
       </div>
       {isDeleteModalOpen && (
         <DeleteAcademicYearModal
-          title="Xóa Quá Trình"
-          description="Xác nhận muốn xoá Tổ - Bộ môn này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác."
+          title="Xóa Quá Trình Công Tác"
+          description="Xác nhận muốn xóa Quá Trình Công Tác này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác."
           onCancel={() => setIsDeleteModalOpen(false)}
           onConfirm={confirmDelete}
         />
