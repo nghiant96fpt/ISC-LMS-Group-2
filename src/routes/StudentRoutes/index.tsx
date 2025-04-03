@@ -15,6 +15,8 @@ import MyCourse from '../../pages/Student/MyCourse/Index';
 import EssayPage from '../../pages/Student/TestList/essay';
 
 import ExamInfo from '../../pages/Student/TestList/ExamInfo';
+import HistoryClass from '../../pages/Student/ClassList/historyclass';
+import AllScourses from '../../pages/Student/Dashboard/AllScourses';
 import TestResults from '../../pages/Student/TestResults';
 
 const StudentRoutes = () => {
@@ -29,6 +31,8 @@ const StudentRoutes = () => {
         <Route path="score-board" element={<ScoreBoard />} />
         <Route path="exam-schedule" element={<ExamSchedule />} />
         <Route path="notifications" element={<Notifications />} />
+        <Route path="class-history" element={<HistoryClass />} />
+        <Route path="allScourses" element={<AllScourses />} />
         <Route path="help" element={<Help />} />
         <Route path="quiz" element={<Questions />} />
         <Route path="my-course" element={<MyCourse />} />

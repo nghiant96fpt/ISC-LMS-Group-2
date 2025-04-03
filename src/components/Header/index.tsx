@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import userCircle from '../../assets/images/people/user_circle.png';
 import './style.css';
+import { Cookies, useCookies } from 'react-cookie';
+import { AuthContext } from '../../pages/Student/Login/AuthContext';
+import Loading from '../Loading';
 
 
 const Header: React.FC = () => {
@@ -12,10 +15,21 @@ const Header: React.FC = () => {
     setIsLoggedIn(true);
     navigator('/login');
   };
-  const handleLogout = () => setIsLoggedIn(false);
+
+  const [cookies, setCookie, removeCookie] = useCookies(['accessToken', 'refreshToken']);
+  const {setRole} = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+  const handleLogout = () => {
+    setLoading(true);
+    removeCookie('accessToken');
+    removeCookie('refreshToken');
+    setRole(null);
+    setLoading(false);
+  }
 
   return (
     <header className="header">
+      <Loading isLoading={loading}/>
       <div></div>
       <div className="user-section">
         {isLoggedIn ? (

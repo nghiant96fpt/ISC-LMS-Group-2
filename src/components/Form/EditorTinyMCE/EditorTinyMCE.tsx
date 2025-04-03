@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { tinymceConfig } from './tinymceConfig';
 import tinymceApiKey from './tinymceApiKey';
 import './styles.css';
+
 interface EditorTinyMCEProps {
   initialValue?: string;
   handleEditorContentChange: (value: string) => void;

@@ -1,3 +1,3 @@
 import { env } from '../../../config';
-const tinymceApiKey = env.tinymceApiKey;
+const tinymceApiKey: string = String(env.TINYMCE_API_KEY) || '';
 export default tinymceApiKey;
