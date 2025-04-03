@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import DropdownSelectionComponent from '../../../../../components/DropdownSelection';
-import SearchInputProps from '../../../../../components/SearchInput';
-import icon from './icon';
 
+import icon from './icon';
+import { Link } from 'react-router';
+import search_icon from '../../../../../../src/assets/icons/fi_search.png';
 interface User {
   id: number;
   code: string;
@@ -77,44 +77,135 @@ interface ApiResponse {
 }
 
 const ClassroomExpired: React.FC = () => {
-  const nestOptions = ['Tổ 1', 'Tổ 2', 'Tổ 3'];
-  const subjectOptions = ['Tiếng Anh', 'Toán', 'Vật lý', 'Hóa học', 'Sinh học'];
-
+  // Basic states
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [teachingAssignments, setTeachingAssignments] = useState<TeachingAssignment[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [sortColumn, setSortColumn] = useState('Id');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+  // Filter states
+  const [subjectGroups, setSubjectGroups] = useState<SubjectGroup[]>([]);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [selectedGroupId, setSelectedGroupId] = useState<string>('');
+  const [selectedSubjectId, setSelectedSubjectId] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Initial data loading
+  useEffect(() => {
+    fetchSubjectGroups();
+  }, []);
 
   useEffect(() => {
     fetchData();
-  }, [currentPage, itemsPerPage]);
+  }, [currentPage, itemsPerPage, sortColumn, sortOrder, selectedGroupId, selectedSubjectId, searchTerm]);
+
+  const fetchSubjectGroups = async () => {
+    try {
+      const response = await fetch('https://fivefood.shop/api/subject-groups');
+      const data = await response.json();
+      if (data.code === 0) {
+        setSubjectGroups(data.data);
+      }
+    } catch (err) {
+      console.error('Error fetching subject groups:', err);
+    }
+  };
+
+  const fetchSubjects = async (groupId: string) => {
+    if (!groupId) {
+      setSubjects([]);
+      return;
+    }
+    try {
+      const response = await fetch(`https://fivefood.shop/api/subjects?groupId=${groupId}`);
+      const data = await response.json();
+      if (data.code === 0) {
+        setSubjects(data.data);
+      }
+    } catch (err) {
+      console.error('Error fetching subjects:', err);
+      setSubjects([]);
+    }
+  };
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `https://fivefood.shop/api/teaching-assignments/class-expired?page=${currentPage}&pageSize=${itemsPerPage}&sortColumn=Id&sortOrder=asc`,
-      );
+      let url = `https://fivefood.shop/api/teaching-assignments/class-expired?page=${currentPage}&pageSize=${itemsPerPage}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`;
 
+      if (selectedGroupId) {
+        url += `&subjectGroupId=${selectedGroupId}`;
+      }
+      if (selectedSubjectId) {
+        url += `&subjectId=${selectedSubjectId}`;
+      }
+      if (searchTerm) {
+        url += `&search=${encodeURIComponent(searchTerm)}`;
+      }
+
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
 
       const data: ApiResponse = await response.json();
 
-      if (data.code === 0 && data.message === 'Success') {
-        setTeachingAssignments(data.data);
-        setTotalPages(data.totalPages);
+      if (data.code === 0) {
+        let filtered = data.data;
+
+        if (searchTerm.trim()) {
+          const searchLower = searchTerm.toLowerCase();
+          filtered = filtered.filter(
+            (item) =>
+              item.user.code.toLowerCase().includes(searchLower) ||
+              item.user.fullName.toLowerCase().includes(searchLower) ||
+              item.class.name.toLowerCase().includes(searchLower) ||
+              item.subject.name.toLowerCase().includes(searchLower),
+          );
+        }
+
+        if (filtered.length === 0) {
+          setTeachingAssignments([]);
+          setTotalPages(0);
+          setError('Không tìm thấy dữ liệu phù hợp với bộ lọc');
+        } else {
+          setTeachingAssignments(filtered);
+          // Sử dụng totalPages từ API response thay vì tính toán lại
+          setTotalPages(data.totalPages);
+          setError('');
+        }
       } else {
         throw new Error(data.message);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error occurred');
+      setTeachingAssignments([]);
+      setTotalPages(0);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGroupChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSelectedGroupId(value);
+    setSelectedSubjectId('');
+    fetchSubjects(value);
+    setCurrentPage(1);
+  };
+
+  const handleSubjectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubjectId(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleSort = (column: string) => {
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    setSortColumn(column);
   };
 
   const formatDate = (dateString: string) => {
@@ -195,20 +286,84 @@ const ClassroomExpired: React.FC = () => {
     return pageButtons;
   };
 
+  // Add a new function to handle reset
+  const handleReset = () => {
+    setSelectedGroupId('');
+    setSelectedSubjectId('');
+    setSearchTerm('');
+    setCurrentPage(1);
+    fetchData();
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+const getStatusStyles = (active: boolean) => {
+  if (active) {
+    return {
+      background: 'linear-gradient(90deg, rgba(255, 122, 0, 0.1) 0%, rgba(255, 122, 0, 0.2) 100%)',
+      color: '#FF5A00',
+      border: '1px solid #FF5A00',
+    };
+  }
+  return {
+    background: 'linear-gradient(90deg, rgba(128, 128, 128, 0.1) 0%, rgba(128, 128, 128, 0.2) 100%)',
+    color: '#666666',
+    border: '1px solid #666666',
+  };
+};
   return (
     <div className="flex flex-col h-full w-full">
       <div className="flex items-center justify-between mb-3 px-2 md:px-10 w-full">
         <div className="flex space-x-8">
           <div>
-            <div className="text-lg font-bold">Chọn tổ</div>
-            <DropdownSelectionComponent width={'12rem'} placeholder="Chọn tổ..." options={nestOptions} />
+            <div className="text-lg font-bold">Chọn tổ bộ môn</div>
+            <select
+              className="w-48 h-10 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              value={selectedGroupId}
+              onChange={handleGroupChange}
+            >
+              <option value="">Tất cả tổ bộ môn</option>
+              {subjectGroups.map((group) => (
+                <option key={group.id} value={group.id}>
+                  {group.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
-            <div className="text-lg font-bold">Chọn bộ môn</div>
-            <DropdownSelectionComponent width={'12rem'} placeholder="Chọn bộ môn..." options={subjectOptions} />
+            <div className="text-lg font-bold">Chọn môn học</div>
+            <select
+              className="w-48 h-10 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              value={selectedSubjectId}
+              onChange={handleSubjectChange}
+              disabled={!selectedGroupId}
+            >
+              <option value="">Tất cả môn học</option>
+              {subjects.map((subject) => (
+                <option key={subject.id} value={subject.id}>
+                  {subject.name}
+                </option>
+              ))}
+            </select>
           </div>
+          {(selectedGroupId || selectedSubjectId || searchTerm) && (
+            <button onClick={handleReset} className="mt-auto mb-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md text-sm font-medium">
+              Reset bộ lọc
+            </button>
+          )}
         </div>
-        <SearchInputProps placeholder="Tìm kiếm theo topic..." />
+        <div className="relative w-full max-w-sm">
+          <img src={search_icon} alt="Search" className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Tìm kiếm theo mã, tên GV, lớp, môn học..."
+            className="w-full font-[--font-Source-Sans-Pro] font-[weight-Source-Sans-Pro-3] px-10 py-2 border bg-[#F0F3F6] rounded-[24px] outline-none focus:border-[--border-orange]"
+          />
+        </div>
       </div>
 
       {/* Bảng dữ liệu */}
@@ -222,12 +377,19 @@ const ClassroomExpired: React.FC = () => {
             <thead className="bg-gradient-to-r from-background-orange-1 to-background-1 text-while-text">
               <tr>
                 <th className="py-3 px-2 md:px-4 text-left">
-                  <div className="flex items-center gap-2 font-sans">
+                  <div className="flex items-center gap-2 font-sans cursor-pointer" onClick={() => handleSort('class.code')}>
                     <span>Mã lớp</span>
+                    <img
+                      src={icon.arrow}
+                      alt="Sort"
+                      className={`w-5 h-5 md:w-6 md:h-6 object-contain transition-transform ${
+                        sortColumn === 'class.code' && sortOrder === 'desc' ? 'transform rotate-180' : ''
+                      }`}
+                    />
                   </div>
                 </th>
                 <th className="py-3 px-2 md:px-4 text-left">
-                  <div className="flex items-center gap-2 font-sans">
+                  <div className="flex items-center gap-2 font-sans cursor-pointer" onClick={() => handleSort('class.name')}>
                     <span>Tên lớp</span>
                   </div>
                 </th>
@@ -273,12 +435,16 @@ const ClassroomExpired: React.FC = () => {
                   <td className="py-3 px-2 md:px-4">{item.user.fullName}</td>
                   <td className="py-3 px-2 md:px-4">{item.topics.name}</td>
                   <td className="py-3 px-2 md:px-4 text-center">
-                    <span className={`px-2 py-1 rounded-full text-xs ${item.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                      {item.active ? 'Đang hoạt động' : 'Không hoạt động'}
+                    <span style={getStatusStyles(item.active)} className="px-4 py-1.5 rounded-full text-sm font-medium inline-block min-w-[120px]">
+                      {item.active ? 'Đang diễn ra' : 'Kết thúc'}
                     </span>
                   </td>
                   <td className="py-3 px-2 md:px-4 text-center">
-                    <img src={icon.infoOutline} alt="Info" className="w-5 h-5 md:w-6 md:h-6 object-contain cursor-pointer" />
+                    <Link to={`/teacher/classroom-detail/${item.class.code}`}>
+                      <button>
+                        <img src={icon.infoOutline} alt="Chi tiết" className="w-5 h-5 md:w-6 md:h-6 object-contain cursor-pointer" />
+                      </button>
+                    </Link>
                   </td>
                 </tr>
               ))}

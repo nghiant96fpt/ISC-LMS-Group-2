@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import DropdownSelectionComponent from '../../../../../components/DropdownSelection';
-import SearchInputProps from '../../../../../components/SearchInput';
+
 import Button from '../../../../../components/Button';
 import icon from './icon';
-
-
+import { Link } from 'react-router';
+import search_icon from '../../../../../../src/assets/icons/fi_search.png';
 interface TeachingAssignment {
   user: {
     code: string;
@@ -14,8 +13,13 @@ interface TeachingAssignment {
     name: string;
   };
   subject: {
+    id: number;
     name: string;
   };
+  subjectGroup: {
+    id: number;
+    name: string;
+  }[];
   semester: {
     name: string;
   };
@@ -24,14 +28,18 @@ interface TeachingAssignment {
   active: boolean;
 }
 
-// Define props for SearchInput component
-interface SearchInputPropsType {
-  placeholder: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSearch: () => Promise<void>;
+interface SubjectGroup {
+  id: number;
+  name: string;
+}
+
+interface Subject {
+  id: number;
+  name: string;
 }
 
 const TeachingAssignments = () => {
+  // Basic states
   const [teachingAssignments, setTeachingAssignments] = useState<TeachingAssignment[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -42,34 +50,121 @@ const TeachingAssignments = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const subjectGroupOptions = ['Tất cả', 'Khoa học tự nhiên', 'Khoa học xã hội', 'Nghệ thuật', 'Thể dục thể thao', 'Ngoại ngữ', 'Tin học'];
-  const statusOptions = ['Tất cả', 'Đang hoạt động', 'Không hoạt động'];
+  // Filter states
+  const [subjectGroups, setSubjectGroups] = useState<SubjectGroup[]>([]);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [selectedGroupId, setSelectedGroupId] = useState<string>('');
+  const [selectedSubjectId, setSelectedSubjectId] = useState<string>('');
+  const [filteredData, setFilteredData] = useState<TeachingAssignment[]>([]);
 
+  //
+  useEffect(() => {
+    fetchSubjectGroups();
+  }, []);
+
+  // Fetch data  filters change
   useEffect(() => {
     fetchTeachingAssignments();
-  }, [currentPage, itemsPerPage, sortColumn, sortOrder, searchTerm]);
+  }, [currentPage, itemsPerPage, sortColumn, sortOrder, selectedGroupId, selectedSubjectId, searchTerm]);
+
+  const fetchSubjectGroups = async () => {
+    try {
+      const response = await fetch('https://fivefood.shop/api/subject-groups');
+      const data = await response.json();
+      if (data.code === 0) {
+        setSubjectGroups(data.data);
+      }
+    } catch (err) {
+      console.error('Error fetching subject groups:', err);
+    }
+  };
+
+  const fetchSubjects = async (groupId: string) => {
+    if (!groupId) {
+      setSubjects([]);
+      return;
+    }
+    try {
+      const response = await fetch(`https://fivefood.shop/api/subjects?groupId=${groupId}`);
+      const data = await response.json();
+      if (data.code === 0) {
+        setSubjects(data.data);
+      }
+    } catch (err) {
+      console.error('Error fetching subjects:', err);
+      setSubjects([]);
+    }
+  };
 
   const fetchTeachingAssignments = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `https://fivefood.shop/api/teaching-assignments/class-not-expired?page=${currentPage}&pageSize=${itemsPerPage}&sortColumn=${sortColumn}&sortOrder=${sortOrder}${
-          searchTerm ? `&search=${searchTerm}` : ''
-        }`,
-      );
+      let url = `https://fivefood.shop/api/teaching-assignments/class-not-expired?page=${currentPage}&pageSize=${itemsPerPage}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`;
 
+      if (selectedGroupId) {
+        url += `&subjectGroupId=${selectedGroupId}`;
+      }
+      if (selectedSubjectId) {
+        url += `&subjectId=${selectedSubjectId}`;
+      }
+
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       const data = await response.json();
-      setTeachingAssignments(data.data || []);
-      setTotalPages(data.totalPages || 1);
-      setLoading(false);
+
+      //
+      const totalItems = data.totalItems || data.data.length; // Thay đổi theo cấu trúc response của API
+      const calculatedTotalPages = Math.ceil(totalItems / itemsPerPage);
+
+      let filtered = data.data || [];
+
+      //
+      if (selectedGroupId) {
+        filtered = filtered.filter((item: TeachingAssignment) => item.subjectGroup.some((group) => group.id.toString() === selectedGroupId));
+      }
+      if (selectedSubjectId) {
+        filtered = filtered.filter((item: TeachingAssignment) => item.subject.id.toString() === selectedSubjectId);
+      }
+
+      // Apply search term filter
+      if (searchTerm.trim()) {
+        const searchLower = searchTerm.toLowerCase();
+        filtered = filtered.filter(
+          (item: TeachingAssignment) =>
+            item.user.fullName.toLowerCase().includes(searchLower) ||
+            item.class.name.toLowerCase().includes(searchLower) ||
+            item.subject.name.toLowerCase().includes(searchLower),
+        );
+      }
+
+      setTeachingAssignments(filtered);
+      setTotalPages(calculatedTotalPages);
+      setError(null);
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : 'Unknown error occurred');
+      setTeachingAssignments([]);
+    } finally {
       setLoading(false);
     }
+  };
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+  const handleGroupChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSelectedGroupId(value);
+    setSelectedSubjectId('');
+    fetchSubjects(value);
+    setCurrentPage(1);
+  };
+
+  const handleSubjectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubjectId(e.target.value);
+    setCurrentPage(1);
   };
 
   const handleSort = (column: string) => {
@@ -157,16 +252,48 @@ const TeachingAssignments = () => {
       <div className="flex items-center justify-between mb-3 px-2 md:px-10 w-full">
         <div className="flex space-x-8">
           <div>
-            <div className="text-lg font-bold">Nhóm môn học</div>
-            <DropdownSelectionComponent width={'12rem'} placeholder="Chọn nhóm môn..." options={subjectGroupOptions} />
+            <div className="text-lg font-bold">Chọn tổ bộ môn</div>
+            <select
+              className="w-48 h-10 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              value={selectedGroupId}
+              onChange={handleGroupChange}
+            >
+              <option value="">Tất cả tổ bộ môn</option>
+              {subjectGroups.map((group) => (
+                <option key={group.id} value={group.id}>
+                  {group.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
-            <div className="text-lg font-bold">Trạng thái</div>
-            <DropdownSelectionComponent width={'12rem'} placeholder="Chọn trạng thái..." options={statusOptions} />
+            <div className="text-lg font-bold">Chọn môn học</div>
+            <select
+              className="w-48 h-10 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              value={selectedSubjectId}
+              onChange={handleSubjectChange}
+              disabled={!selectedGroupId}
+            >
+              <option value="">Tất cả môn học</option>
+              {subjects.map((subject) => (
+                <option key={subject.id} value={subject.id}>
+                  {subject.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
-        <SearchInputProps placeholder="Tìm kiếm..."  onSearch={fetchTeachingAssignments} />
+        <div className="relative w-full max-w-sm">
+          <img src={search_icon} alt="Search" className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Tìm kiếm theo tên, lớp, môn học..."
+            className="w-full font-[--font-Source-Sans-Pro] font-[weight-Source-Sans-Pro-3] px-10 py-2 border bg-[#F0F3F6] rounded-[24px] outline-none focus:border-[--border-orange]"
+          />
+        </div>
       </div>
 
       <div className="overflow-x-auto flex-grow px-2 md:px-10 w-full">
@@ -215,10 +342,14 @@ const TeachingAssignments = () => {
                   <td className="py-3 px-2 md:px-4">{getTimeRange(item.startDate, item.endDate)}</td>
                   <td className="py-3 px-2 md:px-4">{item.semester.name}</td>
                   <td className="py-3 px-2 md:px-4 text-left">
-                    <Button children={item.active ? 'Bắt đầu' : 'Bắt đầu'} size="mini" className={item.active ? 'primary' : 'secondary'} />
+                    <Button children={item.active ? 'Đang diễn ra' : 'Bắt đầu'} size="mini" className={item.active ? 'primary' : 'secondary'} />
                   </td>
                   <td className="py-3 px-2 md:px-4 text-center">
-                    <img src={icon.infoOutline} alt="Chi tiết" className="w-5 h-5 md:w-6 md:h-6 object-contain cursor-pointer" />
+                    <Link to={`/teacher/classroom-detail/${item.user.code}`}>
+                      <button>
+                        <img src={icon.infoOutline} alt="Chi tiết" className="w-5 h-5 md:w-6 md:h-6 object-contain cursor-pointer" />
+                      </button>
+                    </Link>
                   </td>
                 </tr>
               ))}
