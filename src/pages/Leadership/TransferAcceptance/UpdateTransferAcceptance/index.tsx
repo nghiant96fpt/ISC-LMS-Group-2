@@ -7,6 +7,7 @@ import DateInput from '../../../../components/Date';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import { useParams } from 'react-router';
+
 const UpdateTransferAcceptance = () => {
   const {
     register,
@@ -34,7 +35,16 @@ const UpdateTransferAcceptance = () => {
   const [success, setSuccess] = useState(false);
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [dataLoaded, setDataLoaded] = useState(false);
-const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [provinces, setProvinces] = useState<Province[]>([]);
+  const [districts, setDistricts] = useState<Districts[]>([]);
+  const [selectedProvince, setSelectedProvince] = useState('');
+
+  // Thêm state để lưu tên tỉnh/huyện từ API
+  const [provinceName, setProvinceName] = useState('');
+  const [districtName, setDistrictName] = useState('');
+
   interface Province {
     provinceId: number;
     provinceName: string;
@@ -45,89 +55,177 @@ const { id } = useParams<{ id: string }>();
     districtName: string;
   }
 
-  const [provinces, setProvinces] = useState<Province[]>([]);
-  const [districts, setDistricts] = useState<Districts[]>([]);
-  const [selectedProvince, setSelectedProvince] = useState('');
-
-  // Thêm useEffect để lấy dữ liệu chi tiết chuyển trường
   useEffect(() => {
-    
-    axios
-      .get(`https://fivefood.shop/api/transfer-school/${id}`)
-      .then((response) => {
-        const data = response.data.data;
-        if (data) {
-          // Điền thông tin vào form
-          setValue('studentName', data.fullName || '');
-          setValue('studentID', data.studentCode || '');
-          setValue('transferToSchool', data.transferToSchool || '');
-          setValue('reason', data.reason || '');
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        // Lấy danh sách tỉnh/thành
+        const provincesResponse = await axios.get('https://fivefood.shop/api/address/provinces');
+        const provincesData = provincesResponse.data.data || [];
+        setProvinces(provincesData);
 
-          // Xử lý ngày chuyển đến
-          if (data.transferSchoolDate) {
-            setTransferDate(dayjs(data.transferSchoolDate));
-          }
+        if (id) {
+          // Lấy thông tin chi tiết chuyển trường
+          const response = await axios.get(`https://fivefood.shop/api/transfer-school/${id}`);
+          const data = response.data.data;
 
-          // Xử lý học kỳ (cần phân tích chuỗi "Học kỳ 2 (Năm học 2015 - 2016)")
-          if (data.transferSemester) {
-            const semesterMatch = data.transferSemester.match(/Học kỳ (\d+)/);
-            if (semesterMatch && semesterMatch[1]) {
-              setSelectedSemester(parseInt(semesterMatch[1]));
+          if (data) {
+            // Set các giá trị cơ bản
+            setValue('studentName', data.fullName || '');
+            setValue('studentID', data.studentCode || '');
+            setValue('transferToSchool', data.transferToSchool || '');
+            setValue('reason', data.reason || '');
+
+            // Xử lý ngày chuyển đến
+            if (data.transferSchoolDate) {
+              setTransferDate(dayjs(data.transferSchoolDate));
             }
-          }
 
-          // Xử lý tệp đính kèm
-          if (data.attachmentName) {
-            setFileName(data.attachmentName);
-          }
-          if (data.attachmentPath) {
-            setAttachmentPath(data.attachmentPath);
-          }
+            // Xử lý học kỳ
+            if (data.semesterId) {
+              setSelectedSemester(data.semesterId);
+            } else if (data.transferSemester) {
+              const semesterMatch = data.transferSemester.match(/Học kỳ (\d+)/);
+              if (semesterMatch) {
+                setSelectedSemester(Number(semesterMatch[1]));
+              }
+            }
 
-          // Đánh dấu đã tải dữ liệu
-          setDataLoaded(true);
+            // Xử lý tỉnh/thành và quận/huyện
+            if (data.provinceCode) {
+              const provinceCode = data.provinceCode.toString();
+              setSelectedProvince(provinceCode);
+
+              // Lưu tên tỉnh từ API để hiển thị
+              if (data.provinceName) {
+                setProvinceName(data.provinceName);
+              }
+
+              // Kiểm tra xem tỉnh đã có trong danh sách chưa
+              if (!provincesData.some((p: Province) => p.provinceId.toString() === provinceCode) && data.provinceName) {
+                // Nếu chưa có, thêm vào danh sách provinces
+                setProvinces((prev) => [
+                  ...prev,
+                  {
+                    provinceId: parseInt(provinceCode),
+                    provinceName: data.provinceName,
+                  },
+                ]);
+              }
+
+              // Lấy danh sách quận/huyện dựa trên tỉnh/thành đã chọn
+              try {
+                const districtResponse = await axios.get(`https://fivefood.shop/api/address/districts?provinceId=${provinceCode}`);
+                const districtsData = districtResponse.data.data || [];
+                setDistricts(districtsData);
+
+                // Xử lý quận/huyện
+                if (data.districtCode) {
+                  const districtCode = data.districtCode.toString();
+                  setSelectedDistrict(districtCode);
+
+                  // Lưu tên huyện từ API để hiển thị
+                  if (data.districtName) {
+                    setDistrictName(data.districtName);
+                  }
+
+                  // Kiểm tra xem quận/huyện đã có trong danh sách chưa
+                  if (!districtsData.some((d: Districts) => d.districtId.toString() === districtCode) && data.districtName) {
+                    // Nếu chưa có, thêm vào danh sách districts
+                    setDistricts((prev) => [
+                      ...prev,
+                      {
+                        districtId: parseInt(districtCode),
+                        districtName: data.districtName,
+                      },
+                    ]);
+                  }
+                }
+              } catch (districtError) {
+                console.error('Lỗi khi lấy danh sách quận/huyện:', districtError);
+                // Nếu API lỗi nhưng vẫn có districtCode và districtName
+                if (data.districtCode && data.districtName) {
+                  setSelectedDistrict(data.districtCode.toString());
+                  setDistrictName(data.districtName);
+                  setDistricts([
+                    {
+                      districtId: data.districtCode,
+                      districtName: data.districtName,
+                    },
+                  ]);
+                }
+              }
+            }
+
+            // Xử lý file đính kèm
+            if (data.attachmentName) {
+              setFileName(data.attachmentName);
+            }
+            if (data.attachmentPath) {
+              setAttachmentPath(data.attachmentPath);
+            }
+
+            setDataLoaded(true);
+          }
         }
-      })
-      .catch((err) => {
-        console.error('Lỗi khi lấy thông tin chi tiết chuyển trường:', err);
-        setError('Không thể tải thông tin chi tiết chuyển trường');
-      });
-  }, [setValue]);
+      } catch (error) {
+        console.error('Lỗi khi lấy thông tin:', error);
+        setError('Không thể tải thông tin. Vui lòng thử lại sau.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  // Lấy danh sách tỉnh/thành
-  useEffect(() => {
-    axios
-      .get('https://fivefood.shop/api/address/provinces')
-      .then((res) => {
-        setProvinces(Array.isArray(res.data.data) ? res.data.data : []);
-      })
-      .catch((err) => console.error('Lỗi khi lấy tỉnh/thành: ', err));
-  }, []);
+    fetchData();
+  }, [id, setValue]);
+
+  const handleProvinceChange = async (provinceId: string) => {
+    try {
+      setSelectedProvince(provinceId);
+      setSelectedDistrict('');
+      setDistrictName(''); // Reset tên huyện khi đổi tỉnh
+
+      if (provinceId) {
+        // Cập nhật tên tỉnh
+        const selectedProv = provinces.find((p) => p.provinceId.toString() === provinceId);
+        if (selectedProv) {
+          setProvinceName(selectedProv.provinceName);
+        }
+
+        // Lấy danh sách quận/huyện mới
+        const response = await axios.get(`https://fivefood.shop/api/address/districts?provinceId=${provinceId}`);
+        const districtsData = response.data.data || [];
+        setDistricts(districtsData);
+      } else {
+        setProvinceName('');
+        setDistricts([]);
+      }
+    } catch (error) {
+      console.error('Lỗi khi lấy danh sách quận/huyện:', error);
+      setDistricts([]);
+    }
+  };
+
+  const handleDistrictChange = (districtId: string) => {
+    if (!districtId) {
+      setSelectedDistrict('');
+      setDistrictName('');
+      return;
+    }
+
+    setSelectedDistrict(districtId);
+
+    // Cập nhật tên huyện
+    const selectedDist = districts.find((d) => d.districtId.toString() === districtId);
+    if (selectedDist) {
+      setDistrictName(selectedDist.districtName);
+    }
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
       setFileName(event.target.files[0].name);
     }
-  };
-
-  const handleProvinceChange = (provinceId: string) => {
-    if (!provinceId) {
-      return;
-    }
-    setSelectedProvince(provinceId);
-    axios
-      .get(`https://fivefood.shop/api/address/districts?provinceId=${provinceId}`)
-      .then((res) => {
-        setDistricts(res.data.data);
-      })
-      .catch((err) => console.error('Lỗi khi lấy quận/huyện: ', err));
-  };
-
-  const handleDistrictChange = (districtId: string) => {
-    if (!districtId) {
-      return;
-    }
-    setSelectedDistrict(districtId);
   };
 
   const handleFileUpload = async (file: File) => {
@@ -158,8 +256,7 @@ const { id } = useParams<{ id: string }>();
         !selectedSemester ||
         !selectedProvince ||
         !selectedDistrict ||
-        !data.transferToSchool ||
-        !data.schoolAddress
+        !data.transferToSchool
       ) {
         setError('Vui lòng điền đầy đủ các trường bắt buộc');
         alert('Vui lòng điền đầy đủ các trường bắt buộc (*)');
@@ -188,15 +285,17 @@ const { id } = useParams<{ id: string }>();
         reason: data.reason || '',
         provinceCode: parseInt(selectedProvince) || 0,
         districtCode: parseInt(selectedDistrict) || 0,
+        provinceName: provinceName, // Gửi tên tỉnh
+        districtName: districtName, // Gửi tên huyện
         attachmentName: attachmentData.name,
         attachmentPath: attachmentData.path,
         semesterId: selectedSemester || 0,
         userId: 0,
       };
 
-      const response = await axios.put('https://fivefood.shop/api/transfer-school', transferData, {
+      const response = await axios.put(`https://fivefood.shop/api/transfer-school/${id}`, transferData, {
         headers: {
-          'Content-Type': 'application/json-patch+json',
+          'Content-Type': 'application/json',
           accept: '*/*',
         },
       });
@@ -288,15 +387,20 @@ const { id } = useParams<{ id: string }>();
             Tỉnh/Thành: <span className="text-red-500">*</span>
           </label>
           <div className="w-full md:w-[585px]">
-            <select className="w-full p-2 bg-[#F2F2F2] rounded" onChange={(e) => handleProvinceChange(e.target.value)} value={selectedProvince}>
+            <select
+              className="w-full p-2 bg-[#F2F2F2] rounded"
+              onChange={(e) => handleProvinceChange(e.target.value)}
+              value={selectedProvince || ''}
+              disabled={isLoading}
+            >
               <option value="">Chọn tỉnh/thành</option>
               {provinces.map((province) => (
-                <option key={province.provinceId} value={province.provinceId}>
-                  {province.provinceName}
+                <option key={province.provinceId} value={province.provinceId.toString()}>
+                  {province.provinceName || `Tỉnh/Thành ${province.provinceId}`}
                 </option>
               ))}
             </select>
-            {!selectedProvince && isSubmitted && <span className="text-red-500 text-sm">Vui lòng chọn tỉnh/thành</span>}
+            {isSubmitted && !selectedProvince && <span className="text-red-500 text-sm">Vui lòng chọn tỉnh/thành</span>}
           </div>
         </div>
 
@@ -308,18 +412,18 @@ const { id } = useParams<{ id: string }>();
           <div className="w-full md:w-[585px]">
             <select
               className="w-full p-2 bg-[#F2F2F2] rounded"
-              disabled={!selectedProvince}
+              disabled={!selectedProvince || isLoading}
               onChange={(e) => handleDistrictChange(e.target.value)}
-              value={selectedDistrict}
+              value={selectedDistrict || ''}
             >
               <option value="">Chọn quận/huyện</option>
               {districts.map((district) => (
-                <option key={district.districtId} value={district.districtId}>
-                  {district.districtName}
+                <option key={district.districtId} value={district.districtId.toString()}>
+                  {district.districtName || `Quận/Huyện ${district.districtId}`}
                 </option>
               ))}
             </select>
-            {!selectedDistrict && selectedProvince && isSubmitted && <span className="text-red-500 text-sm">Vui lòng chọn quận/huyện</span>}
+            {selectedProvince && isSubmitted && !selectedDistrict && <span className="text-red-500 text-sm">Vui lòng chọn quận/huyện</span>}
           </div>
         </div>
 
@@ -335,21 +439,6 @@ const { id } = useParams<{ id: string }>();
               className="w-full p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
             />
             {errors.transferToSchool?.message && <span className="text-red-500 text-sm">{String(errors.transferToSchool.message)}</span>}
-          </div>
-        </div>
-
-        {/* Địa chỉ trường */}
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <label className="block font-medium">
-            Địa chỉ trường: <span className="text-red-500">*</span>
-          </label>
-          <div className="w-full md:w-[585px]">
-            <input
-              {...register('schoolAddress', { required: 'Vui lòng nhập địa chỉ trường' })}
-              placeholder="Nhập địa chỉ trường học"
-              className="w-full p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
-            />
-            {errors.schoolAddress?.message && <span className="text-red-500 text-sm">{String(errors.schoolAddress.message)}</span>}
           </div>
         </div>
 

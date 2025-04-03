@@ -41,7 +41,7 @@ const ListTransferAcceptance = () => {
           transferToSchool: item.transferToSchool,
           semesterStart: new Date(item.semesterStart),
           semesterEnd: new Date(item.semesterEnd),
-          grade: item.gradeLevelId,
+          grade: item.gradeLevel,
         }));
 
         setData(transformedData);

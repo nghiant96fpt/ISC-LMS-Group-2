@@ -6,6 +6,7 @@ import './index.css';
 import DateInput from '../../../../components/Date';
 import dayjs from 'dayjs';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 const AddTransferAcceptance = () => {
   const {
@@ -26,13 +27,13 @@ const AddTransferAcceptance = () => {
   });
   const [fileName, setFileName] = useState('');
   const [transferDate, setTransferDate] = useState<dayjs.Dayjs | null>(null);
-  const [selectedSemester, setSelectedSemester] = useState<number | null>(null);
+  const [selectedSemester, setSelectedSemester] = useState<string | null>(null);
   const [attachmentPath, setAttachmentPath] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const [selectedDistrict, setSelectedDistrict] = useState('');
-
+  const [selectedDistrict, setSelectedDistrict] = useState<string>('');
+  const [cookies] = useCookies(['accessToken']);
   interface Province {
     provinceId: number;
     provinceName: string;
@@ -43,19 +44,33 @@ const AddTransferAcceptance = () => {
     districtName: string;
   }
 
+  interface TransferData {
+    studentId: number;
+    fullName: string;
+    transferSchoolDate: string;
+    transferToSchool: string;
+    schoolAddress: string;
+    reason: string;
+    provinceCode: number;
+    districtCode: number;
+    attachmentName: string;
+    attachmentPath: string;
+    semesterId: number;
+    userId: number;
+  }
+
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [districts, setDistricts] = useState<Districts[]>([]);
-  const [selectedProvince, setSelectedProvince] = useState('');
+  const [selectedProvince, setSelectedProvince] = useState<string>('');
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
       setFileName(event.target.files[0].name);
     }
   };
-
   const onSubmit = async (data: any) => {
     try {
-      // Kiểm tra dữ liệu trước khi gửi
+      // Validation checks
       if (
         !data.studentName ||
         !data.studentID ||
@@ -71,57 +86,68 @@ const AddTransferAcceptance = () => {
         return;
       }
 
-      console.log('Form data being submitted:', data); // Debug
       setLoading(true);
       setError('');
-      setSuccess(false); // Reset trạng thái thành công
+      setSuccess(false);
 
-      // Upload tệp nếu có
-      let attachmentData = { name: '', path: '' };
-      if (data.attachment && data.attachment[0]) {
-        const fileResponse = await handleFileUpload(data.attachment[0]);
-        attachmentData = {
-          name: data.attachment[0].name,
-          path: fileResponse.filePath, // Điều chỉnh theo phản hồi API thực tế
-        };
-      }
-
-      // Chuẩn bị dữ liệu gửi đi
-      const transferData = {
-        studentId: parseInt(data.studentID) || 0,
-        fullName: data.studentName,
-        transferSchoolDate: transferDate ? transferDate.toISOString() : new Date().toISOString(),
-        transferToSchool: data.transferToSchool,
-        schoolAddress: data.schoolAddress,
-        reason: data.reason || '',
-        provinceCode: parseInt(selectedProvince) || 0,
-        districtCode: parseInt(selectedDistrict) || 0,
-        attachmentName: attachmentData.name,
-        attachmentPath: attachmentData.path,
-        semesterId: selectedSemester || 0,
+      // Format data before sending
+      const transferData: TransferData = {
+        studentId: parseInt(data.studentID.replace(/\D/g, '')), // Chuyển đổi sang số và loại bỏ ký tự không phải số
+        fullName: data.studentName.trim(),
+        transferSchoolDate: dayjs(transferDate).format('YYYY-MM-DD'),
+        transferToSchool: data.transferToSchool.trim(),
+        schoolAddress: data.schoolAddress.trim(),
+        reason: data.reason?.trim() || '',
+        provinceCode: parseInt(selectedProvince),
+        districtCode: parseInt(selectedDistrict),
+        attachmentName: '',
+        attachmentPath: '',
+        semesterId: parseInt(selectedSemester || '0'),
         userId: 0,
       };
 
-      console.log('API payload:', transferData); // Debug
-
-      // Gọi API với header đúng
-      const response = await axios.post('https://fivefood.shop/api/transfer-school', transferData, {
-        headers: {
-          'Content-Type': 'application/json-patch+json',
-          accept: '*/*',
-        },
+      // Log data trước khi gửi để debug
+      console.log('Data before sending:', {
+        rawData: data,
+        formattedData: transferData,
+        date: transferDate,
+        province: selectedProvince,
+        district: selectedDistrict,
       });
 
-      console.log('API Response:', response.data);
-      setSuccess(true);
-      alert('Lưu thông tin thành công!');
-      // Có thể thêm: window.location.href = '/danh-sach-chuyen-truong'; // Redirect sau khi thành công
+      const response = await axios.post('https://fivefood.shop/api/transfer-school', transferData, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${cookies.accessToken}`,
+        },
+        withCredentials: true, // Enable sending cookies
+      });
+
+      if (response.data && response.data.success) {
+        // Check for success flag
+        setSuccess(true);
+        alert('Lưu thông tin thành công!');
+        // Optionally redirect or clear form
+      } else {
+        throw new Error(response.data?.message || 'Có lỗi xảy ra');
+      }
     } catch (err: any) {
-      console.error('Chi tiết lỗi:', err);
-      console.error('Response status:', err.response?.status);
-      console.error('Response data:', err.response?.data);
-      setError(err.response?.data?.message || 'Có lỗi xảy ra khi gửi đơn chuyển trường. Vui lòng thử lại sau.');
-      alert('Lỗi: ' + (err.response?.data?.message || 'Có lỗi xảy ra khi gửi đơn chuyển trường'));
+      console.error('Error details:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+      });
+
+      let errorMessage = 'Có lỗi xảy ra khi gửi đơn chuyển trường';
+
+      if (err.response?.status === 401) {
+        errorMessage = 'Phiên đăng nhập hết hạn, vui lòng đăng nhập lại';
+      } else if (err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      }
+
+      setError(errorMessage);
+      alert(`Lỗi: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -182,6 +208,10 @@ const AddTransferAcceptance = () => {
     window.history.back();
   };
 
+  const handleSemesterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSemester(e.target.value);
+  };
+
   return (
     <div className="w-full mx-auto bg-white rounded-lg shadow-md max-w-[800px] p-10 pb-2">
       <h2 className="text-2xl font-semibold text-center mb-2">Tiếp nhận chuyển trường</h2>
@@ -234,7 +264,7 @@ const AddTransferAcceptance = () => {
             Học kỳ chuyển: <span className="text-red-500">*</span>
           </label>
           <div className="w-full md:w-[585px]">
-            <select className="w-full p-2 bg-[#F2F2F2] rounded" onChange={(e) => setSelectedSemester(Number(e.target.value))}>
+            <select className="w-full p-2 bg-[#F2F2F2] rounded" onChange={handleSemesterChange}>
               <option value="">Chọn học kỳ</option>
               <option value="1">Học kỳ I</option>
               <option value="2">Học kỳ II</option>
@@ -325,9 +355,7 @@ const AddTransferAcceptance = () => {
 
         {/* Tệp đính kèm */}
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <label className="font-medium">
-            Tệp đính kèm: <span className="text-red-500">*</span>
-          </label>
+          <label className="font-medium">Tệp đính kèm: {/* Remove required asterisk */}</label>
           <div className="w-full md:w-[585px]">
             <div className="flex items-center space-x-2">
               <div className="flex items-center border rounded px-3 bg-[#F2F2F2] h-10 flex-grow">
@@ -339,7 +367,7 @@ const AddTransferAcceptance = () => {
                 <input type="file" className="hidden" onChange={handleFileChange} />
               </label>
             </div>
-            <p className="text-sm text-gray-500 font-thin italic">Kích thước tệp không vượt quá 250MB.</p>
+            <p className="text-sm text-gray-500 font-thin italic">Tệp đính kèm không bắt buộc.</p>
           </div>
         </div>
 
