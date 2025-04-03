@@ -1,9 +1,12 @@
 import { SchoolTransferListItem } from '../data';
-
+import icon_eye from '../../../../../assets/icons/orange_eye_outline.png';
+import { Link } from 'react-router';
 interface TableRowProps {
   item: SchoolTransferListItem;
   index: number;
 }
+
+
 
 const TableRowComponent = ({ item, index }: TableRowProps) => {
   return (
@@ -35,7 +38,11 @@ const TableRowComponent = ({ item, index }: TableRowProps) => {
       {/* Các nút thao tác */}
       <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
         <div className="flex justify-end space-x-2">
-          <button className="text-blue-600 hover:text-blue-900">Xem</button>
+          <Link to={`/leadership/update-transfer-acceptance/${item.studentId}`}>
+            <button className="text-blue-600 hover:text-blue-900 w-6">
+              <img src={icon_eye} alt="Xem chi tiết" />
+            </button>
+          </Link>
         </div>
       </td>
     </tr>
