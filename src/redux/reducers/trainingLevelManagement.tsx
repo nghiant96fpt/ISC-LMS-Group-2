@@ -41,7 +41,7 @@ export const fetchTrainingLevels = createAsyncThunk(
     const data = await response.json();
     // console.log('check data', data);
 
-    return data.data as TrainingLevel[];
+    return data;
   },
 );
 

@@ -1,7 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import trainingLevelReducer from './reducers/trainingLevelManagement';
+import studentRetentionReducer from './reducers/studentRetention';
 const rootStore = combineReducers({
   trainingLevelManagement: trainingLevelReducer,
+  studentRetention: studentRetentionReducer,
 });
 
 const store = configureStore({

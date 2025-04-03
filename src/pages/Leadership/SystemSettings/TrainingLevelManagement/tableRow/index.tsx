@@ -21,7 +21,8 @@ const ListOfTrainingLevelManagementListTableRow: React.FC<ListOfTrainingLevelMan
   const [sortOrder, setSortOrder] = useState('asc');
 
   // nào bên kia sửa api thì sài cái này
-  // const { TrainingLevelManagement, loading, error } = useSelector((state: RootState) => state.trainingLevelManagement);
+  const { TrainingLevelManagement, loading, error } = useSelector((state: RootState) => state.trainingLevelManagement);
+  console.log(TrainingLevelManagement);
 
   // Mở modal và lưu item cần xóa
   const handleOpenDeleteModal = () => {
