@@ -11,8 +11,19 @@ const AddTransferAcceptance = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isSubmitted, touchedFields },
+    setValue,
+    watch,
+  } = useForm({
+    mode: 'onTouched', // Chỉ validate khi người dùng đã tương tác với trường
+    defaultValues: {
+      studentName: '',
+      studentID: '',
+      transferToSchool: '',
+      schoolAddress: '',
+      reason: '',
+    },
+  });
   const [fileName, setFileName] = useState('');
   const [transferDate, setTransferDate] = useState<dayjs.Dayjs | null>(null);
   const [selectedSemester, setSelectedSemester] = useState<number | null>(null);
@@ -213,7 +224,7 @@ const AddTransferAcceptance = () => {
           </label>
           <div className="custom w-full md:w-[585px]">
             <DateInput value={transferDate} onChange={(date) => setTransferDate(date)} />
-            {!transferDate && <span className="text-red-500 text-sm">Vui lòng chọn ngày chuyển đến</span>}
+            {isSubmitted && !transferDate && <span className="text-red-500 text-sm">Vui lòng chọn ngày chuyển đến</span>}
           </div>
         </div>
 
@@ -229,7 +240,7 @@ const AddTransferAcceptance = () => {
               <option value="2">Học kỳ II</option>
               <option value="3">Học kỳ III</option>
             </select>
-            {!selectedSemester && <span className="text-red-500 text-sm">Vui lòng chọn học kỳ</span>}
+            {isSubmitted && !selectedSemester && <span className="text-red-500 text-sm">Vui lòng chọn học kỳ</span>}
           </div>
         </div>
 
@@ -247,7 +258,7 @@ const AddTransferAcceptance = () => {
                 </option>
               ))}
             </select>
-            {!selectedProvince && <span className="text-red-500 text-sm">Vui lòng chọn tỉnh/thành</span>}
+            {!selectedProvince && isSubmitted && <span className="text-red-500 text-sm">Vui lòng chọn tỉnh/thành</span>}
           </div>
         </div>
 
@@ -325,7 +336,7 @@ const AddTransferAcceptance = () => {
               </div>
               <label className="cursor-pointer border border-orange-500 px-4 py-2 rounded bg-orange-100 hover:bg-orange-200 transition h-10 flex items-center">
                 Chọn tệp tải lên...
-                <input type="file" {...register('attachment')} className="hidden" onChange={handleFileChange} />
+                <input type="file" className="hidden" onChange={handleFileChange} />
               </label>
             </div>
             <p className="text-sm text-gray-500 font-thin italic">Kích thước tệp không vượt quá 250MB.</p>
