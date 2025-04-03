@@ -20,7 +20,7 @@ const MainLayout: React.FC<LayoutProps> = ({ role }) => {
             <Outlet />
           </div>
 
-          <footer className="text-white text-center">
+          <footer className="text-white text-center sticky bottom-0">
             <Footer />
           </footer>
         </div>

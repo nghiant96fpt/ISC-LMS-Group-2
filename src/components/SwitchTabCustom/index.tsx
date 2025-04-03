@@ -9,7 +9,7 @@ const SwitchTabCustom = ({ className, tabs, activeTab, onTabChange }: SwitchTabC
         {tabs.map((tab: Tab) => (
           <button
             key={tab.value}
-            className={`px-6 py-2 rounded-full font-bold transition-all ${className} ${
+            className={`px-6 py-2 rounded-full font-bold transition-all whitespace-nowrap ${className} ${
               activeTab === tab.value ? 'bg-black text-white shadow-md' : 'text-gray-500'
             }`}
             onClick={() => onTabChange?.(tab.value)}

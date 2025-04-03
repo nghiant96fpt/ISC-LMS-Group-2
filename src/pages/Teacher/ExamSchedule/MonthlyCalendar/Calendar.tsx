@@ -153,7 +153,7 @@ const Calendar = ({ setSelectedDate, filters = {}, selectedGrade = "Tất cả" 
     };
 
     return (
-        <div className="w-full max-w-screen-lg mx-auto bg-white-100 p-2 sm:p-4 rounded-2xl shadow-lg">
+        <div className="w-full max-w-screen-lg mx-auto bg-white-100 p-2 sm:p-4 rounded-2xl shadow-lg ">
             <div className="bg-white rounded-lg overflow-hidden">
                 {/* Thanh điều khiển */}
                 <div className="bg-black text-white flex flex-wrap items-center px-2 sm:px-4 py-2 sm:py-3 rounded-t-lg text-xs sm:text-base">

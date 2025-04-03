@@ -4,7 +4,7 @@ import "./style.css";
 
 const TextComponent: React.FC<TextProps> = ({ text, size, font, color, flex, className, align, weight,italic  }) => {
   return (
-    <p
+    <span
       className={`text-component ${flex ? "flex-1" : ""} ${className || ""}`.trim()}
       style={{
         fontSize: typeof size === "number" ? `${size}px` : size ?? "var(--font-size-Source-Sans-Pro-2)",
@@ -20,7 +20,7 @@ const TextComponent: React.FC<TextProps> = ({ text, size, font, color, flex, cla
       }}
     >
       {text}
-    </p>
+      </span>
   );
 };
 

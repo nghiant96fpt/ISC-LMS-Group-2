@@ -227,7 +227,7 @@ const TeacherProfileEdit = () => {
           </div>
         </div>
       </div>
-
+      {/* Bảng thông tin gia đình */}
       <div className="border rounded-lg overflow-hidden mb-6">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
