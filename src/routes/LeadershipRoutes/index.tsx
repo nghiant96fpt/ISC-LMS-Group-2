@@ -94,7 +94,6 @@ import MainClassList from '../../pages/Leadership/DeclareData/ClassList';
 import MainBlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment';
 import MainSectionList from '../../pages/Leadership/DeclareData/SectionList/SectionListData';
 import MainSetupSubjectedit from '../../pages/Leadership/DeclareData/SubjectSettings/SubjecteditData';
-
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -203,8 +202,8 @@ const StudentRoutes = () => {
         <Route path="system-settings/classroom-settings" element={<ClassroomSettings />} />
         <Route path="create-student" element={<StudentCU />} />
         {/*Group - 1 setting*/}
-        <Route path='system-settings/school-info' element={<SchoolInfo/>}/>
-        <Route path='system-settings/school-info/edit' element={<EditSchoolInFo/>}/>
+        <Route path="system-settings/school-info" element={<SchoolInfo />} />
+        <Route path="system-settings/school-info/edit" element={<EditSchoolInFo />} />
         <Route path="system-settings/school-info" element={<SchoolInfo />} />
         <Route path="system-settings/school-info/edit" element={<EditSchoolInFo />} />
         <Route path="training-info/add" element={<AddTrainingProgram />} />

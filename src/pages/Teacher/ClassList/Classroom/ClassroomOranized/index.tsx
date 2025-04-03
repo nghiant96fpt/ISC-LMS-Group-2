@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 import Button from '../../../../../components/Button';
 import icon from './icon';
 import { Link } from 'react-router';
 import search_icon from '../../../../../../src/assets/icons/fi_search.png';
 interface TeachingAssignment {
+  id: number; 
   user: {
     code: string;
     fullName: string;
@@ -246,7 +248,38 @@ const TeachingAssignments = () => {
       </div>
     );
   };
+  const updateTeachingStatus = async (id: number) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch(`https://fivefood.shop/api/teaching-assignments/update-status/${id}`, {
+        method: 'PUT',
+        headers: {
+          accept: '*/*',
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
+      const data = await response.json();
+      if (data.code === 0) {
+        fetchTeachingAssignments();
+      } else {
+        throw new Error(data.message || 'Failed to update status');
+      }
+    } catch (error) {
+      console.error('Error updating teaching status:', error);
+    }
+  };
+
+  const handleUpdateStatus = async (id: number) => {
+    try {
+      await updateTeachingStatus(id);
+      toast.success('Bắt đầu lớp học thành công!');
+      fetchTeachingAssignments();
+    } catch (error) {
+      console.error('Failed to update teaching status:', error);
+      toast.error('Không thể bắt đầu lớp học. Vui lòng thử lại!');
+    }
+  };
   return (
     <div className="flex flex-col h-full w-full">
       <div className="flex items-center justify-between mb-3 px-2 md:px-10 w-full">
@@ -332,6 +365,7 @@ const TeachingAssignments = () => {
                 <th className="py-3 px-2 md:px-4 text-right"></th>
               </tr>
             </thead>
+
             <tbody>
               {teachingAssignments.map((item, index) => (
                 <tr key={index} className={`border-b ${index % 2 === 1 ? 'bg-gray-100' : ''}`}>
@@ -341,8 +375,20 @@ const TeachingAssignments = () => {
                   <td className="py-3 px-2 md:px-4">{item.subject.name}</td>
                   <td className="py-3 px-2 md:px-4">{getTimeRange(item.startDate, item.endDate)}</td>
                   <td className="py-3 px-2 md:px-4">{item.semester.name}</td>
-                  <td className="py-3 px-2 md:px-4 text-left">
-                    <Button children={item.active ? 'Đang diễn ra' : 'Bắt đầu'} size="mini" className={item.active ? 'primary' : 'secondary'} />
+                  <td className="py-3 px-2 md:px-4">
+                    <div title={item.active ? 'Lớp học đang diễn ra' : 'Nhấn để bắt đầu lớp học'}>
+                      <button
+                        type="button"
+                        onClick={() => !item.active && handleUpdateStatus(item.id)}
+                        disabled={item.active}
+                        className={`px-4 py-2 rounded-md text-sm font-medium ${
+                          item.active ? 'bg-gray-200 text-gray-600' : 'bg-orange-500 text-white hover:bg-orange-600'
+                        }`}
+                        style={item.active ? { cursor: 'not-allowed' } : undefined}
+                      >
+                        {item.active ? 'Đang diễn ra' : 'Bắt đầu'}
+                      </button>
+                    </div>
                   </td>
                   <td className="py-3 px-2 md:px-4 text-center">
                     <Link to={`/teacher/classroom-detail/${item.user.code}`}>
