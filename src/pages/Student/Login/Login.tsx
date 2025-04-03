@@ -14,9 +14,10 @@ import { toast } from 'react-toastify';
 
 interface studentLoginProps {
   isLogin: boolean;
+  isChangePassword?: boolean;
 }
 
-const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
+const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
   const navigator = useNavigate();
 
   const {
@@ -82,7 +83,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
       <img src={logo2} alt="logo" />
       <div className="w-full h-full flex justify-end items-center">
         <div className="login-box px-5">
-          <p className="text-4xl font-bold">{isLogin ? 'Đăng Nhập' : 'Cấp lại mật khẩu'}</p>
+          <p className="text-4xl font-bold">{isLogin ? 'Đăng Nhập' : isChangePassword ? 'Đổi mật khẩu' : 'Cấp lại mật khẩu'}</p>
           <div className="mt-10 w-5/6 text-start">
             <p className="mb-1 pb-0">Email</p>
             <Input

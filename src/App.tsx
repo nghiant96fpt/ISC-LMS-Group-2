@@ -33,6 +33,7 @@ function App() {
                 </Route>
                 <Route path="/login" element={<Login isLogin={true} />} />
                 <Route path="/reset" element={<Login isLogin={false} />} />
+                <Route path="/change-password" element={<Login isLogin={false} isChangePassword={true}/>} />
               </Routes>
             </Router>
           </AuthProvider>

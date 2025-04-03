@@ -3,6 +3,7 @@ import createAxiosInstance from '../../../../utils/axiosInstance';
 import { formatDate } from '../../../../utils/formatDate';
 import { parseBoolean } from '../../../../utils/parseBoolean';
 import { useState } from 'react';
+import axios from 'axios';
 
 interface servicesProps {
   isValid: boolean;
@@ -10,6 +11,7 @@ interface servicesProps {
   selectedImage: string;
   UserDefaultAVT: string;
   setLoading: any;
+  reset: any
 }
 type studentType = {
   code: string;
@@ -46,7 +48,6 @@ type familyType = {
 };
 
 const axiosTrue = createAxiosInstance(true);
-let userId = 0;
 
 export const handleCreateUser = (servicesProps: servicesProps): void => {
   servicesProps.setLoading(true);
@@ -92,32 +93,41 @@ export const handleCreateUser = (servicesProps: servicesProps): void => {
         guardianJob: member?.guardianJob || '',
         guardianDob: member?.guardianBornDate ? formatDate(member?.guardianBornDate as Date) : '',
         guardianRole: member?.guardianRole,
-        userId: userId,
       }))
       .filter((item: any) => item?.guardianName.trim() !== '');
-
+    
+    console.log('student: ', studentdata);
+    console.log('family: ', familyData);
+    
     axiosTrue
       .post('api/users', studentdata)
       .then((response) => {
-        if (response?.data?.data) {
-          userId = response?.data?.data?.id;
-          if (familyData) {
-            familyData.forEach((member) => {
-              axiosTrue
-                .post('api/studentinfos', member)
-                .then(() => {
-                  toast.success('Thêm mới thành công !');
-                })
-                .catch(() => {
-                  toast.error('Không thể thêm thông tin gia đình của học viên');
-                });
-            });
+        if (response?.data) {
+          if (response?.data?.code === 1) {
+            toast.error(response?.data?.message);
+          } else {
+            toast.success('Thêm mới học viên thành công !');
+            const userId = response?.data?.data?.id;
+            if (familyData) {
+              familyData.forEach((member) => {
+                member.userId = userId;
+                axiosTrue
+                  .post('api/studentinfos', member)
+                  .then(() => {
+                    toast.success('Thêm thông tin gia đình của học viên thành công !');
+                  })
+                  .catch(() => {
+                    toast.error('Không thể thêm thông tin gia đình của học viên');
+                  });
+              });
+            }
+            servicesProps.reset();
           }
         }
       })
-      .catch((error) => {
-        toast.error('Không thể thêm mới học viên !');
-        console.log(error);
+      .catch((err) => {
+        toast.error('Không thể thêm học viên !');
+        console.log(err);
       })
       .finally(() => {
         servicesProps.setLoading(false);

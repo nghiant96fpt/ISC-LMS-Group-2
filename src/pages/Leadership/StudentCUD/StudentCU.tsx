@@ -63,6 +63,7 @@ const StudentCU = () => {
     getValues,
     setError,
     clearErrors,
+    reset
   } = useForm<formType>({
     defaultValues: {
       fullname: '',
@@ -249,9 +250,9 @@ const StudentCU = () => {
 
   // Học viên
   const handleGetStudents = async () => {
-    const response = await axiosTrue.get('api/users?page=1&search=&sortColumn=id&sortOrder=asc');
-    const data = response?.data?.data?.filter((item: any) => item?.roleId === 3);
-    setStudentCount(data?.length);
+    const response = await axiosTrue.post('api/users/GetQuantityUserByRoleId/3');
+    const data = response?.data?.data;
+    setStudentCount(data);
   };
 
   useEffect(() => {
@@ -298,9 +299,7 @@ const StudentCU = () => {
   }, [selectedDistrict]);
 
   const [isChecked, setIsChecked] = useState(false);
-  const handleCheckTuSinhMa = () => {
-    console.log('isChecked');
-
+  const handleCheckTuSinhMa = async () => {
     setIsChecked(!isChecked);
   };
 
@@ -313,7 +312,7 @@ const StudentCU = () => {
   };
 
   useEffect(() => {
-    if (isChecked) {
+    if (isChecked && studentCount) {
       let code = generateStudentCode(studentCount);
       setValue('code', code);
       clearErrors('code');
@@ -327,7 +326,9 @@ const StudentCU = () => {
     if (isValid) {
       const data = getValues();
 
-      handleCreateUser({ data, isValid, selectedImage, UserDefaultAVT, setLoading });
+      handleCreateUser({ data, isValid, selectedImage, UserDefaultAVT, setLoading, reset });
+    } else {
+      toast.error('Thông tin cần thiết còn thiếu !');
     }
   };
 

@@ -1,21 +1,25 @@
-import React, { createContext, ReactNode, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import createAxiosInstance from '../../../utils/axiosInstance';
-import { Cookies, useCookies } from 'react-cookie';
 
 interface AuthContextType {
   role: number | null;
   loading: boolean;
-  setRole: (role: number | null) => void
+  setRole: (role: number | null) => void;
+  name: string | null;
+  setName: (name: string | null) => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   role: null,
   loading: true,
-  setRole: () => {}
+  setRole: () => {},
+  name: null,
+  setName: () => {},
 });
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [role, setRole] = useState<number | null>(null);
+  const [name, setName] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const axiosInstance = createAxiosInstance(true);
@@ -25,16 +29,22 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       .get('api/auth/verify-token')
       .then((response) => {
         setRole(response?.data?.data?.roleId);
+        setName(response?.data?.data?.fullName);
       })
-      .catch((err) => {
+      .catch(() => {
         setRole(null);
+        setName(null);
       })
       .finally(() => {
         setLoading(false);
       });
   }, []);
 
-  return <AuthContext.Provider value={{ role, loading, setRole }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ role, loading, setRole, name, setName }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;
