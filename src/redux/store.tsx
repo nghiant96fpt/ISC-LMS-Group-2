@@ -1,13 +1,15 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-
-const rootStore = combineReducers(
-    {
-        // <tên reducer> : <reducer>
-        // counter: counterReducer
-    }
-);
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import trainingLevelReducer from './reducers/trainingLevelManagement';
+import studentRetentionReducer from './reducers/studentRetention';
+const rootStore = combineReducers({
+  trainingLevelManagement: trainingLevelReducer,
+  studentRetention: studentRetentionReducer,
+});
 
 const store = configureStore({
-    reducer: rootStore
+  reducer: rootStore,
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 export default store;

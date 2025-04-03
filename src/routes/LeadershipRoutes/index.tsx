@@ -43,7 +43,6 @@ import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add
 
 // import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 
-
 // import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
 // import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 
@@ -72,6 +71,7 @@ import ExamListTable from '../../pages/Leadership/Exams/ExamListTable';
 import CreateExamSchedule from '../../pages/Leadership/Exams/CreateExamSchedule/CreateExamSchedule';
 
 import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/StudentRetensionUpdate';
+import StudentRetentionAdd from '../../pages/Leadership/StudentRetention/StudentRetentionAdd';
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
 import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
 import Config from '../../pages/Leadership/SystemSettings/Config';
@@ -131,7 +131,8 @@ const StudentRoutes = () => {
         <Route path="declare-data/class-detail" element={<ClassDetail />} /> {/* url bảng ds lớp học */}
         <Route path="declare-data/file-class" element={<Uploadfile />} /> {/* url xuât file lớp học */}
         {/* route cho tiếp nhận chuyển trường và hồ sơ bảo lưu - group 4 */}
-        <Route path="update-student-retention" element={<StudentRetensionUpdate />} />
+        <Route path="update-student-retention/:id" element={<StudentRetensionUpdate />} />
+        <Route path="add-student-retention" element={<StudentRetentionAdd />} />
         <Route path="add-transfer-acceptance" element={<AddTransferAcceptance />} />
         {/* route cho phân công giảng dạy và ds chủ đề - group 4 */}
         <Route path="teaching-assignment" element={<TeachingAssignment />} /> {/* url phân công giảng */}
@@ -146,7 +147,7 @@ const StudentRoutes = () => {
         {/*  */}
         <Route path="declare-data/score-types" element={<ScoreTypes />} />
         <Route path="declare-data/score-types/:id" element={<EditGradeTypeModal />} />
-        <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} /> */}
+        <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
         <Route path="declare-data/edit" element={<MainSetupDepartmentModal />} />
         <Route path="declare-data/subject-list" element={<MainSubjectList />} />
         <Route path="declare-data" element={<MainDeclareData />} />
@@ -188,17 +189,17 @@ const StudentRoutes = () => {
         <Route path="study-process/update-discipline" element={<UpdateDiscipline />} />
         <Route path="create-student" element={<StudentCU />} />
         <Route path="new-student" element={<StudentCU />} />
-        <Route path='system-settings/config' element={<Config />} />
+        <Route path="system-settings/config" element={<Config />} />
         {/* Thiết lập lớp học */}
         <Route path="system-settings/subject-management" element={<SubjectManagement />} />
         <Route path="system-settings/classroom-settings" element={<ClassroomSettings />} />
-        <Route path='create-student' element={<StudentCU />} />
+        <Route path="create-student" element={<StudentCU />} />
         {/*Group - 1 setting*/}
-        <Route path='system-settings/school-info' element={<SchoolInfo />} />
-        <Route path='system-settings/school-info/edit' element={<EditSchoolInFo />} />
+        <Route path="system-settings/school-info" element={<SchoolInfo />} />
+        <Route path="system-settings/school-info/edit" element={<EditSchoolInFo />} />
         <Route path="system-settings/config" element={<Config />} />
         <Route path="training-info/add" element={<AddTrainingProgram />} />
-        <Route path='test-component' element={<TestComponent/>}/>
+        <Route path="test-component" element={<TestComponent />} />
       </Route>
     </Routes>
   );
