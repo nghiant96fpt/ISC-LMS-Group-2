@@ -3,21 +3,7 @@ import { inputProps } from './type';
 
 const Input = forwardRef<HTMLInputElement, inputProps>(
   (
-    {
-      name,
-      placeholder,
-      outline,
-      disabled,
-      icon,
-      size,
-      style,
-      className,
-      type,
-      error,
-      onChange,
-      onKeyDown,
-      onPaste,
-    },
+    { name, placeholder, outline, disabled, icon, size, style, className, type, error, onChange, onKeyDown, onPaste, leftIcon, leftIconHandle },
     ref,
   ) => {
     return (
@@ -44,6 +30,13 @@ const Input = forwardRef<HTMLInputElement, inputProps>(
             onKeyDown={onKeyDown}
             onPaste={onPaste}
           />
+          {leftIcon && (
+            <div
+              className={`absolute inset-y-0 right-0 flex items-center ${outline ? 'text-orange-text' : 'text-slate-400'}`}
+            >
+              {leftIcon}
+            </div>
+          )}
         </div>
         {error && <p className="pb-0 text-red-500 text-sm mt-1">{error}</p>}
       </div>
