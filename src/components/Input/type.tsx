@@ -17,4 +17,6 @@ export interface inputProps {
   value?: string;
   name?: string;
   error?: string;
+  leftIcon?: React.ReactNode;
+  leftIconHandle?: () => void;
 }
