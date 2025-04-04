@@ -16,5 +16,6 @@ export interface CalendarInputProps {
     buttonStyle?: React.CSSProperties; // Style cho nút mở lịch
     selectedDayStyle?: React.CSSProperties; // Style cho ngày được chọn
     otherMonthDayStyle?: React.CSSProperties; // Style cho ngày thuộc tháng khác
+    disable?: boolean
   }
   
