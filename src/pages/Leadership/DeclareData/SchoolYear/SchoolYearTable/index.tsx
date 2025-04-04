@@ -6,7 +6,7 @@ import { DeleteConfirmation } from '../SchoolYearDelete/SchoolYearDelete';
 import SchoolYearTable from './SchoolYearTable';
 import Panigation from '../SchoolYearPanigation/Panigation';
 import axios from 'axios';
-import { Link } from 'react-router-dom'; // Sửa import
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const SchoolYear = () => {
@@ -17,7 +17,7 @@ const SchoolYear = () => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [numPage, setNumPage] = useState(1);
   const [index, setIndex] = useState(1);
-  const [size, setSize] = useState(8);
+  const [size, setSize] = useState(9);
   const [totalItems, setTotalItems] = useState(0);
 
   // Xóa niên khóa thành công
@@ -31,11 +31,21 @@ const SchoolYear = () => {
   const handleShowPopup = () => setShowPopup(false);
 
   // Lấy dữ liệu từ API
-  const fetchData = async (pageNumber = 1, pageSize = 7) => {
+  const fetchData = async (pageNumber = 1, pageSize = 9) => {
     try {
-      const response = await axios.get(`https://fivefood.shop/api/academic-years?page=${pageNumber}&pageSize=${pageSize}`);
-      setData(response.data.data);
-      setOriginalData(response.data.data);
+      const response = await axios.get(`https://fivefood.shop/api/academic-years`, {
+        params: {
+          page: pageNumber,
+          pageSize: pageSize,
+          sortColumn: 'endTime',
+          sortOrder: 'desc',
+        },
+      });
+      const sortedData = response.data.data.sort((a: ISchoolYear, b: ISchoolYear) => {
+        return new Date(b.endTime).getTime() - new Date(a.endTime).getTime();
+      });
+      setData(sortedData);
+      setOriginalData(sortedData);
       setNumPage(response.data.totalPages || 1);
       setTotalItems(response.data.totalItems || 0);
     } catch (error) {
@@ -80,7 +90,7 @@ const SchoolYear = () => {
           <img src={Icons.search_icon} alt="Search" className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Tìm kiếm"
+            placeholder="Tìm kiếm niên khóa"
             className="w-full px-10 py-2 border bg-[#F0F3F6] rounded-[24px] outline-none focus:border-orange-500"
             onChange={(e) => handleSearch(e.target.value)}
           />

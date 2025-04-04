@@ -14,7 +14,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router';
 import { useCookies } from 'react-cookie';
 
-const CustomDropdown: React.FC<{ options: string[]; value: string | null; onChange: (value: string) => void }> = ({ options, value, onChange }) => {
+const CustomDropdown: React.FC<{
+  options: { value: string; label: string }[];
+  value: string | null;
+  onChange: (value: string) => void;
+}> = ({ options, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -30,14 +34,14 @@ const CustomDropdown: React.FC<{ options: string[]; value: string | null; onChan
         <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-md mt-1 max-h-48 overflow-auto">
           {options.map((option) => (
             <li
-              key={option}
+              key={option.value}
               className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={() => {
-                onChange(option);
+                onChange(option.value);
                 setIsOpen(false);
               }}
             >
-              {option}
+              {option.label}
             </li>
           ))}
         </ul>
@@ -73,8 +77,10 @@ const SchoolYearAdd: React.FC = () => {
     navigate('/leadership/declare-data/school-year'); // Quay lại trang trước
   };
 
-  const yearOptions = Array.from({ length: 10 }, (_, i) => (new Date().getFullYear() - i).toString());
-
+  const yearOptions = Array.from({ length: 10 }, (_, i) => {
+    const year = 2020 + i;
+    return { value: year.toString(), label: year.toString() };
+  });
   const addSemester = () => {
     const newId = semesterData.length + 1;
     setSemesterData([...semesterData, { id: newId, name: `Học kì ${newId}`, startDate: null, endDate: null }]);

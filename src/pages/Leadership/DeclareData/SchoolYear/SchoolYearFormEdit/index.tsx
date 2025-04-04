@@ -27,6 +27,7 @@ const SchoolYearFormEdit: React.FC = () => {
     schoolId: 2,
   });
   const [isChecked, setIsChecked] = useState(false);
+  const [deletedSemesterIds, setDeletedSemesterIds] = useState<string[]>([]);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -42,7 +43,6 @@ const SchoolYearFormEdit: React.FC = () => {
       axiosInstance
         .get(`https://fivefood.shop/api/academic-years/${id}`)
         .then((response) => {
-          // console.log('📌 Dữ liệu academic year:', response.data);
           const data = response.data.data;
 
           // Set academic year data
@@ -61,7 +61,6 @@ const SchoolYearFormEdit: React.FC = () => {
           });
         })
         .catch((error) => {
-          // console.error('❌ Lỗi khi lấy niên khóa:', error.response?.data || error);
           toast.error('Không thể tải thông tin niên khóa. Vui lòng thử lại sau.');
         });
     }
@@ -88,6 +87,10 @@ const SchoolYearFormEdit: React.FC = () => {
   };
 
   const removeSemester = (indexToRemove: number) => {
+    const semesterToRemove = formData.semesters[indexToRemove];
+    if (semesterToRemove.id) {
+      setDeletedSemesterIds([...deletedSemesterIds, semesterToRemove.id]);
+    }
     setFormData({
       ...formData,
       semesters: formData.semesters.filter((_, index) => index !== indexToRemove),
@@ -97,40 +100,101 @@ const SchoolYearFormEdit: React.FC = () => {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
   };
+
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     try {
+      // Validate school year values
+      if (!formData.schoolYearStart || !formData.schoolYearEnd) {
+        toast.error('Vui lòng chọn năm học bắt đầu và kết thúc');
+        return;
+      }
+
+      if (!formData.startDate || !formData.endDate) {
+        toast.error('Vui lòng chọn thời gian bắt đầu và kết thúc');
+        return;
+      }
+
+      // Validate date order
+      if (formData.startDate.isAfter(formData.endDate)) {
+        toast.error('Thời gian bắt đầu phải trước thời gian kết thúc');
+        return;
+      }
+
+      let currentAcademicYearId = id;
+
+      // Modified payload structure
       const academicYearPayload = {
-        id: parseInt(id || '0'),
         name: `${formData.schoolYearStart}-${formData.schoolYearEnd}`,
-        startTime: formData.startDate?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
-        endTime: formData.endDate?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
+        startTime: formData.startDate?.toISOString(),
+        endTime: formData.endDate?.toISOString(),
+        schoolId: formData.schoolId,
       };
 
-      await axiosInstance.put(`https://fivefood.shop/api/academic-years/${id}`, [academicYearPayload]);
+      console.log('Payload being sent:', academicYearPayload);
 
-      const semesterUpdates = formData.semesters.map(async (semester) => {
+      if (!currentAcademicYearId) {
+        // Create new academic year
+        const createResponse = await axiosInstance.post('https://fivefood.shop/api/academic-years', academicYearPayload);
+
+        if (!createResponse.data.success) {
+          throw new Error('Không thể tạo niên khóa mới');
+        }
+
+        currentAcademicYearId = createResponse.data.data.id;
+      } else {
+        // Update existing academic year with modified structure
+        const updateResponse = await axiosInstance.put(`https://fivefood.shop/api/academic-years/${currentAcademicYearId}`, academicYearPayload);
+
+        if (!updateResponse.data.success) {
+          const errorMessage = updateResponse.data.message || 'Không thể cập nhật niên khóa';
+          throw new Error(errorMessage);
+        }
+      }
+
+      // Handle semesters
+      const semesterPromises = formData.semesters.map(async (semester) => {
+        if (!semester.name || !semester.startTime || !semester.endTime) {
+          throw new Error('Vui lòng điền đầy đủ thông tin học kỳ');
+        }
+
+        // Validate semester dates
+        if (semester.startTime.isAfter(semester.endTime)) {
+          throw new Error(`Học kỳ ${semester.name}: Thời gian bắt đầu phải trước thời gian kết thúc`);
+        }
+
+        const semesterPayload = {
+          name: semester.name,
+          startTime: semester.startTime.toISOString(),
+          endTime: semester.endTime.toISOString(),
+          academicYearId: parseInt(currentAcademicYearId?.toString() || ''),
+        };
+
         if (semester.id) {
-          const semesterPayload = {
-            name: semester.name,
-            startTime: semester.startTime?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
-            endTime: semester.endTime?.format('YYYY-MM-DDTHH:mm:ss.SSSSZ'),
-            academicYearId: parseInt(id || '0'),
-          };
-          await axiosInstance.put(`https://fivefood.shop/api/semesters/${semester.id}`, semesterPayload);
+          return axiosInstance.put(`https://fivefood.shop/api/semesters/${semester.id}`, semesterPayload);
+        } else {
+          return axiosInstance.post('https://fivefood.shop/api/semesters', semesterPayload);
         }
       });
 
-      await Promise.all(semesterUpdates);
+      await Promise.all(semesterPromises);
 
-      toast.success('Cập nhật thành công! 🎉');
-      setTimeout(() => {
-        navigate('/leadership/declare-data/school-year');
-      }, 1000);
+      // Handle deleted semesters
+      if (deletedSemesterIds.length > 0) {
+        const deletePromises = deletedSemesterIds.map((id) => axiosInstance.delete(`https://fivefood.shop/api/semesters/${id}`));
+        await Promise.all(deletePromises);
+      }
+
+      toast.success('Cập nhật thành công!');
+      setTimeout(() => navigate('/leadership/declare-data/school-year'), 1000);
     } catch (error: any) {
-      console.error('Lỗi khi cập nhật:', error.response?.data || error);
-      toast.error(`Lỗi khi cập nhật: ${error.response?.data?.message || error.message}`);
+      console.error('Error:', error); // Log the full error
+      if (error.response) {
+        console.error('Server response:', error.response.data); // Log server response
+      }
+      const errorMessage = error.response?.data?.message || error.message;
+      toast.error(errorMessage);
     }
   };
 
@@ -150,8 +214,8 @@ const SchoolYearFormEdit: React.FC = () => {
               <div className="flex-grow-0">
                 <Select
                   placeholder="Niên khóa"
-                  options={yearOptions}
                   value={{ value: formData.schoolYearStart, label: formData.schoolYearStart }}
+                  options={yearOptions}
                   onChange={(selectedOption) => handleInputChange('schoolYearStart', selectedOption?.value)}
                   styles={{ control: (base) => ({ ...base, width: 200 }) }}
                 />
@@ -160,34 +224,32 @@ const SchoolYearFormEdit: React.FC = () => {
               <div className="flex-grow-0">
                 <Select
                   placeholder="Niên khóa"
-                  options={yearOptions}
                   value={{ value: formData.schoolYearEnd, label: formData.schoolYearEnd }}
+                  options={yearOptions}
                   onChange={(selectedOption) => handleInputChange('schoolYearEnd', selectedOption?.value)}
                   styles={{ control: (base) => ({ ...base, width: 200 }) }}
                 />
               </div>
             </div>
           </div>
-          <div className="p-6 col-span-full xl:col-auto">
-            <div className="flex justify-between items-center space-x-4">
-              <CheckboxComponent
-                label="Kế thừa dữ liệu"
-                iconName="iconCheckActiveBlueLarge"
-                isChecked={isChecked}
-                onChange={handleCheckboxChange}
-                className="flex-grow"
-              />
-              <DropdownSelectionComponent
-                placeholder="Niên khóa"
-                options={['2020', '2021', '2022', '2023']}
-                width={200}
-                onSelect={(value) => handleInputChange('schoolYearEnd', value)}
-              />
-            </div>
-            <div className="flex mt-4 space-x-4">
-              <IconInfoOutline className="flex-shrink-0" />
-              <TextBlockComponent text="Dữ liệu được kế thừa bao gồm các thông tin:<br/>- Thông tin học viên và Danh sách lớp học<br/>- Thông tin môn học<br/>- Phân công giảng dạy" />
-            </div>
+          <div className="flex justify-between items-center space-x-4">
+            <CheckboxComponent
+              label="Kế thừa dữ liệu"
+              iconName="iconCheckActiveBlueLarge"
+              isChecked={isChecked}
+              onChange={handleCheckboxChange}
+              className="flex-grow"
+            />
+            <DropdownSelectionComponent
+              placeholder="Niên khóa"
+              options={['2020', '2021', '2022', '2023']}
+              width={200}
+              onSelect={(value) => handleInputChange('schoolYearEnd', value)}
+            />
+          </div>
+          <div className="flex mt-4 space-x-4">
+            <IconInfoOutline className="flex-shrink-0" />
+            <TextBlockComponent text="Dữ liệu được kế thừa bao gồm các thông tin:<br/>- Thông tin học viên và Danh sách lớp học<br/>- Thông tin môn học<br/>- Phân công giảng dạy" />
           </div>
         </div>
         <hr className="mx-6 border-t border-gray-300" />
@@ -200,8 +262,8 @@ const SchoolYearFormEdit: React.FC = () => {
               <ClickableIcon iconName="iconMinusActiveBlueLarge" size="sm" text="Tên học kỳ:" onClick={() => removeSemester(index)} />
             </div>
             <input
-              className="px-5 py-2 shadow-md"
               type="text"
+              className="px-5 py-2 shadow-md"
               value={semester.name}
               onChange={(e) => handleSemesterChange(index, 'name', e.target.value)}
             />
