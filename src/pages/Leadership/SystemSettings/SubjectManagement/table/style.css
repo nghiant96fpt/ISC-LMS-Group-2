@@ -145,3 +145,15 @@ th,
 td {
   border: none;
 }
+
+.pageactive {
+  background: orange;
+  color: white;
+  font-weight: bold;
+  width: 30px;
+  border-radius: 50%;
+  height: 30px;
+}
+.modal-delete-confirmation {
+  opacity: 1.355555 !important;
+}
