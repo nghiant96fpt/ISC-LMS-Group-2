@@ -105,93 +105,62 @@ const SchoolYearFormEdit: React.FC = () => {
     event.preventDefault();
 
     try {
-      // Validate school year values
-      if (!formData.schoolYearStart || !formData.schoolYearEnd) {
-        toast.error('Vui lòng chọn năm học bắt đầu và kết thúc');
+      // Basic validations
+      if (!formData.schoolYearStart || !formData.schoolYearEnd || !formData.startDate || !formData.endDate) {
+        toast.error('Vui lòng điền đầy đủ thông tin niên khóa');
         return;
       }
 
-      if (!formData.startDate || !formData.endDate) {
-        toast.error('Vui lòng chọn thời gian bắt đầu và kết thúc');
-        return;
-      }
-
-      // Validate date order
       if (formData.startDate.isAfter(formData.endDate)) {
         toast.error('Thời gian bắt đầu phải trước thời gian kết thúc');
         return;
       }
 
-      let currentAcademicYearId = id;
+      // 1. Update academic year first
+      const academicYearPayload = [
+        {
+          id: Number(id),
+          name: `${formData.schoolYearStart}-${formData.schoolYearEnd}`,
+          startTime: formData.startDate.toISOString(),
+          endTime: formData.endDate.toISOString(),
+        },
+      ];
 
-      // Prepare semester data first
-      const semesterPayloads = formData.semesters.map((semester) => {
+      await axiosInstance.put(`https://fivefood.shop/api/academic-years/${id}`, academicYearPayload);
+
+      // 2. Handle semesters
+      const semesterPromises = formData.semesters.map(async (semester) => {
         if (!semester.name || !semester.startTime || !semester.endTime) {
           throw new Error('Vui lòng điền đầy đủ thông tin học kỳ');
         }
 
-        const payload = {
+        const semesterPayload = {
           name: semester.name,
-          startTime: semester.startTime.format('YYYY-MM-DD'),
-          endTime: semester.endTime.format('YYYY-MM-DD'),
+          startTime: semester.startTime.toISOString(),
+          endTime: semester.endTime.toISOString(),
+          academicYearId: Number(id),
         };
 
-        // Include id if it exists (for existing semesters)
         if (semester.id) {
-          return { ...payload, id: semester.id };
+          // Update existing semester
+          return axiosInstance.put(`https://fivefood.shop/api/semesters/${semester.id}`, semesterPayload);
+        } else {
+          // Create new semester
+          return axiosInstance.post('https://fivefood.shop/api/semesters', semesterPayload);
         }
-
-        return payload;
       });
 
-      const academicYearPayload = {
-        name: `${formData.schoolYearStart}-${formData.schoolYearEnd}`,
-        startTime: formData.startDate?.format('YYYY-MM-DD'),
-        endTime: formData.endDate?.format('YYYY-MM-DD'),
-        schoolId: formData.schoolId,
-        semesters: semesterPayloads,
-      };
+      // 3. Handle deleted semesters
+      const deletePromises = deletedSemesterIds.map((semesterId) => axiosInstance.delete(`https://fivefood.shop/api/semesters/${semesterId}`));
 
-      if (!currentAcademicYearId) {
-        const createResponse = await axiosInstance.post('https://fivefood.shop/api/academic-years', { request: academicYearPayload });
-        if (createResponse.data?.code === 1) {
-          const errorMessage = createResponse.data?.errors ? Object.values(createResponse.data.errors).join(', ') : createResponse.data?.message;
-          throw new Error(errorMessage || 'Failed to create academic year');
-        }
-
-        currentAcademicYearId = createResponse.data.data.id;
-      } else {
-        const updateResponse = await axiosInstance.put(`https://fivefood.shop/api/academic-years/${currentAcademicYearId}`, {
-          request: academicYearPayload,
-        });
-        if (updateResponse.data?.code === 1) {
-          const errorMessage = updateResponse.data?.errors ? Object.values(updateResponse.data.errors).join(', ') : updateResponse.data?.message;
-          throw new Error(errorMessage || 'Failed to update academic year');
-        }
-      }
-
-      // Handle only deleted semesters
-      if (deletedSemesterIds.length > 0) {
-        const deletePromises = deletedSemesterIds.map((id) => axiosInstance.delete(`https://fivefood.shop/api/semesters/${id}`));
-        await Promise.all(deletePromises);
-      }
+      // Wait for all semester operations to complete
+      await Promise.all([...semesterPromises, ...deletePromises]);
 
       toast.success('Cập nhật thành công!');
       setTimeout(() => navigate('/leadership/declare-data/school-year'), 1000);
     } catch (error: any) {
-      console.error('Full error:', error);
-      if (error.response?.data) {
-        console.error('API Error Details:', error.response.data);
-        let errorMessage = error.response.data.message;
-        if (error.response.data.errors) {
-          errorMessage = Object.entries(error.response.data.errors)
-            .map(([key, value]) => `${key}: ${value}`)
-            .join('\n');
-        }
-        toast.error(errorMessage);
-      } else {
-        toast.error(error.message || 'An unexpected error occurred');
-      }
+      console.error('Error:', error);
+      toast.error(error.response?.data?.message || error.message || 'Có lỗi xảy ra khi cập nhật');
     }
   };
 
