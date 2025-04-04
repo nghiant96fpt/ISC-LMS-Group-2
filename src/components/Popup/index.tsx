@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface PopupProps {
   titleBig: string;
@@ -8,10 +8,28 @@ interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
   className?: string;
+  onSave?: (updatedSubject: any) => void;
+  // Callback khi lưu
+  selectedSubject?: any; // Optional
+  onSavets?: () => void;
 }
 
-const Popup: React.FC<PopupProps> = ({ titleBig, titleSmall1, titleSmall2, titleSmall3, isOpen, onClose, className }) => {
-  const [isActive, setIsActive] = useState(false); // Trạng thái checkbox
+const Popup: React.FC<PopupProps> = ({ titleBig, titleSmall1, titleSmall2, titleSmall3, isOpen, onClose, className, selectedSubject, onSave }) => {
+  const [name, setName] = useState(selectedSubject.name);
+  const [status, setStatus] = useState(selectedSubject.status);
+  const [description, setDescription] = useState(selectedSubject.description);
+
+  useEffect(() => {
+    setName(selectedSubject.name);
+    setStatus(selectedSubject.status);
+    setDescription(selectedSubject.description);
+  }, [selectedSubject]);
+
+  // Lưu thông tin môn học đã chỉnh sửa
+  const handleSave = () => {
+    const updatedSubject = { ...selectedSubject, name, status, description };
+    onSave?.(updatedSubject); // Chỉ gọi nếu onSave có tồn tại
+  };
 
   if (!isOpen) return null;
 
@@ -28,8 +46,8 @@ const Popup: React.FC<PopupProps> = ({ titleBig, titleSmall1, titleSmall2, title
               <input
                 type="text"
                 className="w-full md:w-9/12 p-2 rounded-lg text-black-text cursor-pointer bg-gray-100"
-                defaultValue=""
-                disabled={!isActive} // Vô hiệu hóa nếu isActive === false
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
 
@@ -38,14 +56,14 @@ const Popup: React.FC<PopupProps> = ({ titleBig, titleSmall1, titleSmall2, title
               <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0 text-left">{titleSmall2}:</label>
               <div className="flex items-center gap-3 w-full md:w-9/12">
                 <div
-                  className={`relative w-12 h-6 rounded-full cursor-pointer ${isActive ? 'bg-blue-500' : 'bg-gray-300'}`}
-                  onClick={() => setIsActive(!isActive)}
+                  className={`relative w-12 h-6 rounded-full cursor-pointer ${status ? 'bg-blue-500' : 'bg-gray-300'}`}
+                  onClick={() => setStatus(!status)}
                 >
                   <div
-                    className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${isActive ? 'translate-x-6' : 'translate-x-1'}`}
+                    className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${status ? 'translate-x-6' : 'translate-x-1'}`}
                   ></div>
                 </div>
-                <span className="text-sm">{isActive ? 'Đang hoạt động' : 'Vô hiệu hóa'}</span>
+                <span className="text-sm">{status ? 'Đang hoạt động' : 'Vô hiệu hóa'}</span>
               </div>
             </div>
 
@@ -55,25 +73,23 @@ const Popup: React.FC<PopupProps> = ({ titleBig, titleSmall1, titleSmall2, title
               <input
                 type="text"
                 className="w-full md:w-9/12 p-2 rounded-lg text-black-text cursor-pointer bg-gray-100"
-                defaultValue=""
-                disabled={!isActive} // Vô hiệu hóa nếu isActive === false
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </div>
 
             {/* Nút hành động */}
             <div className="flex flex-col md:flex-row justify-center gap-4 mt-10">
-              <button
-                type="button"
-                onClick={onClose} // Gọi hàm đóng popup
-                className="w-full md:w-40 h-12 py-2 bg-[#F2F2F2] text-black-text font-bold rounded-lg"
-              >
+              <button type="button" onClick={onClose} className="w-full md:w-40 h-12 py-2 bg-[#F2F2F2] text-black-text font-bold rounded-lg">
                 Hủy
               </button>
               <button
+                type="button"
+                onClick={handleSave}
                 className={`w-full md:w-40 py-2 font-bold rounded-lg ${
-                  isActive ? 'bg-orange-text text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  status ? 'bg-orange-text text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }`}
-                disabled={!isActive} // Vô hiệu hóa nút nếu isActive === false
+                disabled={!status}
               >
                 Lưu
               </button>
