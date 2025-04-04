@@ -15,5 +15,8 @@ export interface inputProps {
 
   // react hook form
   name?: string,
-  error?: string
+  error?: string,
+
+  leftIcon?: React.ReactNode,
+  leftIconHandle?: () => void,
 };
