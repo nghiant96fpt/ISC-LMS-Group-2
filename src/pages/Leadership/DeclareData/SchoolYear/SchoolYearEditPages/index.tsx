@@ -1,4 +1,4 @@
-import SchoolYearFormEdit from '../SchoolYearFormEdit';
+import SchoolYearFormEdit from "../SchoolYearFormEdit";
 const SchoolYearEditPages: React.FC = () => {
   return (
     <div className="max-w-screen-xl pt-2 px-4 mx-auto lg:px-8">
