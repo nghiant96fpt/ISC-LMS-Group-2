@@ -1,14 +1,12 @@
-
-
 import TabbleClasslist from './TableClassList';
+import PageLayout from '../../../../components/PageLayout';
 
-const ClassList = () => {
+const MainClassList = () => {
   return (
-    <div className="relative max-w-screen-2xl pt-2 mx-auto bg-gray-50 lg:ml-52">
-        <TabbleClasslist />
-    </div>
+    <>
+      <PageLayout layout={<TabbleClasslist />} />
+    </>
   );
 };
 
-
-export default ClassList;
+export default MainClassList;

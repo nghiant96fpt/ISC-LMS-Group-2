@@ -19,6 +19,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
   buttonStyle,
   selectedDayStyle,
   otherMonthDayStyle,
+  disable
 }) => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const today = new Date();
@@ -103,8 +104,9 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
           readOnly
           placeholder={placeholder}
           className="calendar-input"
+          disabled={disable}
         />
-        <button className="calendar-icon" onClick={toggleCalendar} style={buttonStyle}>
+        <button className="calendar-icon" onClick={toggleCalendar} style={buttonStyle} disabled={disable}>
           <img src={iconCalendar} alt="" />
         </button>
       </div>

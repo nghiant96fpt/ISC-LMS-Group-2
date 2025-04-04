@@ -9,6 +9,7 @@ import './style.css';
 import Index from '../table/StudentAll';
 import StudentDiscipline from '../table/StudentDiscipline';
 import StudentReward from '../table/StudentReward';
+import { useNavigate } from 'react-router';
 
 const AllStudentProfilesHeader: React.FC = () => {
   const [selectedGradeOption, setSelectedGradeOption] = useState<DropdownOption | null>(null);
@@ -67,6 +68,8 @@ const AllStudentProfilesHeader: React.FC = () => {
     fetchAcademicYears();
     fetchSemesters();
   }, []);
+
+  const navigator = useNavigate();
 
   return (
     <>

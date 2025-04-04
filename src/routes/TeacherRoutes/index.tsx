@@ -28,9 +28,8 @@ const TeacherRoutes = () => {
         <Route index element={<TeacherDashboard />} />
         {/* Group-3 Class Detail */}
         <Route path="class-list" element={<ClassList />} />
-
+        {/* <Route path="class-list/:id" element={<ClassDetail />} /> */}
         {/*  */}
-
         <Route path="add-class" element={<AddClass />} />
         <Route path="join-class" element={<JoinClass />} />
         <Route path="test-list" element={<TestList />} />
@@ -39,7 +38,6 @@ const TeacherRoutes = () => {
         {/* <Route path="enter-scores" element={<EnterScores />} />
         <Route path="score-board" element={<ScoreBoard />} /> */}
         <Route path="exam-schedule" element={<ExamSchedule />} />
-
         <Route path="notifications" element={<Notifications />} />
         <Route path="help" element={<Help />} />
         <Route path="classroom" element={<Classroom />} />
@@ -50,6 +48,7 @@ const TeacherRoutes = () => {
         <Route path="add-topic" element={<AddTopic />} />
         <Route path="enter-scores" element={<TeacherScoring />} />
         <Route path="score-board" element={<Transcript />} />
+        <Route path="classroom-detail/:id" element={<ClassDetail />} /> {/*Huu Phuc - teaching quản lý lớp học cho Link tới Quản lý lớp học Thông tin lớp học Lịch sử */}
       </Route>
     </Routes>
   );
