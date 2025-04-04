@@ -14,10 +14,12 @@ import SearchInput from '../../../../components/SearchTable';
 import DeleteAcademicYearModal from '../../../../components/DeleteConfirmation';
 import dayjs from 'dayjs';
 
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import PaginationControls from '../../../../components/Pagination';
 import createAxiosInstance from '../../../../utils/axiosInstance';
 const Workprocess = () => {
+  const { id } = useParams<{ id: string }>();
+
   const [openSection, setOpenSection] = useState<string | null>('work');
   const [subjectGroups, setSubjectGroups] = useState<WorkHistory[]>([]);
 
@@ -37,9 +39,10 @@ const Workprocess = () => {
   }, []);
 
   const axiosInstance = createAxiosInstance();
+
   const fetchWorkProcess = async () => {
     try {
-      const response = await axiosInstance.get('/api/work-process', {
+      const response = await axiosInstance.get(`/api/work-process/${id}`, {
         params: {
           page: currentPage,
           pageSize: itemsPerPage,
@@ -49,12 +52,17 @@ const Workprocess = () => {
         },
       });
 
-      setSubjectGroups(response.data.data || []);
+      const data = response.data.data;
+      const isArray = Array.isArray(data);
+      const processedData = isArray ? data : data ? [data] : [];
+
+      setSubjectGroups(processedData);
       setTotalPages(response.data.totalPages || 1);
     } catch (error) {
       console.error('Lỗi khi tải dữ liệu:', error);
     }
   };
+
   const fetchSubjectGroups = async () => {
     try {
       const response = await axiosInstance.get('/api/subject-groups');

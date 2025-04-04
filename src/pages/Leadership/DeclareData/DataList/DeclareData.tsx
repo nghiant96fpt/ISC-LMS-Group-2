@@ -87,8 +87,8 @@ const DeclareData: React.FC = () => {
               {data && data.length > 0 ? (
                 data.map((teacher, index) => (
                   <tr key={teacher.id} className={`border-b ${index % 2 === 1 ? 'bg-gray-100' : ''}`}>
-                    <td className="py-3 px-2 md:px-4">{teacher.name || '---'}</td>
-                    <td className="py-3 px-2 md:px-4">{teacher.fullName || 'Chưa có dữ liệu'}</td>
+                    <td className="py-3 px-2 md:px-4">{teacher.fullName || '---'}</td>
+                    <td className="py-3 px-2 md:px-4">{teacher.name || 'Chưa có dữ liệu'}</td>
                     <td className="py-3 px-2 md:px-4 text-center">
                       <div className="flex justify-center space-x-2">
                         <Link to={`/subject-list/${teacher.id}`}>
