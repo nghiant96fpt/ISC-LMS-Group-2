@@ -14,7 +14,6 @@ import SearchInput from '../../../../components/SearchTable';
 import DeleteAcademicYearModal from '../../../../components/DeleteConfirmation';
 import dayjs from 'dayjs';
 
-// import createAxiosInstance from '';
 import { Link } from 'react-router-dom';
 import PaginationControls from '../../../../components/Pagination';
 import createAxiosInstance from '../../../../utils/axiosInstance';

@@ -2,24 +2,7 @@ import React, { forwardRef } from 'react';
 import { inputProps } from './type';
 
 const Input = forwardRef<HTMLInputElement, inputProps>(
-  (
-    {
-      name,
-      placeholder,
-      outline,
-      disabled,
-      icon,
-      size,
-      style,
-      className,
-      type,
-      error,
-      onChange,
-      onKeyDown,
-      onPaste,
-    },
-    ref,
-  ) => {
+  ({ name, placeholder, outline, disabled, icon, size, style, className, type, error, onChange, onKeyDown, onPaste }, ref) => {
     return (
       <div className="flex flex-col">
         <div
