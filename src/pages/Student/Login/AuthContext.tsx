@@ -5,13 +5,13 @@ import { Cookies, useCookies } from 'react-cookie';
 interface AuthContextType {
   role: number | null;
   loading: boolean;
-  setRole: (role: number | null) => void
+  setRole: (role: number | null) => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   role: null,
   loading: true,
-  setRole: () => {}
+  setRole: () => {},
 });
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
