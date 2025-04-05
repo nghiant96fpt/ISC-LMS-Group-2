@@ -128,7 +128,7 @@ const StudentRoutes = () => {
         <Route path="InstructorProfile" element={<InstructorProfile />} />
         {/*route cho school-year - group-4*/}
         <Route path="declare-data/school-year" element={<MainSchoolYear />} /> {/* url table niên khóa */}
-        <Route path="declare-data/school-year/edit-school-year" element={<MainSchoolYearEditPages />} /> {/* url sửa niên khóa */}
+        <Route path="declare-data/school-year/edit-school-year/:id" element={<MainSchoolYearEditPages />} /> {/* url sửa niên khóa */}
         <Route path="declare-data/school-year/add-school-year" element={<MainSchoolYearAdd />} /> {/* url thêm niên khóa */}
         {/* route cho class-list - group-4 */}
         <Route path="declare-data/class-list/add-class-list" element={<MainNewClassForm />} /> {/* url thêm lớp học */}
@@ -153,7 +153,7 @@ const StudentRoutes = () => {
         <Route path="declare-data/score-types" element={<ScoreTypes />} />
         <Route path="declare-data/score-types/:id" element={<EditGradeTypeModal />} />
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
-        <Route path="declare-data/edit" element={<DepartmentSettings />} />
+        <Route path="declare-data/edit/:id" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
         {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
         {/* <Route path="declare-data" element={<DeclareData />} /> */}

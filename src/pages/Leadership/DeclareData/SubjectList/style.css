@@ -1,9 +1,11 @@
 .br-gradient-right-or {
   background: linear-gradient(to right, var(--background-2), var(--background-1));
 }
+
 .text-white-text {
   color: var(--white-text);
 }
+
 .custom-checkbox {
   width: 21px;
   height: 21px;
@@ -46,6 +48,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .delete-btn img {
   filter: grayscale(100%);
   transition: filter 0.3s ease-in-out;

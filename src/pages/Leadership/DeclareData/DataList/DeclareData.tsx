@@ -96,7 +96,7 @@ const DeclareData: React.FC = () => {
                             <img src={list} alt="List" className="w-6 h-6 object-contain" />
                           </button>
                         </Link>
-                        <Link to={`/edit/${teacher.id}`}>
+                        <Link to={`/leadership/declare-data/edit/${teacher.id}`}>
                           <button className="w-8 h-8">
                             <img src={edit} alt="Edit" className="w-6 h-6 object-contain" />
                           </button>
