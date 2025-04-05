@@ -3,7 +3,7 @@ import { Table, TableBody } from '../../../../components/ui/tabble';
 import TableHeaderComponent from './TransferListTableHeader';
 import TableRowComponent from './TransferListTableRow';
 import TitleComponent from '../../../../components/Title';
-import ClassListFromSearch from './TransferListFromSearch';
+// import ClassListFromSearch from './TransferListFromSearch';
 import ItemsPerPage from './TransferListItemsPerPage';
 import Pagination from './TransferListtPagination';
 import AddressList from '../../../../components/AddressUrlStack/Index';
@@ -11,6 +11,7 @@ import { Link } from 'react-router';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { SchoolTransferListItem } from './data';
+import search_icon from '../../../../../src/assets/icons/fi_search.png';
 
 const ListTransferAcceptance = () => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
@@ -18,9 +19,9 @@ const ListTransferAcceptance = () => {
   const [data, setData] = useState<SchoolTransferListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [cookies] = useCookies(['accessToken']);
 
-  // console.log(data);
   useEffect(() => {
     const fetchTransferList = async () => {
       try {
@@ -56,15 +57,29 @@ const ListTransferAcceptance = () => {
     fetchTransferList();
   }, [cookies.accessToken]);
 
-  const handleSearch = (query: string) => {
-    console.log('Searching for:', query);
-    // You can implement search functionality here
-  };
+  // Reset page when search query changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
+  // Filter data based on search query
+  const filteredData = data.filter(item =>
+    item.fullName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Pagination calculations
+  const totalItems: number = filteredData.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const displayedData = data.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+  const displayedData = filteredData.slice(startIndex, endIndex);
+
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    if (page < 1) page = 1;
+    if (page > totalPages) page = totalPages;
+    setCurrentPage(page);
+  };
 
   const addressData = [
     { linkName: 'Hồ sơ học viên', link: '/quan-ly-hoc-sinh' },
@@ -98,15 +113,16 @@ const ListTransferAcceptance = () => {
       <section className="rounded-lg bg-background-white shadow-[4px_4px_25px_4px_rgba(154,201,245,0.25)] sm:p-5 antialiased mb-10 ">
         <div className="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4 dark:border-gray-700">
           <TitleComponent text="Danh sách chuyển trường" size={22} weight="extrabold" style={{ fontFamily: 'var(--font-Mulish)' }} />
-          <ClassListFromSearch
-            onSearch={handleSearch}
-            placeholder="Tìm kiếm"
-            inputStyle={{
-              fontFamily: 'var(--font-Mulish)',
-              fontStyle: 'italic',
-              color: 'var(--black-text)',
-            }}
-          />
+          <div className="relative w-full max-w-sm">
+            <img src={search_icon} alt="Search" className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Tìm kiếm tên học viên"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full font-[--font-Source-Sans-Pro] font-[weight-Source-Sans-Pro-3] px-10 py-2 border bg-[#F0F3F6] rounded-[24px] outline-none focus:border-[--border-orange]"
+            />
+          </div>
         </div>
 
         <div className="mb-4 col-span-full xl:mb-2">
@@ -141,12 +157,19 @@ const ListTransferAcceptance = () => {
               />
 
               {/* Phân trang */}
-              <div className="flex items-center gap-x-2">
-                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => setCurrentPage(page)} />
+              <Pagination 
+  currentPage={currentPage}
+  totalPages={totalPages} 
+  onPageChange={handlePageChange}
+  totalItems={totalItems}
+  itemsPerPage={itemsPerPage}
+  startIndex={startIndex + 1}
+  endIndex={endIndex}
+/>
               </div>
             </div>
           </div>
-        </div>
+        
       </section>
     </>
   );

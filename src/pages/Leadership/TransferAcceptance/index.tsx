@@ -1,4 +1,5 @@
-import ListTransferAcceptance from './ListTransferAcceptance';
+import ListTransferAcceptance from "./ListTransferAcceptance";
+
 
 const TransferAcceptance: React.FC = () => {
     return (
