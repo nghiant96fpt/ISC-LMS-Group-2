@@ -5,7 +5,7 @@ const Panigation: React.FC<PanigationType> = ({
   indexChoose = 1,
   setIndex = () => {},
   setNumpage = () => {},
-  size = 5,
+  size = 7,
   setSize = () => {},
 }) => {
   const [map, setMap] = useState<number[]>([]);
@@ -36,17 +36,23 @@ const Panigation: React.FC<PanigationType> = ({
       setSpacing([a - 1, a, a + 1]);
     }
   }, [indexChoose]);
-
+  // Chỉnh sửa xử lý khi thay đổi size
+  const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newSize = Number.parseInt(e.target.value);
+    if (!isNaN(newSize) && newSize > 0) {
+      setSize(newSize);
+    }
+  };
   return (
     <div className="flex justify-between items-center w-full mt-4">
       <div className="flex items-center gap-2">
         <span className="text-gray-700 italic text-xs"> Hiển thị</span>
         <input
-          className="w-[35px] h-[30px] rounded-md border border-orange-500 px-1 py-1"
+          className="w-[45px] h-[30px] rounded-md border border-orange-500 px-1 py-1"
           value={size}
-          onChange={(e) => {
-            setSize(Number.parseInt(e.target.value));
-          }}
+          onChange={handleSizeChange}
+          min="1"
+          type="number"
         />
         <span className="text-gray-700 italic text-xs"> Hàng trong mỗi trang</span>
       </div>
@@ -60,7 +66,7 @@ const Panigation: React.FC<PanigationType> = ({
           {' '}
           &lsaquo;
         </li>
-        {numPage <= 5 &&
+        {numPage <= 7 &&
           map.map((v) => (
             <li
               onClick={() => setIndex(v)}
@@ -72,7 +78,7 @@ const Panigation: React.FC<PanigationType> = ({
               {v}
             </li> // Thêm key để tránh lỗi React
           ))}
-        {numPage > 5 && (
+        {numPage > 7 && (
           <>
             {map[0] !== spacing[0] && (
               <li onClick={() => setIndex(1)} className="font-bold cursor-pointer" key="first">

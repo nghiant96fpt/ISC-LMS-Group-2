@@ -128,7 +128,7 @@ const StudentRoutes = () => {
         <Route path="InstructorProfile" element={<InstructorProfile />} />
         {/*route cho school-year - group-4*/}
         <Route path="declare-data/school-year" element={<MainSchoolYear />} /> {/* url table niên khóa */}
-        <Route path="declare-data/school-year/edit-school-year" element={<MainSchoolYearEditPages />} /> {/* url sửa niên khóa */}
+        <Route path="declare-data/school-year/edit-school-year/:id" element={<MainSchoolYearEditPages />} /> {/* url sửa niên khóa */}
         <Route path="declare-data/school-year/add-school-year" element={<MainSchoolYearAdd />} /> {/* url thêm niên khóa */}
         {/* route cho class-list - group-4 */}
         <Route path="declare-data/class-list/add-class-list" element={<MainNewClassForm />} /> {/* url thêm lớp học */}
