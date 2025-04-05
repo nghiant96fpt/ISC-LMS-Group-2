@@ -9,7 +9,7 @@ export interface WorkHistory {
   teacherId: number; // ID của giáo viên
 }
 export interface Lecturer {
-  teacherId: string;
+  teacherId: number;
   guardianName: string;
 }
 export interface Schoolslist {

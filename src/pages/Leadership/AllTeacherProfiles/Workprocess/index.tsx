@@ -14,9 +14,10 @@ import SearchInput from '../../../../components/SearchTable';
 import DeleteAcademicYearModal from '../../../../components/DeleteConfirmation';
 import dayjs from 'dayjs';
 
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import PaginationControls from '../../../../components/Pagination';
 import createAxiosInstance from '../../../../utils/axiosInstance';
+import { toast } from 'react-toastify';
 const Workprocess = () => {
   const { id } = useParams<{ id: string }>();
 
@@ -37,12 +38,17 @@ const Workprocess = () => {
   useEffect(() => {
     fetchSubjectGroups();
   }, []);
-
+  const navigate = useNavigate();
+  const handleAddClick = () => {
+    navigate('/leadership/all-teacher-profiles/addworkprocess', {
+      state: { teacherId: id },
+    });
+  };
   const axiosInstance = createAxiosInstance();
 
   const fetchWorkProcess = async () => {
     try {
-      const response = await axiosInstance.get(`/api/work-process/${id}`, {
+      const response = await axiosInstance.get(`/api/work-process/getbyteacherid/${id}`, {
         params: {
           page: currentPage,
           pageSize: itemsPerPage,
@@ -102,13 +108,12 @@ const Workprocess = () => {
     try {
       const axiosInstance = createAxiosInstance();
       await axiosInstance.delete(`/api/work-process/${selectedGroup.id}`);
-
-      // Cập nhật lại danh sách sau khi xóa thành công
       setSubjectGroups((prev) => prev.filter((g) => g.id !== selectedGroup.id));
-
       setIsDeleteModalOpen(false);
+      toast.success('Xóa quá trình công tác thành công!');
     } catch (error) {
       console.error('Lỗi khi xóa:', error);
+      toast.error('Đã xảy ra lỗi khi xóa quá trình công tác.');
     }
   }, [selectedGroup]);
 
@@ -144,12 +149,11 @@ const Workprocess = () => {
 
                 <SearchInput placeholder="Tìm kiếm" value={searchValue} onChange={handleSearchChange} />
               </div>
-              <Link to="/leadership/all-teacher-profiles/addworkprocess">
-                <Button size="mini" className="primary">
-                  <img src={fi_plus} alt="Add Icon" />
-                  Thêm
-                </Button>
-              </Link>
+
+              <Button onClick={handleAddClick} size="mini" className="primary">
+                <img src={fi_plus} alt="Add Icon" />
+                Thêm
+              </Button>
             </div>
 
             <div className="overflow-x-auto">

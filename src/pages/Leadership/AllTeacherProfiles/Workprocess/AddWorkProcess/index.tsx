@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { workHistoryData } from '../data';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import locale from 'antd/es/date-picker/locale/vi_VN';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import iconCalendar from '../../../../../assets/icons/icon-calendar.png';
-import { subjectGroups as initialSubjectGroups } from '../../../DeclareData/DataList/data';
 import minus from '../../../../../assets/icons/icon_minus.png';
 import plus from '../../../../../assets/icons/icon_plus.png';
 import caretdown from '../../../../../assets/icons/caret_down.png';
 
 import { CustomDropdownProps } from '../../../../../components/DropdownSelection/type';
 import CheckboxComponent from '../../../../../components/CheckBox';
-import { SubjectGroup } from '../../../DeclareData/DataList/type';
 
-import { DropdownOption } from '../../../../../components/Dropdown/type';
-import { options } from '../../../TrainingInfo/AddTraining/data';
 import { trainingPrograms } from './type';
 import Button from '../../../../../components/Button';
 import axiosInstance from '../../../../../utils/axiosInstance';
 import { Lecturer, Schoolslist } from '../Types';
 import { stringify } from 'querystring';
+import { toast } from 'react-toastify';
+import { useLocation } from 'react-router';
+import Input from '../../../../../components/Input';
 dayjs.extend(customParseFormat);
 const AddWorkProcess: React.FC<CustomDropdownProps> = ({
   label,
@@ -46,27 +44,27 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
   const [success, setSuccess] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [trainingPrograms, setTrainingPrograms] = useState<trainingPrograms[]>([]);
-  // const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  // const [sortColumn, setSortColumn] = useState<string>('label');
   const [selectedPrograms, setSelectedPrograms] = useState<trainingPrograms[]>([]);
-  // const [subjectGroups, setSubjectGroups] = useState<SubjectGroup[]>(initialSubjectGroups);
   const [subjectGroups, setSubjectGroups] = useState<trainingPrograms[]>([]);
-  const [selectedSubjectGroup, setSelectedSubjectGroup] = useState<number | null>(null);
+
   const [schools, setSchools] = useState<Schoolslist[]>([]);
   const [selectedOrganization, setSelectedOrganization] = useState('');
+  const location = useLocation();
+  const teacherId = location.state?.teacherId;
+
   const [formData, setFormData] = useState({
-    TeacherId: '',
+    TeacherId: null as number | null,
     isCurrent: false,
     endDate: null as string | null,
     startDate: null as string | null,
-    program: [] as string[],
+    program: [] as number[],
     subjectGroupsId: null as number | null,
     organization: '',
     position: '',
   });
   useEffect(() => {
-    console.log(trainingPrograms);
-  }, [trainingPrograms]);
+    console.log('lecturers:', lecturers);
+  }, [lecturers]);
 
   const axios = axiosInstance();
 
@@ -113,23 +111,33 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
           },
         });
         if (response.data && Array.isArray(response.data.data)) {
-          setTrainingPrograms(response.data.data); // Giả sử API trả về mảng training programs
+          setTrainingPrograms(response.data.data);
         }
       } catch (err) {
         console.error('Lỗi khi lấy danh sách chương trình đào tạo', err);
       }
     };
     fetchTrainingPrograms();
-  }, []); // Chạy lại khi sortColumn hoặc sortOrder thay đổi
+  }, []);
   useEffect(() => {
     const fetchLecturers = async () => {
       try {
-        const response = await axios.get('/api/teacherfamilies');
+        const response = await axios.get(`/api/teacherfamilies/${teacherId}`);
 
-        if (response.data && Array.isArray(response.data.data)) {
-          setLecturers(response.data.data);
+        if (response.data.data) {
+          const data = response.data.data;
+
+          const formattedData = Array.isArray(data) ? data : [data];
+          if (formattedData.length > 0) {
+            setFormData((prev) => ({
+              ...prev,
+              TeacherId: formattedData[0].teacherId,
+            }));
+          }
+
+          setLecturers(formattedData);
         } else {
-          console.error('Dữ liệu giảng viên không hợp lệ', response.data);
+          console.error('Dữ liệu người thân không hợp lệ', response.data);
         }
       } catch (err) {
         console.error('Lỗi khi lấy danh sách giảng viên', err);
@@ -143,12 +151,16 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
     setLoading(true);
     setError(null);
     setSuccess(false);
+
     try {
-      await axios.post('/api/work-process', formData);
+      await axios.post('/api/work-process', {
+        ...formData,
+      });
+      toast.success('Thêm quá trình công tác thành công!');
       setSuccess(true);
-      // setFormData({ title: '', description: '', TeacherId: '' });
     } catch (err) {
       setError('Có lỗi xảy ra, vui lòng thử lại!');
+      toast.error('Có lỗi xảy ra, vui lòng kiểm tra lại.');
     } finally {
       setLoading(false);
     }
@@ -157,28 +169,11 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
     setFormData({
       ...formData,
       isCurrent: e.target.checked,
-      program: selectedPrograms.map((program) => program.name),
+      program: selectedPrograms.map((program) => program.id),
     });
   };
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-  //   if (!e.target) return;
-  //   const selectedName = e.target.value;
-  //   const { name, value, type } = e.target;
+  const Position = ['Giáo viên', 'Trưởng bộ môn', 'Tổ phó', 'Phó hiệu trưởng', 'Hiệu trưởng'];
 
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     organization: selectedName,
-  //     subjectGroupsId: name === 'subjectGroupsId' ? Number(value) : prev.subjectGroupsId,
-  //     [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
-  //     endDate: name === 'isCurrent' && (e.target as HTMLInputElement).checked ? null : prev.endDate,
-  //   }));
-
-  //   if (name === 'lecturerId') {
-  //     setSelectedUnit(value);
-  //     setSelectedOrganization(selectedName);
-  //     onSelect && onSelect(value);
-  //   }
-  // };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (!e.target) return;
 
@@ -190,12 +185,10 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
         [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
       };
 
-      // Chỉ cập nhật `organization` khi name === "organization"
       if (name === 'organization') {
         updatedData.organization = value;
       }
 
-      // Cập nhật subjectGroupsId khi chọn tổ/bộ môn
       if (name === 'subjectGroupsId') {
         updatedData.subjectGroupsId = Number(value);
       }
@@ -208,10 +201,9 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
       return updatedData;
     });
 
-    // Nếu chọn giảng viên, cập nhật thông tin liên quan
     if (name === 'lecturerId') {
       setSelectedUnit(value);
-      setSelectedOrganization(value); // <-- Chắc chắn là giá trị đúng
+      setSelectedOrganization(value);
       onSelect && onSelect(value);
     }
   };
@@ -239,7 +231,7 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
     setSelectedPrograms([...selectedPrograms, option]);
     setFormData((prev) => ({
       ...prev,
-      program: [...prev.program, option.name], // Chỉ lấy name và lưu vào formData
+      program: [...prev.program, option.id], // Chỉ lấy name và lưu vào formData
     }));
     setIsDropdownOpen(false);
   };
@@ -255,9 +247,6 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
     }));
   };
 
-  const WorkProcess = Array.from(new Set(workHistoryData.map((item) => item.position)));
-  const Role = Array.from(new Set(workHistoryData.map((item) => item.subjectGroupsId)));
-  const subjectGroup = Array.from(new Set(subjectGroups.map((item) => item.name)));
   return (
     <div className="flex justify-center items-center min-h-screen p-10">
       <div className="bg-white rounded-2xl p-6 w-full max-w-[884px] shadow-lg">
@@ -265,49 +254,45 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
           <h2 className="text-black-text text-center text-2xl font-bold mb-5">Thêm mới quá trình công tác</h2>
           <div className="flex flex-col md:flex-row items-center justify-between mb-4">
             <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">Giảng viên:</label>
-            {/* <Input style={{ width: '700px' }} size="md" type="text" placeholder="Trịnh Trần Phương Tuấn" disabled /> */}
 
-            <div style={{ width }} className={`relative ${className}`}>
-              <select
-                name="TeacherId"
-                value={formData.TeacherId}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-lg text-black appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
-                required
-              >
-                <option value="">Chọn giảng viên</option>
-                {lecturers.map((lecturer) => (
-                  <option key={lecturer.teacherId} value={lecturer.teacherId}>
-                    {lecturer.guardianName}
-                  </option>
-                ))}
-              </select>
-              <img src={caretdown} alt="Dropdown" className="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 pointer-events-none" />
-            </div>
+            {lecturers.map((lecturer) => (
+              <div style={{ width }} className={`relative ${className}`} key={lecturer.teacherId}>
+                <Input
+                  placeholder={lecturer.guardianName}
+                  disabled
+                  onChange={handleChange}
+                  name="guardianName"
+                  style={{ width: '575px' }}
+                  type="text"
+                  size="sm"
+                />
+              </div>
+            ))}
           </div>
           <div className="flex flex-col md:flex-row items-center justify-between mb-4">
             <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">
               Cơ quan/Đơn vị: <span className="text-orange-text">*</span>
             </label>
-
-            <div className="relative w-full md:w-9/12">
-              <select
-                className="w-full p-2 border border-gray-300 rounded-lg text-black appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
-                value={formData.organization}
-                name="organization"
-                onChange={handleChange}
-              >
-                <option value="" disabled hidden>
-                  Chọn cơ quan/đơn vị
-                </option>
-                {schools.map((school) => (
-                  <option key={school.id} value={school.name}>
-                    {school.name}
+            <div style={{ width }} className={`relative ${className}`}>
+              <div className="relative">
+                <select
+                  className="w-full p-2 border border-gray-300 rounded-lg text-black appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+                  value={formData.organization}
+                  name="organization"
+                  onChange={handleChange}
+                >
+                  <option value="" disabled hidden>
+                    Chọn cơ quan/đơn vị
                   </option>
-                ))}
-              </select>
+                  {schools.map((school) => (
+                    <option key={school.id} value={school.name}>
+                      {school.name}
+                    </option>
+                  ))}
+                </select>
 
-              <img src={caretdown} alt="Dropdown" className="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 pointer-events-none" />
+                <img src={caretdown} alt="Dropdown" className="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 pointer-events-none" />
+              </div>
             </div>
           </div>
           <div className="pl-36">
@@ -350,14 +335,15 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
               <div className="relative">
                 {/* Select Box */}
                 <select
+                  name="position"
                   className="w-full p-2 border border-gray-300 rounded-lg text-black appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
-                  value={selectedUnit}
+                  value={formData.position}
                   onChange={handleChange}
                 >
                   <option value="" disabled hidden>
                     {placeholder}
                   </option>
-                  {Role.map((name, index) => (
+                  {Position.map((name, index) => (
                     <option key={index} value={name}>
                       {name}
                     </option>
