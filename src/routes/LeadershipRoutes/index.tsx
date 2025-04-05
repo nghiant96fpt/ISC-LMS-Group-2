@@ -153,7 +153,7 @@ const StudentRoutes = () => {
         <Route path="declare-data/score-types" element={<ScoreTypes />} />
         <Route path="declare-data/score-types/:id" element={<EditGradeTypeModal />} />
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
-        <Route path="declare-data/edit" element={<DepartmentSettings />} />
+        <Route path="declare-data/edit/:id" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
         {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
