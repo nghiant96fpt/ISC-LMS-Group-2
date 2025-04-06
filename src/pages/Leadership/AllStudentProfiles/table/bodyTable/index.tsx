@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './styleBodyTable.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import eye from './../../../../../assets/images/people/fi_eye_true.png';
 import arrow from './../../../../../assets/icons/u_arrow up down.png';
 import trash from './../../../../../assets/icons/fi_trash-2.png';
@@ -27,6 +27,9 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
 
+  
+  const navigator = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -47,7 +50,7 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
   }, []);
 
   const filteredStudents = students.filter(
-    (student) => student.fullName.toLowerCase().includes(searchTerm.toLowerCase()) || student.code.toLowerCase().includes(searchTerm.toLowerCase()),
+    (student) => student?.fullName.toLowerCase().includes(searchTerm.toLowerCase()) || student?.code.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const toggleDropdown = (id: string) => {
@@ -62,7 +65,7 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
     if (selected.length === filteredStudents.length) {
       setSelected([]);
     } else {
-      setSelected(filteredStudents.map((student) => student.id));
+      setSelected(filteredStudents.map((student) => student?.id));
     }
   };
 
@@ -142,7 +145,7 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
                   <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
-              <th>
+              <th style={{maxWidth: 150}}>
                 <div className="th-content">
                   Tình trạng
                   <img src={arrow} alt="Sort Icon" className="sort-icon" />
@@ -159,72 +162,72 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
                 </td>
               </tr>
             ) : (
-              currentData.map((student) => (
-                <tr key={student.id}>
+              currentData.map((student, index) => (
+                <tr key={index}>
                   <td>
-                    <CheckboxComponent isChecked={selected.includes(student.id)} onChange={() => toggleSelect(student.id)} />
+                    <CheckboxComponent isChecked={selected.includes(student?.id)} onChange={() => toggleSelect(student?.id)} />
                   </td>
-                  <td>{student.code}</td>
-                  <td>{student.fullName}</td>
-                  <td>{new Date(student.dob).toLocaleDateString('vi-VN')}</td>
-                  <td>{student.gender}</td>
-                  <td>{student.nation}</td>
-                  <td>{student.className}</td>
+                  <td>{student?.code}</td>
+                  <td>{student?.fullName}</td>
+                  <td>{new Date(student?.dob).toLocaleDateString('vi-VN')}</td>
+                  <td>{student?.gender}</td>
+                  <td>{student?.nation}</td>
+                  <td>{student?.className}</td>
                   {/* tạm */}
-                  <td>{student.status != null && <Status type={student.status} />}</td>
+                  {/* <td style={{maxWidth: 150}}>{<Status type={student?.status || 'dropped'} className='max-w-[150px]'/>}</td> */}
                   {/* tạm */}
                   <td className="icon-container">
-                    <Link to="">
-                      <button>
+                    <div>
+                      <button onClick={() => navigator('/leadership/student', {state: {studentId: student?.id}})}>
                         <img className="eyeIcon" src={eye} alt="View" />
                       </button>
-                    </Link>
-                    <button onClick={() => toggleDropdown(student.id)}>
+                    </div>
+                    <button onClick={() => toggleDropdown(student?.id)}>
                       <img className="unionIcon" src={union} alt="All" />
                     </button>
-                    {openDropdownId === student.id && (
+                    {openDropdownId === student?.id && (
                       <ul className="dropdown-menu">
                         <li>
                           <Link to="">
-                            <button onClick={() => console.log(`Sửa hồ sơ ${student.id}`)}>Sửa hồ sơ</button>
+                            <button onClick={() => console.log(`Sửa hồ sơ ${student?.id}`)}>Sửa hồ sơ</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="class-transfer-method">
-                            <button onClick={() => console.log(`Chuyển lớp ${student.id}`)}>Chuyển lớp</button>
+                            <button onClick={() => console.log(`Chuyển lớp ${student?.id}`)}>Chuyển lớp</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="school-transfer-method">
-                            <button onClick={() => console.log(`Chuyển trường ${student.id}`)}>Chuyển trường</button>
+                            <button onClick={() => console.log(`Chuyển trường ${student?.id}`)}>Chuyển trường</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="reservation-method">
-                            <button onClick={() => console.log(`Bảo lưu ${student.id}`)}>Bảo lưu</button>
+                            <button onClick={() => console.log(`Bảo lưu ${student?.id}`)}>Bảo lưu</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="exemption-method">
-                            <button onClick={() => console.log(`Cập nhật miễn giảm ${student.id}`)}>Cập nhật miễn giảm</button>
+                            <button onClick={() => console.log(`Cập nhật miễn giảm ${student?.id}`)}>Cập nhật miễn giảm</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="reward-method">
-                            <button onClick={() => console.log(`Cập nhật khen thưởng ${student.id}`)}>Cập nhật khen thưởng</button>
+                            <button onClick={() => console.log(`Cập nhật khen thưởng ${student?.id}`)}>Cập nhật khen thưởng</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="disciplinary-method">
-                            <button onClick={() => console.log(`Cập nhật kỷ luật ${student.id}`)}>Cập nhật kỷ luật</button>
+                            <button onClick={() => console.log(`Cập nhật kỷ luật ${student?.id}`)}>Cập nhật kỷ luật</button>
                           </Link>
                         </li>
                       </ul>
                     )}
-                    {openDropdownId === student.id && <ul className="dropdown-menu">{/* Dropdown actions */}</ul>}
-                    <button onClick={() => handleOpenModal(student.id)}>
+                    {openDropdownId === student?.id && <ul className="dropdown-menu">{/* Dropdown actions */}</ul>}
+                    <button onClick={() => handleOpenModal(student?.id)}>
                       <img className="trashIcon" src={trash} alt="Delete" />
-                      {studentToDelete === student.id && (
+                      {studentToDelete === student?.id && (
                         <DeleteConfirmation
                           title="Xác nhận xóa học viên"
                           description={`Bạn có chắc chắn muốn xóa học viên ID ${studentToDelete}?\nHành động này không thể hoàn tác.`}
@@ -253,11 +256,11 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
         </div>
 
         <div className="pagination flex gap-2">
-          <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
+          <button onClick={() => {goToPage(currentPage - 1)}} disabled={currentPage === 1}>
             <img src={arrow_left} alt="Trước" className="h-4" />
           </button>
           {[...Array(totalPages)].map((_, index) => (
-            <button key={index} onClick={() => goToPage(index + 1)} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+            <button key={index} onClick={() => goToPage(index)} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
               {index + 1}
             </button>
           ))}

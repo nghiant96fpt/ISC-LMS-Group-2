@@ -16,9 +16,68 @@ import Loading from '../../../components/Loading';
 import { toast } from 'react-toastify';
 import { imageToBase64 } from '../../../utils/base64Encode';
 import { handleCreateUser } from './services';
+import { useLocation } from 'react-router';
 
-const StudentCU = () => {
+interface stdCUDProps {
+  isUpdate?: boolean;
+}
+const StudentCU = (props: stdCUDProps) => {
   const [loading, setLoading] = useState(false);
+  const locotor = useLocation();
+
+  type StudentDetail = {
+    id: number;
+    code: string;
+    fullName: string;
+    dob: string; // hoặc Date nếu mày muốn convert
+    gender: boolean;
+    email: string;
+    phoneNumber: string;
+    placeBirth: string;
+    nation: string;
+    religion: string;
+    enrollmentDate: string; // hoặc Date
+    roleId: number;
+    academicYearId: number;
+    userStatusId: number;
+    classId: number;
+    entryType: number;
+    addressFull: string;
+    street: string;
+    active: boolean;
+    avatarUrl: string;
+    provinceName: string;
+    districtName: string;
+    wardName: string;
+    roleName: string;
+  };
+  
+  const { studentId } = locotor?.state || {};
+  const [selectedStudent, setSelectedStudent] = useState<StudentDetail>();
+
+  const axiosTrue = createAxiosInstance(true);
+
+  const getSelectedStudent = async () => {
+    const response = await axiosTrue.get(`api/users/${studentId}`);
+    if (response?.data && response?.data?.code === 0) {
+      setSelectedStudent(response?.data?.data);
+    }
+  };
+  useEffect(() => {
+    if (studentId) {
+      try {
+        getSelectedStudent();
+      } catch (error) {
+        toast.error('Không thể lấy dữ liệu học viên');
+      }
+    }
+  }, [studentId]);
+  useEffect(
+    () => {
+      console.log(selectedStudent);
+      
+    }, [selectedStudent]
+  );
 
   type familyMembers = {
     guardianName: string;
@@ -63,7 +122,7 @@ const StudentCU = () => {
     getValues,
     setError,
     clearErrors,
-    reset
+    reset,
   } = useForm<formType>({
     defaultValues: {
       fullname: '',
@@ -117,7 +176,7 @@ const StudentCU = () => {
 
   const addressList = [
     { linkName: 'Hồ sơ học viên', link: '/leadership/all-student-profiles' },
-    { linkName: 'Thêm học viên', link: '/leadership/new-student' },
+    { linkName: `${props.isUpdate ? selectedStudent?.fullName : 'Thêm học viên'}`, link: '/leadership/new-student' },
   ];
 
   const [selectedImage, setSelectedImage] = useState<string>(UserDefaultAVT);
@@ -135,8 +194,6 @@ const StudentCU = () => {
       setSelectedImage(imageUrl);
     }
   };
-
-  const axiosTrue = createAxiosInstance(true);
 
   const [courses, setCourses] = useState<DropdownOption[]>([]);
   const [grades, setGrades] = useState<DropdownOption[]>([]);
@@ -173,7 +230,7 @@ const StudentCU = () => {
     const isValid = await trigger('grade');
     if (isValid) {
       const selectedGradeValue = getValues('grade')?.value;
-      const response = await axiosTrue.get(`api/class/by-grade?gradeLevelId=${selectedGradeValue}&sortColumn=id&sortOrder=asc`);
+      const response = await axiosTrue.get(`api/class/by-grade-academic?gradeLevelId=${selectedGradeValue}&sortColumn=id&sortOrder=asc`);
       const data = response?.data?.data?.map((item: { id: number; name: string }) => ({
         label: item?.name,
         value: item?.id,
@@ -332,6 +389,10 @@ const StudentCU = () => {
     }
   };
 
+  const handleUpdate = () => {
+    console.log('Update student !');
+  };
+
   return (
     <div className="pr-20 pl-10 content">
       <Loading isLoading={loading} />
@@ -405,7 +466,7 @@ const StudentCU = () => {
       <div className="w-full flex justify-center mb-5">
         <div className="w-[220px] flex justify-between">
           <Button className="secondary" children={'Hủy'} size="mini" />
-          <Button className="primary" children={'Lưu'} size="mini" onClick={handleCreate} />
+          <Button className="primary" children={'Lưu'} size="mini" onClick={props.isUpdate ? handleUpdate : handleCreate} />
         </div>
       </div>
     </div>

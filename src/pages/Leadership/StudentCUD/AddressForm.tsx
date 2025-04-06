@@ -35,7 +35,7 @@ const AddressForm: React.FC<formProps> = ({
         <div className="w-full flex items-center mb-1">
           <p className="w-[118px]">Tỉnh/Thành phố</p>
           <Dropdown
-            size="medium"
+            size="short"
             options={provineces}
             placeholder="Chọn tỉnh/thành phố"
             selectedOption={watch('province')}
@@ -51,7 +51,7 @@ const AddressForm: React.FC<formProps> = ({
         <div className="w-full flex items-center mb-1">
           <p className="w-[118px]">Quận/Huyện</p>
           <Dropdown
-            size="medium"
+            size="short"
             options={districts}
             placeholder="Chọn huyện/quận"
             selectedOption={watch('district')}
@@ -68,7 +68,7 @@ const AddressForm: React.FC<formProps> = ({
         <div className="w-full flex items-center mb-1">
           <p className="w-[118px]">Xã/phường</p>
           <Dropdown
-            size="medium"
+            size="short"
             options={wards}
             placeholder="Chọn xã/phường"
             selectedOption={watch('ward')}

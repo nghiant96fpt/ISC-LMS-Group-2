@@ -30,21 +30,23 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
       </div>
       <div className="flex items-center mb-2 flex-wrap">
         <p className="w-[118px]">Giới tính</p>
-        <Dropdown
-          size="short"
-          options={[
-            { label: 'Nam', value: false },
-            { label: 'Nữ', value: true },
-          ]}
-          selectedOption={watch('gender')}
-          handleOptionClick={(e) => {
-            setValue('gender', e);
-            clearError('gender');
-          }}
-          {...register('gender', { required: 'Vui lòng chọn thông tin giới tính !' })}
-          placeholder="Chọn giới tính"
-          borderColor={errors?.gender && '#EF4444'}
-        />
+        <div className='max-w-[115px]'>
+          <Dropdown
+            size="short"
+            options={[
+              { label: 'Nam', value: false },
+              { label: 'Nữ', value: true },
+            ]}
+            selectedOption={watch('gender')}
+            handleOptionClick={(e) => {
+              setValue('gender', e);
+              clearError('gender');
+            }}
+            {...register('gender', { required: 'Vui lòng chọn thông tin giới tính !' })}
+            placeholder="Chọn giới tính"
+            borderColor={errors?.gender && '#EF4444'}
+          />
+        </div>
         {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1">{errors?.gender?.message}</p>}
       </div>
       <div className="flex items-center">

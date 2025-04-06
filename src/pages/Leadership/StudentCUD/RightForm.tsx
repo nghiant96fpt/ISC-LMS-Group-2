@@ -39,43 +39,49 @@ const RightForm: React.FC<RightFormProps> = ({
   filteredClasses,
   selectedGrade,
   entries,
-  statuses
+  statuses,
 }) => {
   return (
     <div className="w-[47%]">
       <div className="flex items-center mb-1">
         <p className="w-[115px]">Niên khóa</p>
-        <Dropdown
-          size="short"
-          options={courses}
-          placeholder="Chọn niên khóa"
-          selectedOption={watch('academicYear')}
-          handleOptionClick={(e) => {
-            setValue('academicYear', e);
-            clearError('academicYear');
-          }}
-          {...register('academicYear', { required: 'Vui lòng chọn thông tin niên khóa !' })}
-          borderColor={errors?.academicYear && '#EF4444'}
-        />
+        <div className="max-w-[115px]">
+          <Dropdown
+            size="short"
+            options={courses}
+            placeholder="Chọn niên khóa"
+            selectedOption={watch('academicYear')}
+            handleOptionClick={(e) => {
+              setValue('academicYear', e);
+              clearError('academicYear');
+            }}
+            {...register('academicYear', { required: 'Vui lòng chọn thông tin niên khóa !' })}
+            borderColor={errors?.academicYear && '#EF4444'}
+          />
+        </div>
       </div>
       {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.academicYear?.message}</p>}
       <div className="flex items-center mb-1">
-        <p className="w-[118px]">Khối</p>
-        <Dropdown
-          size="short"
-          options={grades}
-          selectedOption={watch('grade')}
-          handleOptionClick={(e) => {
-            setValue('grade', e);
-            clearError('grade');
-          }}
-          {...register('grade', { required: 'Vui lòng chọn thông tin khối và lớp học !' })}
-          placeholder="Chọn khối"
-          borderColor={errors?.grade && '#EF4444'}
-        />
+        <p className="w-[118px]" style={{ width: 118 }}>
+          Khối
+        </p>
+        <div className="max-w-[115px]">
+          <Dropdown
+            size="short"
+            options={grades}
+            selectedOption={watch('grade')}
+            handleOptionClick={(e) => {
+              setValue('grade', e);
+              clearError('grade');
+            }}
+            {...register('grade', { required: 'Vui lòng chọn thông tin khối và lớp học !' })}
+            placeholder="Chọn khối"
+            borderColor={errors?.grade && '#EF4444'}
+          />
+        </div>
         <div className="ms-2">
           <Dropdown
-            size="medium"
+            size="short"
             options={filteredClasses}
             selectedOption={watch('class')}
             handleOptionClick={(e) => {
@@ -133,7 +139,7 @@ const RightForm: React.FC<RightFormProps> = ({
       <div className="flex items-center mb-1">
         <p className="w-[118px]">Hình thức</p>
         <Dropdown
-          size="medium"
+          size="short"
           options={entries}
           selectedOption={watch('entry')}
           handleOptionClick={(e) => {
@@ -142,14 +148,14 @@ const RightForm: React.FC<RightFormProps> = ({
           }}
           {...register('entry', { required: 'Vui lòng chọn hình thức nhập học !' })}
           borderColor={errors?.entry && '#EF4444'}
-          placeholder='Chọn hình thức'
+          placeholder="Chọn hình thức"
         />
       </div>
       {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.entry?.message}</p>}
       <div className="flex items-center mb-1">
         <p className="w-[118px]">Trạng thái</p>
         <Dropdown
-          size="medium"
+          size="short"
           options={statuses}
           selectedOption={watch('status')}
           handleOptionClick={(e) => {
@@ -158,7 +164,7 @@ const RightForm: React.FC<RightFormProps> = ({
           }}
           {...register('status', { required: 'Vui lòng chọn trạng thái theo học !' })}
           borderColor={errors?.status && '#EF4444'}
-          placeholder='Chọn trạng thái'
+          placeholder="Chọn trạng thái"
         />
       </div>
       {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.status?.message}</p>}

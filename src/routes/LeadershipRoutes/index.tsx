@@ -194,7 +194,8 @@ const StudentRoutes = () => {
         <Route path="study-process" element={<StudyProcess />} />
         <Route path="study-process/update-rewards" element={<UpdateRewards />} />
         <Route path="study-process/update-discipline" element={<UpdateDiscipline />} />
-        <Route path="new-student" element={<StudentCU />} />
+        <Route path="new-student" element={<StudentCU/>} />
+        <Route path="student" element={<StudentCU isUpdate={true}/>} />
         <Route path="system-settings/config" element={<Config />} />
         {/* Thiết lập lớp học */}
         <Route path="system-settings/subject-management" element={<SubjectManagement />} />
