@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchTeacherListAPI } from '../../../../../services/Leadership/DeclareData/Department/teacherService';
 import { deleteTeacher } from './teacherThunks';
-import { Teacher, TeacherResponse } from './type';
+import { Teacher } from './type';
 
 export const fetchTeacherList = createAsyncThunk(
   'teacher/fetchTeacherList',
   async ({ page, pageSize, search }: { page: number; pageSize: number; search?: string }, { rejectWithValue }) => {
     try {
-      const response: TeacherResponse = await fetchTeacherListAPI(page, pageSize, 'Id', 'asc', search || '');
+      const response: any = await fetchTeacherListAPI(page, pageSize, 'Id', 'asc', search || '');
       console.log(response);
       return response;
     } catch (error: any) {
@@ -15,9 +15,8 @@ export const fetchTeacherList = createAsyncThunk(
     }
   },
 );
-
 interface TeacherState {
-  teachers: Teacher[] | null;
+  data: Teacher[];
   loading: boolean;
   error: string | null;
   page: number;
@@ -27,7 +26,7 @@ interface TeacherState {
 }
 
 const initialState: TeacherState = {
-  teachers: null,
+  data: [],
   loading: false,
   error: null,
   page: 1,
@@ -48,16 +47,20 @@ const teacherSlice = createSlice({
       })
       .addCase(fetchTeacherList.fulfilled, (state, action) => {
         state.loading = false;
-        console.log('Redux Reducer - action.payload:', action.payload); // Xem payload
-        state.teachers = action.payload.data || [];
-        state.page = action.payload.page ?? 1;
-        state.pageSize = action.payload.pageSize ?? 8;
-        state.totalItems = action.payload.totalItems ?? 0;
-        state.totalPages = action.payload.totalPages ?? 1;
+        const teachers = action.payload.data.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          fullName: item.teacher.fullName,
+        }));
+        state.data = teachers;
+        state.page = action.payload.page;
+        state.pageSize = action.payload.pageSize;
+        state.totalItems = action.payload.totalItems;
+        state.totalPages = action.payload.totalPages;
       })
-
       .addCase(fetchTeacherList.rejected, (state, action) => {
         state.loading = false;
+        state.data = [];
         state.error = action.payload as string;
       })
       .addCase(deleteTeacher.pending, (state) => {
@@ -65,7 +68,8 @@ const teacherSlice = createSlice({
       })
       .addCase(deleteTeacher.fulfilled, (state, action) => {
         state.loading = false;
-        state.teachers = (state.teachers ?? []).filter((teacher) => teacher.id !== action.payload);
+        // Xóa giáo viên khỏi state
+        state.data = state.data.filter((teacher) => teacher.id !== action.payload);
       })
       .addCase(deleteTeacher.rejected, (state, action) => {
         state.loading = false;

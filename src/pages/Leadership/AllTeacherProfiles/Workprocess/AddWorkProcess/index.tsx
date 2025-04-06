@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
-import { workHistoryData } from '../data';
+import React, { useEffect, useState } from 'react';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import locale from 'antd/es/date-picker/locale/vi_VN';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import iconCalendar from '../../../../../assets/icons/icon-calendar.png';
-import { subjectGroups as initialSubjectGroups } from '../../../DeclareData/DataList/data';
 import minus from '../../../../../assets/icons/icon_minus.png';
 import plus from '../../../../../assets/icons/icon_plus.png';
 import caretdown from '../../../../../assets/icons/caret_down.png';
-import Input from '../../../../../components/Input';
 
 import { CustomDropdownProps } from '../../../../../components/DropdownSelection/type';
 import CheckboxComponent from '../../../../../components/CheckBox';
-import { SubjectGroup } from '../../../DeclareData/DataList/type';
 
-import { DropdownOption } from '../../../../../components/Dropdown/type';
-import { options } from '../../../TrainingInfo/AddTraining/data';
+import { trainingPrograms } from './type';
 import Button from '../../../../../components/Button';
+import axiosInstance from '../../../../../utils/axiosInstance';
+import { Lecturer, Schoolslist } from '../Types';
+import { stringify } from 'querystring';
+import { toast } from 'react-toastify';
+import { useLocation } from 'react-router';
+import Input from '../../../../../components/Input';
 dayjs.extend(customParseFormat);
 const AddWorkProcess: React.FC<CustomDropdownProps> = ({
   label,
@@ -29,65 +30,263 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
   className = '',
 }) => {
   const [selectedUnit, setSelectedUnit] = useState('');
-  const [subjectGroups] = useState<SubjectGroup[]>(initialSubjectGroups);
 
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null);
+  // const [endDate, setEndDate] = useState(null);
+  const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null);
+
   const [openStart, setOpenStart] = useState(false);
   const [openEnd, setOpenEnd] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
+  const [lecturers, setLecturers] = useState<Lecturer[]>([]);
+  const [success, setSuccess] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [trainingPrograms, setTrainingPrograms] = useState<DropdownOption[]>([]);
+  const [trainingPrograms, setTrainingPrograms] = useState<trainingPrograms[]>([]);
+  const [selectedPrograms, setSelectedPrograms] = useState<trainingPrograms[]>([]);
+  const [subjectGroups, setSubjectGroups] = useState<trainingPrograms[]>([]);
+
+  const [schools, setSchools] = useState<Schoolslist[]>([]);
+  const [selectedOrganization, setSelectedOrganization] = useState('');
+  const location = useLocation();
+  const teacherId = location.state?.teacherId;
+
+  const [formData, setFormData] = useState({
+    TeacherId: null as number | null,
+    isCurrent: false,
+    endDate: null as string | null,
+    startDate: null as string | null,
+    program: [] as number[],
+    subjectGroupsId: null as number | null,
+    organization: '',
+    position: '',
+  });
+  useEffect(() => {
+    console.log('lecturers:', lecturers);
+  }, [lecturers]);
+
+  const axios = axiosInstance();
+
+  useEffect(() => {
+    const fetchSubjectGroups = async () => {
+      try {
+        const response = await axios.get('/api/subject-groups');
+
+        if (response.data && Array.isArray(response.data.data)) {
+          setSubjectGroups(response.data.data);
+        } else {
+          console.error('Dữ liệu danh sách tổ/bộ môn không hợp lệ', response.data);
+        }
+      } catch (err) {
+        console.error('Lỗi khi lấy danh sách tổ/bộ môn', err);
+      }
+    };
+    fetchSubjectGroups();
+  }, []);
+
+  useEffect(() => {
+    const fetchschools = async () => {
+      try {
+        const response = await axios.get('/api/schools');
+
+        if (response.data && Array.isArray(response.data.data)) {
+          setSchools(response.data.data);
+        } else {
+          console.error('Dữ liệu danh sách trường học không hợp lệ', response.data);
+        }
+      } catch (err) {
+        console.error('Lỗi khi lấy danh sách trường học', err);
+      }
+    };
+    fetchschools();
+  }, []);
+  useEffect(() => {
+    const fetchTrainingPrograms = async () => {
+      try {
+        const response = await axios.get('/api/training-program', {
+          params: {
+            sortColumn: 'Id',
+            sortOrder: 'asc',
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          setTrainingPrograms(response.data.data);
+        }
+      } catch (err) {
+        console.error('Lỗi khi lấy danh sách chương trình đào tạo', err);
+      }
+    };
+    fetchTrainingPrograms();
+  }, []);
+  useEffect(() => {
+    const fetchLecturers = async () => {
+      try {
+        const response = await axios.get(`/api/teacherfamilies/${teacherId}`);
+
+        if (response.data.data) {
+          const data = response.data.data;
+
+          const formattedData = Array.isArray(data) ? data : [data];
+          if (formattedData.length > 0) {
+            setFormData((prev) => ({
+              ...prev,
+              TeacherId: formattedData[0].teacherId,
+            }));
+          }
+
+          setLecturers(formattedData);
+        } else {
+          console.error('Dữ liệu người thân không hợp lệ', response.data);
+        }
+      } catch (err) {
+        console.error('Lỗi khi lấy danh sách giảng viên', err);
+      }
+    };
+    fetchLecturers();
+  }, []);
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      await axios.post('/api/work-process', {
+        ...formData,
+      });
+      toast.success('Thêm quá trình công tác thành công!');
+      setSuccess(true);
+    } catch (err) {
+      setError('Có lỗi xảy ra, vui lòng thử lại!');
+      toast.error('Có lỗi xảy ra, vui lòng kiểm tra lại.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      isCurrent: e.target.checked,
+      program: selectedPrograms.map((program) => program.id),
+    });
+  };
+  const Position = ['Giáo viên', 'Trưởng bộ môn', 'Tổ phó', 'Phó hiệu trưởng', 'Hiệu trưởng'];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setSelectedUnit(e.target.value);
+    if (!e.target) return;
 
-    onSelect && onSelect(e.target.value);
+    const { name, value, type } = e.target;
+
+    setFormData((prev) => {
+      let updatedData = {
+        ...prev,
+        [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
+      };
+
+      if (name === 'organization') {
+        updatedData.organization = value;
+      }
+
+      if (name === 'subjectGroupsId') {
+        updatedData.subjectGroupsId = Number(value);
+      }
+
+      // Nếu có `isCurrent`, đặt lại `endDate`
+      if (name === 'isCurrent') {
+        updatedData.endDate = (e.target as HTMLInputElement).checked ? null : prev.endDate;
+      }
+
+      return updatedData;
+    });
+
+    if (name === 'lecturerId') {
+      setSelectedUnit(value);
+      setSelectedOrganization(value);
+      onSelect && onSelect(value);
+    }
   };
+
+  const handleDateChange = (newDate: dayjs.Dayjs | null, isStartDate: boolean) => {
+    if (isStartDate) {
+      setStartDate(newDate);
+    } else {
+      setEndDate(newDate);
+    }
+    setFormData((prev) => ({
+      ...prev,
+      [isStartDate ? 'startDate' : 'endDate']: newDate ? newDate.format('YYYY-MM-DD') : null, // Gửi ngày theo định dạng YYYY-MM-DD
+    }));
+  };
+
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleOptionSelect = (option: DropdownOption) => {
-    setTrainingPrograms([...trainingPrograms, option]);
+  const handleOptionSelect = (option: trainingPrograms) => {
+    // Kiểm tra nếu option đã được chọn thì không thêm nữa
+    if (selectedPrograms.some((program) => program.id === option.id)) return;
+
+    setSelectedPrograms([...selectedPrograms, option]);
+    setFormData((prev) => ({
+      ...prev,
+      program: [...prev.program, option.id], // Chỉ lấy name và lưu vào formData
+    }));
     setIsDropdownOpen(false);
   };
-  const removeProgram = (index: number, event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    setTrainingPrograms(trainingPrograms.filter((_, i) => i !== index));
+
+  const removeProgram = (index: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    setSelectedPrograms((prev) => prev.filter((_, i) => i !== index));
+
+    setFormData((prev) => ({
+      ...prev,
+      programs: prev.program.filter((_, i) => i !== index),
+    }));
   };
-  const WorkProcess = Array.from(new Set(workHistoryData.map((item) => item.unit)));
-  const Role = Array.from(new Set(workHistoryData.map((item) => item.role)));
-  const subjectGroup = Array.from(new Set(subjectGroups.map((item) => item.name)));
+
   return (
     <div className="flex justify-center items-center min-h-screen p-10">
       <div className="bg-white rounded-2xl p-6 w-full max-w-[884px] shadow-lg">
-        <form className="w-full pt-3 px-6 md:px-[60px] pb-10">
+        <form onSubmit={handleSubmit} className="w-full pt-3 px-6 md:px-[60px] pb-10">
           <h2 className="text-black-text text-center text-2xl font-bold mb-5">Thêm mới quá trình công tác</h2>
           <div className="flex flex-col md:flex-row items-center justify-between mb-4">
             <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">Giảng viên:</label>
-            <Input style={{ width: '700px' }} size="md" type="text" placeholder="Trịnh Trần Phương Tuấn" disabled />
+
+            {lecturers.map((lecturer) => (
+              <div style={{ width }} className={`relative ${className}`} key={lecturer.teacherId}>
+                <Input
+                  placeholder={lecturer.guardianName}
+                  disabled
+                  onChange={handleChange}
+                  name="guardianName"
+                  style={{ width: '575px' }}
+                  type="text"
+                  size="sm"
+                />
+              </div>
+            ))}
           </div>
           <div className="flex flex-col md:flex-row items-center justify-between mb-4">
             <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">
               Cơ quan/Đơn vị: <span className="text-orange-text">*</span>
             </label>
-
             <div style={{ width }} className={`relative ${className}`}>
-              {label && <label className="block mb-1 text-sm font-medium">{label}</label>}
               <div className="relative">
-                {/* Select Box */}
                 <select
                   className="w-full p-2 border border-gray-300 rounded-lg text-black appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
-                  value={selectedUnit}
+                  value={formData.organization}
+                  name="organization"
                   onChange={handleChange}
                 >
                   <option value="" disabled hidden>
-                    {placeholder}
+                    Chọn cơ quan/đơn vị
                   </option>
-                  {WorkProcess.map((name, index) => (
-                    <option key={index} value={name}>
-                      {name}
+                  {schools.map((school) => (
+                    <option key={school.id} value={school.name}>
+                      {school.name}
                     </option>
                   ))}
                 </select>
@@ -97,28 +296,27 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
             </div>
           </div>
           <div className="pl-36">
-            <CheckboxComponent label="Đang làm việc tại đơn vị này" isChecked={false} onChange={(e) => console.log(e.target.checked)} />
+            <CheckboxComponent label="Đang làm việc tại đơn vị này" isChecked={formData.isCurrent} onChange={handleCheckboxChange} />
           </div>
           <div className=" pt-3 flex flex-col md:flex-row items-center justify-between mb-4">
             <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">
               Tổ/Bộ môn: <span className="text-orange-text">*</span>
             </label>
-
             <div style={{ width }} className={`relative ${className}`}>
               {label && <label className="block mb-1 text-sm font-medium">{label}</label>}
               <div className="relative">
-                {/* Select Box */}
                 <select
                   className="w-full p-2 border border-gray-300 rounded-lg text-black appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
-                  value={selectedUnit}
+                  name="subjectGroupsId"
+                  value={formData.subjectGroupsId || ''}
                   onChange={handleChange}
                 >
                   <option value="" disabled hidden>
-                    {placeholder}
+                    Chọn tổ/bộ môn
                   </option>
-                  {subjectGroup.map((name, index) => (
-                    <option key={index} value={name}>
-                      {name}
+                  {subjectGroups.map((group) => (
+                    <option key={group.id} value={group.id}>
+                      {group.name}
                     </option>
                   ))}
                 </select>
@@ -137,14 +335,15 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
               <div className="relative">
                 {/* Select Box */}
                 <select
+                  name="position"
                   className="w-full p-2 border border-gray-300 rounded-lg text-black appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
-                  value={selectedUnit}
+                  value={formData.position}
                   onChange={handleChange}
                 >
                   <option value="" disabled hidden>
                     {placeholder}
                   </option>
-                  {Role.map((name, index) => (
+                  {Position.map((name, index) => (
                     <option key={index} value={name}>
                       {name}
                     </option>
@@ -162,11 +361,8 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
             <DatePicker
               className="appearance-none w-full h-11 border border-gray-300 rounded-lg hover:border-orange-500 shadow-md px-3"
               value={startDate}
-              onChange={(newDate) => {
-                setStartDate(newDate);
-                setOpenStart(false);
-              }}
-              format={(value) => value.format('D/M/YYYY')}
+              onChange={(date) => handleDateChange(date, true)}
+              format="YYYY-MM-DD"
               locale={locale}
               placeholder="DD/MM/YYYY"
               open={openStart}
@@ -193,10 +389,11 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
             <DatePicker
               className="appearance-none w-full h-11 border border-gray-300 rounded-lg hover:border-orange-500 shadow-md px-3"
               value={endDate}
-              onChange={(newDate) => {
-                setEndDate(newDate);
-                setOpenEnd(false);
-              }}
+              // onChange={(newDate) => {
+              //   setEndDate(newDate);
+              //   setOpenEnd(false);
+              // }}
+              onChange={(date) => handleDateChange(date, false)}
               format={(value) => value.format('D/M/YYYY')}
               locale={locale}
               placeholder="DD/MM/YYYY"
@@ -218,12 +415,12 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
           </div>
           <hr className="my-6 border-gray-300" />
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-            {trainingPrograms.map((program, index) => (
+            {selectedPrograms.map((program, index) => (
               <div key={index} className="flex">
                 <button onClick={(e) => removeProgram(index, e)} className="text-red-500">
                   <img src={minus} alt="Remove" className="w-6 h-6" />
                 </button>
-                <span className="flex-grow ml-3">{program.label}</span>
+                <span className="flex-grow ml-3">{program.name}</span>
               </div>
             ))}
           </div>
@@ -234,11 +431,13 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
             </div>
             {isDropdownOpen && (
               <div className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-2 w-48">
-                {options.map((option) => (
-                  <div key={option.value} className="p-2 hover:bg-gray-200 cursor-pointer" onClick={() => handleOptionSelect(option)}>
-                    {option.label}
-                  </div>
-                ))}
+                {trainingPrograms
+                  .filter((option) => !selectedPrograms.some((program) => program.id === option.id)) // Lọc ra những chương trình chưa được chọn
+                  .map((option) => (
+                    <div key={option.id} className="p-2 hover:bg-gray-200 cursor-pointer" onClick={() => handleOptionSelect(option)}>
+                      {option.name}
+                    </div>
+                  ))}
               </div>
             )}
           </div>{' '}
@@ -247,7 +446,7 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
               Hủy
             </Button>
 
-            <Button className="primary" style={{ margin: 2, marginLeft: 20, fontWeight: 'bold' }}>
+            <Button type="submit" className="primary" style={{ margin: 2, marginLeft: 20, fontWeight: 'bold' }}>
               Lưu
             </Button>
           </div>
