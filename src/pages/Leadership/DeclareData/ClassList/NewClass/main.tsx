@@ -207,7 +207,7 @@ const NewClassForm: React.FC = () => {
               <label className="font-bold text-black-text w-44  mt-2">
                 Phân loại lớp học: <span className="text-red-500">*</span>
               </label>
-              <div style={{ width: '800px' }}>
+              <div style={{ width: '500px' }}>
                 <Dropdown
                   placeholder="Phân loại lớp"
                   options={classTypes.map((v, index) => {
@@ -227,7 +227,7 @@ const NewClassForm: React.FC = () => {
 
             <div className="flex">
               <label className="font-bold text-black-text w-48 mt-2">Giáo viên chủ nhiệm:</label>
-              <div style={{ width: '800px' }}>
+              <div style={{ width: '500px' }}>
                 <Dropdown
                   placeholder="Chọn giáo viên chủ nhiệm"
                   options={data.teachers.map((v, index) => {
