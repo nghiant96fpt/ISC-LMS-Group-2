@@ -3,27 +3,27 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import tep from '../../../../assets/icons/u_paperclip.png';
-import './index.css';
 import DateInput from './../../../../components/Date';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchOneStudentRetention,
   fetchClassEdit,
-  updateStudentRetention,
+  postStudentRetention,
 } from './../../../../redux/reducers/Leadership/StudentProfile/StudentRetention/StudentRetention';
 import { RootState, AppDispatch } from './../../../../redux/store';
 import dayjs from 'dayjs';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
-import { SchoolClass } from './type';
+import { SchoolClass } from '../StudentRetensionUpdate/type';
+
 const StudentRetentionUpdate = () => {
   const { id } = useParams();
   const [cookies] = useCookies(['refreshToken']);
   const navigate = useNavigate();
   const refreshToken = cookies.refreshToken;
   const dispatch = useDispatch<AppDispatch>();
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue, reset } = useForm();
   const [fileName, setFileName] = useState('');
   const [date, setDate] = useState<dayjs.Dayjs | null | any>(null);
   const { selectedStudentRetention, loading, error } = useSelector((state: RootState) => state.studentRetention);
@@ -34,7 +34,6 @@ const StudentRetentionUpdate = () => {
   const [classId, setClassId] = useState();
   const [listClass, setListClass] = useState<SchoolClass[]>([]);
   const [studentOptions, setStudentOptions] = useState<any[]>([]);
-  // console.log('refreshToken', refreshToken);
 
   useEffect(() => {
     dispatch(fetchClassEdit({ page: 1, pageSize: 1000, sortColumn: 'id', sortOrder: 'asc' }) as any);
@@ -64,21 +63,6 @@ const StudentRetentionUpdate = () => {
     }
   }, [dispatch, id]);
 
-  useEffect(() => {
-    if (selectedStudentRetention) {
-      const data = selectedStudentRetention as any;
-      setValue('className', data?.className || '');
-      setValue('studentName', `Học viên ${data?.fullName || ''}`);
-      setValue('semesterId', data?.semester?.toString() || '');
-      setValue('reason', data?.reason || '');
-      setValue('retentionPeriod', data?.retentionPeriod || '');
-      setDate(data?.reserveDate ? dayjs(data.reserveDate) : null);
-      setFileName(data?.file ? data?.file.split('/').pop() : '');
-      setStudenId(data?.student?.id);
-      setClassId(data?.class?.id);
-    }
-  }, [selectedStudentRetention, setValue]);
-
   if (loading) return <p>Đang tải dữ liệu...</p>;
   // if (error) return <p>Lỗi: {error}</p>;
 
@@ -99,15 +83,16 @@ const StudentRetentionUpdate = () => {
       classId: data.className,
       semesterId: data.semesterId,
     };
-    dispatch(updateStudentRetention({ updatedData: formattedData, token: refreshToken }))
+    dispatch(postStudentRetention({ newStudentRetentionData: formattedData, token: refreshToken }))
       .unwrap()
       .then((res) => {
-        // console.log('Cập nhật thành công:', res);
-        toast.success('Cập nhật bảo lưu thành công!');
+        toast.success('Thêm bảo lưu thành công!');
+        reset();
+        setFileName('');
+        setDate(null);
       })
-      .catch((err) => {
-        // console.error('Lỗi cập nhật:', err);
-        toast.error('Lỗi cập nhật! Vui lòng kiểm tra lại dữ liệu trước khi cập nhật!');
+      .catch((errors) => {
+        toast.error('Lỗi khi thêm! Vui lòng kiểm tra lại các thông tin trước khi thêm!');
       });
   };
 
@@ -117,7 +102,7 @@ const StudentRetentionUpdate = () => {
 
   return (
     <div className="w-full mx-auto bg-white  rounded-lg shadow-md max-w-3xl mt-10 p-6">
-      <h2 className="text-2xl font-semibold text-center mb-4">Cập nhật bảo lưu</h2>
+      <h2 className="text-2xl font-semibold text-center mb-4">Thêm bảo lưu</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Lớp hiện tại */}
         <div className="flex flex-col md:flex-row justify-between items-center">
