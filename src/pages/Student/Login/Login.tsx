@@ -4,19 +4,21 @@ import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 import logo2 from '../../../assets/images/logo2.png';
 import { Navigate, useNavigate } from 'react-router';
-import { ChevronLeftIcon, ShieldExclamationIcon, UserCircleIcon } from '@heroicons/react/24/solid';
+import { ChevronLeftIcon, EyeIcon, EyeSlashIcon, ShieldExclamationIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import { useForm } from 'react-hook-form';
 import createAxiosInstance from '../../../utils/axiosInstance';
 import { useCookies } from 'react-cookie';
 import Loading from '../../../components/Loading';
 import { AuthContext } from './AuthContext';
 import { toast } from 'react-toastify';
+import { serviceChangePassword, serviceLogin } from './services';
 
 interface studentLoginProps {
   isLogin: boolean;
+  isChangePassword?: boolean;
 }
 
-const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
+const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
   const navigator = useNavigate();
 
   const {
@@ -75,6 +77,43 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
       console.log('Lỗi khi đăng nhập!', error);
     } finally {
       setLoading(false);
+
+    serviceLogin({
+      isValid: isValid,
+      data: data,
+      axiosInstance: axiosInstance,
+      clearErrors: clearErrors,
+      navigator: navigator,
+      setCookies: setCookies,
+      setError: setError,
+      setInfo: setInfo,
+      setLoading: setLoading,
+      setRole: setRole,
+    });
+  };
+  }
+
+  const [isShowPassword, setShowPassword] = useState(false);
+
+  const handleChangePassword = async () => {
+    const isValid = await trigger(['currentPassword', 'newPassword']);
+
+    if (isValid) {
+      const data = getValues();
+      console.log(data);
+      
+      serviceChangePassword({
+        isValid: isValid,
+        data: data,
+        axiosInstance: axiosInstance,
+        clearErrors: clearErrors,
+        navigator: navigator,
+        setCookies: setCookies,
+        setError: setError,
+        setInfo: setInfo,
+        setLoading: setLoading,
+        setRole: setRole,
+      });
     }
   };
 
@@ -84,26 +123,50 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
       <img src={logo2} alt="logo" />
       <div className="w-full h-full flex justify-end items-center">
         <div className="login-box px-5">
-          <p className="text-4xl font-bold">{isLogin ? 'Đăng Nhập' : 'Cấp lại mật khẩu'}</p>
+          <p className="text-4xl font-bold">{isLogin ? 'Đăng Nhập' : isChangePassword ? 'Đổi mật khẩu' : 'Cấp lại mật khẩu'}</p>
           <div className="mt-10 w-5/6 text-start">
-            <p className="mb-1 pb-0">Email</p>
-            <Input
-              icon={
-                <div className="w-full h-full flex justify-center">
-                  <UserCircleIcon className="w-full h-full p-3" />
-                </div>
-              }
-              placeholder="Nhập email"
-              {...register('email', { required: 'Email không được bỏ trống !' })}
-              error={errors.email?.message as string}
-            />
+            {isChangePassword ? (
+              <div>
+                <p className="mb-1 pb-0">Mật khẩu hiện tại</p>
+                <Input
+                  type={isShowPassword ? 'text' : 'password'}
+                  icon={
+                    <div className="w-full h-full flex justify-center">
+                      <ShieldExclamationIcon className="w-full h-full p-3" />
+                    </div>
+                  }
+                  placeholder="Nhập mật khẩu hiện tại"
+                  {...register('currentPassword', { required: 'Mật khẩu hiện tại không được bỏ trống !' })}
+                  error={errors.currentPassword?.message as string}
+                  leftIcon={
+                    <button className="w-full h-full flex justify-center" onClick={() => setShowPassword(!isShowPassword)}>
+                      {isShowPassword ? <EyeSlashIcon className="w-full h-full p-3" /> : <EyeIcon className="w-full h-full p-3" />}
+                    </button>
+                  }
+                />
+              </div>
+            ) : (
+              <div>
+                <p className="mb-1 pb-0">Email</p>
+                <Input
+                  icon={
+                    <div className="w-full h-full flex justify-center">
+                      <UserCircleIcon className="w-full h-full p-3" />
+                    </div>
+                  }
+                  placeholder="Nhập email"
+                  {...register('email', { required: 'Email không được bỏ trống !' })}
+                  error={errors.email?.message as string}
+                />
+              </div>
+            )}
           </div>
           <div className="mt-5 w-5/6 text-start">
             {isLogin ? (
               <div>
                 <p className="mb-1 pb-0">Mật khẩu</p>
                 <Input
-                  type="password"
+                  type={isShowPassword ? 'text' : 'password'}
                   icon={
                     <div className="w-full h-full flex justify-center">
                       <ShieldExclamationIcon className="w-full h-full p-3" />
@@ -112,17 +175,45 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
                   placeholder="Nhập mật khẩu"
                   {...register('password', { required: 'Mật khẩu không được bỏ trống !' })}
                   error={errors.password?.message as string}
+                  leftIcon={
+                    <button className="w-full h-full flex justify-center" onClick={() => setShowPassword(!isShowPassword)}>
+                      {isShowPassword ? <EyeSlashIcon className="w-full h-full p-3" /> : <EyeIcon className="w-full h-full p-3" />}
+                    </button>
+                  }
+                />
+              </div>
+            ) : isChangePassword ? (
+              <div>
+                <p className="mb-1 pb-0">Mật khẩu mới</p>
+                <Input
+                  type={isShowPassword ? 'text' : 'password'}
+                  icon={
+                    <div className="w-full h-full flex justify-center">
+                      <ShieldExclamationIcon className="w-full h-full p-3" />
+                    </div>
+                  }
+                  placeholder="Nhập mật khẩu mới"
+                  {...register('newPassword', { required: 'Mật khẩu mới không được bỏ trống !' })}
+                  error={errors.newPassword?.message as string}
+                  leftIcon={
+                    <button className="w-full h-full flex justify-center" onClick={() => setShowPassword(!isShowPassword)}>
+                      {isShowPassword ? <EyeSlashIcon className="w-full h-full p-3" /> : <EyeIcon className="w-full h-full p-3" />}
+                    </button>
+                  }
                 />
               </div>
             ) : (
               <div>
                 <p className="mb-1 pb-0">Mã xác nhận</p>
-                <Input placeholder="Nhập mã xác nhận" />
+                <div className="flex items-center">
+                  <Input placeholder="Nhập mã xác nhận" />
+                  <button className="bg-[#FF7506] ms-2 px-2 py-1 text-white rounded rounded-3">Gửi mã</button>
+                </div>
               </div>
             )}
           </div>
           {errors && <p className="pb-0 w-5/6 text-red-500 text-sm mt-1 font-bold">{errors?.loginFailed?.message as string}</p>}
-          <p className="mt-5 text-end w-5/6 text-orange-text mb-5">
+          <div className="mt-5 text-end w-5/6 text-orange-text mb-5">
             {isLogin ? (
               <span>
                 <button
@@ -132,6 +223,17 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
                 >
                   Quên mật khẩu?
                 </button>
+              </span>
+            ) : isChangePassword ? (
+              <span className="flex items-center justify-end">
+                <div className="w-[20px] h-[20px]">
+                  <ChevronLeftIcon />
+                </div>
+                <button
+                  onClick={() => {
+                    navigator('/');
+                  }}
+                >{`Quay lại trang chủ`}</button>
               </span>
             ) : (
               <span className="flex items-center justify-end">
@@ -145,12 +247,12 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
                 >{`Quay lại đăng nhập`}</button>
               </span>
             )}
-          </p>
+          </div>
           <Button
             className="primary"
             style={{ fontWeight: 'bold' }}
-            children={isLogin ? 'Đăng nhập' : 'Cấp lại mật khẩu'}
-            onClick={isLogin ? handleLogin : undefined}
+            children={isLogin ? 'Đăng nhập' : isChangePassword ? 'Đổi mật khẩu' : 'Cấp lại mật khẩu'}
+            onClick={isLogin ? handleLogin : isChangePassword ? handleChangePassword : undefined}
           />
         </div>
       </div>

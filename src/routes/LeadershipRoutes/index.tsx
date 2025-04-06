@@ -95,7 +95,6 @@ import MainClassList from '../../pages/Leadership/DeclareData/ClassList';
 import MainBlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment';
 import MainSectionList from '../../pages/Leadership/DeclareData/SectionList/SectionListData';
 import MainSetupSubjectedit from '../../pages/Leadership/DeclareData/SubjectSettings/SubjecteditData';
-
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -130,7 +129,7 @@ const StudentRoutes = () => {
         <Route path="InstructorProfile" element={<InstructorProfile />} />
         {/*route cho school-year - group-4*/}
         <Route path="declare-data/school-year" element={<MainSchoolYear />} /> {/* url table niên khóa */}
-        <Route path="declare-data/school-year/edit-school-year" element={<MainSchoolYearEditPages />} /> {/* url sửa niên khóa */}
+        <Route path="declare-data/school-year/edit-school-year/:id" element={<MainSchoolYearEditPages />} /> {/* url sửa niên khóa */}
         <Route path="declare-data/school-year/add-school-year" element={<MainSchoolYearAdd />} /> {/* url thêm niên khóa */}
         {/* route cho class-list - group-4 */}
         <Route path="declare-data/class-list/add-class-list" element={<MainNewClassForm />} /> {/* url thêm lớp học */}
@@ -156,7 +155,7 @@ const StudentRoutes = () => {
         <Route path="declare-data/score-types" element={<ScoreTypes />} />
         <Route path="declare-data/score-types/:id" element={<EditGradeTypeModal />} />
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
-        <Route path="declare-data/edit" element={<DepartmentSettings />} />
+        <Route path="declare-data/edit/:id" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
         {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
@@ -197,13 +196,11 @@ const StudentRoutes = () => {
         <Route path="study-process" element={<StudyProcess />} />
         <Route path="study-process/update-rewards" element={<UpdateRewards />} />
         <Route path="study-process/update-discipline" element={<UpdateDiscipline />} />
-        <Route path="create-student" element={<StudentCU />} />
         <Route path="new-student" element={<StudentCU />} />
         <Route path="system-settings/config" element={<Config />} />
         {/* Thiết lập lớp học */}
         <Route path="system-settings/subject-management" element={<SubjectManagement />} />
         <Route path="system-settings/classroom-settings" element={<ClassroomSettings />} />
-        <Route path="create-student" element={<StudentCU />} />
         {/*Group - 1 setting*/}
         <Route path="system-settings/school-info" element={<SchoolInfo />} />
         <Route path="system-settings/school-info/edit" element={<EditSchoolInFo />} />
