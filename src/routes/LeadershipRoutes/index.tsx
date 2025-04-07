@@ -95,6 +95,8 @@ import MainClassList from '../../pages/Leadership/DeclareData/ClassList';
 import MainBlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment';
 import MainSectionList from '../../pages/Leadership/DeclareData/SectionList/SectionListData';
 import MainSetupSubjectedit from '../../pages/Leadership/DeclareData/SubjectSettings/SubjecteditData';
+import MainSetupDepartmentModal from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
+
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -182,7 +184,7 @@ const StudentRoutes = () => {
         {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
         {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
         <Route path="declare-data/section-list" element={<MainSectionList />} />
-        <Route path="declare-data/section-list/edit" element={<MainSetupSubjectedit />} />
+        <Route path="declare-data/section-list/edit/:id" element={<MainSetupSubjectedit />} />
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
