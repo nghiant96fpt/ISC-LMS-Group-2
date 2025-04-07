@@ -52,7 +52,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
       const info = response.data?.data; // lưu thông tin vào biến info
       setInfo(info);
       setCookies('accessToken', info?.accessToken, { maxAge: 60 * 15, path: '/' });
-      setCookies('refreshToken', info?.refreshToken?.token, { maxAge: 60 * 60 * 10, path: '/' });      
+      setCookies('refreshToken', info?.refreshToken?.token, { maxAge: 60 * 60 * 10, path: '/' });
 
       // Xử lý role ngay ở đây
       if (info?.user?.role === 'ADMIN') {
@@ -69,7 +69,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin }) => {
       }
     } catch (error) {
       toast.error('Đăng nhập không thành công !');
-      setError('loginFailed', {message: 'Tài khoản hoặc mật khẩu không đúng !'});
+      setError('loginFailed', { message: 'Tài khoản hoặc mật khẩu không đúng !' });
       console.log('Lỗi khi đăng nhập!', error);
     } finally {
       setLoading(false);
