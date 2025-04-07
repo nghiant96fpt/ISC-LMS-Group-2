@@ -1,21 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './style.scss';
 import Button from '../../../../../components/Button';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../../../redux/store'; // Cập nhật đường dẫn theo đúng cấu trúc project
-import { postTrainingLevel } from './../../../../../redux/reducers/Leadership/SystemSettings/TrainingLevelManagement/TrainingLevelManagementSlice';
+import { AppDispatch, RootState } from '../../../../../redux/store'; // Cập nhật đường dẫn theo đúng cấu trúc project
+import {
+  fetchOneTrainingLevels,
+  updateTrainingLevel,
+} from './../../../../../redux/reducers/Leadership/SystemSettings/TrainingLevelManagement/TrainingLevelManagementSlice';
 import { toast } from 'react-toastify';
-
-const AddForm = () => {
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+const UpdateForm = () => {
+  const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const trainingLevel = useSelector((state: RootState) => state.trainingLevelManagement.TrainingLevelResponseGetOne?.data);
+
   const [formData, setFormData] = useState({
     id: 1,
     trinhDoDaoTao: '',
     hinhThucDaoTao: '',
     nienche: true,
-    tinchi: false,
+    tinchi: true,
     namHoc: '',
     hocKyNam: '',
     hocPhanBatBuoc: '',
@@ -23,6 +30,30 @@ const AddForm = () => {
     ghiChu: '',
     kichHoat: false,
   });
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchOneTrainingLevels(id));
+    }
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (trainingLevel) {
+      setFormData({
+        id: trainingLevel.id,
+        trinhDoDaoTao: trainingLevel.name || '',
+        hinhThucDaoTao: trainingLevel.trainingType || '',
+        nienche: trainingLevel.isAnnualSystem ?? true,
+        tinchi: trainingLevel.isCredit ?? true,
+        namHoc: trainingLevel.trainingDuration?.toString() || '',
+        hocKyNam: trainingLevel.semesterPerYear?.toString() || '',
+        hocPhanBatBuoc: trainingLevel.mandatoryCourse?.toString() || '',
+        hocPhanTuChon: trainingLevel.electiveCourse?.toString() || '',
+        ghiChu: trainingLevel.description || '',
+        kichHoat: trainingLevel.status ?? false,
+      });
+    }
+  }, [trainingLevel]);
 
   const [errors, setErrors] = useState({
     trinhDoDaoTao: '',
@@ -72,7 +103,7 @@ const AddForm = () => {
   const handleSubmit = () => {
     if (validateForm()) {
       const formattedData = {
-        id: formData.id,
+        // id: id,
         name: formData.trinhDoDaoTao,
         trainingType: formData.hinhThucDaoTao,
         isAnnualSystem: formData.nienche,
@@ -86,28 +117,15 @@ const AddForm = () => {
       };
 
       console.log('formattedData', formattedData);
-
-      // Gửi dữ liệu lên store
-      dispatch(postTrainingLevel(formattedData))
+      dispatch(updateTrainingLevel({ updatedData: formattedData, id: id }))
         .unwrap()
-        .then(() => {
-          toast.success('Thêm trình độ đào tạo thành công!');
-          setFormData({
-            id: 1,
-            trinhDoDaoTao: '',
-            hinhThucDaoTao: '',
-            nienche: true,
-            tinchi: false,
-            namHoc: '',
-            hocKyNam: '',
-            hocPhanBatBuoc: '',
-            hocPhanTuChon: '',
-            ghiChu: '',
-            kichHoat: false,
-          });
+        .then((res) => {
+          // console.log('Cập nhật thành công:', res);
+          toast.success('Cập nhật bảo lưu thành công!');
         })
-        .catch((error) => {
-          toast.error('Lỗi thêm! Vui lòng kiểm tra lại dữ liệu trước khi thêm!');
+        .catch((err) => {
+          // console.error('Lỗi cập nhật:', err);
+          toast.error('Lỗi cập nhật! Vui lòng kiểm tra lại dữ liệu trước khi cập nhật!');
         });
     }
   };
@@ -131,7 +149,7 @@ const AddForm = () => {
 
   return (
     <div className="education-form-add">
-      <h2 className="title">Thiết lập Bậc đào tạo</h2>
+      <h2 className="title">Cập nhật Bậc đào tạo</h2>
 
       <div className="form-group-education-add">
         <label>Trình độ đào tạo:</label>
@@ -218,4 +236,4 @@ const AddForm = () => {
   );
 };
 
-export default AddForm;
+export default UpdateForm;
