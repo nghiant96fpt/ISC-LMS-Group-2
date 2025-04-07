@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import './main.css';
 import Button from '../../../components/Button';
 import Input from '../../../components/Input';
@@ -12,6 +12,7 @@ import Loading from '../../../components/Loading';
 import { AuthContext } from './AuthContext';
 import { toast } from 'react-toastify';
 import { serviceChangePassword, serviceLogin } from './services';
+import { AxiosError } from 'axios';
 
 interface studentLoginProps {
   isLogin: boolean;
@@ -39,6 +40,10 @@ const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
   const [info, setInfo] = useState<{ user: any }>({ user: '' });
 
   const { setRole } = useContext(AuthContext);
+
+  const [sendedOTP, setSendedOTP] = useState<boolean>(false);
+  const [expCount, setExpCount] = useState<number>(60);
+  const countRef = useRef(expCount);
 
   const handleLogin = async () => {
     clearErrors('loginFailed');
@@ -94,6 +99,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
   }
 
   const [isShowPassword, setShowPassword] = useState(false);
+  const [isShowCurrentPassword, setShowCurrentPassword] = useState(false);
 
   const handleChangePassword = async () => {
     const isValid = await trigger(['currentPassword', 'newPassword']);
@@ -101,7 +107,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
     if (isValid) {
       const data = getValues();
       console.log(data);
-      
+
       serviceChangePassword({
         isValid: isValid,
         data: data,
@@ -117,6 +123,69 @@ const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
     }
   };
 
+  const handleGetOTP = async () => {
+    const isValid = await trigger(['email']);
+    if (isValid) {
+      setLoading(true);
+      try {
+        const response = await axiosInstance.post('api/Account/request-password-reset', { email: getValues('email') });
+        if (response?.data) {
+          toast.success(response?.data?.data);
+          setSendedOTP(true);
+        }
+      } catch (error) {
+        const err = error as AxiosError<any>;
+        console.log(err);
+        toast.error('Không thể gửi OTP !');
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+  useEffect(() => {
+    countRef.current = expCount;
+  }, [expCount]);
+  useEffect(() => {
+    if (!sendedOTP) return;
+
+    const interval = setInterval(() => {
+      setExpCount((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setSendedOTP(false);
+          setExpCount(60);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [sendedOTP]);
+
+  const handleVerifyOTP = async () => {
+    const isValid = await trigger(['email', 'otp']);
+    if (!isValid) return;
+
+    setLoading(true);
+    try {
+      const response = await axiosInstance.post('api/Account/verify-otp', { email: getValues('email'), otp: getValues('otp') });
+      if (response.data && response.data?.code === 0) {
+        toast.success(response.data?.data);
+        navigator('/login');
+      } else {
+        toast.error(response.data?.data);
+      }
+    } catch (error) {
+      const err = error as AxiosError<any>;
+      toast.error(err.response?.data?.message || err.response?.data?.data);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="student-login-container">
       <Loading isLoading={isLoading} />
@@ -129,7 +198,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
               <div>
                 <p className="mb-1 pb-0">Mật khẩu hiện tại</p>
                 <Input
-                  type={isShowPassword ? 'text' : 'password'}
+                  type={isShowCurrentPassword ? 'text' : 'password'}
                   icon={
                     <div className="w-full h-full flex justify-center">
                       <ShieldExclamationIcon className="w-full h-full p-3" />
@@ -139,8 +208,8 @@ const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
                   {...register('currentPassword', { required: 'Mật khẩu hiện tại không được bỏ trống !' })}
                   error={errors.currentPassword?.message as string}
                   leftIcon={
-                    <button className="w-full h-full flex justify-center" onClick={() => setShowPassword(!isShowPassword)}>
-                      {isShowPassword ? <EyeSlashIcon className="w-full h-full p-3" /> : <EyeIcon className="w-full h-full p-3" />}
+                    <button className="w-full h-full flex justify-center" onClick={() => setShowCurrentPassword(!isShowCurrentPassword)}>
+                      {isShowCurrentPassword ? <EyeSlashIcon className="w-full h-full p-3" /> : <EyeIcon className="w-full h-full p-3" />}
                     </button>
                   }
                 />
@@ -206,8 +275,15 @@ const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
               <div>
                 <p className="mb-1 pb-0">Mã xác nhận</p>
                 <div className="flex items-center">
-                  <Input placeholder="Nhập mã xác nhận" />
-                  <button className="bg-[#FF7506] ms-2 px-2 py-1 text-white rounded rounded-3">Gửi mã</button>
+                  <Input
+                    placeholder="Nhập mã xác nhận"
+                    disabled={!sendedOTP}
+                    {...register('otp', { required: 'Mã xác nhận không được bỏ trống !' })}
+                    error={errors.otp?.message as string}
+                  />
+                  <button className="bg-[#FF7506] ms-2 px-2 py-1 text-white rounded rounded-3" onClick={() => handleGetOTP()} disabled={!!sendedOTP}>
+                    {sendedOTP ? `${countRef?.current?.toString()}s` : 'Gửi mã'}
+                  </button>
                 </div>
               </div>
             )}
@@ -252,7 +328,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
             className="primary"
             style={{ fontWeight: 'bold' }}
             children={isLogin ? 'Đăng nhập' : isChangePassword ? 'Đổi mật khẩu' : 'Cấp lại mật khẩu'}
-            onClick={isLogin ? handleLogin : isChangePassword ? handleChangePassword : undefined}
+            onClick={isLogin ? handleLogin : isChangePassword ? handleChangePassword : handleVerifyOTP}
           />
         </div>
       </div>
