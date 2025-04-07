@@ -6,7 +6,8 @@ import rightIcon from '../../assets/icons/chevron_big_right.png';
 
 const PaginationControls: React.FC<PaginationControlsProps> = ({ itemsPerPage, setItemsPerPage, onPageChange, currentPage, totalPages }) => {
   const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setItemsPerPage(Number(e.target.value));
+    const value = Math.max(1, Number(e.target.value));
+    setItemsPerPage(value);
   };
 
   const handlePreviousPage = () => {
@@ -33,6 +34,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({ itemsPerPage, s
         <input
           type="number"
           value={itemsPerPage}
+          min="1"
           onChange={handleItemsPerPageChange}
           className="w-12 h-7 border border-border-orange rounded-md text-center text-black-text focus:outline-none focus:ring-1 focus:ring-border-orange"
         />
