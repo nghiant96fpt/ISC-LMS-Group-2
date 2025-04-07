@@ -33,11 +33,26 @@ const ListOfTrainingLevelManagementListTableRow: React.FC<ListOfTrainingLevelMan
   };
 
   // Xác nhận xóa
+  // Xác nhận xóa
   const handleConfirmDelete = async () => {
     await dispatch(deleteTrainingLevel(item.id));
     setIsDeleteModalOpen(false);
     toast.success('Xóa thành công!');
-    dispatch(fetchTrainingLevels({ page: currentPage, pageSize: itemsPerPage, sortColumn, sortOrder }) as any);
+
+    // Tính lại số item còn lại trên trang hiện tại
+    const remainingItems = TrainingLevelManagement?.data?.length || 0;
+
+    // Nếu chỉ còn 1 item (là item bị xóa) và đang không phải ở trang 1 => chuyển về trang trước
+    const newPage = remainingItems === 1 && currentPage > 1 ? currentPage - 1 : currentPage;
+    setCurrentPage(newPage);
+    dispatch(
+      fetchTrainingLevels({
+        page: newPage,
+        pageSize: itemsPerPage,
+        sortColumn,
+        sortOrder,
+      }) as any,
+    );
   };
 
   return (
@@ -64,7 +79,7 @@ const ListOfTrainingLevelManagementListTableRow: React.FC<ListOfTrainingLevelMan
         {/* Cột chứa nút chức năng */}
         <TableCell className="px-4 py-3 text-start w-[150px]">
           <div className="flex gap-2">
-            <Link to={`/student-retention/${item.id}`}>
+            <Link to={`/leadership/system-settings/training-level-management/edit/${item.id}`}>
               <img src={IconImages.OrangeEditWriteOutline} alt="Sửa" className="w-4 md:w-5 lg:w-6" />
             </Link>
             <button onClick={handleOpenDeleteModal}>

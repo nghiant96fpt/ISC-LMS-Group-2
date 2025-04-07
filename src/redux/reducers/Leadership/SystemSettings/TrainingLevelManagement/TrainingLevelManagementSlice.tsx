@@ -17,6 +17,25 @@ interface TrainingLevel {
   description?: string;
 }
 
+interface FormattedData {
+  name: string;
+  trainingType: string;
+  isAnnualSystem: boolean;
+  trainingDuration?: number;
+  semesterPerYear?: number;
+  isCredit: boolean;
+  mandatoryCourse?: number;
+  electiveCourse?: number;
+  status: boolean;
+  description?: string;
+}
+
+interface TrainingLevelResponseGetOne {
+  code: number;
+  message: string;
+  data: TrainingLevel;
+}
+
 // Định nghĩa kiểu dữ liệu của API response
 interface TrainingLevelResponse {
   code: number;
@@ -31,6 +50,7 @@ interface TrainingLevelResponse {
 // Kiểu dữ liệu của state, lưu trữ 1 đối tượng TrainingLevelResponse
 interface TrainingLevelState {
   TrainingLevelManagement: TrainingLevelResponse | null;
+  TrainingLevelResponseGetOne: TrainingLevelResponseGetOne | null;
   loading: boolean;
   error: string | null;
 }
@@ -38,6 +58,7 @@ interface TrainingLevelState {
 // Khởi tạo state ban đầu
 const initialState: TrainingLevelState = {
   TrainingLevelManagement: null,
+  TrainingLevelResponseGetOne: null,
   loading: false,
   error: null,
 };
@@ -55,6 +76,16 @@ export const fetchTrainingLevels = createAsyncThunk(
     return data;
   },
 );
+// getone
+export const fetchOneTrainingLevels = createAsyncThunk('trainingLevelManagement/fetchOneTrainingLevels', async (id: string) => {
+  const response = await fetch(`${API_URL}/${id}`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+  }
+  const data: TrainingLevelResponseGetOne = await response.json();
+  return data;
+});
 
 // Thunk thêm mới trình độ đào tạo
 export const postTrainingLevel = createAsyncThunk('trainingLevelManagement/postTrainingLevel', async (newTrainingLevel: TrainingLevel) => {
@@ -73,6 +104,26 @@ export const postTrainingLevel = createAsyncThunk('trainingLevelManagement/postT
   const data: TrainingLevel = await response.json();
   return data;
 });
+// update
+export const updateTrainingLevel = createAsyncThunk(
+  'studentRetention/updateStudentRetention',
+  async ({ updatedData, id }: { updatedData: FormattedData; id: any }, { rejectWithValue }) => {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedData),
+    });
+
+    if (!response.ok) {
+      return rejectWithValue(`Failed to update: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  },
+);
 
 // Thunk xóa trình độ đào tạo
 export const deleteTrainingLevel = createAsyncThunk('trainingLevelManagement/deleteTrainingLevel', async (id: number) => {
@@ -109,6 +160,18 @@ const trainingLevelSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Có lỗi xảy ra!';
       })
+      .addCase(fetchOneTrainingLevels.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchOneTrainingLevels.fulfilled, (state, action: PayloadAction<TrainingLevelResponseGetOne>) => {
+        state.loading = false;
+        state.TrainingLevelResponseGetOne = action.payload;
+      })
+      .addCase(fetchOneTrainingLevels.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Có lỗi khi lấy dữ liệu!';
+      })
       // Post
       .addCase(postTrainingLevel.pending, (state) => {
         state.loading = true;
@@ -124,6 +187,18 @@ const trainingLevelSlice = createSlice({
       .addCase(postTrainingLevel.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Có lỗi khi thêm mới!';
+      })
+      .addCase(updateTrainingLevel.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateTrainingLevel.fulfilled, (state, action: PayloadAction<TrainingLevelResponseGetOne>) => {
+        state.loading = false;
+        state.TrainingLevelResponseGetOne = action.payload;
+      })
+      .addCase(updateTrainingLevel.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || action.error.message || 'Có lỗi xảy ra khi cập nhật!';
       })
       // Delete
       .addCase(deleteTrainingLevel.pending, (state) => {
