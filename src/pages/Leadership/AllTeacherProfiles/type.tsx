@@ -1,16 +1,18 @@
 export interface ILecturerProfile {
-    id: string;
-    name: string;
-    dob: string;
+    id: number;
+    teacherCode: string;
+    fullName: string;
+    birthDate: string;
     gender: string;
-    department: string;
+    subjectId: number;
     position: string;
-    status: string;
+    status: number;
 }
-export interface ResignationFormProps {
-    ngayNghi: string;
-    ghiChu: string;
-    quyetDinhNghiViec: File | null;
-    onCancel: () => void;
-    onSubmit: (data: { ngayNghi: string; ghiChu: string; quyetDinhNghiViec: File | null }) => void;
+export interface ISubject {
+    id: number;
+    code: string;
+    name: string;
+    hoursSemester1: number;
+    hoursSemester2: number;
+    subjectTypeId: number;
 }

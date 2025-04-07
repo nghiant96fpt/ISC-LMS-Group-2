@@ -96,6 +96,7 @@ import MainClassList from '../../pages/Leadership/DeclareData/ClassList';
 import MainBlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment';
 import MainSectionList from '../../pages/Leadership/DeclareData/SectionList/SectionListData';
 import MainSetupSubjectedit from '../../pages/Leadership/DeclareData/SubjectSettings/SubjecteditData';
+import AddTeacher from '../../pages/Leadership/AllTeacherProfiles/AddTeacher/Addteacher';
 import MainSetupDepartmentModal from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
 
 const StudentRoutes = () => {
@@ -106,15 +107,13 @@ const StudentRoutes = () => {
         <Route path="all-student-profiles" element={<AllStudentProfiles />} />
         {/*Group-3 All student */}
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
-        <Route path="all-teacher-profiles/retirement/:id" element={<ResignationForm />} />
+        <Route path="all-teacher-profiles/resignation/:id" element={<ResignationForm />} />
         <Route path="all-teacher-profiles/stop-working/:id" element={<LeaveUpdateModal />} />
-        <Route path="all-teacher-profiles/resignation/:id" element={<RetirementUpdateModal />} />
+        <Route path="all-teacher-profiles/retirement/:id" element={<RetirementUpdateModal />} />
+        <Route path="all-teacher-profiles/AddTeacher" element={<AddTeacher />} />
         {/*  */}
         {/*Group-3 All student */}
         <Route path="all-student-profiles" element={<AllStudentProfiles />} />
-        {/* <Route path="all-student-profiles/retirement/:id" element={<ResignationForm />} />
-        <Route path="all-student-profiles/stop-working/:id" element={<LeaveUpdateModal />} />
-        <Route path="all-student-profiles/resignation/:id" element={<RetirementUpdateModal />} /> */}
         {/*  */}
         {/*all-student-profiles*/}
         <Route path="all-student-profiles/*" element={<AllStudentProfiles />} />
