@@ -16,26 +16,29 @@ import iconImageJPG from '../../assets/images/file/JPG.png';
 import iconDefault from '../../assets/images/file/JPG.png';
 import iconSelected from '../../assets/images/success/Selected.png';
 import iconTablerCircleXFilled from '../../assets/images/errors/CircleXFilled.png';
+import icoCcontentNoData from '../../assets/icons/ic-content-no-data.svg'
 // IconImages này để import các icon dạng ảnh
 const IconImages = {
-  iconCheckActiveBlueLarge,
-  iconCheckActiveGrayLarge,
-  iconMinusActiveBlueLarge,
-  iconMinusActiveGrayLarge,
-  iconPlusBlue,
-  OrangeEyeOutline,
-  OrangeEditWriteOutline,
-  iconCheckboxUncheckedBlue,
-  iconTrashBinOutlineOrange,
-  iconXCancel,
-  iconSearch,
-  iconImageDoc,
-  iconImageJPEG,
-  iconImagePNG,
-  iconImageJPG,
-  iconDefault,
-  iconSelected,
-  iconTablerCircleXFilled
+    iconCheckActiveBlueLarge,
+    iconCheckActiveGrayLarge,
+    iconMinusActiveBlueLarge,
+    iconMinusActiveGrayLarge,
+    iconPlusBlue,
+    OrangeEyeOutline,
+    OrangeEditWriteOutline,
+    iconCheckboxUncheckedBlue,
+    iconTrashBinOutlineOrange,
+    iconXCancel,
+    iconSearch,
+    iconImageDoc,
+    iconImageJPEG,
+    iconImagePNG,
+    iconImageJPG,
+    iconDefault,
+    iconSelected,
+    iconTablerCircleXFilled,
+    icoCcontentNoData
+
 };
 
 export default IconImages;
