@@ -96,6 +96,7 @@ import MainClassList from '../../pages/Leadership/DeclareData/ClassList';
 import MainBlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment';
 import MainSectionList from '../../pages/Leadership/DeclareData/SectionList/SectionListData';
 import MainSetupSubjectedit from '../../pages/Leadership/DeclareData/SubjectSettings/SubjecteditData';
+import EditWorkProcess from '../../pages/Leadership/AllTeacherProfiles/Workprocess/EditWorkProcess';
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -125,6 +126,7 @@ const StudentRoutes = () => {
         {/*all-teacher-profiles*/}
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
         <Route path="all-teacher-profiles/addworkprocess" element={<AddWorkProcess />} />
+        <Route path="all-teacher-profiles/editWorkProcess/:id" element={<EditWorkProcess />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
         <Route path="InstructorProfile/:id" element={<InstructorProfile />} />
         <Route path="InstructorProfile" element={<InstructorProfile />} />
