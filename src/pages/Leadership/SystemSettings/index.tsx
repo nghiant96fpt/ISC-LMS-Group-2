@@ -76,6 +76,18 @@ const SystemSettings: React.FC = () => {
         navigator('/leadership/system-settings/training-level-management');
       }
     },
+    {
+      variant: 'orange',
+      title: (
+        <div className="text-center">
+          <h1 className="text-white text-[28px] font-bold px-2">Đổi mật khẩu</h1>
+          <p className="text-white font-bold">Đổi lại mật khẩu của bạn</p>
+        </div>
+      ),
+      handle: () => {
+        navigator('/leadership/system-settings/training-level-management');
+      }
+    },
   ];
   return (
     <div className="pr-20 pl-10">

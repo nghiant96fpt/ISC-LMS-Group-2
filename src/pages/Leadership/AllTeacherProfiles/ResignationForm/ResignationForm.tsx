@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './style.css';
 import DateInput from '../../../../components/Date';
 import dayjs from 'dayjs';
 import Button from '../../../../components/Button';
 import { ResignationFormProps } from './type';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 const ResignationForm: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const [loading, setLoading] = useState(false);
+  const [cookies] = useCookies(["accessToken"]);
   const navigate = useNavigate();
   const [retirementData, setRetirementData] = useState<ResignationFormProps>({
     retirementDate: null,
@@ -25,15 +31,82 @@ const ResignationForm: React.FC = () => {
   const handleClose = () => {
     navigate('/leadership/all-teacher-profiles', { replace: true });
   };
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+  const handleSave = async () => {
+    if (!isDataValid) return;
+    setLoading(true);
 
-  const handleSave = () => {
-    if (!isDataValid) {
-      setError('Vui lòng điền đầy đủ thông tin trước khi lưu.');
-      return;
+    try {
+      const base64File = retirementData.decision
+        ? await convertFileToBase64(retirementData.decision as File)
+        : null;
+
+      const token = cookies.accessToken;
+      if (!token) {
+        toast.error("Lỗi xác thực: Token không tồn tại!");
+        setLoading(false);
+        return;
+      }
+
+      const value = {
+        teacherId: Number(id),
+        date: retirementData.retirementDate?.toISOString(),
+        note: retirementData.note || "",
+        attachment: base64File,
+        status: 8,
+        leadershipId: Number(id),
+        active: true,
+      };
+
+      try {
+        // Thử cập nhật trước (PUT)
+        const response = await axios.put(
+          `https://fivefood.shop/api/retirement/putByTeacherId/${id}`,
+          value,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        toast.success("Cập nhật thành công!");
+        
+      } catch (error: any) {
+        if (error.response?.status === 404) {
+          const dataPost = await axios.post(
+            `https://fivefood.shop/api/retirement`,
+            value,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          toast.success("Cập nhật thành công!");
+
+        } else {
+          console.error("❌ Lỗi API:", error);
+          toast.error(`Lỗi: ${error.response?.status || "500"} - ${error.response?.data?.message || "Có lỗi xảy ra!"}`);
+        }
+      }
+      navigate("/leadership/all-teacher-profiles");
+    } catch (error) {
+
+      toast.error("Có lỗi xảy ra, vui lòng thử lại!");
+    } finally {
+      setLoading(false);
     }
-    console.log('Dữ liệu đã lưu:', retirementData);
-    alert('Lưu thành công!');
-    navigate('/leadership/all-teacher-profiles');
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +138,7 @@ const ResignationForm: React.FC = () => {
     <div className="modal-overlay">
       <div className="overlay"></div>
       <div className="form-container">
-        <h2 className="title">Cập nhật nghỉ việc</h2>
+        <h1 className="modal-title">Cập nhật nghỉ việc</h1>
         <form onSubmit={handleSubmit}>
           {/* Chọn ngày nghỉ */}
           <div className="row">
@@ -124,8 +197,13 @@ const ResignationForm: React.FC = () => {
             <button type="button" className="cancel-btn" onClick={handleClose}>
               Hủy
             </button>
-            <Button className={isDataValid ? 'primary' : 'secondary'} size="big" onClick={handleSave} disabled={!isDataValid}>
-              Lưu
+            <Button
+              className={isDataValid ? "primary" : "secondary"}
+              size="big"
+              onClick={handleSave}
+              disabled={!isDataValid || loading}
+            >
+              {loading ? "Đang lưu..." : "Lưu"}
             </Button>
           </div>
         </form>

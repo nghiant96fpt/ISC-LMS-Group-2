@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../../../../components/Button';
 import DateInput from '../../../../components/Date';
 import dayjs from 'dayjs';
 import { ILeaveUpdate } from './type';
+import { toast } from 'react-toastify';
+import { useCookies } from 'react-cookie';
+import axios from 'axios';
 
 const LeaveUpdateModal: React.FC = () => {
+    const [loading, setLoading] = useState(false);
+    const { id } = useParams<{ id: string }>();
+    const [cookies] = useCookies(["accessToken"]);
     const [leaveData, setLeaveData] = useState<ILeaveUpdate>({
         leaveDate: null,
         note: '',
@@ -19,11 +25,84 @@ const LeaveUpdateModal: React.FC = () => {
     const handleClose = () => {
         navigate('/leadership/all-teacher-profiles', { replace: true });
     };
+    const convertFileToBase64 = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = (error) => reject(error);
+        });
+    };
+    const handleSave = async () => {
+        if (!isDataValid) return;
+        setLoading(true);
 
-    const handleSave = () => {
-        console.log('Dữ liệu đã lưu:', leaveData);
-        alert('Lưu thành công!');
-        navigate('/leadership/all-teacher-profiles');
+        try {
+
+            const base64File = leaveData.decision
+                ? await convertFileToBase64(leaveData.decision as File)
+                : null;
+
+            const token = cookies.accessToken;
+            if (!token) {
+                toast.error("Lỗi xác thực: Token không tồn tại!");
+                setLoading(false);
+                return;
+            }
+
+            const value = {
+                teacherId: Number(id),
+                date: leaveData.leaveDate?.toISOString(),
+                note: leaveData.note || "",
+                attachment: base64File,
+                status: 7,
+                leadershipId: Number(id),
+                active: true,
+            };
+
+            try {
+                // Thử cập nhật trước (PUT)
+                const response = await axios.put(
+                    `https://fivefood.shop/api/retirement/putByTeacherId/${id}`,
+                    value,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                toast.success("Cập nhật thành công!");
+
+            } catch (error: any) {
+                if (error.response?.status === 404) {
+                    const dataPost = await axios.post(
+                        `https://fivefood.shop/api/retirement`,
+                        value,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    );
+
+                    toast.success("Cập nhật thành công!");
+
+                } else {
+                    console.error("❌ Lỗi API:", error);
+                    toast.error(`Lỗi: ${error.response?.status || "500"} - ${error.response?.data?.message || "Có lỗi xảy ra!"}`);
+                }
+            }
+
+            navigate("/leadership/all-teacher-profiles");
+        } catch (error) {
+            console.error("❌ Lỗi không xác định:", error);
+            toast.error("Có lỗi xảy ra, vui lòng thử lại!");
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,8 +198,13 @@ const LeaveUpdateModal: React.FC = () => {
                     <Button className="secondary" size="big" onClick={handleClose}>
                         Hủy
                     </Button>
-                    <Button className={isDataValid ? 'primary' : 'secondary'} size="big" onClick={handleSave} disabled={!isDataValid}>
-                        Lưu
+                    <Button
+                        className={isDataValid ? "primary" : "secondary"}
+                        size="big"
+                        onClick={handleSave}
+                        disabled={!isDataValid || loading}
+                    >
+                        {loading ? "Đang lưu..." : "Lưu"}
                     </Button>
                 </div>
             </div>
