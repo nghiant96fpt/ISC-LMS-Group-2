@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Subject, SubjectGroup, Teacher } from './type';
 import createAxiosInstance from '../../../../utils/axiosInstance';
 import AlertwithIcon from '../../../../components/AlertwithIcon';
+import Loading from '../../../../components/Loading';
 const axiosInstance = createAxiosInstance(true);
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -23,35 +24,52 @@ const DepartmentSettings: React.FC = () => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [search, setSearch] = useState("");
   const [alert, setAlert] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (id) {
+      setLoading(true);
       axios.get(`${API_URL}/subject-groups/${id}`)
-        .then((response) => setSubjectGroup(response.data.data))
-        .catch((error) => console.error('Error fetching department data:', error));
+        .then((response) => {
+          setSubjectGroup(response.data.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching department data:', error);
+          setLoading(false);
+        });
     }
   }, [id]);
 
   useEffect(() => {
     if (subjectGroup?.teacherId) {
+      setLoading(true);
       axiosInstance.get(`${API_URL}/teacherlists`, {
         params: { page, pageSize, sortColumn, sortOrder, search },
       })
         .then((response) => {
-          setTeacherList(response.data.data)
-          console.log("teacher: ", teacherList);
-        }
-        )
-        .catch((error) => console.error('Error fetching department data:', error));
+          setTeacherList(response.data.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching department data:', error);
+          setLoading(false);
+        });
     }
-  }, [subjectGroup]);
-
+  }, [subjectGroup, page, pageSize, sortColumn, sortOrder, search]);
 
   useEffect(() => {
     if (subjectGroup?.id) {
+      setLoading(true);
       axios.get(`${API_URL}/subjects/get-by-subject-group?subjectGroupId=${id}`)
-        .then((response) => setSubjects(response.data.data))
-        .catch((error) => console.error('Error fetching subjects:', error));
+        .then((response) => {
+          setSubjects(response.data.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching subjects:', error);
+          setLoading(false); // Set loading to false if there's an error
+        });
     }
   }, [subjectGroup]);
 
@@ -81,6 +99,7 @@ const DepartmentSettings: React.FC = () => {
     console.log("Cập nhật dữ liệu:", updateData);
 
     try {
+      setLoading(true); // Set loading to true before making the update request
       await axiosInstance.put(`${API_URL}/subject-groups/${id}`, updateData, {
         headers: { "Content-Type": "application/json" },
       });
@@ -96,19 +115,21 @@ const DepartmentSettings: React.FC = () => {
       }
 
       setAlert({ message: " Cập nhật thành công!", type: "success" });
+      setLoading(false); // Set loading to false after successful update
     } catch (error: any) {
       console.error("Lỗi khi cập nhật:", error.response?.data || error.message);
       setAlert({ message: ` Cập nhật thất bại!`, type: "error" });
+      setLoading(false); // Set loading to false if there's an error
     }
   };
 
   useEffect(() => {
     console.log("Danh sách giáo viên đã cập nhật:", teacherList);
-
   }, [teacherList]);
 
   return (
     <div className="fixed inset-0 z-50 flex justify-center items-center">
+      <Loading isLoading={loading} />
       <div className="fixed top-10 right-5 flex justify-end z-[100]">
         {alert && (
           <AlertwithIcon
