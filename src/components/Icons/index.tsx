@@ -18,6 +18,7 @@ import { IconCloseCircleFill } from './iconCloseCircleFill';
 import { IconCalendarOutline } from './iconCalendarOutline';
 import { IconChevronDown } from './iconChevronDown';
 import { IconChevronUp } from './iconChevronUp';
+import { IconClipboardTextOutline } from './iconClipboardTextOutline';
 export {
     IconArrowCaretDown,
     IconCheck,
@@ -38,6 +39,7 @@ export {
     IconCloseCircleFill,
     IconCalendarOutline,
     IconChevronDown,
-    IconChevronUp
+    IconChevronUp,
+    IconClipboardTextOutline
 };
 

@@ -34,19 +34,20 @@ const AlertwithIcon: React.FC<AlertProps> = ({ message, type }) => {
 
     return (
         <div
-            className={`${styles.alert} ${styles[type]} flex items-center justify-between  ${fadeOut ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
+            className={`${styles.alert} ${styles[type]} flex items-center justify-between ${fadeOut ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
                 } transition-all duration-300 ease-in-out`}
             role="alert"
         >
             <div className="flex items-center">
                 {iconComponent[type]}
-                <span className="font-semibold">{type.toUpperCase()}:</span> {message}
+                <span className="font-semibold">{message}</span>
             </div>
             <button onClick={handleClose} className="text-gray-600 hover:text-gray-800">
                 <IconCloseCircleFill className="size-5" />
             </button>
         </div>
     );
+
 };
 
 export default AlertwithIcon;

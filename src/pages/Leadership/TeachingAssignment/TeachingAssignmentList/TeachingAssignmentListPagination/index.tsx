@@ -1,7 +1,5 @@
 import React from 'react';
 import {
-    IconArrowRightDoubleLine,
-    IconArrowLeftDoubleLine,
     IconOutlineArrowLeftSingle,
     IconOutlineArrowRightSingle,
 } from '../../../../../components/Icons';
@@ -17,52 +15,41 @@ const Pagination: React.FC<PaginationProps> = ({
     const pageNumbers = getPageNumbers(currentPage, totalPages, maxVisiblePages);
 
     return (
-        <nav className="flex items-center gap-x-1" aria-label="Pagination">
+        <nav className="flex items-center gap-2" aria-label="Pagination">
             {/* Nút Previous */}
             <button
                 type="button"
                 disabled={currentPage === 1}
                 onClick={() => onPageChange(currentPage - 1)}
-                className="min-h-[38px] min-w-[38px] py-2 px-2.5 inline-flex justify-center items-center gap-x-2 text-sm rounded-full border border-transparent text-gray-800 hover:bg-background-orange-1 focus:outline-none focus:bg-background-orange-1 disabled:opacity-50 disabled:pointer-events-none"
+                className={`min-h-[38px] min-w-[38px] flex items-center justify-center rounded-full ${
+                    currentPage === 1
+                        ? "cursor-not-allowed text-gray-400"
+                        : "hover:bg-background-orange-1 focus:bg-background-orange-1"
+                }`}
                 aria-label="Previous"
             >
                 <IconOutlineArrowLeftSingle />
             </button>
 
             {/* Các số trang */}
-            <div className="flex items-center gap-x-1">
+            <div className="flex items-center gap-1">
                 {pageNumbers.map((page, index) =>
                     page === "..." ? (
-                        <button
+                        <span
                             key={index}
-                            type="button"
-                            onClick={() => {
-                                const prevPages = pageNumbers[index - 1] as number;
-                                const nextPages = pageNumbers[index + 1] as number;
-                                if (prevPages && nextPages) {
-                                    onPageChange(Math.floor((prevPages + nextPages) / 2));
-                                }
-                            }}
-                            className="group min-h-[38px] min-w-[38px] flex justify-center items-center
-                          text-gray-400 hover:text-orange-text p-2 text-sm rounded-full
-                            focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none">
-                            {/* Mặc định hiển thị dấu `...`, hover thì hiển thị icon */}
-                            <span className="group-hover:hidden text-xs">•••</span>
-                            {index === 1 ? (
-                                <IconArrowLeftDoubleLine className="hidden group-hover:block" />
-                            ) : (
-                                <IconArrowRightDoubleLine className="hidden group-hover:block" />
-                            )}
-                        </button>
+                            className="min-h-[38px] min-w-[38px] flex items-center justify-center text-gray-400">
+                            •••
+                        </span>
                     ) : (
                         <button
                             key={index}
                             type="button"
                             onClick={() => onPageChange(page)}
-                            className={`min-h-[38px] min-w-[38px] flex justify-center items-center border text-base font-bold
-                            ${currentPage === page ? 'bg-background-orange-1 text-white'
-                                    : 'border-transparent text-gray-800 hover:bg-gray-100'}
-                            py-2 px-3 text-sm rounded-full focus:outline-none focus:bg-background-orange-1 disabled:opacity-50 disabled:pointer-events-none`}
+                            className={`min-h-[38px] min-w-[38px] flex items-center justify-center rounded-full ${
+                                currentPage === page
+                                    ? "bg-background-orange-1 text-white"
+                                    : "hover:bg-gray-100"
+                            }`}
                             aria-current={currentPage === page ? "page" : undefined}>
                             {page}
                         </button>
@@ -75,7 +62,11 @@ const Pagination: React.FC<PaginationProps> = ({
                 type="button"
                 disabled={currentPage === totalPages}
                 onClick={() => onPageChange(currentPage + 1)}
-                className="min-h-[38px] min-w-[38px] py-2 px-2.5 inline-flex justify-center items-center gap-x-2 text-sm rounded-full border border-transparent text-gray-800 hover:bg-background-orange-1 focus:outline-none focus:bg-background-orange-1 disabled:opacity-50 disabled:pointer-events-none"
+                className={`min-h-[38px] min-w-[38px] flex items-center justify-center rounded-full ${
+                    currentPage === totalPages
+                        ? "cursor-not-allowed text-gray-400"
+                        : "hover:bg-background-orange-1 focus:bg-background-orange-1"
+                }`}
                 aria-label="Next"
             >
                 <IconOutlineArrowRightSingle />
