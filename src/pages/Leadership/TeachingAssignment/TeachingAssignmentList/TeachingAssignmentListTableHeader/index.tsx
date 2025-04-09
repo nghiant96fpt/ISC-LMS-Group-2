@@ -8,7 +8,11 @@ const TeachingAssignmentListTableHeader: React.FC= () => {
     return (
         <TableHeader className="table-auto bg-gradient-to-r from-background-orange-1 to-background-1 text-white text-xs lg:text-xl md:text-lg sm:text-md xs:text-sm">
             <TableRow>
-
+                <TableCell
+                    isHeader
+                    className="px-4 py-3 font-medium text-start text-white">
+                    <span className="invisible">Checkbox</span>
+                </TableCell>
                 <TableHeaderCell label="Mã lớp" />
                 <TableHeaderCell label="Tên lớp" />
                 <TableHeaderCell label="Ngày bắt đầu" />

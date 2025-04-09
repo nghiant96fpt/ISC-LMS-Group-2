@@ -1,1 +1,1 @@
-export * from './Leadership/teachingAssignment';
+export * from './Leadership/teachingAssignment/teachingAssignment.types';

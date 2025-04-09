@@ -35,7 +35,8 @@ export const serviceLogin = async (props: servicesProps) => {
       props.navigator('/login');
     }
   } catch (error) {
-    toast.error('Đăng nhập không thành công !');
+    const err = error as AxiosError<any>;
+    toast.error(err?.response?.data?.message);
     props.setError('loginFailed', { message: 'Tài khoản hoặc mật khẩu không đúng !' });
     console.log('Lỗi khi đăng nhập!', error);
   } finally {

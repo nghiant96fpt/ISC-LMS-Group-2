@@ -5,17 +5,39 @@ import NextMonthButton from "./nextMonthButton";
 import PrevMonthButton from "./prevMonthButton";
 import WeekDays from "./weekDays";
 
-export default function DatePicker1() {
+interface DatePicker1Props {
+    value?: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+    ref?: React.Ref<HTMLInputElement>;
+    name?: string;
+    min?: string | number;
+    max?: string | number;
+    disabled?: boolean;
+}
+
+export default function DatePicker1({ value, onChange, min, max }: DatePicker1Props) {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    const [selectedDate, setSelectedDate] = useState<string | null>(value || null);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const daysContainerRef = useRef<HTMLDivElement>(null);
     const datepickerContainerRef = useRef<HTMLDivElement>(null);
+
+    const formatISODate = (date: Date) => {
+        return date.toISOString(); // ISO 8601 format
+    };
+
+    // Parse and set min and max date if provided
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const parsedMinDate = min ? new Date(min) : null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const parsedMaxDate = max ? new Date(max) : null;
+
     useEffect(() => {
         if (daysContainerRef.current) {
             renderCalendar();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentDate, isCalendarOpen]);
 
     const renderCalendar = useCallback(() => {
@@ -34,21 +56,39 @@ export default function DatePicker1() {
         }
 
         for (let i = 1; i <= daysInMonth; i++) {
+            const dayDate = new Date(year, month, i);
             const dayDiv = document.createElement("div");
             dayDiv.className =
                 "flex h-[38px] w-[38px] items-center justify-center rounded-[7px] border-[.5px] border-transparent text-dark hover:border-stroke hover:bg-background-orange-1 hover:text-white hover:bg-gray-2 sm:h-[46px] sm:w-[47px] dark:text-black dark:hover:border-dark-3 dark:hover:bg-dark mb-2 text-base cursor-pointer";
+
+            // Disable days outside the allowed range
+            if (parsedMinDate && dayDate < parsedMinDate) {
+                dayDiv.classList.add("opacity-50", "cursor-not-allowed");
+                dayDiv.setAttribute("disabled", "true");
+            }
+            if (parsedMaxDate && dayDate > parsedMaxDate) {
+                dayDiv.classList.add("opacity-50", "cursor-not-allowed");
+                dayDiv.setAttribute("disabled", "true");
+            }
+
             dayDiv.textContent = i.toString();
             dayDiv.addEventListener("click", () => {
-                const selectedDateValue = `${month + 1}/${i}/${year}`;
-                setSelectedDate(selectedDateValue);
-                daysContainer
-                    .querySelectorAll("div")
-                    .forEach((d) => d.classList.remove("bg-background-orange-1", "text-white"));
+                if (dayDiv.hasAttribute("disabled")) return;// Don't allow clicks on disabled days
+                const selectedDateObj = new Date(year, month, i, 9, 0, 0);
+                const formattedISO = formatISODate(selectedDateObj);
+                setSelectedDate(formattedISO);
+                if (onChange) onChange({ target: { value: formattedISO } } as React.ChangeEvent<HTMLInputElement>);
+                // setIsCalendarOpen(false);
+
+                daysContainer.querySelectorAll("div").forEach((d) =>
+                    d.classList.remove("bg-background-orange-1", "text-white")
+                );
                 dayDiv.classList.add("bg-background-orange-1", "text-white", "dark:text-black");
             });
+
             daysContainer.appendChild(dayDiv);
         }
-    }, [currentDate]);
+    }, [currentDate, onChange, parsedMinDate, parsedMaxDate]);
 
     useEffect(() => {
         if (daysContainerRef.current) {
@@ -56,23 +96,20 @@ export default function DatePicker1() {
         }
     }, [currentDate, isCalendarOpen, renderCalendar]);
 
-
-
     const handlePrevMonth = () => {
-        setCurrentDate(
-            (prevDate) => new Date(prevDate.setMonth(prevDate.getMonth() - 1)),
-        );
+        setCurrentDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
     };
 
     const handleNextMonth = () => {
-        setCurrentDate(
-            (prevDate) => new Date(prevDate.setMonth(prevDate.getMonth() + 1)),
-        );
+        setCurrentDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
     };
 
     const handleApply = () => {
         if (selectedDate) {
+            console.log("Ngày đã chọn:", selectedDate);
             setIsCalendarOpen(false);
+        } else {
+            console.log("Không có ngày nào được chọn");
         }
     };
 
@@ -86,7 +123,7 @@ export default function DatePicker1() {
     };
 
     const handleClickOutside = (event: MouseEvent) => {
-        const target = event.target as HTMLElement | null; 
+        const target = event.target as HTMLElement | null;
         if (
             target &&
             datepickerContainerRef.current &&
@@ -108,14 +145,14 @@ export default function DatePicker1() {
     return (
         <section className="bg-white">
             <div className="container">
-                <div className="mx-auto w-full max-w-[510px]">
+                <div className="mx-auto w-full max-w-full">
                     <div className="relative mb-3">
                         <input
                             id="datepicker"
                             type="text"
                             placeholder="Chọn ngày"
                             className="h-12 w-full appearance-none rounded-lg border border-stroke bg-white pl-4 pr-12 text-dark outline-none focus:border-primary dark:border-dark-3 dark:bg-dark-2"
-                            value={selectedDate || ""}
+                            value={selectedDate ? new Date(selectedDate).toLocaleDateString("vi-VN") : ""}
                             readOnly
                             onClick={handleToggleCalendar}
                         />
@@ -127,7 +164,6 @@ export default function DatePicker1() {
                             <IconCalendarOutline className="text-orange-text size-5" />
                         </span>
                     </div>
-
 
                     {isCalendarOpen && (
                         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-5 z-50 ">
@@ -143,19 +179,17 @@ export default function DatePicker1() {
                                             month: "long",
                                             year: "numeric",
                                         })}
-
                                     </span>
                                     <NextMonthButton onClick={handleNextMonth} />
                                 </div>
                                 <WeekDays />
-                                <div ref={daysContainerRef} className="grid grid-cols-7 text-center text-sm font-medium sm:text-sm  text-black">
+                                <div ref={daysContainerRef} className="grid grid-cols-7 text-center text-sm font-medium sm:text-sm text-black">
                                     {/* Days will be rendered here */}
                                 </div>
                                 <ActionButtons onCancel={handleCancel} onApply={handleApply} />
                             </div>
                         </div>
                     )}
-
                 </div>
             </div>
         </section>

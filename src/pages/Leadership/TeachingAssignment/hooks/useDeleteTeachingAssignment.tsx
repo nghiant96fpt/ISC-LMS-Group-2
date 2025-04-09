@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IconSuccessFilled, IconWarningFill } from "../../../../components/Icons";
 import { deleteTeachingAssignment } from "../../../../services";
-import { TeachingAssignment } from "../../../../types";
+
 
 
 const useDeleteTeachingAssignment = () => {
@@ -14,22 +14,29 @@ const useDeleteTeachingAssignment = () => {
         icon: React.ReactNode;
     } | null>(null);
 
-    const deleteAssignment = async (id: TeachingAssignment["id"], onSuccess?: (msg: string) => void) => {
+    const deleteAssignment = async (ids: number[],
+        refetchData?: () => void,
+        onSuccess?: (msg: string) => void) => {
         setLoading(true);
         setError(null);
         setMessage(null);
         setAlert(null);
 
         try {
-            const response = await deleteTeachingAssignment(id);
+            const response = await deleteTeachingAssignment(ids);
             if (response.code === 0) {
-                setMessage(response.message);
+                const successMessage = "Đã xóa thành công";
+                setMessage(successMessage);
                 setAlert({
-                    message: response.message,
+                    message: successMessage,
                     type: 'success',
                     icon: <IconSuccessFilled />,
                 });
-                onSuccess?.(response.message);
+                onSuccess?.(successMessage);
+                if (refetchData) {
+                    console.log("Calling refetchData...");
+                    refetchData();
+                }
             } else {
                 throw new Error(response.message || "Xóa thất bại!");
             }
@@ -44,6 +51,7 @@ const useDeleteTeachingAssignment = () => {
             setLoading(false);
         }
     };
+
 
     return { deleteAssignment, loading, error, message, alert };
 };

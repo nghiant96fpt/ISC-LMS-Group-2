@@ -44,8 +44,6 @@ import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add
 // import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 // import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 
-// import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
-
 // import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
 // import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 
@@ -72,6 +70,7 @@ import ExamListTable from '../../pages/Leadership/Exams/ExamListTable';
 import CreateExamSchedule from '../../pages/Leadership/Exams/CreateExamSchedule/CreateExamSchedule';
 
 import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/StudentRetensionUpdate';
+import StudentRetentionAdd from '../../pages/Leadership/StudentRetention/StudentRetentionAdd';
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
 import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
 import Config from '../../pages/Leadership/SystemSettings/Config';
@@ -80,6 +79,7 @@ import EditSchoolInFo from '../../pages/Leadership/SystemSettings/SchoolInfomati
 
 import TrainingLevelManagement from '../../pages/Leadership/SystemSettings/TrainingLevelManagement';
 import AddForm from '../../pages/Leadership/SystemSettings/TrainingLevelManagement/addPeachLevel';
+import UpdateForm from '../../pages/Leadership/SystemSettings/TrainingLevelManagement/updatePeachLevel';
 import UserManagement from '../../pages/Leadership/SystemSettings/UserManagement';
 import SettingForm from '../../pages/Leadership/SystemSettings/UserManagement/addSetting';
 import SubjectManagement from '../../pages/Leadership/SystemSettings/SubjectManagement';
@@ -94,6 +94,9 @@ import MainClassList from '../../pages/Leadership/DeclareData/ClassList';
 import MainBlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment';
 import MainSectionList from '../../pages/Leadership/DeclareData/SectionList/SectionListData';
 import MainSetupSubjectedit from '../../pages/Leadership/DeclareData/SubjectSettings/SubjecteditData';
+import AddTeacher from '../../pages/Leadership/AllTeacherProfiles/AddTeacher/Addteacher';
+import MainSetupDepartmentModal from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
+
 const StudentRoutes = () => {
   return (
     <Routes>
@@ -102,15 +105,13 @@ const StudentRoutes = () => {
         <Route path="all-student-profiles" element={<AllStudentProfiles />} />
         {/*Group-3 All student */}
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
-        <Route path="all-teacher-profiles/retirement/:id" element={<ResignationForm />} />
+        <Route path="all-teacher-profiles/resignation/:id" element={<ResignationForm />} />
         <Route path="all-teacher-profiles/stop-working/:id" element={<LeaveUpdateModal />} />
-        <Route path="all-teacher-profiles/resignation/:id" element={<RetirementUpdateModal />} />
+        <Route path="all-teacher-profiles/retirement/:id" element={<RetirementUpdateModal />} />
+        <Route path="all-teacher-profiles/AddTeacher" element={<AddTeacher />} />
         {/*  */}
         {/*Group-3 All student */}
         <Route path="all-student-profiles" element={<AllStudentProfiles />} />
-        {/* <Route path="all-student-profiles/retirement/:id" element={<ResignationForm />} />
-        <Route path="all-student-profiles/stop-working/:id" element={<LeaveUpdateModal />} />
-        <Route path="all-student-profiles/resignation/:id" element={<RetirementUpdateModal />} /> */}
         {/*  */}
         {/*all-student-profiles*/}
         <Route path="all-student-profiles/*" element={<AllStudentProfiles />} />
@@ -128,7 +129,7 @@ const StudentRoutes = () => {
         <Route path="InstructorProfile" element={<InstructorProfile />} />
         {/*route cho school-year - group-4*/}
         <Route path="declare-data/school-year" element={<MainSchoolYear />} /> {/* url table niên khóa */}
-        <Route path="declare-data/school-year/edit-school-year" element={<MainSchoolYearEditPages />} /> {/* url sửa niên khóa */}
+        <Route path="declare-data/school-year/edit-school-year/:id" element={<MainSchoolYearEditPages />} /> {/* url sửa niên khóa */}
         <Route path="declare-data/school-year/add-school-year" element={<MainSchoolYearAdd />} /> {/* url thêm niên khóa */}
         {/* route cho class-list - group-4 */}
         <Route path="declare-data/class-list/add-class-list" element={<MainNewClassForm />} /> {/* url thêm lớp học */}
@@ -137,7 +138,8 @@ const StudentRoutes = () => {
         <Route path="declare-data/class-detail" element={<ClassDetail />} /> {/* url bảng ds lớp học */}
         <Route path="declare-data/file-class" element={<Uploadfile />} /> {/* url xuât file lớp học */}
         {/* route cho tiếp nhận chuyển trường và hồ sơ bảo lưu - group 4 */}
-        <Route path="update-student-retention" element={<StudentRetensionUpdate />} />
+        <Route path="update-student-retention/:id" element={<StudentRetensionUpdate />} />
+        <Route path="add-student-retention" element={<StudentRetentionAdd />} />
         <Route path="add-transfer-acceptance" element={<AddTransferAcceptance />} />
         {/* route cho phân công giảng dạy và ds chủ đề - group 4 */}
         <Route path="teaching-assignment" element={<TeachingAssignment />} /> {/* url phân công giảng */}
@@ -153,7 +155,7 @@ const StudentRoutes = () => {
         <Route path="declare-data/score-types" element={<ScoreTypes />} />
         <Route path="declare-data/score-types/:id" element={<EditGradeTypeModal />} />
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
-        <Route path="declare-data/edit" element={<DepartmentSettings />} />
+        <Route path="declare-data/edit/:id" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
         {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
@@ -172,20 +174,21 @@ const StudentRoutes = () => {
         <Route path="exams/list" element={<ExamListTable />} />
         <Route path="exams/create-exam-schedule" element={<CreateExamSchedule />} />
         {/*  */}
-        <Route path="student-retention" element={<StudentRetention />} />
-        <Route path="system-settings" element={<SystemSettings />} />
+        <Route path="" element={<StudentRetention />} />
+        <Route path="systemstudent-retention-settings" element={<SystemSettings />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
         {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
         <Route path="declare-data" element={<DeclareData />} />
         {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
         {/* <Route path="declare-data/subject-list" element={<SubjectList />} /> */}
         <Route path="declare-data/section-list" element={<MainSectionList />} />
-        <Route path="declare-data/section-list/edit" element={<MainSetupSubjectedit />} />
+        <Route path="declare-data/section-list/edit/:id" element={<MainSetupSubjectedit />} />
         <Route path="exams" element={<Exams />} />
         <Route path="student-retention" element={<StudentRetention />} />
         <Route path="system-settings" element={<SystemSettings />} />
         <Route path="system-settings/training-level-management" element={<TrainingLevelManagement />} />
         <Route path="system-settings/training-level-management/add" element={<AddForm />} />
+        <Route path="system-settings/training-level-management/edit/:id" element={<UpdateForm />} />
         <Route path="system-settings/user-management" element={<UserManagement />} />
         <Route path="system-settings/user-management/settings" element={<SettingForm />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
