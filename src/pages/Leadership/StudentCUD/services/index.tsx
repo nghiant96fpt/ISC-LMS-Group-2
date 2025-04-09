@@ -11,7 +11,7 @@ interface servicesProps {
   selectedImage: string;
   UserDefaultAVT: string;
   setLoading: any;
-  reset: any
+  reset: any;
 }
 type studentType = {
   code?: string;
@@ -95,10 +95,10 @@ export const handleCreateUser = (servicesProps: servicesProps): void => {
         guardianRole: member?.guardianRole,
       }))
       .filter((item: any) => item?.guardianName.trim() !== '');
-    
+
     console.log('student: ', studentdata);
     console.log('family: ', familyData);
-    
+
     axiosTrue
       .post('api/users', studentdata)
       .then((response) => {
@@ -108,18 +108,16 @@ export const handleCreateUser = (servicesProps: servicesProps): void => {
           } else {
             toast.success('Thêm mới học viên thành công !');
             const userId = response?.data?.data?.id;
-            if (familyData) {
-              familyData.forEach((member) => {
-                member.userId = userId;
-                axiosTrue
-                  .post('api/studentinfos', member)
-                  .then(() => {
-                    toast.success('Thêm thông tin gia đình của học viên thành công !');
-                  })
-                  .catch(() => {
-                    toast.error('Không thể thêm thông tin gia đình của học viên');
-                  });
-              });
+            try {
+              if (familyData) {
+                familyData.forEach((member) => {
+                  member.userId = userId;
+                  axiosTrue.post('api/studentinfos', member);
+                });
+                toast.success('Thêm thông tin gia đình của học viên thành công !');
+              }
+            } catch (error) {
+              toast.error('Không thể thêm thông tin gia đình của học viên');
             }
             servicesProps.reset();
           }
@@ -135,7 +133,7 @@ export const handleCreateUser = (servicesProps: servicesProps): void => {
   }
 };
 
-export const handleUpdateUser = (servicesProps: servicesProps, id:number): void => {
+export const handleUpdateUser = (servicesProps: servicesProps, id: number): void => {
   servicesProps.setLoading(true);
 
   if (servicesProps.isValid) {
@@ -153,7 +151,6 @@ export const handleUpdateUser = (servicesProps: servicesProps, id:number): void 
       religion: servicesProps.data?.religion,
       academicYearId: servicesProps.data?.academicYear ? Number.parseInt(servicesProps.data?.academicYear?.value) : 0,
       classId: servicesProps.data?.class ? Number.parseInt(servicesProps.data?.class?.value) : 0,
-      code: servicesProps.data?.code,
       enrollmentDate: formattedEnrollment,
       entryType: servicesProps.data?.entry ? Number.parseInt(servicesProps.data?.entry?.value) : 0,
       userStatusId: servicesProps.data?.status ? Number.parseInt(servicesProps.data?.status?.value) : 0,
@@ -180,10 +177,10 @@ export const handleUpdateUser = (servicesProps: servicesProps, id:number): void 
         guardianRole: member?.guardianRole,
       }))
       .filter((item: any) => item?.guardianName.trim() !== '');
-    
+
     console.log('student: ', studentdata);
     console.log('family: ', familyData);
-    
+
     axiosTrue
       .put(`api/users/${id}`, studentdata)
       .then((response) => {
@@ -193,20 +190,17 @@ export const handleUpdateUser = (servicesProps: servicesProps, id:number): void 
           } else {
             toast.success('Cập nhật mới học viên thành công !');
             const userId = response?.data?.data?.id;
-            if (familyData) {
-              familyData.forEach((member) => {
-                member.userId = userId;
-                axiosTrue
-                  .put(`api/studentinfos/${id}`, member)
-                  .then(() => {
-                    toast.success('Cập nhật thông tin gia đình của học viên thành công !');
-                  })
-                  .catch(() => {
-                    toast.error('Không thể cập nhật thông tin gia đình của học viên');
-                  });
-              });
+            try {
+              if (familyData) {
+                familyData.forEach((member) => {
+                  member.userId = userId;
+                  axiosTrue.put(`api/studentinfos/${id}`, member);
+                });
+                toast.success('Cập nhật thông tin gia đình của học viên thành công !');
+              }
+            } catch (error) {
+              toast.error('Không thể cập nhật thông tin gia đình của học viên');
             }
-            servicesProps.reset();
           }
         }
       })
