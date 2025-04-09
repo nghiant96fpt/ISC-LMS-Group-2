@@ -19,4 +19,6 @@ export interface inputProps {
 
   leftIcon?: React.ReactNode,
   leftIconHandle?: () => void,
+
+  defaultValue?: any;
 };

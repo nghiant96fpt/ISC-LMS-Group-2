@@ -21,4 +21,6 @@ export type CheckboxProps = {
   icon?: string;                     // Biểu tượng tùy chỉnh cho checkbox (tùy chọn)
   iconName?: IconNames;              // Tên biểu tượng cho checkbox (tùy chọn)
   className?: string;                // Tên lớp CSS tùy chỉnh cho checkbox (tùy chọn)
+
+  disabled?: boolean;
 };

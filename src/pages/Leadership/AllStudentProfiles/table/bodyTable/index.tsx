@@ -65,7 +65,7 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
     if (selected.length === filteredStudents.length) {
       setSelected([]);
     } else {
-      setSelected(filteredStudents.map((student) => student?.id));
+      setSelected(filteredStudents.map((student) => student?.userId));
     }
   };
 
@@ -165,7 +165,7 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
               currentData.map((student, index) => (
                 <tr key={index}>
                   <td>
-                    <CheckboxComponent isChecked={selected.includes(student?.id)} onChange={() => toggleSelect(student?.id)} />
+                    <CheckboxComponent isChecked={selected.includes(student?.userId)} onChange={() => toggleSelect(student?.userId)} />
                   </td>
                   <td>{student?.code}</td>
                   <td>{student?.fullName}</td>
@@ -178,56 +178,56 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
                   {/* tạm */}
                   <td className="icon-container">
                     <div>
-                      <button onClick={() => navigator('/leadership/student', {state: {studentId: student?.id}})}>
+                      <button onClick={() => navigator('/leadership/student', {state: {studentId: student?.userId}})}>
                         <img className="eyeIcon" src={eye} alt="View" />
                       </button>
                     </div>
-                    <button onClick={() => toggleDropdown(student?.id)}>
+                    <button onClick={() => toggleDropdown(student?.userId)}>
                       <img className="unionIcon" src={union} alt="All" />
                     </button>
-                    {openDropdownId === student?.id && (
+                    {openDropdownId === student?.userId && (
                       <ul className="dropdown-menu">
                         <li>
                           <Link to="">
-                            <button onClick={() => console.log(`Sửa hồ sơ ${student?.id}`)}>Sửa hồ sơ</button>
+                            <button onClick={() => console.log(`Sửa hồ sơ ${student?.userId}`)}>Sửa hồ sơ</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="class-transfer-method">
-                            <button onClick={() => console.log(`Chuyển lớp ${student?.id}`)}>Chuyển lớp</button>
+                            <button onClick={() => console.log(`Chuyển lớp ${student?.userId}`)}>Chuyển lớp</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="school-transfer-method">
-                            <button onClick={() => console.log(`Chuyển trường ${student?.id}`)}>Chuyển trường</button>
+                            <button onClick={() => console.log(`Chuyển trường ${student?.userId}`)}>Chuyển trường</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="reservation-method">
-                            <button onClick={() => console.log(`Bảo lưu ${student?.id}`)}>Bảo lưu</button>
+                            <button onClick={() => console.log(`Bảo lưu ${student?.userId}`)}>Bảo lưu</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="exemption-method">
-                            <button onClick={() => console.log(`Cập nhật miễn giảm ${student?.id}`)}>Cập nhật miễn giảm</button>
+                            <button onClick={() => console.log(`Cập nhật miễn giảm ${student?.userId}`)}>Cập nhật miễn giảm</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="reward-method">
-                            <button onClick={() => console.log(`Cập nhật khen thưởng ${student?.id}`)}>Cập nhật khen thưởng</button>
+                            <button onClick={() => console.log(`Cập nhật khen thưởng ${student?.userId}`)}>Cập nhật khen thưởng</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="disciplinary-method">
-                            <button onClick={() => console.log(`Cập nhật kỷ luật ${student?.id}`)}>Cập nhật kỷ luật</button>
+                            <button onClick={() => console.log(`Cập nhật kỷ luật ${student?.userId}`)}>Cập nhật kỷ luật</button>
                           </Link>
                         </li>
                       </ul>
                     )}
-                    {openDropdownId === student?.id && <ul className="dropdown-menu">{/* Dropdown actions */}</ul>}
-                    <button onClick={() => handleOpenModal(student?.id)}>
+                    {openDropdownId === student?.userId && <ul className="dropdown-menu">{/* Dropdown actions */}</ul>}
+                    <button onClick={() => handleOpenModal(student?.userId)}>
                       <img className="trashIcon" src={trash} alt="Delete" />
-                      {studentToDelete === student?.id && (
+                      {studentToDelete === student?.userId && (
                         <DeleteConfirmation
                           title="Xác nhận xóa học viên"
                           description={`Bạn có chắc chắn muốn xóa học viên ID ${studentToDelete}?\nHành động này không thể hoàn tác.`}

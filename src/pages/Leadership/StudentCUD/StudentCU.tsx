@@ -17,43 +17,45 @@ import { toast } from 'react-toastify';
 import { imageToBase64 } from '../../../utils/base64Encode';
 import { handleCreateUser } from './services';
 import { useLocation } from 'react-router';
+import { parseString } from '../../../utils/parseBoolean';
 
 interface stdCUDProps {
   isUpdate?: boolean;
 }
+export type StudentDetail = {
+  id: number;
+  code: string;
+  fullName: string;
+  dob: string;
+  gender: boolean;
+  email: string;
+  phoneNumber: string;
+  placeBirth: string;
+  nation: string;
+  religion: string;
+  enrollmentDate: string;
+  roleId: number;
+  academicYearId: number;
+  userStatusId: number;
+  classId: number;
+  gradeLevelId: number;
+  entryType: number;
+  addressFull: string;
+  street: string;
+  active: boolean;
+  avatarUrl: string;
+  provinceCode: number;
+  districtCode: number;
+  wardCode: number;
+  roleName: string;
+};
+
 const StudentCU = (props: stdCUDProps) => {
   const [loading, setLoading] = useState(false);
   const locotor = useLocation();
 
-  type StudentDetail = {
-    id: number;
-    code: string;
-    fullName: string;
-    dob: string; // hoặc Date nếu mày muốn convert
-    gender: boolean;
-    email: string;
-    phoneNumber: string;
-    placeBirth: string;
-    nation: string;
-    religion: string;
-    enrollmentDate: string; // hoặc Date
-    roleId: number;
-    academicYearId: number;
-    userStatusId: number;
-    classId: number;
-    entryType: number;
-    addressFull: string;
-    street: string;
-    active: boolean;
-    avatarUrl: string;
-    provinceName: string;
-    districtName: string;
-    wardName: string;
-    roleName: string;
-  };
-  
   const { studentId } = locotor?.state || {};
-  const [selectedStudent, setSelectedStudent] = useState<StudentDetail>();
+  const [sst, setSelectedStudent] = useState<StudentDetail>();
 
   const axiosTrue = createAxiosInstance(true);
 
@@ -63,21 +65,65 @@ const StudentCU = (props: stdCUDProps) => {
       setSelectedStudent(response?.data?.data);
     }
   };
+  // useEffect(() => {
+  //   if (!studentId) return;
+  //   getSelectedStudent();
+  // }, [studentId]);
   useEffect(() => {
-    if (studentId) {
-      try {
-        getSelectedStudent();
-      } catch (error) {
-        toast.error('Không thể lấy dữ liệu học viên');
-      }
+    if (sst) {
+      const fetchData = async () => {
+        try {
+          setLoading(true);
+
+          const [classRes, districtRes, wardRes] = await Promise.all([
+            axiosTrue.get(`api/class/by-grade-academic?gradeLevelId=${sst?.gradeLevelId}&sortColumn=id&sortOrder=asc`),
+            axiosTrue.get(`api/address/districts?provinceId=${sst?.provinceCode}`),
+            axiosTrue.get(`api/address/wards?districtId=${sst?.districtCode}`),
+          ]);
+          setClasses(classRes?.data?.data?.map((item: any) => ({ label: item.name, value: item.id })));
+          setDistricts(districtRes?.data?.data?.map((item: any) => ({ label: item.districtName, value: item.districtId })));
+          setWards(wardRes?.data?.data?.map((item: any) => ({ label: item.wardName, value: item.wardCode })));
+
+          reset({
+            fullname: sst?.fullName,
+            birthPlace: sst?.placeBirth,
+            folk: sst?.nation,
+            religion: sst?.religion,
+            gender: sst?.gender ? { label: 'Nam', value: 'true' } : { label: 'Nữ', value: 'false' },
+            birthday: new Date(sst?.dob),
+
+            addressDetail: sst?.street,
+            email: sst?.email,
+            phone: sst?.phoneNumber,
+
+            academicYear: courses.find((item) => item.value == parseString(sst?.academicYearId)),
+            grade: grades.find((item) => item.value == parseString(sst?.gradeLevelId)),
+            class: classRes?.data?.data
+              ?.map((item: { id: number; name: string }) => ({
+                label: item?.name,
+                value: item?.id,
+              }))
+              ?.find((c: any) => c.value == sst?.classId),
+            code: sst?.code,
+            enrollmentDate: new Date(sst?.enrollmentDate),
+            entry: entries.find((item) => item.value == parseString(sst?.entryType)),
+            status: statuses.find((item) => item.value == parseString(sst?.userStatusId)),
+
+            province: provinces.find((item) => item.value == parseString(sst?.provinceCode)),
+            district: districtRes?.data?.data
+              ?.map((item: any) => ({ label: item.districtName, value: item.districtId }))
+              .find((d: any) => d.value == sst?.districtCode),
+            ward: wardRes?.data?.data
+              ?.map((item: any) => ({ label: item.wardName, value: item.wardCode }))
+              .find((w: any) => w.value == sst?.wardCode),
+          });
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
     }
-  }, [studentId]);
-  useEffect(
-    () => {
-      console.log(selectedStudent);
-      
-    }, [selectedStudent]
-  );
+  }, [sst]);
 
   type familyMembers = {
     guardianName: string;
@@ -176,7 +222,7 @@ const StudentCU = (props: stdCUDProps) => {
 
   const addressList = [
     { linkName: 'Hồ sơ học viên', link: '/leadership/all-student-profiles' },
-    { linkName: `${props.isUpdate ? selectedStudent?.fullName : 'Thêm học viên'}`, link: '/leadership/new-student' },
+    { linkName: `${props.isUpdate ? sst?.fullName : 'Thêm học viên'}`, link: '/leadership/new-student' },
   ];
 
   const [selectedImage, setSelectedImage] = useState<string>(UserDefaultAVT);
@@ -226,10 +272,9 @@ const StudentCU = (props: stdCUDProps) => {
     }));
     setGrades(data);
   };
-  const handleGetClasses = async () => {
+  const handleGetClasses = async (selectedGradeValue: any) => {
     const isValid = await trigger('grade');
     if (isValid) {
-      const selectedGradeValue = getValues('grade')?.value;
       const response = await axiosTrue.get(`api/class/by-grade-academic?gradeLevelId=${selectedGradeValue}&sortColumn=id&sortOrder=asc`);
       const data = response?.data?.data?.map((item: { id: number; name: string }) => ({
         label: item?.name,
@@ -273,17 +318,12 @@ const StudentCU = (props: stdCUDProps) => {
   const handleGetDistricts = async (provinceId: any) => {
     const isValid = await trigger('province');
     if (isValid) {
-      try {
-        setLoading(true);
-        const response = await axiosTrue.get(`api/address/districts?provinceId=${provinceId?.value}`);
-        const data = response?.data?.data?.map((item: { districtId: number; districtName: string }) => ({
-          label: item?.districtName,
-          value: item?.districtId,
-        }));
-        setDistricts(data);
-      } finally {
-        setLoading(false);
-      }
+      const response = await axiosTrue.get(`api/address/districts?provinceId=${provinceId}`);
+      const data = response?.data?.data?.map((item: { districtId: number; districtName: string }) => ({
+        label: item?.districtName,
+        value: item?.districtId,
+      }));
+      setDistricts(data);
     }
   };
 
@@ -291,17 +331,12 @@ const StudentCU = (props: stdCUDProps) => {
   const handleGetWards = async (districtId: any) => {
     const isValid = await trigger('district');
     if (isValid) {
-      try {
-        setLoading(true);
-        const response = await axiosTrue.get(`api/address/wards?districtId=${districtId?.value}`);
-        const data = response?.data?.data?.map((item: { wardCode: number; wardName: string }) => ({
-          label: item?.wardName,
-          value: item?.wardCode,
-        }));
-        setWards(data);
-      } finally {
-        setLoading(false);
-      }
+      const response = await axiosTrue.get(`api/address/wards?districtId=${districtId}`);
+      const data = response?.data?.data?.map((item: { wardCode: number; wardName: string }) => ({
+        label: item?.wardName,
+        value: item?.wardCode,
+      }));
+      setWards(data);
     }
   };
 
@@ -323,6 +358,7 @@ const StudentCU = (props: stdCUDProps) => {
           handleGetStatuses(),
           handleGetProvinces(),
           handleGetStudents(),
+          studentId && getSelectedStudent(),
         ]);
       } catch (error) {
         console.log(error);
@@ -334,24 +370,33 @@ const StudentCU = (props: stdCUDProps) => {
     fetchData();
   }, []);
 
-  const selectedGrade = getValues('grade');
+  const selectedGrade = watch('grade');
   useEffect(() => {
     if (selectedGrade) {
-      handleGetClasses();
+      try {
+        setLoading(true);
+        handleGetClasses(selectedGrade?.value);
+      } catch (error) {
+        toast.error('Có lỗi xảy ra khi lấy danh sách lớp học');
+      } finally {
+        setLoading(false);
+      }
     }
   }, [selectedGrade]);
 
-  const selectedProvince = getValues('province');
+  const selectedProvince = watch('province');
   useEffect(() => {
     if (selectedProvince) {
-      handleGetDistricts(selectedProvince);
+      handleGetDistricts(selectedProvince?.value);
     }
   }, [selectedProvince]);
 
-  const selectedDistrict = getValues('district');
+  const selectedDistrict = watch('district');
   useEffect(() => {
     if (selectedDistrict) {
-      handleGetWards(selectedDistrict);
+      console.log(selectedProvince);
+
+      handleGetWards(selectedDistrict?.value);
     }
   }, [selectedDistrict]);
 
@@ -370,7 +415,7 @@ const StudentCU = (props: stdCUDProps) => {
 
   useEffect(() => {
     if (isChecked && studentCount) {
-      let code = generateStudentCode(studentCount);
+      const code = generateStudentCode(studentCount);
       setValue('code', code);
       clearErrors('code');
     } else {
@@ -429,6 +474,7 @@ const StudentCU = (props: stdCUDProps) => {
                   selectedGrade={selectedGrade}
                   entries={entries}
                   statuses={statuses}
+                  selectedCode={sst?.code}
                 />
               </div>
             </div>

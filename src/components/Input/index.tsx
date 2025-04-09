@@ -3,7 +3,7 @@ import { inputProps } from './type';
 
 const Input = forwardRef<HTMLInputElement, inputProps>(
   (
-    { name, placeholder, outline, disabled, icon, size, style, className, type, error, onChange, onKeyDown, onPaste, leftIcon, leftIconHandle },
+    { name, placeholder, outline, disabled, icon, size, style, className, type, error, onChange, onKeyDown, onPaste, leftIcon, defaultValue },
     ref,
   ) => {
     return (
@@ -29,6 +29,7 @@ const Input = forwardRef<HTMLInputElement, inputProps>(
             onChange={onChange}
             onKeyDown={onKeyDown}
             onPaste={onPaste}
+            defaultValue={defaultValue}
           />
           {leftIcon && (
             <div

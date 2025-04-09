@@ -22,6 +22,8 @@ export interface RightFormProps {
   selectedGrade: DropdownOption | null;
   entries: DropdownOption[];
   statuses: DropdownOption[];
+
+  selectedCode?: any,
 }
 
 const RightForm: React.FC<RightFormProps> = ({
@@ -40,17 +42,20 @@ const RightForm: React.FC<RightFormProps> = ({
   selectedGrade,
   entries,
   statuses,
+
+  selectedCode
 }) => {
   return (
     <div className="w-[47%]">
       <div className="flex items-center mb-1">
-        <p className="w-[115px]">Niên khóa</p>
-        <div className="max-w-[115px]">
+        <p className="w-[118px]">Niên khóa</p>
+        <div>
           <Dropdown
-            size="short"
+            size="medium"
             options={courses}
             placeholder="Chọn niên khóa"
             selectedOption={watch('academicYear')}
+            style={{maxWidth: 270}}
             handleOptionClick={(e) => {
               setValue('academicYear', e);
               clearError('academicYear');
@@ -109,13 +114,15 @@ const RightForm: React.FC<RightFormProps> = ({
               setValue('code', e.currentTarget.value);
               clearError('code');
             }}
+            disabled={selectedCode}
           />
           <div className="ms-2">
             <CheckboxComponent
               isChecked={isChecked}
               onChange={handleCheckTuSinhMa}
               label="Tự động sinh mã"
-              customStyles={{ label: { fontSize: 16 } }}
+              customStyles={{ label: { fontSize: 12 } }}
+              disabled={selectedCode}
             />
           </div>
         </div>
@@ -139,9 +146,10 @@ const RightForm: React.FC<RightFormProps> = ({
       <div className="flex items-center mb-1">
         <p className="w-[118px]">Hình thức</p>
         <Dropdown
-          size="short"
+          size="medium"
           options={entries}
           selectedOption={watch('entry')}
+          style={{maxWidth: 270}}
           handleOptionClick={(e) => {
             setValue('entry', e);
             clearError('entry');
@@ -155,9 +163,10 @@ const RightForm: React.FC<RightFormProps> = ({
       <div className="flex items-center mb-1">
         <p className="w-[118px]">Trạng thái</p>
         <Dropdown
-          size="short"
+          size="medium"
           options={statuses}
           selectedOption={watch('status')}
+          style={{maxWidth: 270}}
           handleOptionClick={(e) => {
             setValue('status', e);
             clearError('status');
