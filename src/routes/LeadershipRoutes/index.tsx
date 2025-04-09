@@ -44,8 +44,6 @@ import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add
 // import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 // import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 
-// import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
-
 // import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
 // import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 
