@@ -3,11 +3,11 @@ import { Routes, Route } from 'react-router-dom';
 import BlockDepartment from './BlockDepartment/bockDepartment';
 import EditDepartment from './BlockDepartment/edit';
 import ClassListWrapper from './BlockDepartment/ClassListWrapper';
-import SubjectSetup from './SubjectSettings';
-import SectionList from './SectionList';
-import SubjectList from './SubjectList/SubjectList';
-import Departmentedit from './SetupDepartmentModal/SetupDepartmentModal';
-import Departmentlist from './DataList/DataList';
+import SubjectSetup from './SubjectSettings/subjectedit';
+import SectionList from './SectionList/SectionList';
+import SubjectList from './SubjectList/subject';
+import Departmentedit from './SetupDepartmentModal';
+import Departmentlist from './DataList/Datalist';
 const DeclareDataRoutes = () => {
   return (
     <Routes>

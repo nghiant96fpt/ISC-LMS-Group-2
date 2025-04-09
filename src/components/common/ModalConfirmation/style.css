@@ -4,8 +4,8 @@
 }
 
 .modalWrapper {
-  @apply relative max-h-screen overflow-auto transform transition-all duration-300 flex flex-col justify-center items-center;
-  max-width: 90vw; 
+  @apply relative max-h-screen overflow-auto transform transition-all duration-300 flex flex-col justify-center items-center m-4;
+  max-width: 90vw;
   max-height: 90vh;
   animation: slideFadeIn 0.25s ease-out;
 }
@@ -62,3 +62,6 @@
 @media (prefers-reduced-motion: reduce) {
   .modalOverlay, .modalWrapper { animation: none; }
 }
+.text-left { text-align: left; }
+.text-center { text-align: center;  }
+.text-right { text-align: right; }
