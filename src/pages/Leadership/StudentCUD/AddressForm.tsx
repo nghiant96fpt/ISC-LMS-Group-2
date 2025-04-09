@@ -15,6 +15,8 @@ interface formProps {
   districts: DropdownOption[];
   selectedDistrict: DropdownOption | null;
   wards: DropdownOption[];
+
+  selectedStudent?: any;
 }
 
 const AddressForm: React.FC<formProps> = ({
@@ -28,6 +30,7 @@ const AddressForm: React.FC<formProps> = ({
   districts,
   selectedDistrict,
   wards,
+  selectedStudent,
 }) => {
   return (
     <div className="w-full flex justify-between">
@@ -39,7 +42,7 @@ const AddressForm: React.FC<formProps> = ({
             options={provineces}
             placeholder="Chọn tỉnh/thành phố"
             selectedOption={watch('province')}
-            style={{maxWidth: 270}}
+            style={{ maxWidth: 270 }}
             handleOptionClick={(e) => {
               setValue('province', e);
               clearError('province');
@@ -56,7 +59,7 @@ const AddressForm: React.FC<formProps> = ({
             options={districts}
             placeholder="Chọn huyện/quận"
             selectedOption={watch('district')}
-            style={{maxWidth: 270}}
+            style={{ maxWidth: 270 }}
             handleOptionClick={(e) => {
               setValue('district', e);
               clearError('district');
@@ -74,7 +77,7 @@ const AddressForm: React.FC<formProps> = ({
             options={wards}
             placeholder="Chọn xã/phường"
             selectedOption={watch('ward')}
-            style={{maxWidth: 270}}
+            style={{ maxWidth: 270 }}
             handleOptionClick={(e) => {
               setValue('ward', e);
               clearError('ward');
@@ -111,6 +114,7 @@ const AddressForm: React.FC<formProps> = ({
               clearError('email');
             }}
             error={errors?.email?.message}
+            disabled={selectedStudent}
           />
         </div>
         <div className="w-full flex items-center mb-3">

@@ -15,7 +15,7 @@ import createAxiosInstance from '../../../utils/axiosInstance';
 import Loading from '../../../components/Loading';
 import { toast } from 'react-toastify';
 import { imageToBase64 } from '../../../utils/base64Encode';
-import { handleCreateUser } from './services';
+import { handleCreateUser, handleUpdateUser } from './services';
 import { useLocation } from 'react-router';
 import { parseString } from '../../../utils/parseBoolean';
 
@@ -75,14 +75,30 @@ const StudentCU = (props: stdCUDProps) => {
         try {
           setLoading(true);
 
-          const [classRes, districtRes, wardRes] = await Promise.all([
+          const [classRes, districtRes, wardRes, familyRes] = await Promise.all([
             axiosTrue.get(`api/class/by-grade-academic?gradeLevelId=${sst?.gradeLevelId}&sortColumn=id&sortOrder=asc`),
             axiosTrue.get(`api/address/districts?provinceId=${sst?.provinceCode}`),
             axiosTrue.get(`api/address/wards?districtId=${sst?.districtCode}`),
+            axiosTrue.get(`api/studentinfos/user/${sst?.id}`),
           ]);
           setClasses(classRes?.data?.data?.map((item: any) => ({ label: item.name, value: item.id })));
           setDistricts(districtRes?.data?.data?.map((item: any) => ({ label: item.districtName, value: item.districtId })));
           setWards(wardRes?.data?.data?.map((item: any) => ({ label: item.wardName, value: item.wardCode })));
+
+          const familyArray = Array.isArray(familyRes.data.data) ? familyRes.data.data : [];
+
+          const sortedFamily = [{}, {}, {}];
+          familyArray.forEach((item: any) => {
+            const role = parseInt(item.guardianRole, 10); // ép về số
+            sortedFamily[role] = {
+              guardianName: item.guardianName,
+              guardianBornDate: item.guardianDob && item.guardianDob !== '0001-01-01T00:00:00' ? new Date(item.guardianDob) : null,
+              guardianJob: item.guardianJob || '',
+              guardianPhone: item.guardianPhone || '',
+              guardianRole: role,
+            };
+          });
+          const mappedFamily = sortedFamily.map((item) => item || {});
 
           reset({
             fullname: sst?.fullName,
@@ -116,6 +132,7 @@ const StudentCU = (props: stdCUDProps) => {
             ward: wardRes?.data?.data
               ?.map((item: any) => ({ label: item.wardName, value: item.wardCode }))
               .find((w: any) => w.value == sst?.wardCode),
+            family: mappedFamily,
           });
         } finally {
           setLoading(false);
@@ -127,7 +144,7 @@ const StudentCU = (props: stdCUDProps) => {
 
   type familyMembers = {
     guardianName: string;
-    guardianRole: number | null;
+    guardianRole: number;
     guardianBornDate: Date | null;
     guardianPhone: string;
     guardianJob: string;
@@ -191,7 +208,7 @@ const StudentCU = (props: stdCUDProps) => {
       addressDetail: '',
       email: '',
       phone: '',
-      family: [{ guardianName: '', guardianRole: null, guardianBornDate: null, guardianJob: '', guardianPhone: '' }],
+      family: [{ guardianName: '', guardianRole: undefined, guardianBornDate: null, guardianJob: '', guardianPhone: '' }],
     },
   });
 
@@ -434,8 +451,15 @@ const StudentCU = (props: stdCUDProps) => {
     }
   };
 
-  const handleUpdate = () => {
-    console.log('Update student !');
+  const handleUpdate = async () => {
+    const isValid = await validTrigger();
+    if (isValid) {
+      const data = getValues();
+
+      handleUpdateUser({ data, isValid, selectedImage, UserDefaultAVT, setLoading, reset}, Number(sst?.id));
+    } else {
+      toast.error('Thông tin cần thiết còn thiếu !');
+    }
   };
 
   return (
@@ -496,6 +520,7 @@ const StudentCU = (props: stdCUDProps) => {
                 districts={districts}
                 selectedDistrict={selectedDistrict}
                 wards={wards}
+                selectedStudent={sst}
               />
             </div>
           </div>
