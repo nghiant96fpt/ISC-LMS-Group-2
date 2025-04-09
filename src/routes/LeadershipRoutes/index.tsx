@@ -98,6 +98,9 @@ import MainSectionList from '../../pages/Leadership/DeclareData/SectionList/Sect
 import MainSetupSubjectedit from '../../pages/Leadership/DeclareData/SubjectSettings/SubjecteditData';
 import AddTeacher from '../../pages/Leadership/AllTeacherProfiles/AddTeacher/Addteacher';
 import MainSetupDepartmentModal from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
+import AddDepartmentSettings from '../../pages/Leadership/DeclareData/AddSubjectGroup/AddSubjectGroup';
+import MainAddSubjectGroup from '../../pages/Leadership/DeclareData/AddSubjectGroup';
+import MainAddSubject from '../../pages/Leadership/DeclareData/AddSubject';
 
 const StudentRoutes = () => {
   return (
@@ -158,7 +161,8 @@ const StudentRoutes = () => {
         <Route path="declare-data/score-types/:id" element={<EditGradeTypeModal />} />
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
         <Route path="declare-data/edit/:id" element={<DepartmentSettings />} />
-        <Route path="declare-data/subject-list" element={<SubjectList />} />
+        <Route path="declare-data/add-declare-data" element={<MainAddSubjectGroup />} />
+        <Route path="declare-data/section-list/add-section-list" element={<MainAddSubject />} />
         {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
         {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
