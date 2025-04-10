@@ -113,7 +113,7 @@ const AllStudentProfilesHeader: React.FC = () => {
             <img src={trash} alt="Xóa" className="trash-icon" />
           </button>
           <button className="export-btn">Xuất file</button>
-          <Button className="primary" size="big">
+          <Button className="primary" size="big" onClick={() => navigator('/leadership/new-student')}>
             <img src={plus} alt="Thêm mới" />
             Thêm mới
           </Button>

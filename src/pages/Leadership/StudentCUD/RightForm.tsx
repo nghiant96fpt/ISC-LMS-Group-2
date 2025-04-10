@@ -22,6 +22,8 @@ export interface RightFormProps {
   selectedGrade: DropdownOption | null;
   entries: DropdownOption[];
   statuses: DropdownOption[];
+
+  selectedCode?: any,
 }
 
 const RightForm: React.FC<RightFormProps> = ({
@@ -39,43 +41,52 @@ const RightForm: React.FC<RightFormProps> = ({
   filteredClasses,
   selectedGrade,
   entries,
-  statuses
+  statuses,
+
+  selectedCode
 }) => {
   return (
     <div className="w-[47%]">
       <div className="flex items-center mb-1">
-        <p className="w-[115px]">Niên khóa</p>
-        <Dropdown
-          size="short"
-          options={courses}
-          placeholder="Chọn niên khóa"
-          selectedOption={watch('academicYear')}
-          handleOptionClick={(e) => {
-            setValue('academicYear', e);
-            clearError('academicYear');
-          }}
-          {...register('academicYear', { required: 'Vui lòng chọn thông tin niên khóa !' })}
-          borderColor={errors?.academicYear && '#EF4444'}
-        />
+        <p className="w-[118px]">Niên khóa</p>
+        <div>
+          <Dropdown
+            size="medium"
+            options={courses}
+            placeholder="Chọn niên khóa"
+            selectedOption={watch('academicYear')}
+            style={{maxWidth: 270}}
+            handleOptionClick={(e) => {
+              setValue('academicYear', e);
+              clearError('academicYear');
+            }}
+            {...register('academicYear', { required: 'Vui lòng chọn thông tin niên khóa !' })}
+            borderColor={errors?.academicYear && '#EF4444'}
+          />
+        </div>
       </div>
       {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.academicYear?.message}</p>}
       <div className="flex items-center mb-1">
-        <p className="w-[118px]">Khối</p>
-        <Dropdown
-          size="short"
-          options={grades}
-          selectedOption={watch('grade')}
-          handleOptionClick={(e) => {
-            setValue('grade', e);
-            clearError('grade');
-          }}
-          {...register('grade', { required: 'Vui lòng chọn thông tin khối và lớp học !' })}
-          placeholder="Chọn khối"
-          borderColor={errors?.grade && '#EF4444'}
-        />
+        <p className="w-[118px]" style={{ width: 118 }}>
+          Khối
+        </p>
+        <div className="max-w-[115px]">
+          <Dropdown
+            size="short"
+            options={grades}
+            selectedOption={watch('grade')}
+            handleOptionClick={(e) => {
+              setValue('grade', e);
+              clearError('grade');
+            }}
+            {...register('grade', { required: 'Vui lòng chọn thông tin khối và lớp học !' })}
+            placeholder="Chọn khối"
+            borderColor={errors?.grade && '#EF4444'}
+          />
+        </div>
         <div className="ms-2">
           <Dropdown
-            size="medium"
+            size="short"
             options={filteredClasses}
             selectedOption={watch('class')}
             handleOptionClick={(e) => {
@@ -103,13 +114,15 @@ const RightForm: React.FC<RightFormProps> = ({
               setValue('code', e.currentTarget.value);
               clearError('code');
             }}
+            disabled={selectedCode}
           />
           <div className="ms-2">
             <CheckboxComponent
               isChecked={isChecked}
               onChange={handleCheckTuSinhMa}
               label="Tự động sinh mã"
-              customStyles={{ label: { fontSize: 16 } }}
+              customStyles={{ label: { fontSize: 12 } }}
+              disabled={selectedCode}
             />
           </div>
         </div>
@@ -136,13 +149,14 @@ const RightForm: React.FC<RightFormProps> = ({
           size="medium"
           options={entries}
           selectedOption={watch('entry')}
+          style={{maxWidth: 270}}
           handleOptionClick={(e) => {
             setValue('entry', e);
             clearError('entry');
           }}
           {...register('entry', { required: 'Vui lòng chọn hình thức nhập học !' })}
           borderColor={errors?.entry && '#EF4444'}
-          placeholder='Chọn hình thức'
+          placeholder="Chọn hình thức"
         />
       </div>
       {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.entry?.message}</p>}
@@ -152,13 +166,14 @@ const RightForm: React.FC<RightFormProps> = ({
           size="medium"
           options={statuses}
           selectedOption={watch('status')}
+          style={{maxWidth: 270}}
           handleOptionClick={(e) => {
             setValue('status', e);
             clearError('status');
           }}
           {...register('status', { required: 'Vui lòng chọn trạng thái theo học !' })}
           borderColor={errors?.status && '#EF4444'}
-          placeholder='Chọn trạng thái'
+          placeholder="Chọn trạng thái"
         />
       </div>
       {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.status?.message}</p>}
