@@ -11,10 +11,10 @@ import DeleteConfirmation from '../../../../../components/DeleteConfirmation';
 import arrowupdown from '../../../../../assets/icons/u_arrow up down.png';
 import { DropdownOption } from '../../../../../components/Dropdown/type';
 import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 
 const API_URL = 'https://fivefood.shop/api/subject-types';
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJKV1RTZXJ2aWNlQWNjZXNzVG9rZW4iLCJqdGkiOiI1ZTYwNTE5Yy04ZTI5LTRhNzgtYmY3MC03NTI3YzIwY2JhZmEiLCJpYXQiOiIwNC8wOS8yMDI1IDA4OjE2OjI4ICswMDowMCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJ2dnNAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJJZCI6IjE5IiwiRW1haWwiOiJ2dnNAZ21haWwuY29tIiwiZXhwIjoxNzQ0MTkxMDg4LCJpc3MiOiJKV1RBdXRoZW50aWNhdGlvblNlcnZlciIsImF1ZCI6IkpXVFNlcnZpY2VQb3N0bWFuQ2xpZW50In0.W85yfOZTGjcZy2PlljoINfsY9AxeVkHddoxKNedzmOU';
+const token = Cookies.get('accessToken');
 
 const ClassManagementTable: React.FC<{ selectedYearOption: DropdownOption | null }> = ({ selectedYearOption }) => {
   const [subjects, setSubjects] = useState<any[]>([]);
