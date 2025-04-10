@@ -11,6 +11,7 @@ import Status from './../../../../../components/Status';
 import arrow_right from '../../../../../assets/icons/chevron_big_right.png';
 import arrow_left from '../../../../../assets/icons/arrow left.png';
 import DeleteConfirmation from '../../../../../components/DeleteConfirmation';
+import StatusBar from '../../../../../components/StatusBar/StatusBar';
 
 interface TableBodyProps {
   searchTerm: string;
@@ -174,15 +175,15 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
                   <td>{student?.nation}</td>
                   <td>{student?.className}</td>
                   {/* tạm */}
-                  {/* <td style={{maxWidth: 150}}>{<Status type={student?.status || 'dropped'} className='max-w-[150px]'/>}</td> */}
+                  <td style={{maxWidth: 150}}>{<StatusBar width='130px' status={student?.status}/>}</td>
                   {/* tạm */}
-                  <td className="icon-container">
-                    <div>
+                  <td className="icon-container flex items-center">
+                    <div className='flex items-center me-1'>
                       <button onClick={() => navigator('/leadership/student', {state: {studentId: student?.userId}})}>
                         <img className="eyeIcon" src={eye} alt="View" />
                       </button>
                     </div>
-                    <button onClick={() => toggleDropdown(student?.userId)}>
+                    <button className='me-1' onClick={() => toggleDropdown(student?.userId)}>
                       <img className="unionIcon" src={union} alt="All" />
                     </button>
                     {openDropdownId === student?.userId && (
