@@ -340,6 +340,7 @@ const TeacherProfileEdit = () => {
   const [Use, setUse] = useState<any>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { id } = useParams<{ id: string }>();
+  const { teacherData, teacherInfo, teacherFamily } = useTeacherContext();
   const {
     register,
     reset,
@@ -348,7 +349,16 @@ const TeacherProfileEdit = () => {
     clearErrors,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<IUser & ITeacherInfo>({ mode: 'onChange', defaultValues: { dob: null, avatarUrl: defaultAvatar, fullName: Use?.fullName } });
+  } = useForm<IUser & ITeacherInfo>({
+    mode: 'onChange',
+    defaultValues: {
+      dob: null,
+      avatarUrl: defaultAvatar,
+      fullName: Use?.fullName,
+      cccd: teacherInfo?.cccd,
+      issuedDate: teacherInfo?.issuedDate ? dayjs(teacherInfo.issuedDate) : null,
+    },
+  });
   const [provinces, setProvinces] = useState<IProvince[]>([]); //tỉnh/huyện
 
   const [districts, setDistricts] = useState<IProvince[]>([]); // quận huyện
@@ -366,11 +376,11 @@ const TeacherProfileEdit = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const axiosInstance = createAxiosInstance(false);
   // const [cookies] = useCookies(['accessToken']);
-  const { teacherData, teacherInfo, teacherFamily } = useTeacherContext();
+
   // const [useId, setUseId] = useState<number | null>(null);
   const navigate = useNavigate();
   // const token = cookies.accessToken;
-  const [cookies] = useCookies(['userId']);
+  // const [cookies] = useCookies(['userId']);
   console.log(Use);
 
   const axios = createAxiosInstance();
@@ -483,13 +493,22 @@ const TeacherProfileEdit = () => {
     setSelectedReligion(option);
     setValue('religion', option.value);
   };
+  // const handleIssuedDate = (date: dayjs.Dayjs | null) => {
+  //   setDataTeacherInfos((prev) => ({
+  //     ...prev!,
+  //     issuedDate: date, // Đảm bảo đúng kiểu dữ liệu
+  //   }));
+  //   setValue('issuedDate', date);
+  // };
   const handleIssuedDate = (date: dayjs.Dayjs | null) => {
     setDataTeacherInfos((prev) => ({
       ...prev!,
-      issuedDate: date, // Đảm bảo đúng kiểu dữ liệu
+      issuedDate: date,
     }));
-    setValue('issuedDate', date);
+
+    setValue('issuedDate', date, { shouldValidate: true });
   };
+
   const handleUnionDate = (date: dayjs.Dayjs | null) => {
     setDataTeacherInfos((prev) => ({
       ...prev!,
@@ -587,10 +606,10 @@ const TeacherProfileEdit = () => {
   };
   useEffect(() => {
     const getUse = async () => {
-      const id = cookies.userId;
+      // const id = cookies.userId;
 
       try {
-        const response = await axios.get(`https://fivefood.shop/api/users/${id}`);
+        const response = await axios.get(`https://fivefood.shop/api/users/${teacherData.userId}`);
         setUse(response.data.data);
       } catch (error) {
         console.error('Lỗi khi lấy thông tin user:', error);

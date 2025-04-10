@@ -13,6 +13,7 @@ export interface WorkHistory {
 export interface Lecturer {
   teacherId: number;
   guardianName: string;
+  fullName: string;
 }
 export interface Schoolslist {
   id: number;

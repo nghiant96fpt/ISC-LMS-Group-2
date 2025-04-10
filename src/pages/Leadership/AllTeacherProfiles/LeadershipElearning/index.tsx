@@ -23,7 +23,7 @@ const TeacherProfile = () => {
         if (teacherRes.data.code !== 0) {
           throw new Error('Lỗi khi tải dữ liệu giảng viên');
         }
-
+        setCtxTeacherData(teacherRes.data.data);
         setTeacherData(teacherRes.data.data);
 
         // Lấy dữ liệu từ teacherinfos
@@ -31,7 +31,7 @@ const TeacherProfile = () => {
         if (infoRes.data.code !== 0) {
           throw new Error('Lỗi khi tải thông tin giảng viên');
         }
-
+        setCtxTeacherInfo(infoRes.data.data);
         setTeacherInfo(infoRes.data.data);
 
         // Nếu teacherInfo có userId, dùng nó để lấy thông tin người dùng
@@ -39,6 +39,7 @@ const TeacherProfile = () => {
         if (userId) {
           const userRes = await axiosInstance.get(`https://fivefood.shop/api/users/${userId}`);
           if (userRes.data.code === 0) {
+            setCtxTeacherFamily(userRes.data.data);
             setTeacherFamily(userRes.data.data);
           } else {
             throw new Error('Lỗi khi tải thông tin người dùng');
