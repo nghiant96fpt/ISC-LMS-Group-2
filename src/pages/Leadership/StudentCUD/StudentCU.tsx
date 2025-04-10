@@ -471,18 +471,20 @@ const StudentCU = (props: stdCUDProps) => {
     <div className="pr-20 pl-10 content">
       <Loading isLoading={loading} />
       <AddressList addressList={addressList} />
-      <div className=" w-[300px] mb-3 flex justify-between">
-        <div>
-          <button className={`px-3 py-1 rounded-full ${backgroundFalse}`} onClick={() => setProcessPage(false)}>
-            Hồ sơ học viên
-          </button>
+      {studentId && (
+        <div className=" w-[300px] mb-3 flex justify-between">
+          <div>
+            <button className={`px-3 py-1 rounded-full ${backgroundFalse}`} onClick={() => setProcessPage(false)}>
+              Hồ sơ học viên
+            </button>
+          </div>
+          <div>
+            <button className={`px-3 py-1 rounded-full ${backgroundTrue}`} onClick={() => setProcessPage(true)}>
+              Quá trình học tập
+            </button>
+          </div>
         </div>
-        <div>
-          <button className={`px-3 py-1 rounded-full ${backgroundTrue}`} onClick={() => setProcessPage(true)}>
-            Quá trình học tập
-          </button>
-        </div>
-      </div>
+      )}
 
       {!isProcessPage ? (
         <div>
