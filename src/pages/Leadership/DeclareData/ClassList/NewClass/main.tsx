@@ -51,6 +51,7 @@ const NewClassForm: React.FC = () => {
     userId: { label: '', value: '-1' },
     classTypeId: { label: '', value: '-1' },
     subjects: [] as { label: string; value: string }[],
+    academicYearTest: { label: '', value: '-1' },
   });
 
   const [subjects, setSubjects] = useState([]);
@@ -88,7 +89,7 @@ const NewClassForm: React.FC = () => {
         description: classInsert.description,
         gradeLevelId: classInsert.gradeLevelId.value,
         academicYearId: classInsert.academicYearId.value,
-        userId: 1,
+        userId: classInsert.userId.value,
         classTypeId: classInsert.classTypeId.value,
         subjects: a,
       };
@@ -120,12 +121,13 @@ const NewClassForm: React.FC = () => {
                   placeholder="Chọn niên khóa"
                   handleOptionClick={(v) => {
                     classInsert.classTypeId = { value: '-1', label: '' };
-                    axios
-                      .get('https://fivefood.shop/api/subjects/get-by-academic-year?academicYearId=' + v.value)
+                    fetchInstance
+                      .get('/subjects/get-by-academic-year?academicYearId=' + v.value)
                       .then((v) => {
-                        setSubjects(v.data.data);
+                        setSubjects(v.data);
                       })
                       .catch((error) => {
+                        setSubjects([]);
                         console.log('Không có dữ liệu');
                       });
                     axios
@@ -231,7 +233,7 @@ const NewClassForm: React.FC = () => {
                 <Dropdown
                   placeholder="Chọn giáo viên chủ nhiệm"
                   options={data.teachers.map((v, index) => {
-                    return { label: v['fullName'], value: v['id'] + '' };
+                    return { label: v['fullName'], value: v['userId'] + '' };
                   })}
                   selectedOption={classInsert.userId.value == '-1' ? null : classInsert.userId}
                   handleOptionClick={(v) => {
@@ -267,12 +269,13 @@ const NewClassForm: React.FC = () => {
             <Dropdown
               placeholder="Chọn niên khóa"
               handleOptionClick={(v) => {
-                axios
-                  .get('https://fivefood.shop/api/subjects/get-by-academic-year?academicYearId=' + v.value)
+                classInsert.academicYearTest = v;
+                fetchInstance
+                  .get('/subjects/get-by-academic-year?academicYearId=' + v.value)
                   .then((v) => {
                     setClassInsert((pre) => ({
                       ...pre,
-                      subjects: v.data.data.map((v: { id: string; name: string }) => ({ value: v.id, label: v.name })),
+                      subjects: v.data.map((v: { id: string; name: string }) => ({ value: v.id, label: v.name })),
                     }));
                   })
                   .catch((error) => {
@@ -280,7 +283,7 @@ const NewClassForm: React.FC = () => {
                   });
               }}
               disabled={!isChecked}
-              selectedOption={classInsert.academicYearId.value == '-1' ? null : classInsert.academicYearId}
+              selectedOption={classInsert.academicYearTest.value == '-1' ? null : classInsert.academicYearTest}
               options={data.academicYears.map((v, index) => ({
                 label: v['name'],
                 value: v['id'] + '',
