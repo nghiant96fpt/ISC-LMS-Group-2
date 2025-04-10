@@ -19,7 +19,7 @@ export const serviceLogin = async (props: servicesProps) => {
     const response = await props.axiosInstance.post('api/auth/login', props.data);
     const info = response.data?.data;
     props.setInfo(info);
-    props.setCookies('accessToken', info?.accessToken, { maxAge: 60 * 15, path: '/' });
+    props.setCookies('accessToken', info?.accessToken, { maxAge: (60 * 60) + (60*15), path: '/' });
     props.setCookies('refreshToken', info?.refreshToken?.token, { maxAge: 60 * 60 * 10, path: '/' });
 
     if (info?.user?.role === 'ADMIN') {
@@ -57,5 +57,14 @@ export const serviceChangePassword = async (props: servicesProps) => {
     toast.error(err?.response?.data?.data);
   } finally {
     props.setLoading(false);
+  }
+}
+
+export const serviceGetOTP = async (props: servicesProps) => {
+  try {
+    props.setLoading(true);
+    const response = await props?.axiosInstance.post('api/Account/request-password-reset', props?.data);
+  } catch (error) {
+    
   }
 }

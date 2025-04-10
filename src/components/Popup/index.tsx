@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface PopupProps {
   titleBig: string;
@@ -8,30 +8,52 @@ interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
   className?: string;
-  onSave?: (updatedSubject: any) => void;
-  // Callback khi lưu
-  selectedSubject?: any; // Optional
-  onSavets?: () => void;
+  initId?: number | string;
+  initName?: string;
+  initDescription?: string;
+  initActive?: boolean;
+
+  onSave?: (updatedData: { id: number | string; name: string; description: string; status: boolean }) => void;
 }
 
-const Popup: React.FC<PopupProps> = ({ titleBig, titleSmall1, titleSmall2, titleSmall3, isOpen, onClose, className, selectedSubject, onSave }) => {
-  const [name, setName] = useState(selectedSubject.name);
-  const [status, setStatus] = useState(selectedSubject.status);
-  const [description, setDescription] = useState(selectedSubject.description);
+const Popup: React.FC<PopupProps> = ({
+  titleBig,
+  titleSmall1,
+  titleSmall2,
+  titleSmall3,
+  isOpen,
+  onClose,
+  className,
+  initName,
+  initDescription,
+  initActive,
+  onSave,
+  initId,
+}) => {
+  // State để lưu giá trị của các ô input và trạng thái toggle
+  const [isActive, setIsActive] = useState(false);
+  const [nameValue, setNameValue] = useState('');
+  const [descValue, setDescValue] = useState('');
 
+  // Khi mở popup hoặc khi props cũ thay đổi => nạp lại dữ liệu
   useEffect(() => {
-    setName(selectedSubject.name);
-    setStatus(selectedSubject.status);
-    setDescription(selectedSubject.description);
-  }, [selectedSubject]);
-
-  // Lưu thông tin môn học đã chỉnh sửa
-  const handleSave = () => {
-    const updatedSubject = { ...selectedSubject, name, status, description };
-    onSave?.(updatedSubject); // Chỉ gọi nếu onSave có tồn tại
-  };
+    setIsActive(initActive ?? false);
+    setNameValue(initName ?? '');
+    setDescValue(initDescription ?? '');
+  }, [initActive, initName, initDescription, isOpen]);
 
   if (!isOpen) return null;
+
+  const handleSaveClick = () => {
+    if (onSave && initId != null) {
+      onSave({
+        id: initId,
+        name: nameValue,
+        description: descValue,
+        status: isActive,
+      });
+    }
+  };
 
   return (
     <div className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 ${className}`} onClick={onClose}>
@@ -46,24 +68,25 @@ const Popup: React.FC<PopupProps> = ({ titleBig, titleSmall1, titleSmall2, title
               <input
                 type="text"
                 className="w-full md:w-9/12 p-2 rounded-lg text-black-text cursor-pointer bg-gray-100"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={nameValue}
+                onChange={(e) => setNameValue(e.target.value)}
+                disabled={!isActive}
               />
             </div>
 
             {/* Trạng thái */}
             <div className="flex flex-col md:flex-row items-center mb-4">
-              <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0 text-left">{titleSmall2}:</label>
+              <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0 text-center text-left">{titleSmall2}:</label>
               <div className="flex items-center gap-3 w-full md:w-9/12">
                 <div
-                  className={`relative w-12 h-6 rounded-full cursor-pointer ${status ? 'bg-blue-500' : 'bg-gray-300'}`}
-                  onClick={() => setStatus(!status)}
+                  className={`relative w-12 h-6 rounded-full cursor-pointer ${isActive ? 'bg-blue-500' : 'bg-gray-300'}`}
+                  onClick={() => setIsActive(!isActive)}
                 >
                   <div
-                    className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${status ? 'translate-x-6' : 'translate-x-1'}`}
+                    className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${isActive ? 'translate-x-6' : 'translate-x-1'}`}
                   ></div>
                 </div>
-                <span className="text-sm">{status ? 'Đang hoạt động' : 'Vô hiệu hóa'}</span>
+                <span className="text-sm">{isActive ? 'Đang hoạt động' : 'Vô hiệu hóa'}</span>
               </div>
             </div>
 
@@ -73,8 +96,9 @@ const Popup: React.FC<PopupProps> = ({ titleBig, titleSmall1, titleSmall2, title
               <input
                 type="text"
                 className="w-full md:w-9/12 p-2 rounded-lg text-black-text cursor-pointer bg-gray-100"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={descValue}
+                onChange={(e) => setDescValue(e.target.value)}
+                disabled={!isActive}
               />
             </div>
 
@@ -85,11 +109,11 @@ const Popup: React.FC<PopupProps> = ({ titleBig, titleSmall1, titleSmall2, title
               </button>
               <button
                 type="button"
-                onClick={handleSave}
                 className={`w-full md:w-40 py-2 font-bold rounded-lg ${
-                  status ? 'bg-orange-text text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  nameValue.trim() === '' || descValue.trim() === '' ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-orange-text text-white'
                 }`}
-                disabled={!status}
+                disabled={nameValue.trim() === '' || descValue.trim() === ''}
+                onClick={handleSaveClick}
               >
                 Lưu
               </button>

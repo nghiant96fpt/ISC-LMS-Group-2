@@ -4,7 +4,7 @@ import plus from '../../../../assets/icons/icon_plus.png';
 import caretdown from '../../../../assets/icons/caret_down.png';
 import { Link, useParams } from 'react-router';
 import axios from 'axios';
-import { Subject, SubjectGroup, Teacher } from './type';
+import { SubjectGroup, Teacher } from './type';
 import createAxiosInstance from '../../../../utils/axiosInstance';
 import AlertwithIcon from '../../../../components/AlertwithIcon';
 import Loading from '../../../../components/Loading';
@@ -15,7 +15,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 const DepartmentSettings: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [subjectGroup, setSubjectGroup] = useState<SubjectGroup | null>(null);
-  const [subjects, setSubjects] = useState<Subject[]>([]);
+  // const [subjects, setSubjects] = useState<Subject[]>([]);
   const [teacherList, setTeacherList] = useState<Teacher[]>([]);
   const [hiddenSubjects, setHiddenSubjects] = useState<number[]>([]);
   const [page, setPage] = useState(1);
@@ -29,13 +29,17 @@ const DepartmentSettings: React.FC = () => {
   useEffect(() => {
     if (id) {
       setLoading(true);
-      axios.get(`${API_URL}/subject-groups/${id}`)
+      axiosInstance.get(`${API_URL}/subject-groups/${id}`)
         .then((response) => {
-          setSubjectGroup(response.data.data);
+          if (response.data.data) {
+            setSubjectGroup(response.data.data);
+          } else {
+            console.error("Không tìm thấy dữ liệu tổ - bộ môn");
+          }
           setLoading(false);
         })
         .catch((error) => {
-          console.error('Error fetching department data:', error);
+          console.error('Lỗi khi tải dữ liệu tổ - bộ môn:', error);
           setLoading(false);
         });
     }
@@ -45,10 +49,12 @@ const DepartmentSettings: React.FC = () => {
     if (subjectGroup?.teacherId) {
       setLoading(true);
       axiosInstance.get(`${API_URL}/teacherlists`, {
-        params: { page, pageSize, sortColumn, sortOrder, search },
+        params: { page, pageSize: 9999, sortColumn, sortOrder, search },
       })
         .then((response) => {
           setTeacherList(response.data.data);
+          console.log("Teacher List:", response.data.data);
+
           setLoading(false);
         })
         .catch((error) => {
@@ -58,20 +64,20 @@ const DepartmentSettings: React.FC = () => {
     }
   }, [subjectGroup, page, pageSize, sortColumn, sortOrder, search]);
 
-  useEffect(() => {
-    if (subjectGroup?.id) {
-      setLoading(true);
-      axios.get(`${API_URL}/subjects/get-by-subject-group?subjectGroupId=${id}`)
-        .then((response) => {
-          setSubjects(response.data.data);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error('Error fetching subjects:', error);
-          setLoading(false); // Set loading to false if there's an error
-        });
-    }
-  }, [subjectGroup]);
+  // useEffect(() => {
+  //   if (subjectGroup?.id) {
+  //     setLoading(true);
+  //     axiosInstance.get(`${API_URL}/subjects/get-by-subject-group?subjectGroupId=${id}`)
+  //       .then((response) => {
+  //         setSubjects(response.data.data);
+  //         setLoading(false);
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error fetching subjects:', error);
+  //         setLoading(false); // Set loading to false if there's an error
+  //       });
+  //   }
+  // }, [subjectGroup]);
 
   const handleHideSubject = (subjectId: number) => {
     setHiddenSubjects((prevHidden) => [...prevHidden, subjectId]);
@@ -79,21 +85,18 @@ const DepartmentSettings: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!subjectGroup) {
       setAlert({ message: "Chưa có dữ liệu tổ - bộ môn", type: "error" });
       return;
     }
-
     const selectedTeacherId = Number((document.getElementById("teacher-select") as HTMLSelectElement)?.value);
-    const visibleSubjectIds = subjects
-      .filter((subject) => !hiddenSubjects.includes(subject.id))
-      .map((subject) => subject.id);
+    // const visibleSubjectIds = subjects
+    //   .filter((subject) => !hiddenSubjects.includes(subject.id))
+    //   .map((subject) => subject.id);
 
     const updateData = {
       name: subjectGroup.name,
       teacherId: selectedTeacherId,
-      subjectId: visibleSubjectIds || [],
     };
 
     console.log("Cập nhật dữ liệu:", updateData);
@@ -104,15 +107,7 @@ const DepartmentSettings: React.FC = () => {
         headers: { "Content-Type": "application/json" },
       });
 
-      if (hiddenSubjects.length > 0) {
-        await Promise.all(
-          hiddenSubjects.map(async (subjectId) => {
-            await axiosInstance.delete(`${API_URL}/subject-groups/delete-subject`, {
-              params: { subjectGroupId: id, subjectId: subjectId },
-            });
-          })
-        );
-      }
+
 
       setAlert({ message: " Cập nhật thành công!", type: "success" });
       setLoading(false); // Set loading to false after successful update
@@ -149,7 +144,7 @@ const DepartmentSettings: React.FC = () => {
             <input
               type="text"
               className="w-full md:w-9/12 p-2 border border-gray-300 rounded-lg text-black-text cursor-pointer"
-              value={subjectGroup ? subjectGroup.name : "Chưa có dữ liệu"}
+              value={subjectGroup ? subjectGroup.name : ""}
               readOnly
             />
           </div>
@@ -174,7 +169,7 @@ const DepartmentSettings: React.FC = () => {
 
           <hr className="my-6 border-gray-300" />
 
-          <div className="flex flex-col items-start w-full">
+          {/* <div className="flex flex-col items-start w-full">
             <p className="text-orange-text font-bold text-base mb-1">Danh sách môn học</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
               {subjects.length > 0 ? (
@@ -195,7 +190,7 @@ const DepartmentSettings: React.FC = () => {
                 <img src={plus} alt="Add" className="w-5 mr-2" /> Thêm môn học mới
               </button>
             </Link>
-          </div>
+          </div> */}
 
           <div className="flex flex-col md:flex-row justify-center gap-4 mt-10">
             <Link to="/leadership/declare-data">

@@ -12,7 +12,7 @@ interface SubjectGroup {
     name: string;
 }
 
-interface subjectType {
+export interface subjectType {
     id: number;
     name: string;
     status: boolean;

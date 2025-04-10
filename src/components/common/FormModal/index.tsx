@@ -29,7 +29,7 @@ const FormModal: React.FC<ModalFormProps> = ({
             >
                 <div className="modalContent">
                     {/* HEADER */}
-                    <div className="modalHeader flex items-center relative">
+                    <div className="modalHeader flex items-center relative m-4">
                         <div className={`flex-1 flex  text-${titleAlign}`}>
                             <TitleComponent text={title || ''} size={28} weight="extrabold" />
                         </div>

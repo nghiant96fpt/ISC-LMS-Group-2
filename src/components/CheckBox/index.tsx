@@ -9,6 +9,7 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
   onChange, 
   customStyles = {},
   iconName,                            
+  disabled
 }) => {
   const [checked, setChecked] = useState(isChecked);
   const checkboxRef = useRef<HTMLInputElement>(null);
@@ -44,6 +45,7 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
         onChange={handleChange}
         className="absolute opacity-0 w-0 h-0 cursor-pointer peer"
         style={customStyles.input}
+        disabled={disabled}
       />
       <span className="relative flex justify-center items-center w-5 h-5 bg-white rounded transition-colors" style={customStyles.checkmark}>
         <img src={iconToDisplay} alt="Checkbox icon" className="w-full h-full" />

@@ -18,7 +18,7 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
       <div className="flex items-center mb-2">
         <p className="w-[118px]">Họ và tên</p>
         <Input
-          className="h-[40px] min-w-[300px]"
+          className="h-[40px] min-w-[270px]"
           placeholder="Nhập họ và tên"
           {...register('fullname', { required: 'Họ và tên không được bỏ trống !' })}
           onChange={(e) => {
@@ -28,23 +28,25 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
           error={errors?.fullname?.message}
         />
       </div>
-      <div className="flex items-center mb-2 flex-wrap">
+      <div className="flex items-center mb-2 justify-content-between">
         <p className="w-[118px]">Giới tính</p>
-        <Dropdown
-          size="short"
-          options={[
-            { label: 'Nam', value: false },
-            { label: 'Nữ', value: true },
-          ]}
-          selectedOption={watch('gender')}
-          handleOptionClick={(e) => {
-            setValue('gender', e);
-            clearError('gender');
-          }}
-          {...register('gender', { required: 'Vui lòng chọn thông tin giới tính !' })}
-          placeholder="Chọn giới tính"
-          borderColor={errors?.gender && '#EF4444'}
-        />
+        <div className='max-w-[115px]'>
+          <Dropdown
+            size="short"
+            options={[
+              { label: 'Nam', value: false },
+              { label: 'Nữ', value: true },
+            ]}
+            selectedOption={watch('gender')}
+            handleOptionClick={(e) => {
+              setValue('gender', e);
+              clearError('gender');
+            }}
+            {...register('gender', { required: 'Vui lòng chọn thông tin giới tính !' })}
+            placeholder="Chọn giới tính"
+            borderColor={errors?.gender && '#EF4444'}
+          />
+        </div>
         {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1">{errors?.gender?.message}</p>}
       </div>
       <div className="flex items-center">
@@ -68,7 +70,7 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
       <div className="flex items-center mb-2">
         <p className="w-[118px]">Nơi sinh</p>
         <Input
-          className="h-[40px] min-w-[300px]"
+          className="h-[40px] min-w-[270px]"
           placeholder="Nhập nơi sinh"
           {...register('birthPlace', { required: 'Nơi sinh không được bỏ trống !' })}
           onChange={(e) => {
@@ -81,7 +83,7 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
       <div className="flex items-center mb-2">
         <p className="w-[118px]">Dân tộc</p>
         <Input
-          className="h-[40px] min-w-[300px]"
+          className="h-[40px] min-w-[270px]"
           placeholder="Nhập thông tin dân tộc"
           {...register('folk', { required: 'Thông tin dân tộc không được bỏ trống !' })}
           onChange={(e) => {
@@ -94,7 +96,7 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
       <div className="flex items-center mb-2">
         <p className="w-[118px]">Tôn giáo</p>
         <Input
-          className="h-[40px] min-w-[300px]"
+          className="h-[40px] min-w-[270px]"
           placeholder="Nhập thông tin tôn giáo"
           {...register('religion', { required: 'Thông tin tôn giáo không được bỏ trống !' })}
           onChange={(e) => {
