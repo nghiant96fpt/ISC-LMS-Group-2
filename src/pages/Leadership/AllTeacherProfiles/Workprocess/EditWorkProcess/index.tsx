@@ -394,33 +394,6 @@ const EditWorkProcess: React.FC<CustomDropdownProps> = ({
               </div>
             </div>
           </div>
-          {/* <div className=" pt-3 flex flex-col md:flex-row items-center justify-between mb-4">
-            <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">
-              Tổ/Bộ môn: <span className="text-orange-text">*</span>
-            </label>
-            <div style={{ width }} className={`relative ${className}`}>
-              {label && <label className="block mb-1 text-sm font-medium">{label}</label>}
-              <div className="relative">
-                <select
-                  className="w-full p-2 border border-gray-300 rounded-lg text-black appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
-                  name="subjectGroupsId"
-                  value={formData.subjectGroupsId || ''}
-                  onChange={handleChange}
-                >
-                  <option value="" disabled hidden>
-                    Chọn tổ/bộ môn
-                  </option>
-                  {subjectGroups.map((group) => (
-                    <option key={group.id} value={group.id}>
-                      {group.name}
-                    </option>
-                  ))}
-                </select>
-
-                <img src={caretdown} alt="Dropdown" className="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 pointer-events-none" />
-              </div>
-            </div>
-          </div> */}
           <div className=" pt-3 flex flex-col md:flex-row items-center justify-between mb-4">
             <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">
               Chức vụ: <span className="text-orange-text">*</span>

@@ -3,7 +3,7 @@ const down = require('../../assets/icons/caret_down.png');
 const trash = require('../../assets/icons/fi_trash-2.png');
 const edit = require('../../assets/icons/fi_edit1.png');
 
-const TabSwitch = ({ tabs, activeTab, onTabChange }: TabSwitchProps) => {
+const TabSwitch = ({ tabs, activeTab, onTabChange, onSaveClick, isSubmitting }: TabSwitchProps) => {
   const ActiveComponent = tabs.find((tab) => tab.value === activeTab)?.content;
 
   return (
@@ -54,9 +54,30 @@ const TabSwitch = ({ tabs, activeTab, onTabChange }: TabSwitchProps) => {
             <button className="p-1 flex items-center">
               <img src={trash} alt="delete" className="w-6 h-6" />
             </button>
-            <button
-              onClick={() => onTabChange?.(activeTab === 'edit' ? 'general' : 'edit')}
+            {/* <button
+              type="submit"
+              id="myForm"
+              onClick={() => {
+                onSaveClick?.();
+                onTabChange?.(activeTab === 'edit' ? 'general' : 'edit');
+              }}
               className="p-2 bg-orange-500 text-white rounded-lg flex items-center gap-2"
+            >
+              <img src={edit} alt="edit" className="w-6 h-6" />
+              <span className="text-white font-medium">{activeTab === 'edit' ? 'Lưu' : 'Chỉnh sửa'}</span>
+            </button> */}
+            <button
+              type="submit"
+              id="myForm"
+              onClick={() => {
+                if (activeTab === 'edit') {
+                  onSaveClick?.(); // 👉 Chỉ gửi form
+                } else {
+                  onTabChange?.('edit'); // 👉 Chuyển sang chế độ chỉnh sửa
+                }
+              }}
+              disabled={isSubmitting}
+              className="p-2 bg-orange-500 text-white rounded-lg flex items-center gap-2 disabled:opacity-50"
             >
               <img src={edit} alt="edit" className="w-6 h-6" />
               <span className="text-white font-medium">{activeTab === 'edit' ? 'Lưu' : 'Chỉnh sửa'}</span>

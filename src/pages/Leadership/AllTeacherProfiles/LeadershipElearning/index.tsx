@@ -1,6 +1,7 @@
 import createAxiosInstance from '../../../../utils/axiosInstance';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useTeacherContext } from '../InstructorProfile/TeacherContext';
 const avatar = require('../../../../assets/images/Frame 19.png');
 
 const TeacherProfile = () => {
@@ -9,7 +10,8 @@ const TeacherProfile = () => {
   const [teacherFamily, setTeacherFamily] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { id } = useParams(); 
+  const { id } = useParams();
+  const { setTeacherData: setCtxTeacherData, setTeacherInfo: setCtxTeacherInfo, setTeacherFamily: setCtxTeacherFamily } = useTeacherContext();
 
   useEffect(() => {
     const axiosInstance = createAxiosInstance();
@@ -24,18 +26,21 @@ const TeacherProfile = () => {
 
         if (teacherRes.data.code === 0) {
           setTeacherData(teacherRes.data.data);
+          setCtxTeacherData(teacherRes.data.data);
         } else {
           throw new Error('Lỗi khi tải dữ liệu giảng viên');
         }
 
         if (infoRes.data.code === 0) {
           setTeacherInfo(infoRes.data.data);
+          setCtxTeacherInfo(infoRes.data.data);
         } else {
           throw new Error('Lỗi khi tải thông tin giảng viên');
         }
 
         if (familyRes.data.code === 0) {
           setTeacherFamily(familyRes.data.data);
+          setCtxTeacherFamily(familyRes.data.data);
         } else {
           throw new Error('Lỗi khi tải thông tin gia đình');
         }
