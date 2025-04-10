@@ -12,6 +12,7 @@ import arrow_right from '../../../../../assets/icons/chevron_big_right.png';
 import arrow_left from '../../../../../assets/icons/arrow left.png';
 import DeleteConfirmation from '../../../../../components/DeleteConfirmation';
 import StatusBar from '../../../../../components/StatusBar/StatusBar';
+import createAxiosInstance from '../../../../../utils/axiosInstance';
 
 interface TableBodyProps {
   searchTerm: string;
@@ -28,16 +29,15 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
 
-  
+  const axiosTrue = createAxiosInstance(true);
   const navigator = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(API_URL);
-        const result = await response.json();
-        if (result.code === 0) {
-          setStudents(result.data);
+        const response = await axiosTrue.get(API_URL);
+        if (response?.data?.code === 0) {
+          setStudents(response.data?.data);
         } else {
           setError('Lỗi tải dữ liệu');
         }
@@ -175,7 +175,7 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
                   <td>{student?.nation}</td>
                   <td>{student?.className}</td>
                   {/* tạm */}
-                  <td style={{maxWidth: 150}}>{<StatusBar width='130px' status={student?.status}/>}</td>
+                  <td style={{maxWidth: 150}}>{<StatusBar width='150px' status={student?.status}/>}</td>
                   {/* tạm */}
                   <td className="icon-container flex items-center">
                     <div className='flex items-center me-1'>
