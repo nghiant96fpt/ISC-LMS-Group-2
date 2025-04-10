@@ -78,7 +78,6 @@ import EditSchoolInFo from '../../pages/Leadership/SystemSettings/SchoolInfomati
 import TrainingLevelManagement from '../../pages/Leadership/SystemSettings/TrainingLevelManagement';
 import AddForm from '../../pages/Leadership/SystemSettings/TrainingLevelManagement/addPeachLevel';
 import UserManagement from '../../pages/Leadership/SystemSettings/UserManagement';
-import SettingForm from '../../pages/Leadership/SystemSettings/UserManagement/addSetting';
 import SubjectManagement from '../../pages/Leadership/SystemSettings/SubjectManagement';
 import ClassroomSettings from '../../pages/Leadership/ClassroomSettings/classroomsettings';
 import AddWorkProcess from '../../pages/Leadership/AllTeacherProfiles/Workprocess/AddWorkProcess';
@@ -185,7 +184,6 @@ const StudentRoutes = () => {
         <Route path="system-settings/training-level-management" element={<TrainingLevelManagement />} />
         <Route path="system-settings/training-level-management/add" element={<AddForm />} />
         <Route path="system-settings/user-management" element={<UserManagement />} />
-        <Route path="system-settings/user-management/settings" element={<SettingForm />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
         <Route path="training-info/add" element={<AddTrainingProgram />} />
         {/* */}

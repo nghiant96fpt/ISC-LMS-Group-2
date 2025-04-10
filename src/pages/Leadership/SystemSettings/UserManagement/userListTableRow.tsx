@@ -14,9 +14,9 @@ const UserListTableRow: React.FC<UserListTableRowProps> = ({ item, index, onDele
     setIsDeleteModalOpen(true);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (onDelete && selectedItem) {
-      onDelete(selectedItem.id);
+      await onDelete(selectedItem.id);
       setIsDeleteModalOpen(false);
     }
   };
@@ -27,7 +27,7 @@ const UserListTableRow: React.FC<UserListTableRowProps> = ({ item, index, onDele
         <TableCell className="px-4 py-3 text-black-text text-start text-xs md:text-sm lg:text-base">{item.name}</TableCell>
         <TableCell className="px-4 py-3 text-black-text text-start text-xs md:text-sm lg:text-base">{item.email}</TableCell>
         <TableCell className="px-4 py-3 text-black-text text-start text-xs md:text-sm lg:text-base">{item.userGroup}</TableCell>
-        <TableCell className="px-4 py-3 text-black-text text-start text-xs md:text-sm lg:text-base">{item.status}</TableCell>
+        <TableCell className="px-4 py-3 text-gray-500 italic text-start text-xs md:text-sm lg:text-base">{item.status}</TableCell>
         <TableCell className="px-4 py-3 text-start w-[150px]">
           <div className="flex gap-2">
             <button>
