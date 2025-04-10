@@ -192,13 +192,6 @@ const TrainingList: React.FC<TrainingItem> = ({ onClick }) => {
           </div>
         </div>
       )}
-      <PaginationControls
-        itemsPerPage={pageSize}
-        setItemsPerPage={setPageSize}
-        onPageChange={setPage}
-        currentPage={page}
-        totalPages={Math.ceil(totalItems / pageSize)}
-      />
     </div>
   );
 };

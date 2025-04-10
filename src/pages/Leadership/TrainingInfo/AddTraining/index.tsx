@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import calendar from '../../../../assets/icons/icon-calendar.png';
 import paper from '../../../../assets/icons/u_paperclip.png';
@@ -9,11 +9,17 @@ import Button from '../../../../components/Button';
 import './style.css';
 import { DropdownOption } from '../../../../components/Dropdown/type';
 import { initialFormState, options } from './data';
+import axios from 'axios';
+import { Major, SchoolFacilitie } from '../TrainingList/type';
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 const AddTrainingProgram: React.FC = () => {
   const [form, setForm] = useState(initialFormState);
   const [trainingPrograms, setTrainingPrograms] = useState<DropdownOption[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [schoolList, setSchoolList] = useState<SchoolFacilitie[]>([]);
+  const [majorList, setMajorList] = useState<Major[]>([]);
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -34,6 +40,40 @@ const AddTrainingProgram: React.FC = () => {
       [name]: type === 'checkbox' ? checked : files ? files[0] : value,
     }));
   };
+  useEffect(() => {
+    axios.get(`${API_URL}/schools`, {
+      params: {
+        sortColumn: 'name',
+        sortOrder: 'asc',
+      },
+    })
+      .then((response) => {
+        const data = response.data.data;
+        setSchoolList(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching class data:', error);
+      })
+  }, []);
+
+  useEffect(() => {
+    axios.get(`${API_URL}/major`, {
+      params: {
+        sortColumn: 'name',
+        sortOrder: 'asc',
+      },
+    })
+      .then((response) => {
+        const data = response.data.data;
+        console.log(data);
+
+        setMajorList(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching class data:', error);
+      })
+  }, []);
+
 
   const isFormEnabled = form.startDate && form.endDate && form.isCompleted;
 
@@ -53,13 +93,19 @@ const AddTrainingProgram: React.FC = () => {
               </label>
               <select
                 name="institution"
-                className={`w-2/3 p-2 border rounded ${!isFormEnabled ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ''}`}
+                className={`w-2/3 p-2 border rounded`}
                 onChange={handleChange}
                 required
-                disabled={!isFormEnabled}
+                value={form.institution}
               >
                 <option value="">Lựa chọn</option>
+                {schoolList.map((school) => (
+                  <option key={school.id} value={school.id}>
+                    {school.name}
+                  </option>
+                ))}
               </select>
+
             </div>
             <div className="flex items-center space-x-4">
               <label className="w-1/3 font-bold">
@@ -67,13 +113,20 @@ const AddTrainingProgram: React.FC = () => {
               </label>
               <select
                 name="major"
-                className={`w-2/3 p-2 border rounded ${!isFormEnabled ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : ''}`}
+                className={`w-2/3 p-2 border rounded`}
                 onChange={handleChange}
                 required
-                disabled={!isFormEnabled}
+
+                value={form.major}
               >
                 <option value="">Lựa chọn</option>
+                {majorList.map((major) => (
+                  <option key={major.id} value={major.id}>
+                    {major.name}
+                  </option>
+                ))}
               </select>
+
             </div>
             <div className="flex items-center space-x-4">
               <label className="w-1/3 font-bold">
