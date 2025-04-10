@@ -108,7 +108,6 @@ const EditWorkProcess: React.FC<CustomDropdownProps> = ({
     };
     fetchWorkProcess();
   }, [schools]);
-  const selectedSubjectGroup = subjectGroups.find((group) => group.id === formData.subjectGroupsId);
 
   useEffect(() => {
     const fetchLecturers = async () => {
@@ -138,23 +137,6 @@ const EditWorkProcess: React.FC<CustomDropdownProps> = ({
     fetchLecturers();
   }, [teacherId]);
 
-  // useEffect(() => {
-  //   const fetchSubjectGroupsid = async () => {
-  //     if (!subjectGroupsId) return;
-  //     try {
-  //       const response = await axios.get(`/api/subject-groups/${subjectGroupsId}`);
-
-  //       if (response.data.data) {
-  //         setSubjectGroupsid(response.data.data);
-  //       } else {
-  //         console.error('Dữ liệu danh sách tổ/bộ môn không hợp lệ', response.data);
-  //       }
-  //     } catch (err) {
-  //       console.error('Lỗi khi lấy danh sách tổ/bộ môn', err);
-  //     }
-  //   };
-  //   fetchSubjectGroupsid();
-  // }, [subjectGroupsId]);
   useEffect(() => {
     const fetchSubjectGroups = async () => {
       try {
@@ -294,13 +276,12 @@ const EditWorkProcess: React.FC<CustomDropdownProps> = ({
   };
 
   const handleOptionSelect = (option: trainingPrograms) => {
-    // Kiểm tra nếu option đã được chọn thì không thêm nữa
     if (selectedPrograms.some((program) => program.id === option.id)) return;
 
     setSelectedPrograms([...selectedPrograms, option]);
     setFormData((prev) => ({
       ...prev,
-      program: [...prev.program, option.id], // Chỉ lấy name và lưu vào formData
+      program: [...prev.program, option.id],
     }));
     setIsDropdownOpen(false);
   };

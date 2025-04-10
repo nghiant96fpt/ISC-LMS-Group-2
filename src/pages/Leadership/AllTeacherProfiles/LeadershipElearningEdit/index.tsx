@@ -337,6 +337,7 @@ const TeacherProfileEdit = () => {
   const [selectedReligion, setSelectedReligion] = useState<DropdownOption | null>(null);
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>(['Toán', 'Vật Lý']);
   const [activeTab, setActiveTab] = useState<string>('');
+  const [Use, setUse] = useState<any>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { id } = useParams<{ id: string }>();
   const {
@@ -347,14 +348,16 @@ const TeacherProfileEdit = () => {
     clearErrors,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<IUser & ITeacherInfo>({ mode: 'onChange', defaultValues: { dob: null, avatarUrl: defaultAvatar } });
+  } = useForm<IUser & ITeacherInfo>({ mode: 'onChange', defaultValues: { dob: null, avatarUrl: defaultAvatar, fullName: Use?.fullName } });
   const [provinces, setProvinces] = useState<IProvince[]>([]); //tỉnh/huyện
-  const [Use, setUse] = useState<any>([]);
+
   const [districts, setDistricts] = useState<IProvince[]>([]); // quận huyện
   const [wards, setWards] = useState<IProvince[]>([]); //xã/phường
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null); // có id tỉnh huyện chưa
   const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null); // có id huyện huyện xã
-  const [previewAvatar, setPreviewAvatar] = useState(defaultAvatar); // avata
+  // const [previewAvatar, setPreviewAvatar] = useState(defaultAvatar); // avata
+  const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
+
   const [isAutoGenerate, setIsAutoGenerate] = useState(false); // mã sinh tự động
   const [isPartyMember, setIsPartyMember] = useState(false); //check vào đảng
   const [isUnionPlace, setUsUnionPlace] = useState(false); //check vào đoàn
@@ -362,12 +365,12 @@ const TeacherProfileEdit = () => {
   const [isLoading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const axiosInstance = createAxiosInstance(false);
-  const [cookies] = useCookies(['accessToken']);
+  // const [cookies] = useCookies(['accessToken']);
   const { teacherData, teacherInfo, teacherFamily } = useTeacherContext();
   // const [useId, setUseId] = useState<number | null>(null);
   const navigate = useNavigate();
-  const token = cookies.accessToken;
-
+  // const token = cookies.accessToken;
+  const [cookies] = useCookies(['userId']);
   console.log(Use);
 
   const axios = createAxiosInstance();
@@ -397,12 +400,7 @@ const TeacherProfileEdit = () => {
   };
   const fetchDataPosition = async () => {
     try {
-      const response = await axios.get('https://fivefood.shop/api/work-process/getworkprocessnopaging', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axios.get('https://fivefood.shop/api/work-process/getworkprocessnopaging');
       const filteredSubjects = response.data.data.map((subject: any) => ({
         label: subject.position,
         value: subject.id.toString(),
@@ -541,11 +539,12 @@ const TeacherProfileEdit = () => {
         avatarUrl: data.avatarUrl,
       };
 
-      const userResponse = await axios.put(`api/users${id}`, valueUser);
+      const userResponse = await axios.put(`api/users/${id}`, valueUser);
       if (userResponse.status === 200) {
         const userId = userResponse.data.data.id;
         const valueTeacher = {
           cccd: data.cccd ?? '',
+          fullName: data.fullName,
           issuedDate: data.issuedDate?.toISOString(),
           issuedPlace: data.issuedPlace,
           unionMember: data.unionMember ?? false,
@@ -565,7 +564,7 @@ const TeacherProfileEdit = () => {
         // setUseId(userId);
         // const teacherResponse = await axios.get(`https://fivefood.shop/api/teacherinfos/${id}`);
 
-        const teacherResponse = await axios.put(`https://fivefood.shop/api/teacherinfos${id}`, valueTeacher);
+        const teacherResponse = await axios.put(`https://fivefood.shop/api/teacherinfos/${id}`, valueTeacher);
 
         if (teacherResponse.status === 200) {
           toast.success('Tạo giảng viên thành công');
@@ -575,10 +574,10 @@ const TeacherProfileEdit = () => {
         }
       }
 
-      reset();
-      setTimeout(() => {
-        navigate('/leadership/all-teacher-profiles');
-      }, 2000);
+      // reset();
+      // setTimeout(() => {
+      //   navigate('/leadership/all-teacher-profiles');
+      // }, 2000);
     } catch (err) {
       toast.error('Lỗi khi thêm');
     } finally {
@@ -588,7 +587,7 @@ const TeacherProfileEdit = () => {
   };
   useEffect(() => {
     const getUse = async () => {
-      if (!id) return;
+      const id = cookies.userId;
 
       try {
         const response = await axios.get(`https://fivefood.shop/api/users/${id}`);
@@ -653,7 +652,11 @@ const TeacherProfileEdit = () => {
               <div className="relative w-60 h-60 grid grid-cols-1 rounded-full object-cover">
                 {/* Avatar */}
                 {/* <img src={previewAvatar} alt="Avatar" className="w-60 h-60 rounded-full object-cover border-2 border-gray-300" /> */}
-                <img src={Use?.avatarUrl || previewAvatar} alt="Avatar" className="w-60 h-60 rounded-full object-cover border-2 border-gray-300" />
+                <img
+                  src={previewAvatar || Use?.avatarUrl || defaultAvatar}
+                  alt="Avatar"
+                  className="w-60 h-60 rounded-full object-cover border-2 border-gray-300"
+                />
 
                 {/* Button Upload */}
                 <label className="absolute bottom-[-20px] left-1/2 transform -translate-x-1/2 bg-white p-2 rounded-full shadow-md cursor-pointer ">
@@ -729,6 +732,13 @@ const TeacherProfileEdit = () => {
                       />
                     </div>
                   </div>
+                  {/* <div className="flex items-center gap-8">
+                    <strong className="text-gray-500 whitespace-nowrap w-40">Họ và tên:</strong>
+                    <div className="w-full">
+                      <input type="text" className="w-full border rounded-[8px] p-2" {...register('fullName', { required: 'Họ tên là bắt buộc' })} />
+                      {errors.fullName && <p className="text-red-500 text-sm mt-1 p-0">{errors.fullName.message}</p>}
+                    </div>
+                  </div> */}
                   <div className="flex items-center gap-8">
                     <strong className="text-gray-500 whitespace-nowrap w-40">Họ và tên:</strong>
                     <div className="w-full">
@@ -736,6 +746,7 @@ const TeacherProfileEdit = () => {
                       {errors.fullName && <p className="text-red-500 text-sm mt-1 p-0">{errors.fullName.message}</p>}
                     </div>
                   </div>
+
                   <div className="flex items-center gap-9">
                     <strong className="text-gray-500 whitespace-nowrap w-40">Ngày sinh:</strong>
                     <div className="w-full">
@@ -1211,15 +1222,6 @@ const TeacherProfileEdit = () => {
                   </div>
                 </div>
               </div>
-              <div className="whitespace-nowrap mt-4">
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-                  Lưu
-                </button>
-              </div>
-              {/* <button id="myForm" type="submit">
-                {' '}
-                Lưu
-              </button> */}
             </div>
           </div>
         </div>
