@@ -8,9 +8,11 @@ import { ResignationFormProps } from './type';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
+import createAxiosInstance from '../../../../utils/axiosInstance';
 
 const ResignationForm: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const axiosInstance = createAxiosInstance();
+  const { userId, id } = useParams<{ userId: string; id: string }>();
   const [loading, setLoading] = useState(false);
   const [cookies] = useCookies(["accessToken"]);
   const navigate = useNavigate();
@@ -61,37 +63,19 @@ const ResignationForm: React.FC = () => {
         note: retirementData.note || "",
         attachment: base64File,
         status: 8,
-        leadershipId: Number(id),
+        leadershipId: Number(userId),
         active: true,
       };
 
       try {
         // Thử cập nhật trước (PUT)
-        const response = await axios.put(
-          `https://fivefood.shop/api/retirement/putByTeacherId/${id}`,
-          value,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await axiosInstance.put(`api/retirement/putByTeacherId/${id}`, value);
 
         toast.success("Cập nhật thành công!");
-        
+
       } catch (error: any) {
         if (error.response?.status === 404) {
-          const dataPost = await axios.post(
-            `https://fivefood.shop/api/retirement`,
-            value,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
+          const dataPost = await axiosInstance.post(`api/retirement`, value);
 
           toast.success("Cập nhật thành công!");
 

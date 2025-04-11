@@ -33,7 +33,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
 
   const axiosInstance = createAxiosInstance(false);
 
-  const [cookies, setCookies] = useCookies(['accessToken', 'refreshToken']);
+  const [cookies, setCookies] = useCookies(['accessToken', 'refreshToken', 'userId']);
 
   const [isLoading, setLoading] = useState(false);
 
@@ -62,7 +62,7 @@ const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
 
       setCookies('accessToken', info?.accessToken, { maxAge: 60 * 15, path: '/' });
       setCookies('refreshToken', info?.refreshToken?.token, { maxAge: 60 * 60 * 10, path: '/' });
-
+      setCookies('userId', info?.user?.id, { maxAge: 60 * 60 * 10, path: '/' });
       // Xử lý role ngay ở đây
       if (info?.user?.role === 'ADMIN') {
         setRole(1);
@@ -83,19 +83,19 @@ const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
     } finally {
       setLoading(false);
 
-    serviceLogin({
-      isValid: isValid,
-      data: data,
-      axiosInstance: axiosInstance,
-      clearErrors: clearErrors,
-      navigator: navigator,
-      setCookies: setCookies,
-      setError: setError,
-      setInfo: setInfo,
-      setLoading: setLoading,
-      setRole: setRole,
-    });
-  };
+      serviceLogin({
+        isValid: isValid,
+        data: data,
+        axiosInstance: axiosInstance,
+        clearErrors: clearErrors,
+        navigator: navigator,
+        setCookies: setCookies,
+        setError: setError,
+        setInfo: setInfo,
+        setLoading: setLoading,
+        setRole: setRole,
+      });
+    };
   }
 
   const [isShowPassword, setShowPassword] = useState(false);

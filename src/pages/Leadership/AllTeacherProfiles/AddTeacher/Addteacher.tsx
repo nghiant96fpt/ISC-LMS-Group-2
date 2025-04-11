@@ -9,7 +9,6 @@ import { IUser, IProvince, ITeacherInfo } from './type';
 import dayjs from 'dayjs';
 import { Label } from 'recharts';
 import { Controller, useForm } from 'react-hook-form';
-import axios from 'axios';
 import createAxiosInstance from '../../../../utils/axiosInstance';
 import { toast } from 'react-toastify';
 import Spinner from '../../../../components/Spinner';
@@ -70,15 +69,14 @@ const AddTeacher = () => {
     const [isUnionPlace, setUsUnionPlace] = useState(false);//check vào đoàn
     const [years, setYears] = useState<any[]>([]);  // Dữ liệu năm học
     const [isLoading, setLoading] = useState(false)
-    const axiosInstance = createAxiosInstance(false);
+    const axiosInstance = createAxiosInstance();
     const [cookies] = useCookies(["accessToken"]);
     const navigate = useNavigate();
     const token = cookies.accessToken;
     const fetchDataYear = async () => {
         try {
-            const response = await axios.get('https://fivefood.shop/api/academic-years'); // Thay YOUR_API_URL bằng URL thật của bạn
+            const response = await axiosInstance.get('api/academic-years'); // Thay YOUR_API_URL bằng URL thật của bạn
             setYears(response.data.data);  // Lưu dữ liệu năm học vào state
-
         } catch (err) {
             console.log('lỗi khi gọi api' + err);
 
@@ -88,7 +86,7 @@ const AddTeacher = () => {
     };
     const fetchDataSubject = async () => {
         try {
-            const response = await axios.get('https://fivefood.shop/api/subjects'); // Thay YOUR_API_URL bằng URL thật của bạn
+            const response = await axiosInstance.get('api/subjects'); // Thay YOUR_API_URL bằng URL thật của bạn
             const filteredSubjects = response.data.data.map((subject: any) => ({
                 label: subject.name,
                 value: subject.id.toString()
@@ -103,13 +101,7 @@ const AddTeacher = () => {
     };
     const fetchDataPosition = async () => {
         try {
-            const response = await axios.get('https://fivefood.shop/api/work-process/getworkprocessnopaging', {
-
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
+            const response = await axiosInstance.get('api/work-process/getworkprocessnopaging');
             const filteredSubjects = response.data.data.map((subject: any) => ({
                 label: subject.position,
                 value: subject.id.toString()
@@ -166,6 +158,7 @@ const AddTeacher = () => {
     const selectedTeaching = (option: DropdownOption) => {
         setSelectedOption(option);
         setValue('position', option.label)
+
     }
     const selectedGender = (option: DropdownOption) => {
         setSelectedOptionGender(option);
@@ -245,6 +238,7 @@ const AddTeacher = () => {
                 avatarUrl: data.avatarUrl,
             };
 
+
             const userResponse = await axiosInstance.post('api/users', valueUser);
             if (userResponse.status === 200) {
                 const userId = userResponse.data.data.id;
@@ -267,12 +261,7 @@ const AddTeacher = () => {
                     position: data.position
                 };
 
-                const teacherResponse = await axios.post('https://fivefood.shop/api/teacherinfos', valueTeacher, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                });
+                const teacherResponse = await axiosInstance.post('api/teacherinfos', valueTeacher);
 
                 if (teacherResponse.status === 200) {
                     toast.success("Tạo giảng viên thành công");
@@ -297,7 +286,7 @@ const AddTeacher = () => {
 
     const getAddress = async () => {
         try {
-            const response = await axios.get("https://fivefood.shop/api/address/provinces");
+            const response = await axiosInstance.get("api/address/provinces");
             setProvinces(response.data.data);
         } catch (error) {
             console.error("Lỗi khi lấy danh sách tỉnh/thành:", error);
@@ -311,7 +300,7 @@ const AddTeacher = () => {
         setWards([]);
         setValue('provinceCode', Number(provinceId))
         // Gọi API lấy quận/huyện theo tỉnh đã chọn
-        axios.get(`https://fivefood.shop/api/address/districts?provinceId=${provinceId}`).then((res) => {
+        axiosInstance.get(`api/address/districts?provinceId=${provinceId}`).then((res) => {
             setDistricts(res.data.data);
 
         });
@@ -321,7 +310,7 @@ const AddTeacher = () => {
         setSelectedDistrict(districtId);
         setValue('districtCode', Number(districtId))
         // Gọi API lấy xã/phường theo quận đã chọn
-        axios.get(`https://fivefood.shop/api/address/wards?districtId=${districtId}`).then((res) => {
+        axiosInstance.get(`api/address/wards?districtId=${districtId}`).then((res) => {
             setWards(res.data.data);
         });
     };
@@ -436,7 +425,7 @@ const AddTeacher = () => {
                                             <Controller
                                                 name="subjectId"
                                                 control={control}
-                                                rules={{ required: true }} // Validation không được để trống
+
                                                 render={({ field }) => (
                                                     <Dropdown
                                                         options={option_subject}
@@ -456,7 +445,7 @@ const AddTeacher = () => {
                                             <Controller
                                                 name="position"
                                                 control={control}
-                                                rules={{ required: true }}
+
                                                 render={({ field }) => (
                                                     <Dropdown
                                                         options={option_position}
@@ -477,6 +466,7 @@ const AddTeacher = () => {
                                             {errors.fullName && (
                                                 <p className="text-red-500 text-sm mt-1 p-0">{errors.fullName.message}</p>
                                             )}
+
                                         </div>
 
                                     </div>
@@ -532,7 +522,7 @@ const AddTeacher = () => {
                                             <Controller
                                                 name="gender"
                                                 control={control}
-                                                rules={{ required: true }} // Validation không được để trống
+
                                                 render={({ field }) => (
                                                     <Dropdown
                                                         options={gender}
@@ -553,7 +543,7 @@ const AddTeacher = () => {
                                             <Controller
                                                 name="nation"
                                                 control={control}
-                                                rules={{ required: true }} // Validation không được để trống
+
                                                 render={({ field }) => (
                                                     <Dropdown
                                                         options={option_nation}
@@ -624,7 +614,7 @@ const AddTeacher = () => {
                                             <Controller
                                                 name="religion"
                                                 control={control}
-                                                rules={{ required: true }} // Validation không được để trống
+
                                                 render={({ field }) => (
                                                     <Dropdown
                                                         options={option_religion}

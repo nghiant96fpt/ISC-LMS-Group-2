@@ -2,26 +2,52 @@ import React, { useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import AddressList from '../../../components/AddressUrlStack/Index';
 import Button from '../../../components/Button';
+import { useForm } from 'react-hook-form';
+import createAxiosInstance from '../../../utils/axiosInstance';
+import { toast } from 'react-toastify';
 
 const labels = [{ link: '', linkName: 'Bạn có thắc mắc?' }];
 
 const Help = () => {
   const [formData, setFormData] = useState({
-    category: '',
-    subject: '',
-    message: '',
+    type: '',
+    title: '',
+    content: '',
   });
-
-  const isFormValid = formData.category && formData.subject && formData.message;
-
+  const axiosInstance = createAxiosInstance();
+  const isFormValid = formData.type && formData.title && formData.content;
+  const {
+    register,
+    reset,
+    setError,
+    setValue,
+    control,
+    clearErrors,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleEditorChange = (content) => {
-    setFormData({ ...formData, message: content });
+    setFormData({ ...formData, content: content });
   };
-
+  const onSubmit = async () => {
+    try {
+      const response = await axiosInstance.post('api/support', formData);
+      if (response.status === 200) {
+        toast.success('Gửi thành công!');
+        setFormData({
+          type: '',
+          title: '',
+          content: '',
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="p-3">
       <div className="relative bg-gray-50 bg-white rounded-[8px] shadow-md mx-auto w-full min-full py-[37px] px-[64px] flex items-center">
@@ -30,11 +56,11 @@ const Help = () => {
           <div className="flex justify-between items-center mb-6">
             <p className="text-block">Chúng tôi sẽ phản hồi bạn trong thời gian sớm nhất có thể.</p>
           </div>
-          <form action="" className="w-full">
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
             <div className="flex gap-4 mb-4">
-              {['Đào tạo', 'Học vụ', 'Sample', 'Sample'].map((option, index) => (
+              {['Đào tạo', 'Học vụ', 'Hỗ trợ tài khoản', 'Khác'].map((option, index) => (
                 <label key={index} className="flex items-center gap-2 font-bold">
-                  <input type="radio" name="category" className="accent-blue-500" value={option} onChange={handleChange} />
+                  <input type="radio" name="type" className="accent-blue-500" value={index + 1} onChange={handleChange} />
                   {option}
                 </label>
               ))}
@@ -42,16 +68,16 @@ const Help = () => {
 
             <input
               type="text"
-              name="subject"
+              name="title"
               placeholder="Chủ đề"
               className="w-full border border-gray-300 rounded-lg p-2 mb-4"
-              value={formData.subject}
+              value={formData.title}
               onChange={handleChange}
             />
             <div className="border border-gray-300 rounded-lg p-2">
               <Editor
                 apiKey="g2iyjej12q33eo50eowchns9r0c5fhvijleqryphx5hi0y24"
-                value={formData.message}
+                value={formData.content}
                 init={{
                   height: 320,
                   menubar: false,
@@ -63,7 +89,7 @@ const Help = () => {
               />
             </div>
             <div className="flex justify-center mt-4">
-              <Button className={`${isFormValid ? 'primary' : 'secondary'}`} disabled={!isFormValid}>
+              <Button className={`${isFormValid ? 'primary' : 'secondary'}`} type="submit" disabled={!isFormValid}>
                 Gửi
               </Button>
             </div>

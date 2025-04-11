@@ -15,19 +15,20 @@ const Header: React.FC = () => {
     navigator('/login');
   };
 
-  const [cookies, setCookie, removeCookie] = useCookies(['accessToken', 'refreshToken']);
+  const [cookies, setCookie, removeCookie] = useCookies(['accessToken', 'refreshToken', 'userId']);
   const { setRole } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const handleLogout = () => {
     setLoading(true);
     removeCookie('accessToken');
     removeCookie('refreshToken');
+    removeCookie('userId');
     setRole(null);
     setLoading(false);
   };
 
   const [openMenu, setOpenMenu] = useState(false);
-  const {name} = useContext(AuthContext);
+  const { name } = useContext(AuthContext);
 
   return (
     <header className="header">

@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import Spinner from "../../../components/Spinner";
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import createAxiosInstance from "../../../utils/axiosInstance";
 const API_BASE_URL = "https://fivefood.shop/api";
 
 
@@ -83,18 +84,20 @@ const AllTeacherProfiles: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [message, setMessage] = useState<string>('')
   const [cookies] = useCookies(["accessToken"]);
+  const axiosInstance = createAxiosInstance();
   const [dataSubject, setDataSubject] = useState<ISubject[]>([])
-  const handleMenuClick = (key: string, id?: number) => {
+  const handleMenuClick = (key: string, userId?: number, id?: number) => {
     if (key === '1') {
       navigate(`/leadership/InstructorProfile/${id}`);
     } else if (key === '2') {
-      navigate(`/leadership/all-teacher-profiles/retirement/${id}`);
+      navigate(`/leadership/all-teacher-profiles/${userId}/retirement/${id}`);
     } else if (key === '3') {
-      navigate(`/leadership/all-teacher-profiles/resignation/${id}`);
+      navigate(`/leadership/all-teacher-profiles/${userId}/resignation/${id}`);
     } else if (key === '4') {
-      navigate(`/leadership/all-teacher-profiles/stop-working/${id}`);
+      navigate(`/leadership/all-teacher-profiles/${userId}/stop-working/${id}`);
     }
   };
+
 
   const filteredItems = (status: number) => {
     return items.filter((item) => {
@@ -150,7 +153,7 @@ const AllTeacherProfiles: React.FC = () => {
 
   const fetchSubjectName = async () => {
     try {
-      const response = await axios.get('https://fivefood.shop/api/subjects');
+      const response = await axiosInstance.get('https://fivefood.shop/api/subjects');
       setDataSubject(response.data.data)
 
     } catch (error) {
@@ -216,7 +219,7 @@ const AllTeacherProfiles: React.FC = () => {
   // api xóa
   const deleteTeacher = async (id: number) => {
     try {
-      const response = await axios.delete(
+      const response = await axiosInstance.delete(
         `${API_BASE_URL}/teacherinfos/${id}`,
         {
           headers: {
@@ -474,7 +477,7 @@ const AllTeacherProfiles: React.FC = () => {
                       </button>
 
                       <Dropdown
-                        menu={{ items: filteredItems(teacher.status), onClick: ({ key }) => handleMenuClick(key, teacher.id) }}
+                        menu={{ items: filteredItems(teacher.status), onClick: ({ key }) => handleMenuClick(key, teacher.userId, teacher.id) }}
                         placement="bottom"
                         arrow={{ pointAtCenter: true }}
                         className={`ms-2 `}
