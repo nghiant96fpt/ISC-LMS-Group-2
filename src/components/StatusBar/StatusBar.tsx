@@ -21,7 +21,7 @@ const StatusBar: React.FC<statusBarProps> = ({ status, height, width }) => {
           <span className={`animate-ping absolute inline-flex h-full w-full rounded-full bg-[${color}] opacity-75`}></span>
           <span className={`relative inline-flex rounded-full h-3 w-3 bg-[${color}]`}></span>
         </span>
-        <span className={`text-[${color}]`}>
+        <span className={`text-[${color}] font-medium`}>
           {status === 1
             ? 'Đang theo học'
             : status === 5

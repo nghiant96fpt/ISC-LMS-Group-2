@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 const token = Cookies.get('accessToken');
 const API_URL = 'https://fivefood.shop/api/studentinfos/all';
 import StatusBar from '../../../../../components/StatusBar/StatusBar';
+import createAxiosInstance from '../../../../../utils/axiosInstance';
 
 interface TableBodyProps {
   searchTerm: string;
@@ -33,6 +34,7 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const axiosTrue = createAxiosInstance(true);
   const navigator = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
@@ -195,7 +197,7 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
                   <td>{student?.nation}</td>
                   <td>{student?.className}</td>
                   {/* tạm */}
-                  <td style={{maxWidth: 150}}>{<StatusBar width='130px' status={student?.status}/>}</td>
+                  <td style={{maxWidth: 150}}>{<StatusBar width='150px' status={student?.status}/>}</td>
                   {/* tạm */}
                   <td className="icon-container flex items-center">
                     <div className='flex items-center me-1'>
