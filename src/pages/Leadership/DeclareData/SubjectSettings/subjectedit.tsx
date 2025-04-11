@@ -15,7 +15,6 @@ const axiosInstance = createAxiosInstance(true);
 
 const SubjectSetup: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [settings, setSettings] = useState<Settings>(departmentData);
   const [subject, setSubject] = useState<Subject | null>(null);
   const [subjectGroups, setSubjectGroups] = useState<SubjectGroupList[]>([]);
@@ -23,7 +22,7 @@ const SubjectSetup: React.FC = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState<{ message: string; type: "success" | "error" } | null>(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchSubject = async () => {
       if (!id) return;
@@ -105,10 +104,6 @@ const SubjectSetup: React.FC = () => {
       await axiosInstance.put(`${API_URL}/subjects/${id}`, payload);
 
       setAlert({ message: 'Cập nhật môn học thành công!', type: 'success' });
-      setTimeout(() => {
-        setAlert(null);
-        navigate('/leadership/section-list');
-      }, 2000);
     } catch (error: any) {
       console.error('Lỗi khi cập nhật môn học:', error);
       const message =
