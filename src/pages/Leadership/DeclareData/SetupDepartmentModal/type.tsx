@@ -19,12 +19,12 @@ export interface TeacherData {
     user: Teacher[];
 }
 
-// export interface Subject {
-//     id: number;
-//     name: string;
-//     teacherId: number;
-//     teacher: any | null;
-// }
+export interface Subject {
+    id: number;
+    name: string;
+    teacherId: number;
+    teacher: any | null;
+}
 
 export interface Teacher {
     id: number;
@@ -35,4 +35,5 @@ export interface Teacher {
     status: number;
     subjectGroupName: string;
     teacherCode: string;
+    userId: number;
 }

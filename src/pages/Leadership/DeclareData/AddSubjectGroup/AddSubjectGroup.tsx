@@ -137,7 +137,7 @@ const AddDepartmentSettings: React.FC = () => {
                             >
                                 <option value="" disabled>Chọn Trưởng tổ - Bộ môn</option>
                                 {teacherList.map((teacher, index) => (
-                                    <option key={index} value={teacher.id}>
+                                    <option key={index} value={teacher.userId}>
                                         {teacher.fullName}
                                     </option>
                                 ))}
