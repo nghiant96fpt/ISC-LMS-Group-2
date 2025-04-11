@@ -11,12 +11,16 @@ import {
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
+
 const UpdateForm = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const trainingLevel = useSelector((state: RootState) => state.trainingLevelManagement.TrainingLevelResponseGetOne?.data);
 
+  const [cookies] = useCookies(['refreshToken']);
+  const refreshToken = cookies.refreshToken;
   const [formData, setFormData] = useState({
     id: 1,
     trinhDoDaoTao: '',
@@ -33,7 +37,7 @@ const UpdateForm = () => {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchOneTrainingLevels(id));
+      dispatch(fetchOneTrainingLevels({ id, token: refreshToken }));
     }
   }, [dispatch, id]);
 
@@ -115,9 +119,7 @@ const UpdateForm = () => {
         status: formData.kichHoat,
         description: formData.ghiChu,
       };
-
-      console.log('formattedData', formattedData);
-      dispatch(updateTrainingLevel({ updatedData: formattedData, id: id }))
+      dispatch(updateTrainingLevel({ updatedData: formattedData, id: id, token: refreshToken }))
         .unwrap()
         .then((res) => {
           // console.log('Cập nhật thành công:', res);

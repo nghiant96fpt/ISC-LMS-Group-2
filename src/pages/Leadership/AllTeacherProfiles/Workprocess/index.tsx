@@ -117,12 +117,6 @@ const Workprocess = () => {
     }
   }, [selectedGroup]);
 
-  // const confirmDelete = useCallback(() => {
-  //   if (selectedGroup) {
-  //     setSubjectGroups((prev) => prev.filter((g) => g.id !== selectedGroup.id));
-  //   }
-  //   setIsDeleteModalOpen(false);
-  // }, [selectedGroup]);
   return (
     <div className="overflow-x-auto flex-grow px-2 md:px-10">
       <div className="  border rounded-lg shadow-md overflow-hidden">
@@ -204,7 +198,7 @@ const Workprocess = () => {
                       <td className="p-2">{dayjs(row.startDate).format('DD/MM/YYYY')}</td>
                       <td className="p-2">{dayjs(row.endDate).format('DD/MM/YYYY')}</td>
                       <td className="p-2 text-center whitespace-nowrap space-x-4">
-                        <Link to="/leadership/all-teacher-profiles/addworkprocess">
+                        <Link to={`/leadership/all-teacher-profiles/editWorkProcess/${row.id}`}>
                           <button>
                             <img src={edit} alt="edit" className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8" />
                           </button>

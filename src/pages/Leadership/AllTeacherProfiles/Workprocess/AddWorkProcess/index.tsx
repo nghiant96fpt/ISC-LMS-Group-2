@@ -63,8 +63,8 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
     position: '',
   });
   useEffect(() => {
-    console.log('lecturers:', lecturers);
-  }, [lecturers]);
+    console.log('lecturers:', teacherId);
+  }, [teacherId]);
 
   const axios = axiosInstance();
 
@@ -122,7 +122,7 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
   useEffect(() => {
     const fetchLecturers = async () => {
       try {
-        const response = await axios.get(`/api/teacherfamilies/${teacherId}`);
+        const response = await axios.get(`/api/users/${teacherId}`);
 
         if (response.data.data) {
           const data = response.data.data;
@@ -131,7 +131,7 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
           if (formattedData.length > 0) {
             setFormData((prev) => ({
               ...prev,
-              TeacherId: formattedData[0].teacherId,
+              TeacherId: formattedData[0].id,
             }));
           }
 
@@ -258,7 +258,7 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
             {lecturers.map((lecturer) => (
               <div style={{ width }} className={`relative ${className}`} key={lecturer.teacherId}>
                 <Input
-                  placeholder={lecturer.guardianName}
+                  placeholder={lecturer.fullName}
                   disabled
                   onChange={handleChange}
                   name="guardianName"
@@ -362,7 +362,7 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
               className="appearance-none w-full h-11 border border-gray-300 rounded-lg hover:border-orange-500 shadow-md px-3"
               value={startDate}
               onChange={(date) => handleDateChange(date, true)}
-              format="YYYY-MM-DD"
+              format="DD/MM/YYYY"
               locale={locale}
               placeholder="DD/MM/YYYY"
               open={openStart}

@@ -43,17 +43,19 @@ const NotificationForm: React.FC<NotificationFormProps> = ({ visible, onClose, o
 
   return (
     <div
-      className="
-        fixed 
-        top-20 
-        right-8 
-        w-[450px] 
-        bg-white 
-        border 
-        border-gray-300 
-        rounded-2xl
-        shadow-lg 
-      "
+    className="
+    fixed 
+    top-20 
+    right-8 
+    w-[450px] 
+    bg-white 
+    border 
+    border-gray-300 
+    rounded-2xl
+    shadow-lg
+    max-h-[80vh]       
+    overflow-y-auto    
+  "
     >
       {/* Header */}
       <div className="flex justify-between items-center px-4 py-3 border-b bg-black rounded-t-2xl">

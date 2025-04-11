@@ -7,6 +7,8 @@ import Spinner from '../../../../components/Spinner';
 import Dropdown from '../../../../components/Dropdown';
 import { DropdownOption } from '../../../../components/Dropdown/type';
 import { FormInputs } from './type';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -49,6 +51,7 @@ const EditGradeTypeModal: React.FC = () => {
         })
         .catch((error) => {
           console.error('Lỗi khi lấy dữ liệu:', error);
+          toast.error('Lỗi khi lấy dữ liệu', { autoClose: 1000});
           setIsLoadingData(false);
         });
     }
@@ -67,9 +70,13 @@ const EditGradeTypeModal: React.FC = () => {
       await axios.put(`${API_URL}/score-type/${id}`, payload, {
         headers: { 'Content-Type': 'application/json' },
       });
-      navigate('/leadership/declare-data/score-types');
+      toast.success('Cập nhật thành công', { autoClose: 1000})
+      setTimeout(()=> {
+        navigate('/leadership/declare-data/score-types');
+      }, 1000)
     } catch (error) {
       console.error('Có lỗi xảy ra khi cập nhật API:', error);
+      toast.error('Có lỗi xảy ra khi cập nhật dữ liệu', { autoClose: 1000});
     } finally {
       setIsLoading(false);
     }
@@ -223,6 +230,7 @@ const EditGradeTypeModal: React.FC = () => {
               </Button>
             </div>
           </form>
+          <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         </div>
       </div>
     </div>

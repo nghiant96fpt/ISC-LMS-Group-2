@@ -7,6 +7,7 @@ import { IRetirement } from "./type";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { toast } from "react-toastify";
+import createAxiosInstance from "../../../../utils/axiosInstance";
 
 const RetirementUpdateModal: React.FC = () => {
   const [retirementData, setRetirementData] = useState<IRetirement>({
@@ -14,11 +15,11 @@ const RetirementUpdateModal: React.FC = () => {
     note: "",
     decision: null,
   });
-
+  const axiosInstance = createAxiosInstance();
   const [loading, setLoading] = useState(false); // Trạng thái loading
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const [cookies] = useCookies(["accessToken"]);
+  const [cookies] = useCookies(["accessToken", 'userId']);
   const handleClose = () => {
     navigate("/leadership/all-teacher-profiles", { replace: true });
   };
@@ -81,38 +82,19 @@ const RetirementUpdateModal: React.FC = () => {
         note: retirementData.note || "",
         attachment: base64File,
         status: 9,
-        leadershipId: Number(id),
+        leadershipId: Number(cookies.userId),
         active: true,
       };
 
       try {
         // Thử cập nhật trước (PUT)
-        const response = await axios.put(
-          `https://fivefood.shop/api/retirement/putByTeacherId/${id}`,
-          value,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await axiosInstance.put(`api/retirement/putByTeacherId/${id}`, value);
 
         toast.success("Cập nhật thành công!");
 
       } catch (error: any) {
-        // Nếu lỗi 404 => Chuyển sang tạo mới (POST)
-        if (error.response?.status === 404) {
-          const dataPost = await axios.post(
-            `https://fivefood.shop/api/retirement`,
-            value,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
+        if (error.response.status === 404) {
+          const dataPost = await axiosInstance.post(`api/retirement`, value);
 
           toast.success("Cập nhật thành công!");
 
