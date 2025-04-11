@@ -18,6 +18,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import PaginationControls from '../../../../components/Pagination';
 import createAxiosInstance from '../../../../utils/axiosInstance';
 import { toast } from 'react-toastify';
+import { useTeacherContext } from '../InstructorProfile/TeacherContext';
 const Workprocess = () => {
   const { id } = useParams<{ id: string }>();
 
@@ -35,13 +36,25 @@ const Workprocess = () => {
   useEffect(() => {
     fetchWorkProcess();
   }, [searchValue, currentPage, itemsPerPage]);
+  const { teacherData } = useTeacherContext();
   useEffect(() => {
     fetchSubjectGroups();
   }, []);
   const navigate = useNavigate();
   const handleAddClick = () => {
     navigate('/leadership/all-teacher-profiles/addworkprocess', {
-      state: { teacherId: id },
+      state: {
+        teacherId: teacherData.userId,
+        id: teacherData.id,
+      },
+    });
+  };
+  const handleAddClickid = () => {
+    navigate(`/leadership/all-teacher-profiles/editWorkProcess/${subjectGroups[0].id}`, {
+      state: {
+        teacherId: teacherData.userId,
+        id: teacherData.id,
+      },
     });
   };
   const axiosInstance = createAxiosInstance();
@@ -198,11 +211,10 @@ const Workprocess = () => {
                       <td className="p-2">{dayjs(row.startDate).format('DD/MM/YYYY')}</td>
                       <td className="p-2">{dayjs(row.endDate).format('DD/MM/YYYY')}</td>
                       <td className="p-2 text-center whitespace-nowrap space-x-4">
-                        <Link to={`/leadership/all-teacher-profiles/editWorkProcess/${row.id}`}>
-                          <button>
-                            <img src={edit} alt="edit" className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8" />
-                          </button>
-                        </Link>
+                        <button onClick={handleAddClickid}>
+                          <img src={edit} alt="edit" className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8" />
+                        </button>
+
                         <button onClick={handleDeleteClick.bind(null, row)}>
                           <img src={fi_trash} alt="delete" className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8" />
                         </button>

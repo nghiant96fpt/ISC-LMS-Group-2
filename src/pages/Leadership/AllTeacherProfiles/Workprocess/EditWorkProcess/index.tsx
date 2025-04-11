@@ -52,9 +52,12 @@ const EditWorkProcess: React.FC<CustomDropdownProps> = ({
 
   const [schools, setSchools] = useState<Schoolslist[]>([]);
   const [selectedOrganization, setSelectedOrganization] = useState('');
-
+  const location = useLocation();
+  const teacherIdd = location.state?.teacherId;
+  const idd = location.state?.id;
   const [teacherId, setTeacherId] = useState<number | null>(null);
   const [subjectGroupsId, setSubjectGroupsId] = useState<number | null>(null);
+
   const [formData, setFormData] = useState({
     TeacherId: null as number | null,
     isCurrent: false,
@@ -111,20 +114,19 @@ const EditWorkProcess: React.FC<CustomDropdownProps> = ({
 
   useEffect(() => {
     const fetchLecturers = async () => {
-      if (!teacherId) return;
+      if (!teacherIdd && id) return;
       try {
-        const response = await axios.get(`/api/users/${teacherId}`);
+        const response = await axios.get(`/api/users/${teacherIdd}`);
 
         if (response.data.data) {
           const data = response.data.data;
 
           const formattedData = Array.isArray(data) ? data : [data];
-          if (formattedData.length > 0) {
-            setFormData((prev) => ({
-              ...prev,
-              TeacherId: formattedData[0].id,
-            }));
-          }
+
+          setFormData((prev) => ({
+            ...prev,
+            TeacherId: id ? Number(id) : null,
+          }));
 
           setLecturers(formattedData);
         } else {
@@ -135,7 +137,7 @@ const EditWorkProcess: React.FC<CustomDropdownProps> = ({
       }
     };
     fetchLecturers();
-  }, [teacherId]);
+  }, [teacherIdd]);
 
   useEffect(() => {
     const fetchSubjectGroups = async () => {
@@ -234,6 +236,7 @@ const EditWorkProcess: React.FC<CustomDropdownProps> = ({
     setFormData((prev) => {
       let updatedData = {
         ...prev,
+
         [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
       };
 

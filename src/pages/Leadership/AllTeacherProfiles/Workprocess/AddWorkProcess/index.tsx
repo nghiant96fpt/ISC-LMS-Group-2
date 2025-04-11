@@ -20,6 +20,7 @@ import { stringify } from 'querystring';
 import { toast } from 'react-toastify';
 import { useLocation } from 'react-router';
 import Input from '../../../../../components/Input';
+import { useTeacherContext } from '../../InstructorProfile/TeacherContext';
 dayjs.extend(customParseFormat);
 const AddWorkProcess: React.FC<CustomDropdownProps> = ({
   label,
@@ -51,7 +52,7 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
   const [selectedOrganization, setSelectedOrganization] = useState('');
   const location = useLocation();
   const teacherId = location.state?.teacherId;
-
+  const id = location.state?.id;
   const [formData, setFormData] = useState({
     TeacherId: null as number | null,
     isCurrent: false,
@@ -128,12 +129,12 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
           const data = response.data.data;
 
           const formattedData = Array.isArray(data) ? data : [data];
-          if (formattedData.length > 0) {
-            setFormData((prev) => ({
-              ...prev,
-              TeacherId: formattedData[0].id,
-            }));
-          }
+          // if (formattedData.length > 0) {
+          //   setFormData((prev) => ({
+          //     ...prev,
+          //     TeacherId: formattedData[0].id,
+          //   }));
+          // }
 
           setLecturers(formattedData);
         } else {
@@ -182,6 +183,7 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
     setFormData((prev) => {
       let updatedData = {
         ...prev,
+        TeacherId: id,
         [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
       };
 

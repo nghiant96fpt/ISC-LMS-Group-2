@@ -10,7 +10,7 @@ import iconCalendar from '../../../src/assets/icons/icon-calendar.png';
 dayjs.extend(customParseFormat);
 
 interface DateInputProps {
-  value: dayjs.Dayjs | null;
+  value?: dayjs.Dayjs | null;
   onChange: (date: dayjs.Dayjs | null) => void;
   width?: string;
   className?: string;

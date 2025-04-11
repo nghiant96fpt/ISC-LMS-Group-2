@@ -47,6 +47,7 @@ const option_religion = [
 const allSubjects = ['Toán', 'Vật Lý', 'Tiếng Anh', 'Địa lý', 'Lịch sử', 'Ngữ Văn'];
 const TeacherProfileEdit = () => {
   const [dataTeacherInfos, setDataTeacherInfos] = useState<ITeacherInfo>();
+  const [dataUses, setDataUse] = useState<IUser>();
   const [urls, setUrls] = useState([
     { link: '/leadership/all-teacher-profiles', linkName: 'Hồ sơ giảng viên' },
     { link: '', linkName: 'Thêm thông tin giảng viên' },
@@ -76,13 +77,18 @@ const TeacherProfileEdit = () => {
   } = useForm<IUser & ITeacherInfo>({
     mode: 'onChange',
     defaultValues: {
-      dob: null,
-      avatarUrl: defaultAvatar,
+      issuedPlace: teacherInfo?.issuedPlace,
+      avatarUrl: Use?.avatarUrl,
       fullName: teacherData?.fullName,
       position: teacherData?.position,
       cccd: teacherInfo?.cccd,
 
+      unionDate: teacherInfo?.unionDate ? dayjs(teacherInfo?.unionDate) : null,
+      placeBirth: Use.placeBirth,
+      gender: teacherData.gender,
+      dob: teacherData?.birthDate ? dayjs(teacherData.birthDate) : null,
       issuedDate: teacherInfo?.issuedDate ? dayjs(teacherInfo.issuedDate) : null,
+      enrollmentDate: teacherFamily?.enrollmentDate ? dayjs(teacherFamily.enrollmentDate) : null,
     },
   });
   const [provinces, setProvinces] = useState<IProvince[]>([]); //tỉnh/huyện
@@ -200,8 +206,16 @@ const TeacherProfileEdit = () => {
   };
   const selectedGender = (option: DropdownOption) => {
     setSelectedOptionGender(option);
-    setValue('gender', option.value === 'true');
+    setValue('gender', option.value === 'true'); // Ép string => boolean
   };
+
+  useEffect(() => {
+    if (typeof teacherData?.gender === 'boolean') {
+      const selected = gender.find((g) => g.value === String(teacherData.gender)); // Chuyển boolean => string để so sánh
+      setSelectedOptionGender(selected ?? null);
+      setValue('gender', teacherData.gender); // set boolean vào react-hook-form
+    }
+  }, [teacherData?.gender]);
 
   const selectedSubjectoption = (option: DropdownOption) => {
     setSelectedsubject(option);
@@ -234,7 +248,13 @@ const TeacherProfileEdit = () => {
 
     setValue('issuedDate', date, { shouldValidate: true });
   };
-
+  const handlEnrollmentDate = (date: dayjs.Dayjs | null) => {
+    setDataUse((prev) => ({
+      ...prev!,
+      enrollmentDate: date,
+    }));
+    setValue('enrollmentDate', date, { shouldValidate: true });
+  };
   const handleUnionDate = (date: dayjs.Dayjs | null) => {
     setDataTeacherInfos((prev) => ({
       ...prev!,
@@ -281,7 +301,7 @@ const TeacherProfileEdit = () => {
         wardCode: data.wardCode,
         street: data.issuedPlace,
         active: true,
-        avatarUrl: data.avatarUrl,
+        avatarUrl: previewAvatar || data.avatarUrl || Use?.avatarUrl || defaultAvatar,
       };
 
       const userResponse = await axios.put(`api/users/${teacherData.userId}`, valueUser);
@@ -293,7 +313,7 @@ const TeacherProfileEdit = () => {
           issuedDate: data.issuedDate?.toISOString(),
           issuedPlace: data.issuedPlace,
           unionMember: data.unionMember ?? false,
-          unionDate: data.unionDate ? data.unionDate.toISOString() : '',
+          unionDate: data.unionDate,
           unionPlace: data.unionPlace ?? '',
           partyMember: data.partyMember ?? false,
           partyDate: data.partyDate ? data.partyDate.toISOString() : '',
@@ -344,7 +364,38 @@ const TeacherProfileEdit = () => {
 
     getUse();
   }, [id]);
-
+  useEffect(() => {
+    if (Use?.placeBirth) {
+      reset((prev) => ({
+        ...prev,
+        placeBirth: Use.placeBirth,
+      }));
+    }
+  }, [Use?.placeBirth]);
+  useEffect(() => {
+    if (teacherData?.birthDate) {
+      reset((prev) => ({
+        ...prev,
+        dob: dayjs(teacherData.birthDate),
+      }));
+    }
+  }, [teacherData?.birthDate]);
+  useEffect(() => {
+    if (teacherInfo?.issuedDate) {
+      reset((prev) => ({
+        ...prev,
+        issuedDate: teacherInfo?.issuedDate ? dayjs(teacherInfo.issuedDate) : null,
+      }));
+    }
+  }, [teacherInfo?.issuedDate]);
+  useEffect(() => {
+    if (teacherFamily?.enrollmentDate) {
+      reset((prev) => ({
+        ...prev,
+        enrollmentDate: teacherFamily?.enrollmentDat ? dayjs(teacherFamily?.enrollmentDat) : null,
+      }));
+    }
+  }, [teacherFamily?.enrollmentDat]);
   const getAddress = async () => {
     try {
       const response = await axios.get('https://fivefood.shop/api/address/provinces');
@@ -458,7 +509,7 @@ const TeacherProfileEdit = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
-                    <strong className="text-gray-500 whitespace-nowrap w-40">Môn giảng dạy:</strong>
+                    <strong className="text-gray-500 whitespace-nowrap w-40">Chức vụ:</strong>
                     <div className="relative w-full">
                       <Controller
                         name="position"
@@ -468,7 +519,7 @@ const TeacherProfileEdit = () => {
                           <Dropdown
                             options={option_position}
                             selectedOption={selectedOption}
-                            placeholder="Chọn môn giảng dạy"
+                            placeholder="Chọn Chức vụ:"
                             showArrow={true}
                             handleOptionClick={selectedTeaching}
                             headerClassName="w-full"
@@ -544,16 +595,24 @@ const TeacherProfileEdit = () => {
                       <Controller
                         name="gender"
                         control={control}
-                        rules={{ required: true }}
-                        render={({ field }) => (
-                          <Dropdown
-                            options={gender}
-                            selectedOption={selectedOptionGender}
-                            placeholder="Giới tính"
-                            showArrow={true}
-                            handleOptionClick={selectedGender}
-                            headerClassName="w-full"
-                          />
+                        rules={{
+                          validate: (value) => (typeof value === 'boolean' ? true : 'Giới tính là bắt buộc'),
+                        }}
+                        render={({ field, fieldState }) => (
+                          <>
+                            <Dropdown
+                              options={gender}
+                              selectedOption={selectedOptionGender}
+                              placeholder="Giới tính"
+                              showArrow={true}
+                              handleOptionClick={(option) => {
+                                selectedGender(option); // update UI
+                                field.onChange(option.value === 'true'); // update form
+                              }}
+                              headerClassName="w-full"
+                            />
+                            {fieldState.error && <p className="text-red-500 text-sm mt-1">{fieldState.error.message}</p>}
+                          </>
                         )}
                       />
                     </div>
@@ -584,33 +643,16 @@ const TeacherProfileEdit = () => {
                       <Controller
                         name="enrollmentDate"
                         control={control}
-                        rules={{
-                          required: 'Ngày vào trường là bắt buộc',
-                          validate: (value) => {
-                            if (!value) {
-                              return 'Ngày vào trường là bắt buộc';
-                            }
-                            const currentDate = dayjs(value).toDate();
-                            const enteredDate = new Date();
-                            if (enteredDate < currentDate) {
-                              return 'Ngày vào trường không được vượt quá ngày hiện tại';
-                            }
-
-                            return true;
-                          },
-                        }}
-                        render={({ field, fieldState }) => (
-                          <div>
-                            <DateInput
-                              value={field.value} // Truyền giá trị từ form
-                              onChange={(date) => {
-                                field.onChange(date); // Cập nhật giá trị khi thay đổi
-                              }}
-                              width="100%"
-                              className="border-gray-300"
-                            />
-                            {fieldState?.error && <p className="text-red-500 text-sm mt-1">{fieldState?.error.message}</p>}
-                          </div>
+                        render={({ field }) => (
+                          <DateInput
+                            value={field.value}
+                            onChange={(date) => {
+                              field.onChange(date);
+                              handlEnrollmentDate?.(date);
+                            }}
+                            width="100%"
+                            className="border-gray-300"
+                          />
                         )}
                       />
                     </div>
@@ -654,7 +696,7 @@ const TeacherProfileEdit = () => {
                       <Controller
                         name="userStatusId"
                         control={control}
-                        rules={{ required: true }} // Validation không được để trống
+                        rules={{ required: true }}
                         render={({ field }) => (
                           <Dropdown
                             options={option_status}
@@ -896,24 +938,33 @@ const TeacherProfileEdit = () => {
                   <div className="flex items-center gap-2">
                     <strong className="text-gray-500 whitespace-nowrap w-40">Ngày cấp căn cước:</strong>
                     <div className="w-full">
-                      <DateInput
-                        value={dataTeacherInfos?.issuedDate ?? null}
-                        {...register('issuedDate')}
-                        onChange={handleIssuedDate}
-                        width="100%"
-                        className="border-gray-300"
+                      <Controller
+                        name="issuedDate"
+                        control={control}
+                        render={({ field }) => (
+                          <DateInput
+                            value={field.value}
+                            onChange={(date) => {
+                              field.onChange(date); // cập nhật giá trị trong form
+                              handleIssuedDate?.(date); // nếu bạn cần xử lý thêm ngoài form
+                            }}
+                            width="100%"
+                            className="border-gray-300"
+                          />
+                        )}
                       />
                     </div>
                   </div>
+
                   <div className="flex items-center gap-4">
                     <strong className="text-gray-500 whitespace-nowrap w-40">Nơi cấp căn cước:</strong>
                     <div className="w-full">
                       <input
                         type="text"
-                        value={teacherInfo?.issuedPlace ?? null}
+                        // value={teacherInfo?.issuedPlace ?? null}
                         className="w-full border rounded p-2"
                         {...register('issuedPlace', {
-                          required: 'Ngày cấp không được để trống', // Bắt lỗi không để trống
+                          required: 'Nơi cấp không được để trống', // Bắt lỗi không để trống
                         })}
                       />
                       {errors.issuedPlace && <p className="text-red-500 text-sm mt-1 p-0">{errors.issuedPlace.message}</p>}
@@ -927,20 +978,52 @@ const TeacherProfileEdit = () => {
                     <input type="checkbox" className="h-5 w-5" onChange={setUsUnionPlace.bind(null, !isUnionPlace)} />
                     <span className="text-gray-500">Đoàn viên</span>
                   </div>
+                  {/* 
+                  <div className="flex items-center gap-2">
+                    <strong className="text-gray-500 whitespace-nowrap w-40">Ngày cấp căn cước:</strong>
+                    <div className="w-full">
+                      <Controller
+                        name="issuedDate"
+                        control={control}
+                        render={({ field }) => (
+                          <DateInput
+                            value={field.value}
+                            onChange={(date) => {
+                              field.onChange(date); // cập nhật giá trị trong form
+                              handleIssuedDate?.(date); // nếu bạn cần xử lý thêm ngoài form
+                            }}
+                            width="100%"
+                            className="border-gray-300"
+                          />
+                        )}
+                      />
+                    </div>
+                  </div> */}
 
                   <div className="flex items-center gap-2 relative">
                     <strong className="text-gray-500 whitespace-nowrap w-40">Ngày vào đoàn:</strong>
-                    <DateInput
-                      value={isUnionPlace ? dataTeacherInfos?.unionDate ?? null : null}
-                      onChange={handleUnionDate}
-                      width="100%"
-                      className="border-gray-300"
+                    <Controller
+                      name="unionDate"
+                      control={control}
+                      render={({ field }) => (
+                        <DateInput
+                          value={field.value}
+                          onChange={(date) => {
+                            field.onChange(date); // cập nhật giá trị trong form
+                            handleUnionDate?.(date); // nếu bạn cần xử lý thêm ngoài form
+                          }}
+                          width="100%"
+                          className="border-gray-300"
+                        />
+                      )}
                     />
+                    {/* <DateInput {...register('unionDate')} onChange={handleUnionDate} width="100%" className="border-gray-300" /> */}
                   </div>
                   <div className="flex items-center gap-4">
                     <strong className="text-gray-500 whitespace-nowrap w-40">Nơi sinh:</strong>
                     <div className="relative w-full">
                       <input
+                        // value={Use.placeBirth}
                         type="text"
                         className="w-full border rounded p-2 pr-10"
                         {...register('placeBirth', { required: 'Nơi sinh là bắt buộc' })}
@@ -951,6 +1034,7 @@ const TeacherProfileEdit = () => {
                 </div>
 
                 {/* Cột 3 */}
+
                 <div className="space-y-4">
                   <p className="p-5"></p>
                   <div className="flex items-center gap-2">
@@ -960,14 +1044,55 @@ const TeacherProfileEdit = () => {
 
                   <div className="flex items-center gap-4 relative">
                     <strong className="text-gray-500 whitespace-nowrap w-40">Ngày vào đảng:</strong>
+                    <Controller
+                      name="partyDate"
+                      control={control}
+                      render={({ field }) => (
+                        <DateInput
+                          value={field.value}
+                          onChange={(date) => {
+                            field.onChange(date); // cập nhật giá trị trong form
+                            handlePartyDate?.(date); // nếu bạn cần xử lý thêm ngoài form
+                          }}
+                          width="100%"
+                          className="border-gray-300"
+                        />
+                      )}
+                    />
+                    {/* <DateInput
+                      value={isPartyMember ? teacherInfo?.partyDate ?? null : null}
+                      onChange={handlePartyDate}
+                      width="100%"
+                      className="border-gray-300"
+                    /> */}
+                  </div>
+                </div>
+
+                {/* <div className="space-y-4">
+                  <p className="p-5"></p>
+                  <div className="flex items-center gap-2">
+                    <Controller
+                      name="partyMember"
+                      control={control}
+                      render={({ field }) => (
+                        <div className="flex items-center gap-2">
+                          <input type="checkbox" className="w-5 h-5" checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />
+                          <span className="text-gray-500">Đảng viên</span>
+                        </div>
+                      )}
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-4 relative">
+                    <strong className="text-gray-500 whitespace-nowrap w-40">Ngày vào đảng:</strong>
                     <DateInput
-                      value={isPartyMember ? dataTeacherInfos?.partyDate ?? null : null}
+                      value={isPartyMember ? teacherInfo?.partyDate ?? null : null}
                       onChange={handlePartyDate}
                       width="100%"
                       className="border-gray-300"
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
