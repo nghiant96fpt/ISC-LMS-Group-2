@@ -10,7 +10,6 @@ const trash = require('../../../../assets/icons/fi_trash-2.png');
 const edit = require('../../../../assets/icons/fi_edit.png');
 const arrow = require('../../../../assets/icons/u_arrow up down.png');
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const SectionList: React.FC = () => {
   const [sections, setSections] = useState<SectionGroup[]>([]);
@@ -28,11 +27,8 @@ const SectionList: React.FC = () => {
     const fetchSections = async () => {
       try {
         setIsLoading(true);
-        if (!API_BASE_URL) {
-          throw new Error('API URL không được định nghĩa trong .env');
-        }
         const axiosInstance = createAxiosInstance();
-        const response = await axiosInstance.get(`${API_BASE_URL}/subjects`);
+        const response = await axiosInstance.get('https://fivefood.shop/api/subjects');
 
         console.log('API response:', response.data);
 
