@@ -2,62 +2,109 @@ import React from 'react';
 import Dropdown from '../../../components/Dropdown';
 import Input from '../../../components/Input';
 import CalendarInput from '../../../components/CalendarInput';
-import { DropdownOption } from '../../../components/Dropdown/type';
 
-export interface leftFormProps{
-  gender: DropdownOption | null;
-  handleSelect: (item: { label: string; value: string }) => void;
-  selectedDate: Date | null;
-  handleDateChange: ((date: Date | null) => void) | undefined;
+export interface leftFormProps {
+  register?: any;
+  errors?: any;
+  watch?: any;
+  setValue?: any;
+  setError?: any;
+  clearError?: any;
 }
 
-const LeftForm: React.FC<leftFormProps> = ({
-  gender,
-  handleSelect,
-  selectedDate,
-  handleDateChange
-}) => {
+const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, setError, clearError }) => {
   return (
     <div className="w-[47%]">
       <div className="flex items-center mb-2">
         <p className="w-[118px]">Họ và tên</p>
-        <Input className="h-[40px] min-w-[300px]" placeholder="Họ và tên" />
-      </div>
-      <div className="flex items-center mb-2">
-        <p className="w-[118px]">Giới tính</p>
-        <Dropdown
-          size="short"
-          options={[
-            { label: 'Nam', value: '0' },
-            { label: 'Nữ', value: '1' },
-          ]}
-          selectedOption={gender}
-          handleOptionClick={(e) => {
-            handleSelect(e);
+        <Input
+          className="h-[40px] min-w-[270px]"
+          placeholder="Nhập họ và tên"
+          {...register('fullname', { required: 'Họ và tên không được bỏ trống !' })}
+          onChange={(e) => {
+            setValue('fullname', e.currentTarget.value);
+            clearError('fullname');
           }}
+          error={errors?.fullname?.message}
         />
       </div>
-      <div className="flex items-center mb-2">
+      <div className="flex items-center mb-2 justify-content-between">
+        <p className="w-[118px]">Giới tính</p>
+        <div className='max-w-[115px]'>
+          <Dropdown
+            size="short"
+            options={[
+              { label: 'Nam', value: false },
+              { label: 'Nữ', value: true },
+            ]}
+            selectedOption={watch('gender')}
+            handleOptionClick={(e) => {
+              setValue('gender', e);
+              clearError('gender');
+            }}
+            {...register('gender', { required: 'Vui lòng chọn thông tin giới tính !' })}
+            placeholder="Chọn giới tính"
+            borderColor={errors?.gender && '#EF4444'}
+          />
+        </div>
+        {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1">{errors?.gender?.message}</p>}
+      </div>
+      <div className="flex items-center">
         <p className="w-[118px]">Ngày sinh</p>
         <CalendarInput
           placeholder="Chọn ngày sinh"
           style={{ maxWidth: 300 }}
-          inputStyle={{ border: '1px solid #6b7280' }}
-          selectedDate={selectedDate}
-          onDateChange={handleDateChange}
+          inputStyle={{ border: `${errors?.birthday ? '2px solid #EF4444' : '1px solid #6b7280'}` }}
+          selectedDate={watch('birthday')}
+          onDateChange={(e) => {
+            setValue('birthday', e);
+            clearError('birthday');
+          }}
+          {...register('birthday', {
+            required: 'Vui lòng chọn thông tin ngày sinh !',
+            validate: (value: Date) => new Date(value) <= new Date() || 'Ngày sinh không được sau ngày hôm nay !',
+          })}
+        />
+      </div>
+      {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.birthday?.message}</p>}
+      <div className="flex items-center mb-2">
+        <p className="w-[118px]">Nơi sinh</p>
+        <Input
+          className="h-[40px] min-w-[270px]"
+          placeholder="Nhập nơi sinh"
+          {...register('birthPlace', { required: 'Nơi sinh không được bỏ trống !' })}
+          onChange={(e) => {
+            setValue('birthPlace', e.currentTarget.value);
+            clearError('birthPlace');
+          }}
+          error={errors?.birthPlace?.message}
         />
       </div>
       <div className="flex items-center mb-2">
-        <p className="w-[118px]">Nơi sinh</p>
-        <Input className="h-[40px] min-w-[300px]" placeholder="Nơi sinh" />
-      </div>
-      <div className="flex items-center mb-2">
         <p className="w-[118px]">Dân tộc</p>
-        <Input className="h-[40px] min-w-[300px]" placeholder="Dân tộc" />
+        <Input
+          className="h-[40px] min-w-[270px]"
+          placeholder="Nhập thông tin dân tộc"
+          {...register('folk', { required: 'Thông tin dân tộc không được bỏ trống !' })}
+          onChange={(e) => {
+            setValue('folk', e.currentTarget.value);
+            clearError('folk');
+          }}
+          error={errors?.folk?.message}
+        />
       </div>
       <div className="flex items-center mb-2">
-        <p className="w-[118px]">Tốc giáo</p>
-        <Input className="h-[40px] min-w-[300px]" placeholder="Tôn giáo" />
+        <p className="w-[118px]">Tôn giáo</p>
+        <Input
+          className="h-[40px] min-w-[270px]"
+          placeholder="Nhập thông tin tôn giáo"
+          {...register('religion', { required: 'Thông tin tôn giáo không được bỏ trống !' })}
+          onChange={(e) => {
+            setValue('religion', e.currentTarget.value);
+            clearError('religion');
+          }}
+          error={errors?.religion?.message}
+        />
       </div>
     </div>
   );

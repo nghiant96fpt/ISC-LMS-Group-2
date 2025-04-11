@@ -27,7 +27,7 @@ const DeclareMenu: React.FC = () => {
       pathEdit: '/leadership/declare-data/block-department/edit',
       pathAdd: '/leadership/declare-data/block-department/add-block-department',
     },
-    { label: 'Môn học', path: '/leadership/declare-data/section-list', pathEdit: '/leadership/declare-data/section-list/edit' },
+    { label: 'Môn học', path: '/leadership/declare-data/section-list', pathEdit: '/leadership/declare-data/section-list/edit', pathAdd: '/leadership/declare-data/section-list/add-section-list', },
     {
       label: 'Lớp học',
       path: '/leadership/declare-data/class-list',

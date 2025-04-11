@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import './styleBodyTable.css';
-import { Link } from 'react-router-dom';
-import { data as dataDemo } from './data';
+import { Link, useNavigate } from 'react-router-dom';
 import eye from './../../../../../assets/images/people/fi_eye_true.png';
 import arrow from './../../../../../assets/icons/u_arrow up down.png';
 import trash from './../../../../../assets/icons/fi_trash-2.png';
@@ -11,11 +11,63 @@ import Status from './../../../../../components/Status';
 import arrow_right from '../../../../../assets/icons/chevron_big_right.png';
 import arrow_left from '../../../../../assets/icons/arrow left.png';
 import DeleteConfirmation from '../../../../../components/DeleteConfirmation';
+import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 
-const TableBody = () => {
+const token = Cookies.get('accessToken');
+const API_URL = 'https://fivefood.shop/api/studentinfos/all';
+import StatusBar from '../../../../../components/StatusBar/StatusBar';
+import createAxiosInstance from '../../../../../utils/axiosInstance';
+
+interface TableBodyProps {
+  searchTerm: string;
+}
+
+const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
   const [selected, setSelected] = useState<string[]>([]);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
   const [studentToDelete, setStudentToDelete] = useState<string | null>(null);
+  const [students, setStudents] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const axiosTrue = createAxiosInstance(true);
+  const navigator = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log('Token đang dùng:', token);
+        const response = await axios.get(API_URL, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const result = response.data; // axios đã tự parse JSON
+
+        if (result.code === 0) {
+          setStudents(result.data);
+        } else {
+          setError('Lỗi tải dữ liệu');
+        }
+      } catch (error) {
+        console.error('Lỗi khi gọi API:', error);
+        setError('Lỗi kết nối API');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const filteredStudents = students.filter(
+    (student) =>
+      student?.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) || student?.code?.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   const toggleDropdown = (id: string) => {
     setOpenDropdownId((prev) => (prev === id ? null : id));
@@ -26,46 +78,55 @@ const TableBody = () => {
   };
 
   const toggleSelectAll = () => {
-    if (selected.length === dataDemo.length) {
+    if (selected.length === filteredStudents.length) {
       setSelected([]);
     } else {
-      setSelected(dataDemo.map((student) => student.id));
+      setSelected(filteredStudents.map((student) => student?.userId));
     }
   };
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = (id: string) => {
     setStudentToDelete(id);
-    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
     setStudentToDelete(null);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (studentToDelete) {
-      // console.log(`Xóa học viên có ID: ${studentToDelete}`);
-      setIsModalOpen(false);
-      setStudentToDelete(null);
+      try {
+        const response = await axios.delete(`https://fivefood.shop/api/studentinfos/${studentToDelete}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.data.code === 0) {
+          setStudents((prev) => prev.filter((s) => s.userId !== studentToDelete));
+          toast.success('Xóa học viên thành công');
+        } else {
+          toast.error('Không thể xóa học viên. Vui lòng thử lại.');
+        }
+      } catch (err) {
+        toast.error('Đã xảy ra lỗi khi xóa học viên.');
+      } finally {
+        setStudentToDelete(null);
+      }
     }
   };
 
-  const itemsPerPage = 8;
-
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const totalPages = Math.ceil(dataDemo.length / itemsPerPage);
-
-  const currentData = dataDemo.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+  const currentData = filteredStudents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
+
+  if (isLoading) return <p>Đang tải dữ liệu...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <>
@@ -75,161 +136,158 @@ const TableBody = () => {
             <tr>
               <th>
                 <CheckboxComponent
-                  isChecked={selected.length === dataDemo.length}
-                  isIndeterminate={selected.length > 0 && selected.length < dataDemo.length}
+                  isChecked={selected.length === filteredStudents.length}
+                  isIndeterminate={selected.length > 0 && selected.length < filteredStudents.length}
                   onChange={toggleSelectAll}
                 />
               </th>
               <th>
                 <div className="th-content">
-                  Mã học viên
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Mã học viên <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
               <th>
                 <div className="th-content">
-                  Tên học viên
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Tên học viên <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
               <th>
                 <div className="th-content">
-                  Ngày sinh
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Ngày sinh <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
               <th>
                 <div className="th-content">
-                  Giới tính
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Giới tính <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
               <th>
                 <div className="th-content">
-                  Dân tộc
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Dân tộc <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
               <th>
                 <div className="th-content">
-                  Lớp
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Lớp <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
-              <th>
+              <th style={{ maxWidth: 150 }}>
                 <div className="th-content">
-                  Tình trạng
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Tình trạng <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {currentData.map((student) => (
-              <tr key={student.id}>
-                <td>
-                  <CheckboxComponent isChecked={selected.includes(student.id)} onChange={() => toggleSelect(student.id)} />
-                </td>
-                <td>{student.id}</td>
-                <td>{student.name}</td>
-                <td>{student.birthDate}</td>
-                <td>{student.gender}</td>
-                <td>{student.people}</td>
-                <td>{student.class}</td>
-                <td>
-                  <Status type={student.status} />
-                </td>
-                <td className="icon-container">
-                  <Link to="">
-                    <button>
-                      <img className="eyeIcon" src={eye} alt="View" />
-                    </button>
-                  </Link>
-                  {/* Nút mở dropdown */}
-                  <button onClick={() => toggleDropdown(student.id)}>
-                    <img className="unionIcon" src={union} alt="All" />
-                  </button>
-                  {/* Dropdown chỉ hiển thị khi openDropdownId === student.id */}
-                  {openDropdownId === student.id && (
-                    <ul className="dropdown-menu">
-                      <li>
-                        <Link to="">
-                          <button onClick={() => console.log(`Sửa hồ sơ ${student.id}`)}>Sửa hồ sơ</button>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="class-transfer-method">
-                          <button onClick={() => console.log(`Chuyển lớp ${student.id}`)}>Chuyển lớp</button>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="school-transfer-method">
-                          <button onClick={() => console.log(`Chuyển trường ${student.id}`)}>Chuyển trường</button>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="reservation-method">
-                          <button onClick={() => console.log(`Bảo lưu ${student.id}`)}>Bảo lưu</button>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="exemption-method">
-                          <button onClick={() => console.log(`Cập nhật miễn giảm ${student.id}`)}>Cập nhật miễn giảm</button>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="reward-method">
-                          <button onClick={() => console.log(`Cập nhật khen thưởng ${student.id}`)}>Cập nhật khen thưởng</button>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="disciplinary-method">
-                          <button onClick={() => console.log(`Cập nhật kỷ luật ${student.id}`)}>Cập nhật kỷ luật</button>
-                        </Link>
-                      </li>
-                    </ul>
-                  )}
-                  <button onClick={() => handleOpenModal(student.id)}>
-                    <img className="trashIcon" src={trash} alt="Delete" />
-                    {isModalOpen && (
-                      <DeleteConfirmation
-                        title="Xác nhận xóa học viên"
-                        description={`Bạn có chắc chắn muốn xóa học viên ID ${studentToDelete}?\nHành động này không thể hoàn tác.`}
-                        onCancel={handleCloseModal}
-                        onConfirm={handleConfirmDelete}
-                      />
-                    )}
-                  </button>
-                </td>
+            {filteredStudents.length === 0 ? (
+              <tr className="text-center">
+                <td colSpan={9}>Không có học viên nào phù hợp.</td>
               </tr>
-            ))}
+            ) : (
+              currentData.map((student, index) => (
+                <tr key={index}>
+                  <td>
+                    <CheckboxComponent isChecked={selected.includes(student?.userId)} onChange={() => toggleSelect(student?.userId)} />
+                  </td>
+                  <td>{student?.code}</td>
+                  <td>{student?.fullName}</td>
+                  <td>{new Date(student?.dob).toLocaleDateString('vi-VN')}</td>
+                  <td>{student?.gender}</td>
+                  <td>{student?.nation}</td>
+                  <td>{student?.className}</td>
+                  {/* tạm */}
+                  <td style={{maxWidth: 150}}>{<StatusBar width='150px' status={student?.status}/>}</td>
+                  {/* tạm */}
+                  <td className="icon-container flex items-center">
+                    <div className='flex items-center me-1'>
+                      <button onClick={() => navigator('/leadership/student', {state: {studentId: student?.userId}})}>
+                        <img className="eyeIcon" src={eye} alt="View" />
+                      </button>
+                    </div>
+                    <button className='me-1' onClick={() => toggleDropdown(student?.userId)}>
+                      <img className="unionIcon" src={union} alt="All" />
+                    </button>
+                    {openDropdownId === student?.userId && (
+                      <ul className="dropdown-menu">
+                        <li>
+                          <Link to="">
+                            <button>Sửa hồ sơ</button>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="class-transfer-method">
+                            <button>Chuyển lớp</button>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="school-transfer-method">
+                            <button>Chuyển trường</button>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="reservation-method">
+                            <button>Bảo lưu</button>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="exemption-method">
+                            <button>Cập nhật miễn giảm</button>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="reward-method">
+                            <button>Cập nhật khen thưởng</button>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="disciplinary-method">
+                            <button>Cập nhật kỷ luật</button>
+                          </Link>
+                        </li>
+                      </ul>
+                    )}
+                    <button onClick={() => handleOpenModal(student?.userId)}>
+                      <img className="trashIcon" src={trash} alt="Delete" />
+                      {studentToDelete === student?.userId && studentToDelete !== null && (
+                        <DeleteConfirmation
+                          title="Xác nhận xóa học viên"
+                          description="Bạn có chắc chắn muốn xóa học viên? Hành động này không thể hoàn tác."
+                          onCancel={handleCloseModal}
+                          onConfirm={handleConfirmDelete}
+                        />
+                      )}
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
-      <div className="footer-content-classroomsettings flex items-center justify-between mt-4">
+
+      <div className="footer-content-classroomsettings flex justify-between items-center mt-4">
         <div className="flex items-center">
           <span className="mr-2">Hiển thị</span>
-          <input type="number" className="w-12 border rounded p-1 text-center" defaultValue={itemsPerPage} />
+          <input
+            type="number"
+            className="w-16 border rounded p-1 text-center"
+            value={itemsPerPage}
+            onChange={(e) => setItemsPerPage(Number(e.target.value))}
+          />
           <span className="ml-2">hàng trong mỗi trang</span>
         </div>
 
-        <div className="pagination flex gap-2 pr-5">
-          <button className="prev-page" onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
+        <div className="pagination flex gap-2">
+          <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
             <img src={arrow_left} alt="Trước" className="h-4" />
           </button>
-
           {[...Array(totalPages)].map((_, index) => (
-            <button
-              key={index}
-              className={`page ${currentPage === index + 1 ? 'active bg-blue-500 text-white' : ''}`}
-              onClick={() => goToPage(index + 1)}
-            >
+            <button key={index} onClick={() => goToPage(index + 1)} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
               {index + 1}
             </button>
           ))}
-
-          <button className="next-page" onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
+          <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
             <img src={arrow_right} alt="Sau" className="h-4" />
           </button>
         </div>

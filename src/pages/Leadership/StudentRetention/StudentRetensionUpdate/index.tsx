@@ -1,23 +1,118 @@
 import Button from '../../../../components/Button';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import DropdownSelectionComponent from '../../../../components/DropdownSelection';
-import CalendarInput from '../../../../components/CalendarInput';
-import search from '../../../../assets/icons/fi_search_primary.png';
 import tep from '../../../../assets/icons/u_paperclip.png';
 import './index.css';
-
+import DateInput from './../../../../components/Date';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  fetchOneStudentRetention,
+  fetchClassEdit,
+  updateStudentRetention,
+} from './../../../../redux/reducers/Leadership/StudentProfile/StudentRetention/StudentRetention';
+import { RootState, AppDispatch } from './../../../../redux/store';
+import dayjs from 'dayjs';
+import { useCookies } from 'react-cookie';
+import { toast } from 'react-toastify';
+import { SchoolClass } from './type';
 const StudentRetentionUpdate = () => {
-  const { register, handleSubmit } = useForm();
+  const { id } = useParams();
+  const [cookies] = useCookies(['refreshToken']);
+  const navigate = useNavigate();
+  const refreshToken = cookies.refreshToken;
+  const dispatch = useDispatch<AppDispatch>();
+  const { register, handleSubmit, setValue } = useForm();
   const [fileName, setFileName] = useState('');
+  const [date, setDate] = useState<dayjs.Dayjs | null | any>(null);
+  const { selectedStudentRetention, loading, error } = useSelector((state: RootState) => state.studentRetention);
+  const { fetchClassEdit: dataEdit } = useSelector((state: any) => state.studentRetention);
+
+  const [userId, setUserId] = useState();
+  const [studenId, setStudenId] = useState();
+  const [classId, setClassId] = useState();
+  const [listClass, setListClass] = useState<SchoolClass[]>([]);
+  const [studentOptions, setStudentOptions] = useState<any[]>([]);
+  // console.log('refreshToken', refreshToken);
+
+  useEffect(() => {
+    dispatch(fetchClassEdit({ page: 1, pageSize: 1000, sortColumn: 'id', sortOrder: 'asc' }) as any);
+    setListClass(dataEdit?.data);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (dataEdit?.data) {
+      setListClass(dataEdit.data);
+    }
+  }, [dataEdit]);
+
+  useEffect(() => {
+    if (listClass && id) {
+      const classId = Number(id);
+      const defaultClass = listClass?.find((cls) => cls.id === classId);
+      if (defaultClass) {
+        setValue('className', defaultClass.id.toString());
+        setStudentOptions(defaultClass.student);
+      }
+    }
+  }, [listClass, id, setValue]);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchOneStudentRetention(id));
+    }
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (selectedStudentRetention) {
+      const data = selectedStudentRetention as any;
+      setValue('className', data?.className || '');
+      setValue('studentName', `Học viên ${data?.fullName || ''}`);
+      setValue('semesterId', data?.semester?.id || '');
+      setValue('reason', data?.reason || '');
+      setValue('retentionPeriod', data?.retentionPeriod || '');
+      setDate(data?.reserveDate ? dayjs(data.reserveDate) : null);
+      setFileName(data?.file ? data?.file.split('/').pop() : '');
+      setStudenId(data?.student?.id);
+      setClassId(data?.class?.id);
+    }
+  }, [selectedStudentRetention, setValue]);
+
+  if (loading) return <p>Đang tải dữ liệu...</p>;
+  // if (error) return <p>Lỗi: {error}</p>;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
       setFileName(event.target.files[0].name);
     }
   };
+
   const onSubmit = (data: any) => {
-    console.log(data);
+    const formattedData = {
+      id: Number(id),
+      studentId: data.studentName,
+      reserveDate: date ? dayjs(date).toISOString() : null,
+      retentionPeriod: data.retentionPeriod,
+      reason: data.reason?.trim() || '',
+      file: fileName || '',
+      classId: data.className,
+      semesterId: data.semesterId,
+    };
+    dispatch(updateStudentRetention({ updatedData: formattedData, token: refreshToken }))
+      .unwrap()
+      .then((res) => {
+        // console.log('Cập nhật thành công:', res);
+        toast.success('Cập nhật bảo lưu thành công!');
+      })
+      .catch((err) => {
+        // console.error('Lỗi cập nhật:', err);
+        toast.error('Lỗi cập nhật! Vui lòng kiểm tra lại dữ liệu trước khi cập nhật!');
+      });
+  };
+
+  const handleCancel = () => {
+    navigate(`/leadership/student-retention`);
   };
 
   return (
@@ -27,7 +122,28 @@ const StudentRetentionUpdate = () => {
         {/* Lớp hiện tại */}
         <div className="flex flex-col md:flex-row justify-between items-center">
           <label className="block font-medium mb-1 md:mb-0">Lớp hiện tại:</label>
-          <DropdownSelectionComponent width="585px" placeholder="Lựa chọn" options={['Cần Thơ', 'Đà Nẵng', 'Cà Mau']} />
+          <div className="relative w-full md:w-[585px]">
+            <select
+              {...register('className')}
+              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                const selectedClassId = Number(event.target.value);
+                const selectedClass = listClass?.find((cls) => cls?.id === selectedClassId);
+                if (selectedClass) {
+                  setStudentOptions(selectedClass?.student);
+                } else {
+                  setStudentOptions([]);
+                }
+              }}
+              className="w-full p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
+            >
+              <option value="">Chọn lớp</option>
+              {listClass?.map((cls) => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Tên học viên */}
@@ -36,13 +152,17 @@ const StudentRetentionUpdate = () => {
             Tên học viên: <span className="text-red-500">*</span>
           </label>
           <div className="relative w-full md:w-[585px]">
-            <input
+            <select
               {...register('studentName')}
-              placeholder="Nguyễn Văn Phúc"
-              className="w-full p-2 bg-[#F2F2F2]   rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
-            />
-
-            <img src={search} className="absolute right-3 top-2 text-gray-400 size-6" alt="icon tìm kiếm" />
+              className="w-full p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
+            >
+              <option value="">Chọn học viên</option>
+              {studentOptions.map((student) => (
+                <option key={student.id} value={student.id}>
+                  {student.fullName}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -53,15 +173,25 @@ const StudentRetentionUpdate = () => {
               Ngày bảo lưu: <span className="text-red-500">*</span>
             </label>
             <div className="relative w-full custom-input">
-              <CalendarInput />
+              <DateInput value={date} onChange={setDate} width="250px" className="custom-class" style={{ borderColor: 'red' }} />
             </div>
           </div>
 
           <div className="flex items-center bg-gray-200 px-3 py-2 rounded w-full md:w-auto">
-            <select {...register('semester')} className="bg-transparent focus:outline-none w-full">
-              <option>Học kỳ I</option>
-              <option>Học kỳ II</option>
+            <select {...register('semesterId')} className="bg-transparent focus:outline-none w-full">
+              <option value="1">Học kỳ I</option>
+              <option value="2">Học kỳ II</option>
             </select>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row justify-between items-start">
+          <label className="block font-medium mb-1 md:mb-0">Thời gian bảo lưu</label>
+          <div className="w-full md:w-[585px]">
+            <input
+              {...register('retentionPeriod')}
+              className="w-full p-2 bg-[#F2F2F2]   rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
+            />
           </div>
         </div>
 
@@ -81,22 +211,15 @@ const StudentRetentionUpdate = () => {
         </div>
 
         {/* Tệp đính kèm */}
-
         <div className="flex flex-row items-center justify-between gap-4">
-          {/* Label */}
           <label className="font-medium">
             Tệp đính kèm: <span className="text-red-500">*</span>
           </label>
-
-          {/* Ô nhập và nút */}
           <div className="w-full md:w-[585px] flex items-center space-x-2">
-            {/* Ô hiển thị tệp */}
             <div className="flex items-center border rounded px-3 bg-[#F2F2F2] h-10 flex-grow">
               <img src={tep} alt="icon" className="w-7 h-5 border-r-2 pr-2 text-orange-500" />
               <span className="text-gray-500 ml-2">{fileName || ' '}</span>
             </div>
-
-            {/* Nút chọn file */}
             <label className="cursor-pointer border border-orange-500 px-4 py-2 rounded bg-orange-100 hover:bg-orange-200 transition h-10 flex items-center">
               Chọn tệp tải lên...
               <input type="file" {...register('attachment')} className="hidden" onChange={handleFileChange} />
@@ -107,9 +230,26 @@ const StudentRetentionUpdate = () => {
         <p className="text-sm lg:ml-[135px] text-gray-500 font-thin italic">Kích thước tệp không vượt quá 250MB.</p>
 
         {/* Button */}
-        <div className="flex justify-center space-x-4 ">
-          <button className="w-40 h-12 bg-gray-200 rounded-lg font-semibold">Hủy</button>
-          <Button children="Lưu" className="secondary" size="mini" width="160px" height="48px" style={{ color: 'white', fontWeight: '600' }} />
+        <div className="flex justify-center space-x-4">
+          <Button
+            children="Hủy"
+            type="button"
+            className="secondary"
+            size="mini"
+            width="160px"
+            height="48px"
+            style={{ color: 'black', fontWeight: '600' }}
+            onClick={handleCancel}
+          />
+          <Button
+            children="Lưu"
+            type="submit"
+            className="primary"
+            size="mini"
+            width="160px"
+            height="48px"
+            style={{ color: 'white', fontWeight: '600' }}
+          />
         </div>
       </form>
     </div>

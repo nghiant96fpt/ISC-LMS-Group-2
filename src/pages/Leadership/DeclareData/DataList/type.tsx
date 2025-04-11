@@ -1,5 +1,5 @@
 export interface SubjectGroup {
-  id?: Number;
+  id: Number;
   name: string;
   head: string;
 }

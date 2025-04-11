@@ -3,7 +3,7 @@ const down = require('../../assets/icons/caret_down.png');
 const trash = require('../../assets/icons/fi_trash-2.png');
 const edit = require('../../assets/icons/fi_edit1.png');
 
-const TabSwitch = ({ tabs, activeTab, onTabChange }: TabSwitchProps) => {
+const TabSwitch = ({ tabs, activeTab, onTabChange, onSaveClick, isSubmitting }: TabSwitchProps) => {
   const ActiveComponent = tabs.find((tab) => tab.value === activeTab)?.content;
 
   return (
@@ -49,20 +49,30 @@ const TabSwitch = ({ tabs, activeTab, onTabChange }: TabSwitchProps) => {
           </div>
         </div>
 
-        {activeTab === 'general' || activeTab === 'edit' ? (
-          <div className="flex items-center pr-20 gap-4">
-            <button className="p-1 flex items-center">
-              <img src={trash} alt="delete" className="w-6 h-6" />
+        <div className="flex items-center pr-20 gap-4">
+          <button className="p-1 flex items-center">
+            <img src={trash} alt="delete" className="w-6 h-6" />
+          </button>
+          {activeTab === 'general' && (
+            <button type="button" onClick={() => onTabChange?.('edit')} className="p-2 bg-orange-500 text-white rounded-lg flex items-center gap-2">
+              <img src={edit} alt="edit" className="w-6 h-6" />
+              <span className="text-white font-medium">Chỉnh sửa</span>
             </button>
+          )}
+
+          {activeTab === 'edit' && (
             <button
-              onClick={() => onTabChange?.(activeTab === 'edit' ? 'general' : 'edit')}
-              className="p-2 bg-orange-500 text-white rounded-lg flex items-center gap-2"
+              type="submit"
+              form="myForm"
+              onClick={() => onSaveClick?.()}
+              disabled={isSubmitting}
+              className="p-2 bg-orange-500 text-white rounded-lg flex items-center gap-2 disabled:opacity-50"
             >
               <img src={edit} alt="edit" className="w-6 h-6" />
-              <span className="text-white font-medium">{activeTab === 'edit' ? 'Lưu' : 'Chỉnh sửa'}</span>
+              <span className="text-white font-medium">Lưu</span>
             </button>
-          </div>
-        ) : null}
+          )}
+        </div>
       </div>
 
       <div className="mt-4">{ActiveComponent}</div>

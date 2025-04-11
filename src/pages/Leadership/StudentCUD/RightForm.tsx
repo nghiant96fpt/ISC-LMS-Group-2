@@ -6,127 +6,177 @@ import CheckboxComponent from '../../../components/CheckBox';
 import CalendarInput from '../../../components/CalendarInput';
 
 export interface RightFormProps {
-  course: DropdownOption | null;
-  handleSelectCourse: (item: { label: string; value: string }) => void;
-  grades: DropdownOption[];
-  selectedGrade: DropdownOption | null;
-  handleGradeSelect: (option: DropdownOption) => void;
-  filteredClasses: DropdownOption[];
-  selectedClass: DropdownOption | null;
-  handleClassSelect: (option: DropdownOption) => void;
-  codeRef: any;
   isChecked: boolean;
   handleCheckTuSinhMa: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  admissionDate: Date | null;
-  handleAdmissionDateChange: ((date: Date | null) => void) | undefined;
-  formally: DropdownOption | null;
-  handleSelectFormally: (item: { label: string; value: string }) => void;
-  status: DropdownOption | null;
-  handleSelectStatus: (item: { label: string; value: string }) => void;
+
+  register?: any;
+  errors?: any;
+  watch?: any;
+  setValue?: any;
+  setError?: any;
+  clearError?: any;
+
+  courses: DropdownOption[];
+  grades: DropdownOption[];
+  filteredClasses: DropdownOption[];
+  selectedGrade: DropdownOption | null;
+  entries: DropdownOption[];
+  statuses: DropdownOption[];
+
+  selectedCode?: any,
 }
 
 const RightForm: React.FC<RightFormProps> = ({
-  course,
-  handleSelectCourse,
-  grades,
-  selectedGrade,
-  handleGradeSelect,
-  filteredClasses,
-  selectedClass,
-  handleClassSelect,
-  codeRef,
   isChecked,
   handleCheckTuSinhMa,
-  admissionDate,
-  handleAdmissionDateChange,
-  formally,
-  handleSelectFormally,
-  status,
-  handleSelectStatus
+
+  register,
+  errors,
+  setValue,
+  watch,
+  clearError,
+
+  courses,
+  grades,
+  filteredClasses,
+  selectedGrade,
+  entries,
+  statuses,
+
+  selectedCode
 }) => {
   return (
     <div className="w-[47%]">
-      <div className="flex items-center mb-2">
-        <p className="w-[115px]">Niên khóa</p>
-        <Dropdown
-          size="short"
-          options={[
-            { label: '2021-2023', value: '2021-2023' },
-            { label: '2023-2025', value: '2023-2025' },
-          ]}
-          selectedOption={course}
-          handleOptionClick={(e) => {
-            handleSelectCourse(e);
-          }}
-        />
+      <div className="flex items-center mb-1">
+        <p className="w-[118px]">Niên khóa</p>
+        <div>
+          <Dropdown
+            size="medium"
+            options={courses}
+            placeholder="Chọn niên khóa"
+            selectedOption={watch('academicYear')}
+            style={{maxWidth: 270}}
+            handleOptionClick={(e) => {
+              setValue('academicYear', e);
+              clearError('academicYear');
+            }}
+            {...register('academicYear', { required: 'Vui lòng chọn thông tin niên khóa !' })}
+            borderColor={errors?.academicYear && '#EF4444'}
+          />
+        </div>
       </div>
-      <div className="flex items-center mb-2">
-        <p className="w-[118px]">Khối</p>
-        <Dropdown size="short" options={grades} selectedOption={selectedGrade} handleOptionClick={handleGradeSelect} placeholder="Chọn khối" />
+      {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.academicYear?.message}</p>}
+      <div className="flex items-center mb-1">
+        <p className="w-[118px]" style={{ width: 118 }}>
+          Khối
+        </p>
+        <div className="max-w-[115px]">
+          <Dropdown
+            size="short"
+            options={grades}
+            selectedOption={watch('grade')}
+            handleOptionClick={(e) => {
+              setValue('grade', e);
+              clearError('grade');
+            }}
+            {...register('grade', { required: 'Vui lòng chọn thông tin khối và lớp học !' })}
+            placeholder="Chọn khối"
+            borderColor={errors?.grade && '#EF4444'}
+          />
+        </div>
         <div className="ms-2">
           <Dropdown
             size="short"
             options={filteredClasses}
-            selectedOption={selectedClass}
-            handleOptionClick={handleClassSelect}
+            selectedOption={watch('class')}
+            handleOptionClick={(e) => {
+              setValue('class', e);
+              clearError('class');
+            }}
             placeholder="Chọn lớp"
+            {...register('class', { required: 'Vui lòng chọn thông tin lớp học !' })}
             disabled={!selectedGrade}
+            borderColor={errors?.class && '#EF4444'}
           />
         </div>
       </div>
-      <div className="flex items-center mb-2">
+      {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.grade?.message}</p>}
+      {errors?.class && !errors?.grade && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.class?.message}</p>}
+      <div className="flex items-center mb-1">
         <p className="w-[118px]">Mã học viên</p>
         <div className="flex items-center">
-          <Input ref={codeRef} className="h-[40px] me-2" size="sm" placeholder="Mã học viên" />
+          <Input
+            className={`h-[40px] me-2 ${errors?.code ? 'border-red-500' : ''}`}
+            size="sm"
+            placeholder="Nhập mã học viên"
+            {...register('code', { required: 'Vui lòng nhập mã học viên !' })}
+            onChange={(e) => {
+              setValue('code', e.currentTarget.value);
+              clearError('code');
+            }}
+            disabled={selectedCode}
+          />
           <div className="ms-2">
             <CheckboxComponent
               isChecked={isChecked}
               onChange={handleCheckTuSinhMa}
               label="Tự động sinh mã"
-              customStyles={{ label: { fontSize: 16 } }}
+              customStyles={{ label: { fontSize: 12 } }}
+              disabled={selectedCode}
             />
           </div>
         </div>
       </div>
-      <div className="flex items-center mb-2">
+      {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.code?.message}</p>}
+      <div className="flex items-center mb-1">
         <p className="w-[118px]">Ngày nhập học</p>
         <CalendarInput
           placeholder="Chọn ngày sinh"
           style={{ maxWidth: 300 }}
-          inputStyle={{ border: '1px solid #6b7280' }}
-          selectedDate={admissionDate}
-          onDateChange={handleAdmissionDateChange}
+          inputStyle={{ border: `${errors?.enrollmentDate ? '2px solid #EF4444' : '1px solid #6b7280'}` }}
+          selectedDate={watch('enrollmentDate')}
+          onDateChange={(e) => {
+            setValue('enrollmentDate', e);
+            clearError('enrollmentDate');
+          }}
+          {...register('enrollmentDate', { required: 'Vui lòng chọn ngày nhập học !' })}
         />
       </div>
-      <div className="flex items-center mb-2">
+      {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.enrollmentDate?.message}</p>}
+      <div className="flex items-center mb-1">
         <p className="w-[118px]">Hình thức</p>
         <Dropdown
-          size="short"
-          options={[
-            { label: 'Trúng tuyển', value: '1' },
-          ]}
-          selectedOption={formally}
+          size="medium"
+          options={entries}
+          selectedOption={watch('entry')}
+          style={{maxWidth: 270}}
           handleOptionClick={(e) => {
-            handleSelectFormally(e);
+            setValue('entry', e);
+            clearError('entry');
           }}
+          {...register('entry', { required: 'Vui lòng chọn hình thức nhập học !' })}
+          borderColor={errors?.entry && '#EF4444'}
+          placeholder="Chọn hình thức"
         />
       </div>
-      <div className="flex items-center mb-2">
+      {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.entry?.message}</p>}
+      <div className="flex items-center mb-1">
         <p className="w-[118px]">Trạng thái</p>
         <Dropdown
-          size="short"
-          options={[
-            { label: 'Đang theo học', value: '0' },
-            { label: 'Đã chuyển lớp', value: '1' },
-            { label: 'Đã chuyển trường', value: '2' },
-            { label: 'Đã thôi học', value: '3' },
-          ]}
-          selectedOption={status}
+          size="medium"
+          options={statuses}
+          selectedOption={watch('status')}
+          style={{maxWidth: 270}}
           handleOptionClick={(e) => {
-            handleSelectStatus(e);
+            setValue('status', e);
+            clearError('status');
           }}
+          {...register('status', { required: 'Vui lòng chọn trạng thái theo học !' })}
+          borderColor={errors?.status && '#EF4444'}
+          placeholder="Chọn trạng thái"
         />
       </div>
+      {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.status?.message}</p>}
     </div>
   );
 };

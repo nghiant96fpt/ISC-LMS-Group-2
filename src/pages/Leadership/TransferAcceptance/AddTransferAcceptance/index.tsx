@@ -1,14 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import DropdownSelectionComponent from '../../../../components/DropdownSelection';
-import CalendarInput from '../../../../components/CalendarInput';
 import Button from '../../../../components/Button';
-// import searchIcon from '../../../../assets/icons/fi_search_primary.png';
 import attachIcon from '../../../../assets/icons/u_paperclip.png';
-import './index.css'
+import './index.css';
+import DateInput from '../../../../components/Date';
+import dayjs from 'dayjs';
+import { IconArrowCaretDown } from './../../../../components/Icons';
+import { IProvince, IDistrict, Student } from './type';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from './../../../../redux/store';
+import { toast } from 'react-toastify';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
+import {
+  fetchProvince,
+  fetchDistrict,
+  postTransferAcceptance,
+  fetchTransferSchool,
+  fetchAllStudent,
+} from '../../../../redux/reducers/Leadership/StudentProfile/TransferAcceptance/TransferAcceptance';
+import createAxiosInstance from '../../../../utils/axiosInstance';
 const AddTransferAcceptance = () => {
-  const { register, handleSubmit } = useForm();
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const [cookies] = useCookies(['refreshToken']);
+  const { register, handleSubmit, reset, setValue } = useForm();
   const [fileName, setFileName] = useState('');
+  const [date, setDate] = useState<dayjs.Dayjs | null | any>(null);
+  const [listProvince, setListProvince] = useState<IProvince[]>([]);
+  const [districts, setDistricts] = useState<IDistrict>();
+  const [dataListStudent, setDataListStudent] = useState<Student[] | undefined>(undefined);
+
+  const refreshToken = cookies.refreshToken;
+  const [userId, setUserId] = useState();
+
+  const { StudentApiResponse, loading, error } = useSelector((state: RootState) => state.transferAcceptance);
+  const [selectedDistrictCode, setSelectedDistrictCode] = useState<number | null>(null);
+  const [selectedProvinceCode, setSelectedProvinceCode] = useState<number | null>(null);
+  const [selectedStudentFullName, setSelectedStudentFullName] = useState('');
+
+  const { fetchProvince: data } = useSelector((state: RootState) => state.transferAcceptance);
+  const { fetchDistrict: dataDistrict } = useSelector((state: RootState) => state.transferAcceptance);
+  useEffect(() => {
+    dispatch(fetchTransferSchool({ page: 1, pageSize: 5, search: '', sortColumn: 'id', sortOrder: 'asc' }) as any);
+    dispatch(fetchAllStudent(refreshToken));
+  }, [dispatch]);
+  // console.log('StudentApiResponse', StudentApiResponse);
+
+  useEffect(() => {
+    if (StudentApiResponse?.data) {
+      setDataListStudent(StudentApiResponse?.data);
+    }
+  }, [StudentApiResponse]);
+
+  useEffect(() => {
+    dispatch(fetchProvince());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (data) {
+      setListProvince(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (selectedProvinceCode) {
+      dispatch(fetchDistrict(selectedProvinceCode));
+    }
+  }, [selectedProvinceCode]);
+
+  useEffect(() => {
+    if (dataDistrict) {
+      setDistricts(dataDistrict);
+    }
+  }, [dataDistrict]);
+
+  const axiosInstance = createAxiosInstance(true);
+
+  useEffect(() => {
+    axiosInstance
+      .get('api/auth/verify-token')
+      .then((response) => {
+        setUserId(response?.data?.data?.id);
+      })
+      .catch(() => {
+        toast.error('Có lỗi khi lấy thông tin người nhập!');
+      });
+  });
+  console.log('userId', userId);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
@@ -17,7 +97,36 @@ const AddTransferAcceptance = () => {
   };
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    const FormattedData = {
+      studentId: data?.selectedStudentId,
+      studentCode: data.studentCode,
+      fullName: selectedStudentFullName,
+      transferSchoolDate: date ? dayjs(date).format('YYYY-MM-DD') : '',
+      transferToSchool: data?.fromSchool,
+      schoolAddress: '',
+      reason: data.reason || '',
+      provinceCode: selectedProvinceCode ?? 0,
+      districtCode: selectedDistrictCode ?? 0,
+      attachmentName: fileName,
+      attachmentPath: '',
+      semesterId: 1,
+      userId: userId,
+    };
+    dispatch(postTransferAcceptance({ Data: FormattedData, token: refreshToken }))
+      .unwrap()
+      .then((res) => {
+        toast.success('Thêm bảo lưu thành công!');
+        reset();
+        setFileName('');
+        setDate(null);
+      })
+      .catch((errors) => {
+        toast.error(`${errors?.message}`);
+      });
+  };
+
+  const handleCancel = () => {
+    navigate(`/leadership/transfer-acceptance`);
   };
 
   return (
@@ -31,12 +140,28 @@ const AddTransferAcceptance = () => {
             Tên học viên: <span className="text-red-500">*</span>
           </label>
           <div className="relative w-full md:w-[585px]">
-            <input
-              {...register('studentName')}
-              placeholder="Nguyễn Hữu Phucas"
-              className="w-full p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
-            />
-            {/* <img src={searchIcon} className="absolute right-3 top-2 text-gray-400 size-6" alt="icon tìm kiếm" /> */}
+            <select
+              {...register('selectedStudentId')}
+              onChange={(e) => {
+                const selectedStudentId = Number(e.target.value);
+                const selectedStudent = dataListStudent?.find((s) => s.userId === selectedStudentId);
+                if (selectedStudent) {
+                  // Cập nhật giá trị cho trường studentCode trong form
+                  setValue('studentCode', selectedStudent.code);
+                  setSelectedStudentFullName(selectedStudent.fullName);
+                }
+              }}
+              className="w-full p-2 bg-[#F2F2F2] rounded ..."
+            >
+              <option value="">Chọn học viên</option>
+              {dataListStudent &&
+                dataListStudent?.length &&
+                dataListStudent?.map((student) => (
+                  <option key={student.userId} value={student.userId}>
+                    {student.fullName}
+                  </option>
+                ))}
+            </select>
           </div>
         </div>
 
@@ -46,8 +171,9 @@ const AddTransferAcceptance = () => {
             Mã học viên: <span className="text-red-500">*</span>
           </label>
           <input
-            {...register('studentID')}
-            placeholder="PC05360"
+            {...register('studentCode')}
+            placeholder="Mã học viên"
+            disabled
             className="w-full md:w-[585px] p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
           />
         </div>
@@ -57,8 +183,8 @@ const AddTransferAcceptance = () => {
           <label className="block font-medium">
             Ngày chuyển đến: <span className="text-red-500">*</span>
           </label>
-          <div className="custom w-full md:w-[585px]">
-            <CalendarInput />
+          <div className="w-full md:w-[585px]">
+            <DateInput value={date} onChange={setDate} width="250px" className="custom-class" style={{ borderColor: 'red' }} />
           </div>
         </div>
 
@@ -75,7 +201,27 @@ const AddTransferAcceptance = () => {
           <label className="block font-medium">
             Tỉnh/Thành: <span className="text-red-500">*</span>
           </label>
-          <DropdownSelectionComponent width="585px" options={['Hà Nội', 'TP. Hồ Chí Minh', 'Đà Nẵng']} placeholder="Lựa chọn" />
+          <div className="relative w-full md:w-[585px]">
+            <select
+              className="appearance-none w-full p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none pr-10"
+              onChange={(e) => {
+                const selectedCode = Number(e.target.value);
+                setSelectedProvinceCode(selectedCode);
+              }}
+            >
+              <option value="">Chọn tỉnh/thành</option>
+              {listProvince.map((item) => (
+                <option key={item.code} value={item.code}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+
+            {/* Custom dropdown arrow */}
+            <div className="pointer-events-none absolute right-2 top-1/2 transform -translate-y-1/2 text-orange-500">
+              <IconArrowCaretDown />{' '}
+            </div>
+          </div>
         </div>
 
         {/* Quận/Huyện */}
@@ -83,17 +229,36 @@ const AddTransferAcceptance = () => {
           <label className="block font-medium">
             Quận/Huyện: <span className="text-red-500">*</span>
           </label>
-          <DropdownSelectionComponent width="585px" options={['Quận 1', 'Quận 2', 'Quận 3']} placeholder="Lựa chọn" />
+          <div className="relative w-full md:w-[585px]">
+            <select
+              className="appearance-none w-full p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none pr-10"
+              onChange={(e) => {
+                const selectedCode = Number(e.target.value);
+                setSelectedDistrictCode(selectedCode);
+              }}
+            >
+              <option value="">Chọn quận/huyện</option>
+              {districts?.districts?.map((district) => (
+                <option key={district.code} value={district.code}>
+                  {district.name}
+                </option>
+              ))}
+            </select>
+
+            <div className="pointer-events-none absolute right-2 top-1/2 transform -translate-y-1/2 text-orange-500">
+              <IconArrowCaretDown />
+            </div>
+          </div>
         </div>
 
         {/* Chuyển từ */}
         <div className="flex flex-col md:flex-row justify-between items-center">
           <label className="block font-medium">
-            Chuyển từ: <span className="text-red-500">*</span>
+            Chuyển từ trường: <span className="text-red-500">*</span>
           </label>
           <input
             {...register('fromSchool')}
-            placeholder="Cần ZTho"
+            placeholder="Chuyển từ trường"
             className="w-full md:w-[585px] p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
           />
         </div>
@@ -131,8 +296,17 @@ const AddTransferAcceptance = () => {
 
         {/* Buttons */}
         <div className="flex justify-center space-x-4 mt-4">
-          <button className="w-40 h-12 bg-gray-200 rounded-lg font-semibold">Hủy</button>
-          <Button className="secondary" size="mini" width="160px" height="48px" style={{ color: 'white', fontWeight: '600' }}>
+          <Button
+            children="Hủy"
+            type="button"
+            className="secondary"
+            size="mini"
+            width="160px"
+            height="48px"
+            style={{ color: 'black', fontWeight: '600' }}
+            onClick={handleCancel}
+          />
+          <Button className="primary" type="submit" size="mini" width="160px" height="48px" style={{ color: 'white', fontWeight: '600' }}>
             Tiếp theo
           </Button>
         </div>

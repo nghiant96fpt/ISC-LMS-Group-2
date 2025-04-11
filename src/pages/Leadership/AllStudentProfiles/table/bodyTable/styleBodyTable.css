@@ -40,7 +40,7 @@ td {
 .dropdown-menu {
   position: fixed;
   top: 65%;
-  left: 84%;
+  left: 82%;
   transform: translate(-50%, -50%);
   background: var(--background-while);
   border: 1px solid var(--background-white);
@@ -148,6 +148,7 @@ td {
   align-items: center;
   gap: 8px;
   white-space: nowrap;
+  max-width: 160px;
 }
 
 .sort-icon {

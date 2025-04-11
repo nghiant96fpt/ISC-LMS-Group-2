@@ -11,4 +11,6 @@ export interface TabSwitchProps {
   tabs: Tab[];
   onTabChange?: (tabValue: string) => void;
   activeTab: string;
+  onSaveClick?: () => void;
+  isSubmitting?: boolean;
 }

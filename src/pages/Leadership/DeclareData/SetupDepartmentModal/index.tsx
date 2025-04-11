@@ -1,5 +1,6 @@
 import PageLayout from '../../../../components/PageLayout';
 import DepartmentSettings from './SetupDepartmentModal';
+
 const MainSetupDepartmentModal = () => {
   return (
     <>

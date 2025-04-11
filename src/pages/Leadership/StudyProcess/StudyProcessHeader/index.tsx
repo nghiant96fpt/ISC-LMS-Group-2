@@ -51,9 +51,9 @@ const StudyProcessHeader: React.FC = () => {
 
   return (
     <>
-      <div className="breadcrum ml-5">
+      {/* <div className="breadcrum ml-5">
         <Breadcrumb addressList={addresses} type={true} />
-      </div>
+      </div> */}
       <div className="tab-dropdown-btn">
         <div className="tab">
           <SwitchTag
