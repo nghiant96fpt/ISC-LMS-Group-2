@@ -91,6 +91,8 @@ const EditExamSchedule: React.FC = () => {
   // Các state dữ liệu lớp và phân công chấm thi
   const [allClasses, setAllClasses] = useState<OptionType[]>([]);
   const [classAssignments, setClassAssignments] = useState<{ [classId: string]: OptionType[] }>({});
+  // Thêm flag đánh dấu đã load dữ liệu assignments từ API chưa
+  const [assignmentsLoaded, setAssignmentsLoaded] = useState(false);
 
   // State cho Dropdown: niên khóa, khối, môn học
   const [selectedSchoolYear, setSelectedSchoolYear] = useState<DropdownOption | null>(null);
@@ -123,7 +125,6 @@ const EditExamSchedule: React.FC = () => {
         label: item.userName,
       }));
       setTotalPages(data.totalPages);
-      // Nếu đang load trang 1 thì sẽ gán đè, các trang sau cộng dồn
       if (page === 1) {
         setGraderOptions(newGraders);
       } else {
@@ -183,15 +184,11 @@ const EditExamSchedule: React.FC = () => {
     try {
       const response = await axios.get(`${API_URL}/academic-years`);
       const yearsData = response.data.data;
-
       setAcademicYearsData(yearsData);
-
       const yearsOptions = yearsData.map((year: any) => ({
         value: year.id,
         label: year.name,
       }));
-
-      console.log('yearsOptions:', yearsOptions);
       setAcademicYears(yearsOptions);
     } catch (error) {
       console.error('Error fetching academic years:', error);
@@ -213,26 +210,28 @@ const EditExamSchedule: React.FC = () => {
     }
   };
 
-  // Tải các dữ liệu cơ bản (niên khóa, khối, và danh sách giáo viên chấm thi trang 1)
-  // rồi sau đó mới gọi API get ExamSchedule theo id
+  // Tải các dữ liệu cơ bản: niên khóa, khối, danh sách giáo viên chấm thi trang 1
   useEffect(() => {
     const loadInitialData = async () => {
       await Promise.all([loadAcademicYears(), loadGradeLevels(), fetchGraders(1)]);
-      if (examScheduleId) {
-        await loadExamScheduleData();
-      }
     };
     loadInitialData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [examScheduleId]);
 
+  // Khi các state liên quan AcademicYears và GradeLevels đã có dữ liệu, gọi hàm loadExamScheduleData
+  useEffect(() => {
+    if (examScheduleId && academicYearsData.length > 0 && gradeLevels.length > 0 ) {
+      loadExamScheduleData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [examScheduleId, academicYearsData, gradeLevels]);
+
   // Khi chọn niên khóa, lưu lại đối tượng niên khóa đầy đủ và gọi API lấy môn học theo niên khóa
   const handleSchoolYearChange = (option: DropdownOption) => {
-
     setSelectedSchoolYear(option);
     const foundYear = academicYearsData.find((year) => year.name === option.value);
     setSelectedAcademicYear(foundYear);
-   
   };
 
   // Khi selectedAcademicYear thay đổi, gọi API lấy môn học tương ứng
@@ -263,7 +262,6 @@ const EditExamSchedule: React.FC = () => {
     setSelectedGrade(option);
   };
 
-  // Nếu API trả về dữ liệu môn (subject) với cả ID và tên, cập nhật ngay nếu chưa có dữ liệu trong dropdown
   const handleSubjectChange = (option: DropdownOption) => {
     setSelectedSubject(option);
   };
@@ -286,19 +284,21 @@ const EditExamSchedule: React.FC = () => {
   const handleGradingOptionChange = (option: 'all' | 'custom') => {
     setGradingOption(option);
     if (option === 'custom') {
+      // Khi chuyển sang custom, ta reset selectedGraders nhưng không reset dữ liệu assignments nếu đã load từ API
       setSelectedGraders([]);
+      // Nếu cần, bạn có thể cập nhật lại classAssignments cho các lớp hiện tại mà không xóa dữ liệu đã có
+      // Ví dụ: giữ lại dữ liệu nếu có, hoặc chỉ thêm các lớp mới
       const currentClasses = classOption === 'custom' ? selectedCustomClasses : allClasses;
-      const clearedAssignments: { [classId: string]: OptionType[] } = {};
-      currentClasses.forEach((cls) => {
-        clearedAssignments[cls.value] = [];
+      setClassAssignments((prev) => {
+        const newAssignments: { [classId: string]: OptionType[] } = {};
+        currentClasses.forEach((cls) => {
+          newAssignments[cls.value] = prev[cls.value] || [];
+        });
+        return newAssignments;
       });
-      setClassAssignments(clearedAssignments);
     } else {
-      const clearedAssignments: { [classId: string]: OptionType[] } = {};
-      allClasses.forEach((cls) => {
-        clearedAssignments[cls.value] = [];
-      });
-      setClassAssignments(clearedAssignments);
+      // Nếu chuyển sang áp dụng chung cho tất cả lớp, bạn có thể reset custom assignments (tuỳ nhu cầu)
+      setClassAssignments({});
     }
   };
 
@@ -321,99 +321,96 @@ const EditExamSchedule: React.FC = () => {
   // Hàm tải dữ liệu ExamSchedule dựa trên examScheduleId
   // ============================================
   const loadExamScheduleData = async () => {
-    console.log(academicYearsData);
-    
     try {
       const response = await axios.get(`${API_URL}/ExamSchedule/${examScheduleId}`);
       const examData = response.data.data;
-
+  
       // Cập nhật các trường cơ bản
       setExamTitle(examData.name);
       setExamType(examData.type);
       setDuration(examData.duration_in_minutes);
       setExamDate(examData.examDay ? dayjs(examData.examDay) : null);
-
+  
       // Cập nhật niên khóa (Academic Year)
-      const foundAcademicYear = academicYearsData.find((year) => Number(year.id) === Number(examData.academicYearId));
-
-      console.log('foundAcademicYear', foundAcademicYear);
-
+      const foundAcademicYear = academicYearsData.find(
+        (year) => Number(year.id) === Number(examData.academicYearId)
+      );
       if (foundAcademicYear) {
         setSelectedAcademicYear(foundAcademicYear);
         setSelectedSchoolYear({ value: foundAcademicYear.name, label: foundAcademicYear.name });
       }
-
+  
       // Cập nhật khối
       if (examData.gradeLevelsId) {
-        const foundGrade = gradeLevels.find((grade) => Number(grade.value) === Number(examData.gradeLevelsId));
+        const foundGrade = gradeLevels.find(
+          (grade) => Number(grade.value) === Number(examData.gradeLevelsId)
+        );
         if (foundGrade) setSelectedGrade(foundGrade);
       }
-
+  
       // Cập nhật môn thi
       if (examData.subject) {
-        const foundSubject = subjects.find((subj) => Number(subj.value) === Number(examData.subject));
+        const foundSubject = subjects.find(
+          (subj) => Number(subj.value) === Number(examData.subject)
+        );
         if (foundSubject) {
           setSelectedSubject(foundSubject);
         } else {
           setSelectedSubject({ value: examData.subject, label: examData.subjectName });
         }
       }
-
+  
       // Cập nhật học kỳ
       if (examData.semesterIds && Array.isArray(examData.semesterIds)) {
         setIsCheckedHK1(examData.semesterIds.some((id: number) => String(id).includes('1')));
         setIsCheckedHK2(examData.semesterIds.some((id: number) => String(id).includes('2')));
       }
-
+  
       // ===============================================
       // Cập nhật danh sách lớp và cấu hình phân công chấm thi
       // ===============================================
       if (examData.classIds && examData.classIds.length > 0) {
-        // Sau khi đã có thông tin khối và niên khóa, load lại danh sách các lớp liên quan
+        // Sau khi có thông tin khối và niên khóa, load lại danh sách các lớp liên quan
         const classes = await fetchAllClasses('all', selectedGrade, selectedSchoolYear);
         const filteredOptions = classes
           .filter((cls) => examData.classIds.includes(cls.id))
           .map((cls) => ({ value: String(cls.id), label: cls.name }));
-
-        // Nếu danh sách lớp được load không khớp với số lượng lớp trong examData, chuyển sang chế độ "custom"
-        if (filteredOptions.length !== classes.length) {
-          setClassOption('custom');
-          setSelectedCustomClasses(filteredOptions);
-        } else {
-          setClassOption('all');
-        }
-
-        // Cập nhật cấu hình phân công chấm thi theo từng lớp dựa trên data từ gradersForClasses
+  
+        // Chuyển chế độ phân công thành "custom"
+        setClassOption('custom');
+        setSelectedCustomClasses(filteredOptions);
+  
+        // Cập nhật cấu hình phân công chấm thi cho từng lớp
         const assignments: { [classId: string]: OptionType[] } = {};
-        examData.gradersForClasses.forEach((item: any) => {
-          assignments[String(item.classId)] = item.graderIds.map((id: number) => {
-            const found = graderOptions.find((g) => Number(g.value) === Number(id));
-            return {
-              value: id,
-              label: found ? found.label : '',
-            };
-          });
+        filteredOptions.forEach((cls) => {
+          const graderAssignment = examData.gradersForClasses.find(
+            (item: any) => String(item.classId) === cls.value
+          );
+          if (graderAssignment) {
+            assignments[cls.value] = graderAssignment.graderIds.map((id: number) => {
+              const found = graderOptions.find((g) => Number(g.value) === Number(id));
+              return {
+                value: id,
+                label: found ? found.label : '',
+              };
+            });
+          } else {
+            assignments[cls.value] = [];
+          }
         });
+     
         setClassAssignments(assignments);
+        // Đánh dấu rằng dữ liệu assignments đã được load từ API để không reset khi selectedCustomClasses thay đổi
+        setAssignmentsLoaded(true);
 
-        // Nếu chọn option "all", gán chung danh sách grader nếu tất cả lớp có cùng giá trị
-        if (examData.gradersForClasses && examData.gradersForClasses.length > 0) {
-          const commonGraders = examData.gradersForClasses[0].graderIds.map((id: number) => {
-            const found = graderOptions.find((g) => Number(g.value) === Number(id));
-            return {
-              value: id,
-              label: found ? found.label : '',
-            };
-          });
-          setSelectedGraders(commonGraders);
-        }
+        setGradingOption('custom');
       }
     } catch (error) {
       console.error('Error loading exam schedule data:', error);
       toast.error('Lỗi khi tải dữ liệu lịch thi!');
     }
   };
-
+  
   // Khi thông tin chọn thay đổi (khối, niên khóa, hoặc option lớp) thì load lại danh sách lớp
   useEffect(() => {
     const loadClasses = async () => {
@@ -434,17 +431,20 @@ const EditExamSchedule: React.FC = () => {
     loadClasses();
   }, [selectedGrade, selectedSchoolYear, classOption]);
 
-  // Khi thay đổi danh sách lớp được chọn trong trường hợp "custom"
+  // Khi thay đổi danh sách lớp được chọn trong chế độ "custom"
   useEffect(() => {
     if (classOption === 'custom') {
-      const assignments: { [classId: string]: OptionType[] } = {};
-      selectedCustomClasses.forEach((opt) => {
-        assignments[opt.value] = [];
+      setClassAssignments((prev) => {
+        const newAssignments: { [classId: string]: OptionType[] } = {};
+        selectedCustomClasses.forEach((opt) => {
+          // Nếu có dữ liệu từ API (đã load), giữ nguyên; nếu không, khởi tạo thành mảng rỗng
+          newAssignments[opt.value] = prev[opt.value] || [];
+        });
+        return newAssignments;
       });
-      setClassAssignments(assignments);
     }
   }, [selectedCustomClasses, classOption]);
-
+  
   // Xử lý submit form
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -456,11 +456,15 @@ const EditExamSchedule: React.FC = () => {
     const semesterIds: number[] = [];
     if (selectedAcademicYear && selectedAcademicYear.semesters) {
       if (isCheckedHK1) {
-        const hk1Semester = selectedAcademicYear.semesters.find((s: any) => String(s.name).toLowerCase().includes('học kỳ 1'));
+        const hk1Semester = selectedAcademicYear.semesters.find((s: any) =>
+          String(s.name).toLowerCase().includes('học kỳ 1'),
+        );
         if (hk1Semester) semesterIds.push(hk1Semester.id);
       }
       if (isCheckedHK2) {
-        const hk2Semester = selectedAcademicYear.semesters.find((s: any) => String(s.name).toLowerCase().includes('học kỳ 2'));
+        const hk2Semester = selectedAcademicYear.semesters.find((s: any) =>
+          String(s.name).toLowerCase().includes('học kỳ 2'),
+        );
         if (hk2Semester) semesterIds.push(hk2Semester.id);
       }
     }
@@ -506,7 +510,11 @@ const EditExamSchedule: React.FC = () => {
   };
 
   const isSaveDisabled =
-    !examTitle.trim() || !examDate || !selectedSubject || !examType.trim() || (gradingOption === 'all' && selectedGraders.length < 1);
+    !examTitle.trim() ||
+    !examDate ||
+    !selectedSubject ||
+    !examType.trim() ||
+    (gradingOption === 'all' && selectedGraders.length < 1);
 
   return (
     <div className="modal-overlay">
@@ -755,7 +763,7 @@ const EditExamSchedule: React.FC = () => {
                       <div className="relative flex-grow">
                         <CustomMultiSelect
                           options={graderOptions}
-                          value={classAssignments[cls.value] || []}
+                          value={classAssignments[cls.value]}
                           onChange={(newValue) => handleClassAssignmentChange(cls.value, newValue)}
                           placeholder="Chọn giáo viên"
                           onMenuScroll={handleScroll}

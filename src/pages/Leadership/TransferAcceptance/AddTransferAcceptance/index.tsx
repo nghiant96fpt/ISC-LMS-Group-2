@@ -42,10 +42,10 @@ const AddTransferAcceptance = () => {
 
   const { fetchProvince: data } = useSelector((state: RootState) => state.transferAcceptance);
   const { fetchDistrict: dataDistrict } = useSelector((state: RootState) => state.transferAcceptance);
-  useEffect(() => {
-    dispatch(fetchTransferSchool({ page: 1, pageSize: 5, search: '', sortColumn: 'id', sortOrder: 'asc' }) as any);
-    dispatch(fetchAllStudent(refreshToken));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchTransferSchool({ page: 1, pageSize: 5, search: '', sortColumn: 'id', sortOrder: 'asc' }) as any);
+  //   dispatch(fetchAllStudent(refreshToken));
+  // }, [dispatch]);
   // console.log('StudentApiResponse', StudentApiResponse);
 
   useEffect(() => {

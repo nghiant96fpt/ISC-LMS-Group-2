@@ -10,6 +10,7 @@ import AddressList from '../../../../components/AddressUrlStack/Index';
 import Pagination from '../../../../components/PaginationCustom';
 import { IParticipatingClass, IExamScheduleDetails, IExamScheduleResponse } from './type';
 import { toast } from 'react-toastify';
+import Loading from '../../../../components/Loading';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -64,7 +65,7 @@ const ExamClassList: React.FC = () => {
 
   // Nếu đang loading hoặc có lỗi
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div><Loading isLoading /></div>;
   }
 
   if (error || !examDetails) {
