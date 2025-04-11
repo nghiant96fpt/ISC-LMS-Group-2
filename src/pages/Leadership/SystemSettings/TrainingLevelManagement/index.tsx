@@ -13,10 +13,13 @@ import AddressList from '../../../../components/AddressUrlStack/Index';
 import Button from '../../../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import DropdownSelectionComponent from '../../../../components/DropdownSelection';
+import { useCookies } from 'react-cookie';
 
 const TrainingLevelManagement = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [cookies] = useCookies(['refreshToken']);
+  const refreshToken = cookies.refreshToken;
 
   const [sortColumn, setSortColumn] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
@@ -28,7 +31,7 @@ const TrainingLevelManagement = () => {
   const totalPages = TrainingLevelManagement?.totalPages || 1;
 
   useEffect(() => {
-    dispatch(fetchTrainingLevels({ page: currentPage, pageSize: itemsPerPage, sortColumn, sortOrder }) as any);
+    dispatch(fetchTrainingLevels({ page: currentPage, pageSize: itemsPerPage, sortColumn, sortOrder, token: refreshToken }) as any);
   }, [dispatch, currentPage, itemsPerPage, sortColumn, sortOrder]);
 
   const handleAddItem = () => {
@@ -65,7 +68,7 @@ const TrainingLevelManagement = () => {
               <Table>
                 <TableHeaderComponent />
                 <TableBody className="divide-y divide-gray-300 bg-white">
-                  {TrainingLevelManagement?.data?.map((item, index) => (
+                  {TrainingLevelManagement?.data?.map((item: any, index) => (
                     <ListOfTrainingLevelManagementListTableRow key={item.id} item={item} index={index} />
                   ))}
                 </TableBody>

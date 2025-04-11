@@ -63,11 +63,31 @@ const initialState: TrainingLevelState = {
   error: null,
 };
 
+type PostTrainingLevelInput = TrainingLevel & { token: string };
+
 // Thunk lấy danh sách trình độ đào tạo
 export const fetchTrainingLevels = createAsyncThunk(
   'trainingLevelManagement/fetchTrainingLevels',
-  async ({ page, pageSize, sortColumn, sortOrder }: { page: number; pageSize: number; sortColumn: string; sortOrder: string }) => {
-    const response = await fetch(`${API_URL}?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`);
+  async ({
+    page,
+    pageSize,
+    sortColumn,
+    sortOrder,
+    token,
+  }: {
+    page: number;
+    pageSize: number;
+    sortColumn: string;
+    sortOrder: string;
+    token: string;
+  }) => {
+    const response = await fetch(`${API_URL}?page=${page}&pageSize=${pageSize}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (!response.ok) {
       throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
     }
@@ -77,22 +97,34 @@ export const fetchTrainingLevels = createAsyncThunk(
   },
 );
 // getone
-export const fetchOneTrainingLevels = createAsyncThunk('trainingLevelManagement/fetchOneTrainingLevels', async (id: string) => {
-  const response = await fetch(`${API_URL}/${id}`);
+export const fetchOneTrainingLevels = createAsyncThunk(
+  'trainingLevelManagement/fetchOneTrainingLevels',
+  async ({ id, token }: { id: string; token: string }) => {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
-  }
-  const data: TrainingLevelResponseGetOne = await response.json();
-  return data;
-});
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+    }
+    const data: TrainingLevelResponseGetOne = await response.json();
+    return data;
+  },
+);
 
 // Thunk thêm mới trình độ đào tạo
-export const postTrainingLevel = createAsyncThunk('trainingLevelManagement/postTrainingLevel', async (newTrainingLevel: TrainingLevel) => {
+export const postTrainingLevel = createAsyncThunk('trainingLevelManagement/postTrainingLevel', async (data: PostTrainingLevelInput) => {
+  const { token, ...newTrainingLevel } = data;
+
   const response = await fetch(API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(newTrainingLevel),
   });
@@ -101,17 +133,18 @@ export const postTrainingLevel = createAsyncThunk('trainingLevelManagement/postT
     throw new Error(`Failed to create training level: ${response.status} ${response.statusText}`);
   }
 
-  const data: TrainingLevel = await response.json();
-  return data;
+  const resData: TrainingLevel = await response.json();
+  return resData;
 });
 // update
 export const updateTrainingLevel = createAsyncThunk(
   'studentRetention/updateStudentRetention',
-  async ({ updatedData, id }: { updatedData: FormattedData; id: any }, { rejectWithValue }) => {
+  async ({ updatedData, id, token }: { updatedData: FormattedData; id: any; token: string }, { rejectWithValue }) => {
     const response = await fetch(`${API_URL}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(updatedData),
     });
@@ -126,20 +159,24 @@ export const updateTrainingLevel = createAsyncThunk(
 );
 
 // Thunk xóa trình độ đào tạo
-export const deleteTrainingLevel = createAsyncThunk('trainingLevelManagement/deleteTrainingLevel', async (id: number) => {
-  const response = await fetch(`${API_URL}/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+export const deleteTrainingLevel = createAsyncThunk(
+  'trainingLevelManagement/deleteTrainingLevel',
+  async ({ id, token }: { id: number; token: string }) => {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  if (!response.ok) {
-    throw new Error(`Failed to delete training level: ${response.status} ${response.statusText}`);
-  }
+    if (!response.ok) {
+      throw new Error(`Failed to delete training level: ${response.status} ${response.statusText}`);
+    }
 
-  return id; // Trả về id để reducer cập nhật state
-});
+    return id; // Trả về id để reducer cập nhật state
+  },
+);
 
 const trainingLevelSlice = createSlice({
   name: 'trainingLevelManagement',
