@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { examData } from './data';
+import createAxiosInstance from '../../../utils/axiosInstance';
+import React, { useState, useEffect } from 'react';
 import { Student } from './type';
 
 const right = require('../../../assets/images/chevron_big_right.png');
@@ -15,9 +15,31 @@ const Transcript = () => {
   const [isDropdownOpen4, setIsDropdownOpen4] = useState(false);
 
   const [selectedYear, setSelectedYear] = useState('2019-2020');
-  const [selectedSubject, setSelectedSubject] = useState('Ngữ văn');
+  const [selectedSubject, setSelectedSubject] = useState('Vật lý');
   const [selectedGrade, setSelectedGrade] = useState('10');
   const [selectedClass, setSelectedClass] = useState('10C1');
+
+  const [dashboard, setDashboard] = useState<any | null>(null);
+  const [students, setStudents] = useState<Student[]>([]);
+
+  useEffect(() => {
+    const axiosInstance = createAxiosInstance();
+
+    const fetchData = async () => {
+      try {
+        const response = await axiosInstance.get(
+          'https://fivefood.shop/api/student-score/view-dashboard-scores?academicYearId=1&classId=1&subjectId=2',
+        );
+        console.log('Data:', response.data);
+        setDashboard(response.data.data);
+        console.log('Data:', response.data.data.students);
+        setStudents(response.data.data.students);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="bg-white px-8 pb-8 pt-0">
@@ -26,6 +48,7 @@ const Transcript = () => {
         <img src={right} alt="right" className="w-4 h-4 mr-2" />
         <h1 className="text-3xl font-bold text-black">Chấm điểm</h1>
       </div>
+
       <div className="flex space-x-8 w-full">
         <strong>Chọn niên khóa</strong>
         <strong>Chọn bộ môn</strong>
@@ -72,7 +95,7 @@ const Transcript = () => {
           </button>
           {isDropdownOpen2 && (
             <div className="absolute left-0 mt-1 bg-white shadow-xl rounded-lg border">
-              {['Ngữ văn', 'Toán', 'Lý'].map((subject) => (
+              {['Lý', 'Toán', 'Ngữ văn'].map((subject) => (
                 <button
                   key={subject}
                   onClick={() => {
@@ -152,19 +175,19 @@ const Transcript = () => {
         <div className="flex">
           <div>
             <p className="font-semibold">
-              Môn học: <span className="font-normal ml-8">Ngữ Văn</span>
+              Môn học: <span className="font-normal ml-8">{dashboard?.class?.subject?.name}</span>
             </p>
             <p className="font-semibold">
-              Lớp: <span className="font-normal ml-16">10C1</span>
+              Lớp: <span className="font-normal ml-16">{dashboard?.class?.name}</span>
             </p>
             <p className="font-semibold">
-              Mã lớp: <span className="font-normal ml-10">134 2665 3563</span>
+              Mã lớp: <span className="font-normal ml-10">{dashboard?.class?.code}</span>
             </p>
           </div>
           <div className="ml-32">
             <div className="flex">
               <p className="font-semibold ">Thời gian bắt đầu:</p>
-              <p className="ml-7">Thứ 6, 20/10/2020</p>
+              <p className="ml-7">{dashboard?.class?.startDate}</p>
             </div>
             <p className="ml-40">13:00 (GMT +7 Bangkok)</p>
           </div>
@@ -228,27 +251,39 @@ const Transcript = () => {
           </thead>
 
           <tbody>
-            {examData.map((student: Student, index: number) => (
-              <tr key={student.id} className="border-b hover:bg-gray-100">
-                <td className="p-3 text-center">{index + 1}</td>
-                <td className="p-3">{student.name}</td>
-                <td className="p-3 border-r">{student.dob}</td>
-                <td className="p-3 text-center">{student.attendance}</td>
-                <td className="p-3 text-center">{student.oral}</td>
-                <td className="p-3 text-center">{student.fifteenMin}</td>
-                <td className="p-3 text-center">{student.coef1}</td>
-                <td className="p-3 text-center">{student.coef2}</td>
-                <td className="p-3 text-center text-blue-500">{student.avg}</td>
-                <td className={`p-3 text-center font-bold border-l ${student.yearAvg >= 5 ? 'text-green-500' : 'text-red-500'}`}>
-                  {student.yearAvg}
-                </td>
-                <td className="p-3 text-center">
-                  <img src={student.passed ? truee : falsee} alt={student.passed ? 'Đạt' : 'Không đạt'} className="w-5 h-5 mx-auto" />
-                </td>
+            {students.map((student, index) => {
+              const semester1 = student.semesters.find((s) => s.name.includes('Học kỳ 1'));
+              const scores = semester1?.scores || [];
 
-                <td className="p-3 text-gray-500">{student.updatedAt}</td>
-              </tr>
-            ))}
+              // Tạo map điểm theo loại
+              const getScoreByType = (typeName: string) => {
+                const found = scores.find((s) => s.scoreType.name.toLowerCase().includes(typeName.toLowerCase()));
+                return found?.score ?? '';
+              };
+              return (
+                <tr key={student.id} className="border-b hover:bg-gray-100">
+                  <td className="p-3 text-center">{index + 1}</td>
+                  <td className="p-3">{student.fullName}</td>
+                  <td className="p-3 border-r">{student.dateOfBirth?.split('T')[0]}</td>
+                  <td className="p-3 text-center">{getScoreByType('Chuyên cần')}</td>
+                  <td className="p-3 text-center">{getScoreByType('Miệng')}</td>
+                  <td className="p-3 text-center">{getScoreByType('15')}</td>
+                  <td className="p-3 text-center">{getScoreByType('Giữa kỳ')}</td>
+                  <td className="p-3 text-center">{getScoreByType('Cuối kỳ')}</td>
+                  <td className="p-3 text-center text-blue-500">
+                    {student.semesters.find((s) => s.name.includes('Học kỳ 1'))?.averageScore?.toFixed(2)}
+                  </td>
+                  <td className={`p-3 text-center font-bold border-l ${student.averageScore >= 5 ? 'text-green-500' : 'text-red-500'}`}>
+                    {student.averageScore.toFixed(2)}
+                  </td>
+                  <td className="p-3 text-center">
+                    <img src={student.passed ? truee : falsee} alt={student.passed ? 'Đạt' : 'Không đạt'} className="w-5 h-5 mx-auto" />
+                  </td>
+
+                  <td className="p-3 text-gray-500">{student.lastUpdate}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
