@@ -434,8 +434,8 @@ const Login: React.FC<studentLoginProps> = ({ isLogin, isChangePassword }) => {
         setLoading: setLoading,
         setRole: setRole,
       });
-    }
-  };
+    };
+  }
 
   const [isShowPassword, setShowPassword] = useState(false);
   const [isShowCurrentPassword, setShowCurrentPassword] = useState(false);

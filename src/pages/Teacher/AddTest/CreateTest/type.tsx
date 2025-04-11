@@ -1,14 +1,25 @@
 import dayjs from "dayjs";
 
 export interface TestFormData {
-    topic: string; // Chủ đề bài kiểm tra
-    format: "trac_nghiem" | "tu_luan"; // Hình thức kiểm tra
-    grade: string; // Khối lớp
-    selectedClasses: string[]; // Danh sách lớp được chọn
-    duration: { hours: number; minutes: number }; // Thời lượng
-    category: string; // Phân loại (Giữa kỳ, Học kỳ, ...)
-    startDate: dayjs.Dayjs | null; // Ngày bắt đầu
-    endDate: dayjs.Dayjs | null; // Ngày kết thúc
-    descriptions: string;
-    files: File | null;
+    id: number;
+    name: string;
+    type: number;
+    durationTime: number;
+    startTime: dayjs.Dayjs | null;
+    endTime: dayjs.Dayjs | null;
+    file: File | string;
+    description: string;
+    classIds: string;
+    fileSubmit: boolean;
+    gradeLevelsId: number;
+    subjectId: number;
+    teacherId: number;
+    classify: number
+}
+export interface ClassItem {
+    id: number;
+    name: string;
+    subjectQuantity: number
+    gradeLevel: { id: number; code: string; hoursSemester1: number; hoursSemester2: number; name: string }[]; // hoặc để any[] nếu chưa chắc
+    [key: string]: any; // cho phép các field khác nếu có
 }

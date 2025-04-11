@@ -7,11 +7,13 @@ import { ILeaveUpdate } from './type';
 import { toast } from 'react-toastify';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
+import createAxiosInstance from '../../../../utils/axiosInstance';
 
 const LeaveUpdateModal: React.FC = () => {
+    const axiosInstance = createAxiosInstance();
     const [loading, setLoading] = useState(false);
     const { id } = useParams<{ id: string }>();
-    const [cookies] = useCookies(["accessToken"]);
+    const [cookies] = useCookies(["accessToken", 'userId']);
     const [leaveData, setLeaveData] = useState<ILeaveUpdate>({
         leaveDate: null,
         note: '',
@@ -38,7 +40,6 @@ const LeaveUpdateModal: React.FC = () => {
         setLoading(true);
 
         try {
-
             const base64File = leaveData.decision
                 ? await convertFileToBase64(leaveData.decision as File)
                 : null;
@@ -56,39 +57,23 @@ const LeaveUpdateModal: React.FC = () => {
                 note: leaveData.note || "",
                 attachment: base64File,
                 status: 7,
-                leadershipId: Number(id),
+                leadershipId: Number(cookies.userId),
                 active: true,
             };
+            console.log(value);
+            console.log(cookies.userId);
 
             try {
                 // Thử cập nhật trước (PUT)
-                const response = await axios.put(
-                    `https://fivefood.shop/api/retirement/putByTeacherId/${id}`,
-                    value,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
+                const response = await axiosInstance.put(`api/retirement/putByTeacherId/${id}`, value);
 
                 toast.success("Cập nhật thành công!");
 
             } catch (error: any) {
                 if (error.response?.status === 404) {
-                    const dataPost = await axios.post(
-                        `https://fivefood.shop/api/retirement`,
-                        value,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                                "Content-Type": "application/json",
-                            },
-                        }
-                    );
+                    const dataPost = await axiosInstance.post(`api/retirement`, value);
 
-                    toast.success("Cập nhật thành công!");
+                    toast.success("Thêm thành công!");
 
                 } else {
                     console.error("❌ Lỗi API:", error);
@@ -104,6 +89,7 @@ const LeaveUpdateModal: React.FC = () => {
             setLoading(false);
         }
     };
+
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];

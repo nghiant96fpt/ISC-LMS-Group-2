@@ -17,7 +17,9 @@ import { toast } from 'react-toastify';
 import Spinner from '../../../components/Spinner';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-const API_BASE_URL = 'https://fivefood.shop/api';
+import createAxiosInstance from "../../../utils/axiosInstance";
+const API_BASE_URL = "https://fivefood.shop/api";
+
 
 const mapStatusToType = (status: number) => {
   switch (status) {
@@ -82,10 +84,11 @@ const AllTeacherProfiles: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [message, setMessage] = useState<string>('');
-  const [cookies] = useCookies(['accessToken']);
-  const [dataSubject, setDataSubject] = useState<ISubject[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [message, setMessage] = useState<string>('')
+  const [cookies] = useCookies(["accessToken"]);
+  const axiosInstance = createAxiosInstance();
+  const [dataSubject, setDataSubject] = useState<ISubject[]>([])
   const handleMenuClick = (key: string, id?: number) => {
     if (key === '1') {
       navigate(`/leadership/InstructorProfile/${id}?tab=edit`);
@@ -97,6 +100,7 @@ const AllTeacherProfiles: React.FC = () => {
       navigate(`/leadership/all-teacher-profiles/stop-working/${id}`);
     }
   };
+
 
   const filteredItems = (status: number) => {
     return items.filter((item) => {
@@ -153,8 +157,9 @@ const AllTeacherProfiles: React.FC = () => {
 
   const fetchSubjectName = async () => {
     try {
-      const response = await axios.get('https://fivefood.shop/api/subjects');
-      setDataSubject(response.data.data);
+      const response = await axiosInstance.get('https://fivefood.shop/api/subjects');
+      setDataSubject(response.data.data)
+
     } catch (error) {
       console.log(error);
     }
@@ -216,11 +221,14 @@ const AllTeacherProfiles: React.FC = () => {
   // api xóa
   const deleteTeacher = async (id: number) => {
     try {
-      const response = await axios.delete(`${API_BASE_URL}/teacherinfos/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axiosInstance.delete(
+        `${API_BASE_URL}/teacherinfos/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (response.status === 200 || response.status === 204) {
         return id;
       } else {
@@ -306,9 +314,13 @@ const AllTeacherProfiles: React.FC = () => {
       <AddressList addressList={urls} />
 
       <div className="flex justify-between items-center mb-4">
-        <DropdownSelectionComponent label={option_date[0]} options={option_date} width={144} />
-        <div className="space-x-2 flex justify-between">
-          <button className="border-r-[2px]" title="Xóa" onClick={handleDeleteClickAll}>
+        <div></div>
+        <div className="space-x-2 flex justify">
+          <button
+            className="border-r-[2px]"
+            title="Xóa"
+            onClick={handleDeleteClickAll}
+          >
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 fillRule="evenodd"

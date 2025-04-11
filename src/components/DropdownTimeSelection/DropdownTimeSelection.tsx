@@ -10,33 +10,46 @@ const DropdownTimeSelection: React.FC<DropdownTimeSelectionProps> = ({
     width = 190,
     className = "",
 }) => {
-    const [h1, h2] = value.split(":")[0].split("");
-    const [m1, m2] = value.split(":")[1].split("");
     const [isEditing, setIsEditing] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const [selected, setSelected] = useState({
-        h1: h1 || "0",
-        h2: h2 || "0",
-        m1: m1 || "0",
-        m2: m2 || "0",
+        h1: value[0] || "0",
+        h2: value[1] || "0",
+        m1: value[3] || "0",
+        m2: value[4] || "0",
     });
+
+    useEffect(() => {
+        const [hours, minutes] = value.split(":");
+        const [h1, h2] = hours.split("");
+        const [m1, m2] = minutes.split("");
+        setSelected({
+            h1: h1 || "0",
+            h2: h2 || "0",
+            m1: m1 || "0",
+            m2: m2 || "0",
+        });
+    }, [value]);
 
     const handleSelect = (key: "h1" | "h2" | "m1" | "m2", value: string) => {
         setSelected((prev) => {
             const newTime = { ...prev, [key]: value };
 
+            // Ensure h2 doesn't exceed 3 if h1 is 2 (i.e., max 23)
             if (key === "h1" && value === "2" && parseInt(newTime.h2) > 3) {
                 newTime.h2 = "3";
             }
+
+            const newValue = `${newTime.h1}${newTime.h2}:${newTime.m1}${newTime.m2}`;
+            onChange(newValue); // 🔥 Gọi luôn để giữ đúng dữ liệu hiển thị
 
             return newTime;
         });
     };
 
     const handleSave = () => {
-        onChange(`${selected.h1}${selected.h2}:${selected.m1}${selected.m2}`);
-        setIsEditing(false);
+        setIsEditing(false); // Chỉ đóng lại dropdown, không cần gọi onChange vì đã gọi rồi khi chọn
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -45,28 +58,26 @@ const DropdownTimeSelection: React.FC<DropdownTimeSelectionProps> = ({
         }
     };
 
-    const handleClickOutside = (e: MouseEvent) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-            handleSave();
-        }
-    };
-
     useEffect(() => {
-        if (isEditing) {
-            document.addEventListener("mousedown", handleClickOutside);
-        } else {
-            document.removeEventListener("mousedown", handleClickOutside);
-        }
+        if (!isEditing) return;
+
+        const handleClickOutside = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                handleSave();
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [isEditing]);
 
     return (
-        <div className={`relative ${className} `} style={{ width }} ref={dropdownRef}>
+        <div className={`relative ${className}`} style={{ width }} ref={dropdownRef}>
             {isEditing ? (
                 <div
-                    className="flex gap-1 border border-gray-300 rounded p-1 bg-white items-center "
+                    className="flex gap-1 border border-gray-300 rounded p-1 bg-white items-center"
                     onKeyDown={handleKeyDown}
                     tabIndex={0}
                 >

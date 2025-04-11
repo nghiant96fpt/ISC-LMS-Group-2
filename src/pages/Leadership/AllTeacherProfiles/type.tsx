@@ -7,6 +7,7 @@ export interface ILecturerProfile {
     subjectId: number;
     position: string;
     status: number;
+    userId: number;
 }
 export interface ISubject {
     id: number;
