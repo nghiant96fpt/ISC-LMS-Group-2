@@ -60,6 +60,7 @@ const UpdateTransferAcceptance = () => {
         setValue('fromSchool', result.transferToSchool);
         setValue('reason', result.reason);
         setValue('attachment', result.attachmentName);
+        setValue('transferSemester', result.transferSemester);
         setSelectedProvinceCode(result.provinceCode);
         setSelectedDistrictCode(result.districtCode);
         setFileName(result.attachmentName);
@@ -195,7 +196,12 @@ const UpdateTransferAcceptance = () => {
         {/* Học kỳ chuyển */}
         <div className="flex flex-col md:flex-row justify-between items-center">
           <label className="block font-medium">Học kỳ chuyển:</label>
-          <DropdownSelectionComponent width="585px" options={['Học kỳ I', 'Học kỳ II']} placeholder="Học kỳ I" />
+          <input
+            {...register('transferSemester')}
+            placeholder="Mã học viên"
+            disabled
+            className="w-full md:w-[585px] p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
+          />
         </div>
 
         {/* Tỉnh/Thành */}
