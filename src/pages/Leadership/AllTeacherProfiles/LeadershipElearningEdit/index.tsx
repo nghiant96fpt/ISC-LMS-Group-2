@@ -23,7 +23,7 @@ const defaultAvatar =
 
 const gender = [
   { label: 'Nam', value: 'true' },
-  { label: 'nữ', value: 'false' },
+  { label: 'Nữ', value: 'false' },
 ];
 
 const option_nation = [
