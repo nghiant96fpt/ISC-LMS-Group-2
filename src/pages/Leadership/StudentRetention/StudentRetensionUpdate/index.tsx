@@ -34,6 +34,8 @@ const StudentRetentionUpdate = () => {
   const [classId, setClassId] = useState();
   const [listClass, setListClass] = useState<SchoolClass[]>([]);
   const [studentOptions, setStudentOptions] = useState<any[]>([]);
+  const [FullName, setFullName] = useState('');
+
   // console.log('refreshToken', refreshToken);
 
   useEffect(() => {
@@ -48,27 +50,38 @@ const StudentRetentionUpdate = () => {
   }, [dataEdit]);
 
   useEffect(() => {
-    if (listClass && id) {
-      const classId = Number(id);
-      const defaultClass = listClass?.find((cls) => cls.id === classId);
+    if (listClass && selectedStudentRetention) {
+      const defaultClass = listClass?.find((cls) => cls.name === selectedStudentRetention?.className);
+      // console.log('defaultClass', defaultClass);
+      // console.log('listClass', listClass);
+
       if (defaultClass) {
-        setValue('className', defaultClass.id.toString());
+        // setValue('className', defaultClass.id.toString());
+
+        const matchedStudent = defaultClass.student.find((stu) => stu.fullName === selectedStudentRetention?.fullName);
+        // console.log('matchedStudent', matchedStudent);
+
+        if (matchedStudent) {
+          setFullName(matchedStudent?.fullName);
+          // setValue('studentName', matchedStudent?.id);
+        }
         setStudentOptions(defaultClass.student);
       }
     }
-  }, [listClass, id, setValue]);
+  }, [listClass, selectedStudentRetention, setValue]);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchOneStudentRetention(id));
     }
   }, [dispatch, id]);
+  // console.log('selectedStudentRetention', selectedStudentRetention);
 
   useEffect(() => {
     if (selectedStudentRetention) {
       const data = selectedStudentRetention as any;
       setValue('className', data?.className || '');
-      setValue('studentName', `Học viên ${data?.fullName || ''}`);
+      // setValue('studentName', `Học viên ${data?.fullName || ''}`);
       setValue('semesterId', data?.semester?.id || '');
       setValue('reason', data?.reason || '');
       setValue('retentionPeriod', data?.retentionPeriod || '');
@@ -156,7 +169,9 @@ const StudentRetentionUpdate = () => {
               {...register('studentName')}
               className="w-full p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
             >
-              <option value="">Chọn học viên</option>
+              <option selected value="">
+                {FullName}
+              </option>
               {studentOptions.map((student) => (
                 <option key={student.id} value={student.id}>
                   {student.fullName}

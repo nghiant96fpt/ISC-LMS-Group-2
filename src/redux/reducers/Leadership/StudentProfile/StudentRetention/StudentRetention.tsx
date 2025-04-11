@@ -138,7 +138,7 @@ export const fetchStudentRetention = createAsyncThunk(
   },
 );
 
-export const fetchOneStudentRetention = createAsyncThunk('studentRetention/fetchOneStudentRetention', async (id: string) => {
+export const fetchOneStudentRetention = createAsyncThunk('studentRetention/fetchOneStudentRetention', async (id: string | number) => {
   const response = await fetch(`${API_URL}/${id}`);
 
   if (!response.ok) {
