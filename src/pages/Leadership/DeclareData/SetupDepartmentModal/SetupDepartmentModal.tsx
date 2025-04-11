@@ -25,6 +25,7 @@ const DepartmentSettings: React.FC = () => {
   const [search, setSearch] = useState("");
   const [alert, setAlert] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,11 +34,8 @@ const DepartmentSettings: React.FC = () => {
       axiosInstance.get(`${API_URL}/subject-groups/${id}`)
         .then((response) => {
           if (response.data.data) {
-            console.log("Subject Group:", response.data.data);
-
             setSubjectGroup(response.data.data);
-          } else {
-            console.error("Không tìm thấy dữ liệu tổ - bộ môn");
+            setName(response.data.data.name);
           }
           setLoading(false);
         })
@@ -98,7 +96,7 @@ const DepartmentSettings: React.FC = () => {
     //   .map((subject) => subject.id);
 
     const updateData = {
-      name: subjectGroup.name,
+      name: name,
       teacherId: selectedTeacherId,
     };
 
@@ -149,14 +147,11 @@ const DepartmentSettings: React.FC = () => {
             <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">Tổ - Bộ môn:</label>
             <input
               type="text"
-              className="w-full md:w-9/12 p-2 border border-gray-300 rounded-lg text-black-text cursor-pointer"
-              value={subjectGroup ? subjectGroup.name : ""}
-              onChange={(e) => {
-                if (subjectGroup) {
-                  setSubjectGroup({ ...subjectGroup, name: e.target.value });
-                }
-              }}
+              className="w-full md:w-9/12 p-2 border border-gray-300 rounded-lg text-black-text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
+
           </div>
 
           <div className="flex flex-col md:flex-row items-center justify-between mb-4">
