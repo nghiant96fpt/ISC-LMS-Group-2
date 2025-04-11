@@ -11,6 +11,11 @@ import Status from './../../../../../components/Status';
 import arrow_right from '../../../../../assets/icons/chevron_big_right.png';
 import arrow_left from '../../../../../assets/icons/arrow left.png';
 import DeleteConfirmation from '../../../../../components/DeleteConfirmation';
+import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
+
+const token = Cookies.get('accessToken');
+const API_URL = 'https://fivefood.shop/api/studentinfos/all';
 import StatusBar from '../../../../../components/StatusBar/StatusBar';
 import createAxiosInstance from '../../../../../utils/axiosInstance';
 
@@ -19,7 +24,6 @@ interface TableBodyProps {
 }
 
 const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
-  const API_URL = 'https://fivefood.shop/api/studentinfos/all';
   const [selected, setSelected] = useState<string[]>([]);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
   const [studentToDelete, setStudentToDelete] = useState<string | null>(null);
@@ -28,30 +32,41 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const axiosTrue = createAxiosInstance(true);
   const navigator = useNavigate();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosTrue.get(API_URL);
-        if (response?.data?.code === 0) {
-          setStudents(response.data?.data);
+        console.log('Token đang dùng:', token);
+        const response = await axios.get(API_URL, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const result = response.data; // axios đã tự parse JSON
+
+        if (result.code === 0) {
+          setStudents(result.data);
         } else {
           setError('Lỗi tải dữ liệu');
         }
       } catch (error) {
+        console.error('Lỗi khi gọi API:', error);
         setError('Lỗi kết nối API');
       } finally {
         setIsLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
   const filteredStudents = students.filter(
-    (student) => student?.fullName.toLowerCase().includes(searchTerm.toLowerCase()) || student?.code.toLowerCase().includes(searchTerm.toLowerCase()),
+    (student) =>
+      student?.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) || student?.code?.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const toggleDropdown = (id: string) => {
@@ -78,10 +93,26 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
     setStudentToDelete(null);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (studentToDelete) {
-      setStudents((prev) => prev.filter((s) => s.id !== studentToDelete));
-      setStudentToDelete(null);
+      try {
+        const response = await axios.delete(`https://fivefood.shop/api/studentinfos/${studentToDelete}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.data.code === 0) {
+          setStudents((prev) => prev.filter((s) => s.userId !== studentToDelete));
+          toast.success('Xóa học viên thành công');
+        } else {
+          toast.error('Không thể xóa học viên. Vui lòng thử lại.');
+        }
+      } catch (err) {
+        toast.error('Đã xảy ra lỗi khi xóa học viên.');
+      } finally {
+        setStudentToDelete(null);
+      }
     }
   };
 
@@ -112,44 +143,37 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
               </th>
               <th>
                 <div className="th-content">
-                  Mã học viên
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Mã học viên <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
               <th>
                 <div className="th-content">
-                  Tên học viên
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Tên học viên <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
               <th>
                 <div className="th-content">
-                  Ngày sinh
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Ngày sinh <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
               <th>
                 <div className="th-content">
-                  Giới tính
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Giới tính <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
               <th>
                 <div className="th-content">
-                  Dân tộc
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Dân tộc <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
               <th>
                 <div className="th-content">
-                  Lớp
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Lớp <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
-              <th style={{maxWidth: 150}}>
+              <th style={{ maxWidth: 150 }}>
                 <div className="th-content">
-                  Tình trạng
-                  <img src={arrow} alt="Sort Icon" className="sort-icon" />
+                  Tình trạng <img src={arrow} alt="Sort Icon" className="sort-icon" />
                 </div>
               </th>
               <th></th>
@@ -158,9 +182,7 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
           <tbody>
             {filteredStudents.length === 0 ? (
               <tr className="text-center">
-                <td colSpan={9} className="text-center">
-                  Không có học viên nào phù hợp.
-                </td>
+                <td colSpan={9}>Không có học viên nào phù hợp.</td>
               </tr>
             ) : (
               currentData.map((student, index) => (
@@ -190,48 +212,47 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
                       <ul className="dropdown-menu">
                         <li>
                           <Link to="">
-                            <button onClick={() => console.log(`Sửa hồ sơ ${student?.userId}`)}>Sửa hồ sơ</button>
+                            <button>Sửa hồ sơ</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="class-transfer-method">
-                            <button onClick={() => console.log(`Chuyển lớp ${student?.userId}`)}>Chuyển lớp</button>
+                            <button>Chuyển lớp</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="school-transfer-method">
-                            <button onClick={() => console.log(`Chuyển trường ${student?.userId}`)}>Chuyển trường</button>
+                            <button>Chuyển trường</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="reservation-method">
-                            <button onClick={() => console.log(`Bảo lưu ${student?.userId}`)}>Bảo lưu</button>
+                            <button>Bảo lưu</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="exemption-method">
-                            <button onClick={() => console.log(`Cập nhật miễn giảm ${student?.userId}`)}>Cập nhật miễn giảm</button>
+                            <button>Cập nhật miễn giảm</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="reward-method">
-                            <button onClick={() => console.log(`Cập nhật khen thưởng ${student?.userId}`)}>Cập nhật khen thưởng</button>
+                            <button>Cập nhật khen thưởng</button>
                           </Link>
                         </li>
                         <li>
                           <Link to="disciplinary-method">
-                            <button onClick={() => console.log(`Cập nhật kỷ luật ${student?.userId}`)}>Cập nhật kỷ luật</button>
+                            <button>Cập nhật kỷ luật</button>
                           </Link>
                         </li>
                       </ul>
                     )}
-                    {openDropdownId === student?.userId && <ul className="dropdown-menu">{/* Dropdown actions */}</ul>}
                     <button onClick={() => handleOpenModal(student?.userId)}>
                       <img className="trashIcon" src={trash} alt="Delete" />
-                      {studentToDelete === student?.userId && (
+                      {studentToDelete === student?.userId && studentToDelete !== null && (
                         <DeleteConfirmation
                           title="Xác nhận xóa học viên"
-                          description={`Bạn có chắc chắn muốn xóa học viên ID ${studentToDelete}?\nHành động này không thể hoàn tác.`}
+                          description="Bạn có chắc chắn muốn xóa học viên? Hành động này không thể hoàn tác."
                           onCancel={handleCloseModal}
                           onConfirm={handleConfirmDelete}
                         />
@@ -244,6 +265,7 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
           </tbody>
         </table>
       </div>
+
       <div className="footer-content-classroomsettings flex justify-between items-center mt-4">
         <div className="flex items-center">
           <span className="mr-2">Hiển thị</span>
@@ -257,11 +279,11 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
         </div>
 
         <div className="pagination flex gap-2">
-          <button onClick={() => {goToPage(currentPage - 1)}} disabled={currentPage === 1}>
+          <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
             <img src={arrow_left} alt="Trước" className="h-4" />
           </button>
           {[...Array(totalPages)].map((_, index) => (
-            <button key={index} onClick={() => goToPage(index)} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+            <button key={index} onClick={() => goToPage(index + 1)} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
               {index + 1}
             </button>
           ))}

@@ -9,6 +9,8 @@ interface StudentDiscipline {
 }
 
 const StudentDisciplineTable: React.FC = () => {
+  const API_URL = 'https://fivefood.shop/api/studentinfos/all';
+
   const disciplineData: StudentDiscipline[] = [
     {
       studentId: '20206A',
