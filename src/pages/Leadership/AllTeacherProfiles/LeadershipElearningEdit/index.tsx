@@ -77,11 +77,13 @@ const TeacherProfileEdit = () => {
   } = useForm<IUser & ITeacherInfo>({
     mode: 'onChange',
     defaultValues: {
+      issuedPlace: teacherInfo?.issuedPlace,
       avatarUrl: Use?.avatarUrl,
       fullName: teacherData?.fullName,
       position: teacherData?.position,
       cccd: teacherInfo?.cccd,
-      unionDate: teacherInfo.unionDate,
+
+      unionDate: teacherInfo?.unionDate ? dayjs(teacherInfo?.unionDate) : null,
       placeBirth: Use.placeBirth,
       gender: teacherData.gender,
       dob: teacherData?.birthDate ? dayjs(teacherData.birthDate) : null,
@@ -204,8 +206,16 @@ const TeacherProfileEdit = () => {
   };
   const selectedGender = (option: DropdownOption) => {
     setSelectedOptionGender(option);
-    setValue('gender', option.value === 'true');
+    setValue('gender', option.value === 'true'); // Ép string => boolean
   };
+
+  useEffect(() => {
+    if (typeof teacherData?.gender === 'boolean') {
+      const selected = gender.find((g) => g.value === String(teacherData.gender)); // Chuyển boolean => string để so sánh
+      setSelectedOptionGender(selected ?? null);
+      setValue('gender', teacherData.gender); // set boolean vào react-hook-form
+    }
+  }, [teacherData?.gender]);
 
   const selectedSubjectoption = (option: DropdownOption) => {
     setSelectedsubject(option);
@@ -303,7 +313,7 @@ const TeacherProfileEdit = () => {
           issuedDate: data.issuedDate?.toISOString(),
           issuedPlace: data.issuedPlace,
           unionMember: data.unionMember ?? false,
-          unionDate: data.unionDate ? data.unionDate.toISOString() : '',
+          unionDate: data.unionDate,
           unionPlace: data.unionPlace ?? '',
           partyMember: data.partyMember ?? false,
           partyDate: data.partyDate ? data.partyDate.toISOString() : '',
@@ -585,16 +595,24 @@ const TeacherProfileEdit = () => {
                       <Controller
                         name="gender"
                         control={control}
-                        rules={{ required: true }}
-                        render={({ field }) => (
-                          <Dropdown
-                            options={gender}
-                            selectedOption={selectedOptionGender}
-                            placeholder="Giới tính"
-                            showArrow={true}
-                            handleOptionClick={selectedGender}
-                            headerClassName="w-full"
-                          />
+                        rules={{
+                          validate: (value) => (typeof value === 'boolean' ? true : 'Giới tính là bắt buộc'),
+                        }}
+                        render={({ field, fieldState }) => (
+                          <>
+                            <Dropdown
+                              options={gender}
+                              selectedOption={selectedOptionGender}
+                              placeholder="Giới tính"
+                              showArrow={true}
+                              handleOptionClick={(option) => {
+                                selectedGender(option); // update UI
+                                field.onChange(option.value === 'true'); // update form
+                              }}
+                              headerClassName="w-full"
+                            />
+                            {fieldState.error && <p className="text-red-500 text-sm mt-1">{fieldState.error.message}</p>}
+                          </>
                         )}
                       />
                     </div>
@@ -943,7 +961,7 @@ const TeacherProfileEdit = () => {
                     <div className="w-full">
                       <input
                         type="text"
-                        value={teacherInfo?.issuedPlace ?? null}
+                        // value={teacherInfo?.issuedPlace ?? null}
                         className="w-full border rounded p-2"
                         {...register('issuedPlace', {
                           required: 'Nơi cấp không được để trống', // Bắt lỗi không để trống
@@ -960,31 +978,46 @@ const TeacherProfileEdit = () => {
                     <input type="checkbox" className="h-5 w-5" onChange={setUsUnionPlace.bind(null, !isUnionPlace)} />
                     <span className="text-gray-500">Đoàn viên</span>
                   </div>
-
                   {/* 
                   <div className="flex items-center gap-2">
                     <strong className="text-gray-500 whitespace-nowrap w-40">Ngày cấp căn cước:</strong>
                     <div className="w-full">
-                      <DateInput
-                        value={dataTeacherInfos?.issuedDate ?? null}
-                        {...register('issuedDate')}
-                        onChange={handleIssuedDate}
-                        width="100%"
-                        className="border-gray-300"
+                      <Controller
+                        name="issuedDate"
+                        control={control}
+                        render={({ field }) => (
+                          <DateInput
+                            value={field.value}
+                            onChange={(date) => {
+                              field.onChange(date); // cập nhật giá trị trong form
+                              handleIssuedDate?.(date); // nếu bạn cần xử lý thêm ngoài form
+                            }}
+                            width="100%"
+                            className="border-gray-300"
+                          />
+                        )}
                       />
                     </div>
                   </div> */}
 
                   <div className="flex items-center gap-2 relative">
                     <strong className="text-gray-500 whitespace-nowrap w-40">Ngày vào đoàn:</strong>
-
-                    <DateInput
-                      value={teacherInfo?.unionDate ? dayjs(teacherInfo.unionDate) : null}
-                      {...register('unionDate')}
-                      onChange={handleUnionDate}
-                      width="100%"
-                      className="border-gray-300"
+                    <Controller
+                      name="unionDate"
+                      control={control}
+                      render={({ field }) => (
+                        <DateInput
+                          value={field.value}
+                          onChange={(date) => {
+                            field.onChange(date); // cập nhật giá trị trong form
+                            handleUnionDate?.(date); // nếu bạn cần xử lý thêm ngoài form
+                          }}
+                          width="100%"
+                          className="border-gray-300"
+                        />
+                      )}
                     />
+                    {/* <DateInput {...register('unionDate')} onChange={handleUnionDate} width="100%" className="border-gray-300" /> */}
                   </div>
                   <div className="flex items-center gap-4">
                     <strong className="text-gray-500 whitespace-nowrap w-40">Nơi sinh:</strong>
@@ -1011,12 +1044,27 @@ const TeacherProfileEdit = () => {
 
                   <div className="flex items-center gap-4 relative">
                     <strong className="text-gray-500 whitespace-nowrap w-40">Ngày vào đảng:</strong>
-                    <DateInput
+                    <Controller
+                      name="partyDate"
+                      control={control}
+                      render={({ field }) => (
+                        <DateInput
+                          value={field.value}
+                          onChange={(date) => {
+                            field.onChange(date); // cập nhật giá trị trong form
+                            handlePartyDate?.(date); // nếu bạn cần xử lý thêm ngoài form
+                          }}
+                          width="100%"
+                          className="border-gray-300"
+                        />
+                      )}
+                    />
+                    {/* <DateInput
                       value={isPartyMember ? teacherInfo?.partyDate ?? null : null}
                       onChange={handlePartyDate}
                       width="100%"
                       className="border-gray-300"
-                    />
+                    /> */}
                   </div>
                 </div>
 
