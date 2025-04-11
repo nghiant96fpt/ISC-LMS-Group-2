@@ -16,7 +16,7 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
   return (
     <div className="w-[47%]">
       <div className="flex items-center mb-2">
-        <p className="w-[118px]">Họ và tên</p>
+        <p className="w-[118px]">Họ và tên <span className='text-red-500 font-medium text-[20px]'>*</span></p>
         <Input
           className="h-[40px] min-w-[270px]"
           placeholder="Nhập họ và tên"
@@ -29,7 +29,7 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
         />
       </div>
       <div className="flex items-center mb-2 justify-content-between">
-        <p className="w-[118px]">Giới tính</p>
+        <p className="w-[118px]">Giới tính <span className='text-red-500 font-medium text-[20px]'>*</span></p>
         <div className='max-w-[115px]'>
           <Dropdown
             size="short"
@@ -47,10 +47,10 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
             borderColor={errors?.gender && '#EF4444'}
           />
         </div>
-        {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1">{errors?.gender?.message}</p>}
       </div>
+      {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1">{errors?.gender?.message}</p>}
       <div className="flex items-center">
-        <p className="w-[118px]">Ngày sinh</p>
+        <p className="w-[118px]">Ngày sinh <span className='text-red-500 font-medium text-[20px]'>*</span></p>
         <CalendarInput
           placeholder="Chọn ngày sinh"
           style={{ maxWidth: 300 }}
@@ -68,7 +68,7 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
       </div>
       {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.birthday?.message}</p>}
       <div className="flex items-center mb-2">
-        <p className="w-[118px]">Nơi sinh</p>
+        <p className="w-[118px]">Nơi sinh <span className='text-red-500 font-medium text-[20px]'>*</span></p>
         <Input
           className="h-[40px] min-w-[270px]"
           placeholder="Nhập nơi sinh"
@@ -81,7 +81,7 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
         />
       </div>
       <div className="flex items-center mb-2">
-        <p className="w-[118px]">Dân tộc</p>
+        <p className="w-[118px]">Dân tộc <span className='text-red-500 font-medium text-[20px]'>*</span></p>
         <Input
           className="h-[40px] min-w-[270px]"
           placeholder="Nhập thông tin dân tộc"
@@ -94,7 +94,7 @@ const LeftForm: React.FC<leftFormProps> = ({ register, errors, setValue, watch, 
         />
       </div>
       <div className="flex items-center mb-2">
-        <p className="w-[118px]">Tôn giáo</p>
+        <p className="w-[118px]">Tôn giáo <span className='text-red-500 font-medium text-[20px]'>*</span></p>
         <Input
           className="h-[40px] min-w-[270px]"
           placeholder="Nhập thông tin tôn giáo"

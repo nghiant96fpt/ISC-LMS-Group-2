@@ -249,7 +249,7 @@ const StudentCU = (props: stdCUDProps) => {
     { linkName: `${props.isUpdate ? sst?.fullName : 'Thêm học viên'}`, link: '/leadership/new-student' },
   ];
 
-  const [selectedImage, setSelectedImage] = useState<string>(sst?.avatarUrl || UserDefaultAVT);
+  const [selectedImage, setSelectedImage] = useState<string>(UserDefaultAVT);
   const cameraEditRef = useRef<HTMLInputElement>(null);
 
   const handleActiveCameraEdit = () => {
@@ -514,7 +514,7 @@ const StudentCU = (props: stdCUDProps) => {
               <div className="px-8 flex justify-between mb-5">
                 <div className="w-[15%] flex justify-center items-center relative h-max" onClick={handleActiveCameraEdit}>
                   <img
-                    src={`${sst?.avatarUrl ? `data:image/*;base64, ${sst.avatarUrl}` : selectedImage}`}
+                    src={`${sst?.avatarUrl && selectedImage === UserDefaultAVT ? `data:image/*;base64, ${sst.avatarUrl}` : selectedImage}`}
                     alt="default-avt"
                     className="w-[160px] h-[160px] object-cover rounded-full"
                   />
@@ -569,7 +569,7 @@ const StudentCU = (props: stdCUDProps) => {
               </div>
             </Card.Body>
             <Card.Header className="py-2 mt-[30px]">
-              <p className="px-8 text-2xl font-bold text-white pb-0">Thông tin gia đình</p>
+              <p className="px-8 text-2xl font-bold text-white pb-0">Thông tin gia đình <span className='font-medium text-[20px]'>*</span></p>
             </Card.Header>
             <Card.Body>
               <div className="px-8">

@@ -48,7 +48,7 @@ const RightForm: React.FC<RightFormProps> = ({
   return (
     <div className="w-[47%]">
       <div className="flex items-center mb-1">
-        <p className="w-[118px]">Niên khóa</p>
+        <p className="w-[118px]">Niên khóa <span className='text-red-500 font-medium text-[20px]'>*</span></p>
         <div>
           <Dropdown
             size="medium"
@@ -68,7 +68,7 @@ const RightForm: React.FC<RightFormProps> = ({
       {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.academicYear?.message}</p>}
       <div className="flex items-center mb-1">
         <p className="w-[118px]" style={{ width: 118 }}>
-          Khối
+          Khối <span className='text-red-500 font-medium text-[20px]'>*</span>
         </p>
         <div className="max-w-[115px]">
           <Dropdown
@@ -103,7 +103,7 @@ const RightForm: React.FC<RightFormProps> = ({
       {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.grade?.message}</p>}
       {errors?.class && !errors?.grade && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.class?.message}</p>}
       <div className="flex items-center mb-1">
-        <p className="w-[118px]">Mã học viên</p>
+        <p className="w-[118px]">Mã học viên <span className='text-red-500 font-medium text-[20px]'>*</span></p>
         <div className="flex items-center">
           <Input
             className={`h-[40px] me-2 ${errors?.code ? 'border-red-500' : ''}`}
@@ -129,7 +129,7 @@ const RightForm: React.FC<RightFormProps> = ({
       </div>
       {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.code?.message}</p>}
       <div className="flex items-center mb-1">
-        <p className="w-[118px]">Ngày nhập học</p>
+        <p className="w-[118px]">Ngày nhập học <span className='text-red-500 font-medium text-[20px]'>*</span></p>
         <CalendarInput
           placeholder="Chọn ngày sinh"
           style={{ maxWidth: 300 }}
@@ -144,7 +144,7 @@ const RightForm: React.FC<RightFormProps> = ({
       </div>
       {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.enrollmentDate?.message}</p>}
       <div className="flex items-center mb-1">
-        <p className="w-[118px]">Hình thức</p>
+        <p className="w-[118px]">Hình thức <span className='text-red-500 font-medium text-[20px]'>*</span></p>
         <Dropdown
           size="medium"
           options={entries}
@@ -161,7 +161,7 @@ const RightForm: React.FC<RightFormProps> = ({
       </div>
       {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.entry?.message}</p>}
       <div className="flex items-center mb-1">
-        <p className="w-[118px]">Trạng thái</p>
+        <p className="w-[118px]">Trạng thái <span className='text-red-500 font-medium text-[20px]'>*</span></p>
         <Dropdown
           size="medium"
           options={statuses}

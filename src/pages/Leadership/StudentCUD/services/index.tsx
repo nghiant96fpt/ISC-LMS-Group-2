@@ -99,37 +99,42 @@ export const handleCreateUser = (servicesProps: servicesProps): void => {
     console.log('student: ', studentdata);
     console.log('family: ', familyData);
 
-    axiosTrue
-      .post('api/users', studentdata)
-      .then((response) => {
-        if (response?.data) {
-          if (response?.data?.code === 1) {
-            toast.error(response?.data?.message);
-          } else {
-            toast.success('Thêm mới học viên thành công !');
-            const userId = response?.data?.data?.id;
-            try {
-              if (familyData) {
-                familyData.forEach((member) => {
-                  member.userId = userId;
-                  axiosTrue.post('api/studentinfos', member);
-                });
-                toast.success('Thêm thông tin gia đình của học viên thành công !');
+    if (familyData?.length > 0) {
+      axiosTrue
+        .post('api/users', studentdata)
+        .then((response) => {
+          if (response?.data) {
+            if (response?.data?.code === 1) {
+              toast.error(response?.data?.message);
+            } else {
+              toast.success('Thêm mới học viên thành công !');
+              const userId = response?.data?.data?.id;
+              try {
+                if (familyData) {
+                  familyData.forEach((member) => {
+                    member.userId = userId;
+                    axiosTrue.post('api/studentinfos', member);
+                  });
+                  toast.success('Thêm thông tin gia đình của học viên thành công !');
+                }
+              } catch (error) {
+                toast.error('Không thể thêm thông tin gia đình của học viên');
               }
-            } catch (error) {
-              toast.error('Không thể thêm thông tin gia đình của học viên');
+              servicesProps.reset();
             }
-            servicesProps.reset();
           }
-        }
-      })
-      .catch((err) => {
-        toast.error('Không thể thêm học viên !');
-        console.log(err);
-      })
-      .finally(() => {
-        servicesProps.setLoading(false);
-      });
+        })
+        .catch((err) => {
+          toast.error('Không thể thêm học viên !');
+          console.log(err);
+        })
+        .finally(() => {
+          servicesProps.setLoading(false);
+        });
+    } else {
+      toast.error('Ít nhất phải có một thông tin gia đình của học viên');
+      servicesProps.setLoading(false);
+    }
   }
 };
 
@@ -180,36 +185,40 @@ export const handleUpdateUser = (servicesProps: servicesProps, id: number): void
 
     console.log('student: ', studentdata);
     console.log('family: ', familyData);
-
-    axiosTrue
-      .put(`api/users/${id}`, studentdata)
-      .then((response) => {
-        if (response?.data) {
-          if (response?.data?.code === 1) {
-            toast.error(response?.data?.message);
-          } else {
-            toast.success('Cập nhật mới học viên thành công !');
-            const userId = response?.data?.data?.id;
-            try {
-              if (familyData) {
-                familyData.forEach((member) => {
-                  member.userId = userId;
-                  axiosTrue.put(`api/studentinfos/${id}`, member);
-                });
-                toast.success('Cập nhật thông tin gia đình của học viên thành công !');
+    if (familyData?.length > 0) {
+      axiosTrue
+        .put(`api/users/${id}`, studentdata)
+        .then((response) => {
+          if (response?.data) {
+            if (response?.data?.code === 1) {
+              toast.error(response?.data?.message);
+            } else {
+              toast.success('Cập nhật mới học viên thành công !');
+              const userId = response?.data?.data?.id;
+              try {
+                if (familyData) {
+                  familyData.forEach((member) => {
+                    member.userId = userId;
+                    axiosTrue.put(`api/studentinfos/${id}`, member);
+                  });
+                  toast.success('Cập nhật thông tin gia đình của học viên thành công !');
+                }
+              } catch (error) {
+                toast.error('Không thể cập nhật thông tin gia đình của học viên');
               }
-            } catch (error) {
-              toast.error('Không thể cập nhật thông tin gia đình của học viên');
             }
           }
-        }
-      })
-      .catch((err) => {
-        toast.error('Không thể cập nhật học viên !');
-        console.log(err);
-      })
-      .finally(() => {
-        servicesProps.setLoading(false);
-      });
+        })
+        .catch((err) => {
+          toast.error('Không thể cập nhật học viên !');
+          console.log(err);
+        })
+        .finally(() => {
+          servicesProps.setLoading(false);
+        });
+    } else {
+      toast.error('Ít nhất phải có một thông tin gia đình của học viên');
+      servicesProps.setLoading(false);
+    }
   }
 };

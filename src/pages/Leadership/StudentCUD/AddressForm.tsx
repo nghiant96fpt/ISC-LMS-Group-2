@@ -36,7 +36,7 @@ const AddressForm: React.FC<formProps> = ({
     <div className="w-full flex justify-between">
       <div className="w-[47%]">
         <div className="w-full flex items-center mb-1">
-          <p className="w-[118px]">Tỉnh/Thành phố</p>
+          <p className="w-[118px]">Tỉnh/Thành <span className='text-red-500 font-medium text-[20px]'>*</span></p>
           <Dropdown
             size="medium"
             options={provineces}
@@ -53,7 +53,7 @@ const AddressForm: React.FC<formProps> = ({
         </div>
         {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.province?.message}</p>}
         <div className="w-full flex items-center mb-1">
-          <p className="w-[118px]">Quận/Huyện</p>
+          <p className="w-[118px]">Quận/Huyện <span className='text-red-500 font-medium text-[20px]'>*</span></p>
           <Dropdown
             size="medium"
             options={districts}
@@ -71,7 +71,7 @@ const AddressForm: React.FC<formProps> = ({
         </div>
         {errors && <p className="pb-0 ps-[118px] text-red-500 text-sm mt-1 mb-2">{errors?.district?.message}</p>}
         <div className="w-full flex items-center mb-1">
-          <p className="w-[118px]">Xã/phường</p>
+          <p className="w-[118px]">Xã/phường <span className='text-red-500 font-medium text-[20px]'>*</span></p>
           <Dropdown
             size="medium"
             options={wards}
@@ -91,7 +91,7 @@ const AddressForm: React.FC<formProps> = ({
       </div>
       <div className="w-[47%]">
         <div className="w-full flex items-center mb-3">
-          <p className="w-[118px]">Địa chỉ</p>
+          <p className="w-[118px]">Địa chỉ <span className='text-red-500 font-medium text-[20px]'>*</span></p>
           <Input
             className="max-h-[40px] min-w-[300px]"
             placeholder="Nhập địa chỉ chi tiết"
@@ -104,7 +104,7 @@ const AddressForm: React.FC<formProps> = ({
           />
         </div>
         <div className="w-full flex items-center mb-3">
-          <p className="w-[118px]">Email</p>
+          <p className="w-[118px]">Email <span className='text-red-500 font-medium text-[20px]'>*</span></p>
           <Input
             className="max-h-[40px] min-w-[300px]"
             placeholder="Nhập email"
@@ -118,7 +118,7 @@ const AddressForm: React.FC<formProps> = ({
           />
         </div>
         <div className="w-full flex items-center mb-3">
-          <p className="w-[118px]">Điện thoại</p>
+          <p className="w-[118px]">Điện thoại <span className='text-red-500 font-medium text-[20px]'>*</span></p>
           <Input
             className="max-h-[40px] min-w-[300px]"
             placeholder="Nhập số điện thoại"
