@@ -1,11 +1,26 @@
 export interface TrainingProgramForm {
-    lecturer: string;
-    institution: string;
-    major: string;
+    institution: number;
+    major: number;
     startDate: string;
-    isCompleted: boolean;
     endDate: string;
     method: string;
-    certificate: string;
+    degree: string;
     attachment: File | null;
+    name: string;
+    filename: string;
 }
+
+export interface Institution {
+    id: number;
+    name: string;
+}
+
+export interface Major {
+    id: number;
+    name: string;
+}
+export interface Teacher {
+    id: number;
+    fullName: string;
+}
+
