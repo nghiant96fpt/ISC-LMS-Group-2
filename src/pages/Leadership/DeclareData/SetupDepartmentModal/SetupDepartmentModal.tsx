@@ -151,6 +151,11 @@ const DepartmentSettings: React.FC = () => {
               type="text"
               className="w-full md:w-9/12 p-2 border border-gray-300 rounded-lg text-black-text cursor-pointer"
               value={subjectGroup ? subjectGroup.name : ""}
+              onChange={(e) => {
+                if (subjectGroup) {
+                  setSubjectGroup({ ...subjectGroup, name: e.target.value });
+                }
+              }}
             />
           </div>
 
