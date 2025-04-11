@@ -34,7 +34,12 @@ const DeclareMenu: React.FC = () => {
       pathEdit: '/leadership/declare-data/class-list/edit',
       pathAdd: '/leadership/declare-data/class-list/add-class-list',
     },
-    { label: 'Loại điểm', path: '#' },
+    {
+      label: 'Loại điểm',
+      path: '/leadership/declare-data/score-types',
+      pathEdit: '/leadership/declare-data/score-types/edit',
+      pathAdd: '/leadership/declare-data/score-types/add-score-types',
+    },
   ];
 
   useEffect(() => {

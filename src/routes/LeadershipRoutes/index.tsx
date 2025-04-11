@@ -91,6 +91,7 @@ import MainClassList from '../../pages/Leadership/DeclareData/ClassList';
 import MainBlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment';
 import MainSectionList from '../../pages/Leadership/DeclareData/SectionList/SectionListData';
 import MainSetupSubjectedit from '../../pages/Leadership/DeclareData/SubjectSettings/SubjecteditData';
+import MainScoreType from '../../pages/Leadership/DeclareData/ScoreTypes';
 
 const StudentRoutes = () => {
   return (
@@ -148,9 +149,9 @@ const StudentRoutes = () => {
         <Route path="declare-data/block-department/list" element={<ClassListWrapper />} />
         <Route path="declare-data/block-department/:id" element={<EditDepartment />} />
         {/*  */}
-        <Route path="declare-data/score-types" element={<ScoreTypes />} />
+        <Route path="declare-data/score-types" element={<MainScoreType />} />
         <Route path="declare-data/score-types/:id" element={<EditGradeTypeModal />} />
-        <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
+        <Route path="declare-data/score-types/add-score-types" element={<AddGradeTypeModal />} />
         <Route path="declare-data/edit" element={<DepartmentSettings />} />
         <Route path="declare-data/subject-list" element={<SubjectList />} />
         {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
@@ -167,7 +168,7 @@ const StudentRoutes = () => {
         <Route path="exams/test-management/:id" element={<DetailTestManagement />} />
         <Route path="exams/edit/:id" element={<EditExamSchedule />} />
         <Route path="exams/detail/:id" element={<ExamDetailModal />} />
-        <Route path="exams/list" element={<ExamListTable />} />
+        {/* <Route path="exams/list" element={<ExamListTable />} /> */}
         <Route path="exams/create-exam-schedule" element={<CreateExamSchedule />} />
         {/*  */}
         <Route path="student-retention" element={<StudentRetention />} />

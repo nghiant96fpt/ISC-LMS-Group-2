@@ -1,0 +1,206 @@
+{
+  "id": 1,
+  "code": "C001",
+  "name": "Lớp 1A",
+  "studentQuantity": 30,
+  "subjectQuantity": 5,
+  "description": "Lớp 1A học chính quy buổi sáng.",
+  "active": true,
+  "gradeLevel": {
+      "id": 1,
+      "code": "GL001",
+      "name": "Lớp 1",
+      "teacherId": "1"
+  },
+  "academicYear": {
+      "id": 1,
+      "name": "2015-2016",
+      "startTime": "2015-09-01T00:00:00",
+      "endTime": "2016-09-01T00:00:00",
+      "semesters": []
+  },
+  "user": {
+      "id": 9,
+      "code": "U009",
+      "fullName": "Le Van I",
+      "year": null,
+      "enrollmentDate": "09/01/2021 00:00:00",
+      "userStatus": null
+  },
+  "classType": {
+      "id": 29,
+      "name": "Lớp học cơ bản",
+      "status": true,
+      "isDelete": true,
+      "description": "cdcdcd",
+      "academicYear": null
+  },
+  "subjects": [
+      {
+          "id": 1,
+          "code": "TOAN111",
+          "name": "Toán học",
+          "hoursSemester1": 30,
+          "hoursSemester2": 30
+      },
+      {
+          "id": 2,
+          "code": "LY101",
+          "name": "Vật lý",
+          "hoursSemester1": 50,
+          "hoursSemester2": 50
+      },
+      {
+          "id": 3,
+          "code": "HOA101",
+          "name": "Hóa học",
+          "hoursSemester1": 50,
+          "hoursSemester2": 50
+      },
+      {
+          "id": 4,
+          "code": "SINH101",
+          "name": "Sinh học",
+          "hoursSemester1": 50,
+          "hoursSemester2": 50
+      },
+      {
+          "id": 5,
+          "code": "SU101",
+          "name": "Lịch sử",
+          "hoursSemester1": 40,
+          "hoursSemester2": 40
+      },
+      {
+          "id": 6,
+          "code": "DIA101",
+          "name": "Địa lý",
+          "hoursSemester1": 40,
+          "hoursSemester2": 40
+      },
+      {
+          "id": 7,
+          "code": "MY101",
+          "name": "Mỹ thuật",
+          "hoursSemester1": 30,
+          "hoursSemester2": 30
+      },
+      {
+          "id": 8,
+          "code": "TD101",
+          "name": "Thể dục",
+          "hoursSemester1": 20,
+          "hoursSemester2": 20
+      },
+      {
+          "id": 9,
+          "code": "TIN101",
+          "name": "Tin học",
+          "hoursSemester1": 45,
+          "hoursSemester2": 45
+      },
+      {
+          "id": 10,
+          "code": "ANH101",
+          "name": "Tiếng Anh",
+          "hoursSemester1": 60,
+          "hoursSemester2": 60
+      },
+      {
+          "id": 11,
+          "code": "NHAC101",
+          "name": "Âm nhạc",
+          "hoursSemester1": 30,
+          "hoursSemester2": 30
+      },
+      {
+          "id": 12,
+          "code": "KICH101",
+          "name": "Kịch nghệ",
+          "hoursSemester1": 20,
+          "hoursSemester2": 20
+      },
+      {
+          "id": 13,
+          "code": "CN101",
+          "name": "Công nghệ cơ bản",
+          "hoursSemester1": 40,
+          "hoursSemester2": 40
+      },
+      {
+          "id": 14,
+          "code": "NN101",
+          "name": "Ngôn ngữ nước ngoài",
+          "hoursSemester1": 40,
+          "hoursSemester2": 40
+      },
+      {
+          "id": 15,
+          "code": "TOAN201",
+          "name": "Toán nâng cao",
+          "hoursSemester1": 60,
+          "hoursSemester2": 60
+      },
+      {
+          "id": 16,
+          "code": "LY201",
+          "name": "Vật lý nâng cao",
+          "hoursSemester1": 60,
+          "hoursSemester2": 60
+      },
+      {
+          "id": 17,
+          "code": "HOA201",
+          "name": "Hóa học nâng cao",
+          "hoursSemester1": 60,
+          "hoursSemester2": 60
+      },
+      {
+          "id": 18,
+          "code": "SINH201",
+          "name": "Sinh học nâng cao",
+          "hoursSemester1": 60,
+          "hoursSemester2": 60
+      },
+      {
+          "id": 19,
+          "code": "KHXH101",
+          "name": "Khoa học xã hội",
+          "hoursSemester1": 40,
+          "hoursSemester2": 40
+      },
+      {
+          "id": 20,
+          "code": "CD101",
+          "name": "Công dân",
+          "hoursSemester1": 30,
+          "hoursSemester2": 30
+      }
+  ],
+  "student": [
+      {
+          "id": 1,
+          "code": "U001",
+          "fullName": "Nguyen Van A",
+          "year": "2015-2016",
+          "enrollmentDate": "01/09/2020",
+          "userStatus": "Đã tốt nghiệp"
+      },
+      {
+          "id": 22,
+          "code": "U022",
+          "fullName": "Nguyen Thi V",
+          "year": "2015-2016",
+          "enrollmentDate": "01/09/2022",
+          "userStatus": "Đã tốt nghiệp"
+      },
+      {
+          "id": 3,
+          "code": "U003",
+          "fullName": "Le Van C",
+          "year": "2017-2018",
+          "enrollmentDate": "01/09/2019",
+          "userStatus": "Đã tốt nghiệp"
+      }
+  ]
+}
