@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import DeleteAcademicYearModal from '../../../../components/DeleteConfirmation';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchInput from '../../../../components/SearchTable';
 import PaginationControls from '../../../../components/Pagination';
 import createAxiosInstance from '../../../../utils/axiosInstance';
@@ -166,7 +166,7 @@ const SectionList: React.FC = () => {
                     <td className="py-3 px-2 md:px-4 font-sans text-black-text text-center">{item.hoursSemester2}</td>
                     <td className="py-3 px-2 md:px-4 text-center">
                       <div className="flex justify-center space-x-2 items-center">
-                        <Link to="/leadership/declare-data/section-list/edit">
+                        <Link to={`/leadership/declare-data/section-list/edit/${item.id}`}>
                           <button className="w-8 h-8 flex items-center justify-center">
                             <img src={edit} alt="Edit" className="w-5 h-5 md:w-6 md:h-6 object-contain" />
                           </button>
