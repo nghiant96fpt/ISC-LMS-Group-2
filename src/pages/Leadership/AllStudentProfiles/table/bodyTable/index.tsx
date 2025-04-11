@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 
 const token = Cookies.get('accessToken');
 const API_URL = 'https://fivefood.shop/api/studentinfos/all';
+import StatusBar from '../../../../../components/StatusBar/StatusBar';
 
 interface TableBodyProps {
   searchTerm: string;
@@ -193,12 +194,16 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
                   <td>{student?.gender}</td>
                   <td>{student?.nation}</td>
                   <td>{student?.className}</td>
-                  {/* <td>{<Status type={student?.status || 'dropped'} />}</td> */}
-                  <td className="icon-container">
-                    <button onClick={() => navigator('/leadership/student', { state: { studentId: student?.userId } })}>
-                      <img className="eyeIcon" src={eye} alt="View" />
-                    </button>
-                    <button onClick={() => toggleDropdown(student?.userId)}>
+                  {/* tạm */}
+                  <td style={{maxWidth: 150}}>{<StatusBar width='130px' status={student?.status}/>}</td>
+                  {/* tạm */}
+                  <td className="icon-container flex items-center">
+                    <div className='flex items-center me-1'>
+                      <button onClick={() => navigator('/leadership/student', {state: {studentId: student?.userId}})}>
+                        <img className="eyeIcon" src={eye} alt="View" />
+                      </button>
+                    </div>
+                    <button className='me-1' onClick={() => toggleDropdown(student?.userId)}>
                       <img className="unionIcon" src={union} alt="All" />
                     </button>
                     {openDropdownId === student?.userId && (
