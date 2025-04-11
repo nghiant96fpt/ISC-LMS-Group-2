@@ -14,8 +14,21 @@ import DeleteConfirmation from '../../../components/DeleteConfirmation';
 import arrowupdown from '../../../assets/icons/u_arrow up down.png';
 import './style.scss';
 import '../../../styles/_variables.scss';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import createAxiosInstance from '../../../utils/axiosInstance';
+import { wait } from '@testing-library/user-event/dist/utils';
+const axiosTrue = createAxiosInstance(true);
 
 const ClassroomSettings: React.FC = () => {
+  const token = Cookies.get('accessToken');
+  const authHeaders = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  };
+
   const [selectedYearOption, setSelectedYearOption] = useState<DropdownOption | null>(null);
   const [yearOptions, setYearOptions] = useState<DropdownOption[]>([]);
   const [classTypes, setClassTypes] = useState<any[]>([]);
@@ -49,9 +62,11 @@ const ClassroomSettings: React.FC = () => {
   // -----------------------------
   const fetchAcademicYears = async () => {
     if (hasFetchedYears) return;
+
     try {
-      const response = await fetch('https://fivefood.shop/api/academic-years');
-      const result = await response.json();
+      const response = await axiosTrue.get('https://fivefood.shop/api/academic-years');
+
+      const result = response.data;
       if (!result || !Array.isArray(result.data)) {
         throw new Error('API không trả về danh sách niên khóa hợp lệ');
       }
@@ -77,35 +92,39 @@ const ClassroomSettings: React.FC = () => {
       setTotalPages(1);
       return;
     }
+
     const controller = new AbortController();
 
-    const fetchData = async () => {
+    const fetchClassTypes = async () => {
       try {
         const yearValue = selectedYearOption.value;
         const url = `https://fivefood.shop/api/class-type?searchYear=${yearValue}&searchName=${encodeURIComponent(
           searchTerm,
         )}&page=${currentPage}&pageSize=${itemsPerPage}&sortColumn=Id&sortOrder=desc`;
 
-        const response = await fetch(url, { signal: controller.signal });
-        const result = await response.json();
+        // const response = await axios.get(url, {
+        //   signal: controller.signal,
+        //   headers: authHeaders,
+        // });
+        const response = await axiosTrue.get(url);
 
-        const items = result.data || [];
+        const result = response.data;
+        const items = (result.data || []).filter((item: any) => item.isDelete === false);
         setClassTypes(items);
         setTotalPages(result.totalPages || 1);
       } catch (err: any) {
-        if (err.name !== 'AbortError') {
+        if (err.name !== 'CanceledError') {
           console.error('Lỗi khi fetch:', err);
         }
       }
     };
 
-    fetchData();
+    fetchClassTypes();
 
     return () => {
       controller.abort();
     };
   }, [selectedYearOption, searchTerm, currentPage, itemsPerPage]);
-
   // -----------------------------
   // 3) Debounce thay đổi itemsPerPage
   // -----------------------------
@@ -125,9 +144,6 @@ const ClassroomSettings: React.FC = () => {
     };
   }, [inputValue, itemsPerPage]);
 
-  // -----------------------------
-  // 4) Phân trang
-  // -----------------------------
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
@@ -152,17 +168,16 @@ const ClassroomSettings: React.FC = () => {
   const handleConfirmDelete = async () => {
     if (!classToDelete) return;
     try {
-      const response = await fetch(`${API_URL}/${classToDelete}`, {
-        method: 'DELETE',
-      });
-      if (response.ok) {
+      const response = await axiosTrue.delete(`${API_URL}/${classToDelete}`);
+
+      if (response.status === 200) {
         setClassTypes((prev) => prev.filter((ct) => ct.id.toString() !== classToDelete));
-        console.log(`Đã xóa loại lớp học có ID: ${classToDelete}`);
+        toast.success('Đã xóa thành công lớp học.');
       } else {
-        console.error('Xóa thất bại');
+        toast.error('Đã xảy ra lỗi khi xóa lớp học.');
       }
     } catch (error) {
-      console.error('Lỗi khi xóa loại lớp học:', error);
+      toast.error('Đã xảy ra lỗi khi xóa lớp học.');
     }
     setIsModalOpen(false);
     setClassToDelete(null);
@@ -174,16 +189,11 @@ const ClassroomSettings: React.FC = () => {
   // Lấy data by ID -> mở Popup
   const handleEditClass = async (id: string) => {
     try {
-      // Bật cờ editingClassId => hiển thị popup
       setEditingClassId(id);
+      const response = await axiosTrue.get(`${API_URL}/${id}`);
 
-      const response = await fetch(`${API_URL}/${id}`);
+      const detail = response.data?.data;
 
-      const result = await response.json();
-
-      const detail = result.data;
-
-      // Lưu data vào editingData
       setEditingData({
         id: detail.id,
         name: detail.name,
@@ -193,6 +203,7 @@ const ClassroomSettings: React.FC = () => {
       });
     } catch (error) {
       console.error('Lỗi fetch detail:', error);
+      toast.error('Lỗi khi lấy dữ liệu.');
     }
   };
 
@@ -208,23 +219,22 @@ const ClassroomSettings: React.FC = () => {
         status: updatedData.status,
       };
 
-      const res = await fetch(`${API_URL}/${updatedData.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      // const res = await axios.put(`${API_URL}/${updatedData.id}`, payload, {
+      //   headers: authHeaders,
+      // });
+      const res = await axiosTrue.put(`${API_URL}/${updatedData.id}`, payload);
 
-      if (!res.ok) throw new Error('Update thất bại');
-
-      console.log('Cập nhật thành công:', payload);
+      toast.success('Cập nhật lớp học thành công.');
 
       setEditingClassId(null);
       setEditingData(null);
       setClassTypes((prev) => prev.map((ct) => (ct.id === updatedData.id ? { ...ct, ...payload } : ct)));
     } catch (err) {
+      toast.error('Đã xảy ra lỗi khi cập nhật lớp học.');
       console.error('Lỗi update:', err);
     }
   };
+
   // -----------------------------
   // 7) Popup Thêm
   // -----------------------------
@@ -238,23 +248,18 @@ const ClassroomSettings: React.FC = () => {
         status: data.status,
       };
 
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      const res = await axiosTrue.post(API_URL, payload);
 
-      if (!res.ok) throw new Error('Thêm thất bại');
+      const result = res.data;
 
-      const result = await res.json();
-
-      // Chỉ thêm vào bảng nếu niên khóa đang được chọn trùng với niên khóa vừa thêm
       if (selectedYearOption?.value === result.data.academicYear?.id?.toString()) {
         setClassTypes((prev) => [...prev, result.data]);
       }
 
+      toast.success('Thêm loại lớp học thành công.');
       setIsAddPopupOpen(false);
     } catch (error) {
+      toast.error('Đã xảy ra lỗi khi thêm loại lớp học.');
       console.error('Lỗi khi thêm mới:', error);
     }
   };
@@ -263,8 +268,8 @@ const ClassroomSettings: React.FC = () => {
   // Breadcrumb
   // -----------------------------
   const addresses = [
-    { linkName: 'Cài đặt hệ thống', link: '/' },
-    { linkName: 'Thiết lập lớp học', link: '/' },
+    { linkName: 'Cài đặt hệ thống', link: '/leadership/system-settings' },
+    { linkName: 'Thiết lập lớp học', link: '/leadership/system-settings/classroom-settings' },
   ];
 
   return (
