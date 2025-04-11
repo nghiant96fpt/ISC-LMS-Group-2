@@ -104,9 +104,12 @@ const SubjectSetup: React.FC = () => {
       await axiosInstance.put(`${API_URL}/subjects/${id}`, payload);
 
       setAlert({ message: 'Cập nhật môn học thành công!', type: 'success' });
+      setTimeout(() => {
+        navigate('/leadership/declare-data/section-list');
+      }, 1000);
     } catch (error: any) {
       console.error('Lỗi khi cập nhật môn học:', error);
-      const message =
+      const message = 
         error?.response?.data?.message ||
         'Đã xảy ra lỗi khi cập nhật môn học. Vui lòng thử lại.';
 
