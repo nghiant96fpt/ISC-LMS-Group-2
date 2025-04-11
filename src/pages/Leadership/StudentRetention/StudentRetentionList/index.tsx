@@ -31,7 +31,6 @@ const StudentRetentionList = () => {
 
   const handleSearch = (query: string) => {
     setSearch(query);
-    // console.log('search:', search);
   };
 
   useEffect(() => {

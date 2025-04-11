@@ -7,7 +7,7 @@ const TableStudentRetention: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>(''); // State lưu giá trị tìm kiếm
 
   return (
-    <>
+    <div>
       <div className="TableStudentRetentionsBoder">
         <div className="TableStudentRetentions">
           <div className="TableStudentRetention flex justify-between pr-8">
@@ -37,7 +37,7 @@ const TableStudentRetention: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

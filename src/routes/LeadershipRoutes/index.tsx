@@ -44,8 +44,6 @@ import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add
 // import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 // import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
 
-// import DeclareDataRoutes from '../../pages/Leadership/DeclareData/DeclareDataRoutes';
-
 // import EditGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/edit';
 // import AddGradeTypeModal from '../../pages/Leadership/DeclareData/ScoreTypes/add';
 
@@ -74,6 +72,7 @@ import CreateExamSchedule from '../../pages/Leadership/Exams/CreateExamSchedule/
 import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/StudentRetensionUpdate';
 import StudentRetentionAdd from '../../pages/Leadership/StudentRetention/StudentRetentionAdd';
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
+import UpdateTransferAcceptance from '../../pages/Leadership/TransferAcceptance/UpdateTransferAcceptance';
 import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
 import Config from '../../pages/Leadership/SystemSettings/Config';
 import SchoolInfo from '../../pages/Leadership/SystemSettings/SchoolInfomation';
@@ -96,8 +95,13 @@ import MainClassList from '../../pages/Leadership/DeclareData/ClassList';
 import MainBlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment';
 import MainSectionList from '../../pages/Leadership/DeclareData/SectionList/SectionListData';
 import MainSetupSubjectedit from '../../pages/Leadership/DeclareData/SubjectSettings/SubjecteditData';
+import MainScoreType from '../../pages/Leadership/DeclareData/ScoreTypes';
+import EditWorkProcess from '../../pages/Leadership/AllTeacherProfiles/Workprocess/EditWorkProcess';
 import AddTeacher from '../../pages/Leadership/AllTeacherProfiles/AddTeacher/Addteacher';
 import MainSetupDepartmentModal from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
+import AddDepartmentSettings from '../../pages/Leadership/DeclareData/AddSubjectGroup/AddSubjectGroup';
+import MainAddSubjectGroup from '../../pages/Leadership/DeclareData/AddSubjectGroup';
+import MainAddSubject from '../../pages/Leadership/DeclareData/AddSubject';
 
 const StudentRoutes = () => {
   return (
@@ -126,6 +130,7 @@ const StudentRoutes = () => {
         {/*all-teacher-profiles*/}
         <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
         <Route path="all-teacher-profiles/addworkprocess" element={<AddWorkProcess />} />
+        <Route path="all-teacher-profiles/editWorkProcess/:id" element={<EditWorkProcess />} />
         <Route path="transfer-acceptance" element={<TransferAcceptance />} />
         <Route path="InstructorProfile/:id" element={<InstructorProfile />} />
         <Route path="InstructorProfile" element={<InstructorProfile />} />
@@ -143,6 +148,8 @@ const StudentRoutes = () => {
         <Route path="update-student-retention/:id" element={<StudentRetensionUpdate />} />
         <Route path="add-student-retention" element={<StudentRetentionAdd />} />
         <Route path="add-transfer-acceptance" element={<AddTransferAcceptance />} />
+        <Route path="update-transfer-acceptance/:id" element={<UpdateTransferAcceptance />} />
+
         {/* route cho phân công giảng dạy và ds chủ đề - group 4 */}
         <Route path="teaching-assignment" element={<TeachingAssignment />} /> {/* url phân công giảng */}
         <Route path="teaching-list-topic" element={<ListTopic />} /> {/* url ds chủ đề */}
@@ -154,11 +161,12 @@ const StudentRoutes = () => {
         <Route path="declare-data/block-department/list" element={<ClassListWrapper />} />
         <Route path="declare-data/block-department/:id" element={<EditDepartment />} />
         {/*  */}
-        <Route path="declare-data/score-types" element={<ScoreTypes />} />
+        <Route path="declare-data/score-types" element={<MainScoreType />} />
         <Route path="declare-data/score-types/:id" element={<EditGradeTypeModal />} />
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
         <Route path="declare-data/edit/:id" element={<DepartmentSettings />} />
-        <Route path="declare-data/subject-list" element={<SubjectList />} />
+        <Route path="declare-data/add-declare-data" element={<MainAddSubjectGroup />} />
+        <Route path="declare-data/section-list/add-section-list" element={<MainAddSubject />} />
         {/* <Route path="declare-data/*" element={<DeclareDataRoutes />} /> */}
         {/* <Route path="declare-data" element={<DeclareData />} /> */}
         {/* <Route path="declare-data/edit" element={<DepartmentSettings />} /> */}
@@ -173,7 +181,7 @@ const StudentRoutes = () => {
         <Route path="exams/test-management/:id" element={<DetailTestManagement />} />
         <Route path="exams/edit/:id" element={<EditExamSchedule />} />
         <Route path="exams/detail/:id" element={<ExamDetailModal />} />
-        <Route path="exams/list" element={<ExamListTable />} />
+        {/* <Route path="exams/list" element={<ExamListTable />} /> */}
         <Route path="exams/create-exam-schedule" element={<CreateExamSchedule />} />
         {/*  */}
         <Route path="" element={<StudentRetention />} />
@@ -199,7 +207,8 @@ const StudentRoutes = () => {
         <Route path="study-process" element={<StudyProcess />} />
         <Route path="study-process/update-rewards" element={<UpdateRewards />} />
         <Route path="study-process/update-discipline" element={<UpdateDiscipline />} />
-        <Route path="new-student" element={<StudentCU />} />
+        <Route path="new-student" element={<StudentCU/>} />
+        <Route path="student" element={<StudentCU isUpdate={true}/>} />
         <Route path="system-settings/config" element={<Config />} />
         {/* Thiết lập lớp học */}
         <Route path="system-settings/subject-management" element={<SubjectManagement />} />

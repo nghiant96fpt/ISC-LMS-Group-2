@@ -14,12 +14,16 @@ import { Link } from 'react-router-dom';
 import { columns } from '../tableColumns';
 import DeleteModal from '../../../../../components/DeleteConfirmation';
 import { toast } from 'react-toastify';
+import { useCookies } from 'react-cookie';
+
 const ListOfTrainingLevelManagementListTableRow: React.FC<ListOfTrainingLevelManagementListTableRowProps> = ({ item, index, onDelete }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ id: number } | null>(null);
   const [sortColumn, setSortColumn] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
+  const [cookies] = useCookies(['refreshToken']);
+  const refreshToken = cookies.refreshToken;
 
   // nào bên kia sửa api thì sài cái này
   const { TrainingLevelManagement, loading, error } = useSelector((state: RootState) => state.trainingLevelManagement);
@@ -33,9 +37,8 @@ const ListOfTrainingLevelManagementListTableRow: React.FC<ListOfTrainingLevelMan
   };
 
   // Xác nhận xóa
-  // Xác nhận xóa
   const handleConfirmDelete = async () => {
-    await dispatch(deleteTrainingLevel(item.id));
+    await dispatch(deleteTrainingLevel({ id: item.id, token: refreshToken }));
     setIsDeleteModalOpen(false);
     toast.success('Xóa thành công!');
 
@@ -51,6 +54,7 @@ const ListOfTrainingLevelManagementListTableRow: React.FC<ListOfTrainingLevelMan
         pageSize: itemsPerPage,
         sortColumn,
         sortOrder,
+        token: refreshToken,
       }) as any,
     );
   };

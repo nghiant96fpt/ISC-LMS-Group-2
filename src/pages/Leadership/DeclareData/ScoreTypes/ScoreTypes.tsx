@@ -6,6 +6,8 @@ import { IScoreType } from './type';
 import Spinner from '../../../../components/Spinner';
 import Pagination from '../../../../components/PaginationCustom';
 import { IconEdit, IconTrash } from '../../../../components/Icons/IconComponents';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -32,8 +34,9 @@ const ScoreTypes: React.FC = () => {
   // Tham chiếu đến ô input tìm kiếm
   const searchRef = useRef<HTMLInputElement>(null);
 
-    // Biến này để lưu lại "hẹn giờ" debounce
-    const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  // Biến này để lưu lại "hẹn giờ" debounce
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
   // ==========================
   // 1) Hàm fetch dữ liệu phân trang
   // ==========================
@@ -57,8 +60,9 @@ const ScoreTypes: React.FC = () => {
       } else {
         console.error('Có lỗi:', json.message);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Lỗi khi gọi API:', error);
+      toast.error('Lỗi khi gọi API', { autoClose: 1000});
     } finally {
       setLoading(false);
     }
@@ -92,6 +96,7 @@ const ScoreTypes: React.FC = () => {
       const newData = data.filter((item) => item.id !== selectedScoreType.id);
       setData(newData);
       setSearchResults(newData);
+      toast.success('Xóa thành công!', { autoClose: 1000});
 
       // Nếu số item của trang hiện tại ít hơn số item tối đa
       if (newData.length < itemsPerPage) {
@@ -106,9 +111,16 @@ const ScoreTypes: React.FC = () => {
           fetchData(currentPage);
         }
       }
-    } catch (error) {
-      console.error('Có lỗi khi xóa:', error);
-    } finally {
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || 'Có lỗi khi xóa';
+        toast.error(errorMessage, { autoClose: 1000});
+      } else {
+        toast.error('Có lỗi khi xóa', { autoClose: 1000});
+      }
+    }
+    
+     finally {
       setIsDeleting(false);
       setIsDeleteModalOpen(false);
     }
@@ -133,6 +145,7 @@ const ScoreTypes: React.FC = () => {
       fetchData(1, itemsPerPage, searchTerm);
     }, 500);
   }, [itemsPerPage]);
+
   // ==========================
   // 6) Xử lý Delete Modal
   // ==========================

@@ -1,8 +1,17 @@
-export interface Course {
-  name: string;
+export type SubjectDetails = {
   class: string;
-  day: string;
-  time: string;
-  duration: string;
-  status: 'Đã hoàn thành' | 'Chưa hoàn thành';
-}
+  schedule: string;
+  dateRange: string;
+  status: 'Chưa hoàn thành' | 'Đang học' | 'Đã hoàn thành' | 'Đã lên lịch';
+};
+
+export type Subject = {
+  id: string;
+  title: string;
+  details: SubjectDetails;
+};
+
+export type SemesterData = {
+  semester: string;
+  subjects: Subject[];
+};

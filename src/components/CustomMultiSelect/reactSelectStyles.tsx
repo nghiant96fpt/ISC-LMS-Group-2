@@ -68,8 +68,13 @@ export const customSelectStyles: StylesConfig<any, true> = {
     ...base,
     borderRadius: '8px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-    overflow: 'hidden',
   }),
+  menuList: (base) => ({
+    ...base,
+    maxHeight: '150px', // giới hạn chiều cao
+    overflowY: 'auto',  // hiển thị thanh cuộn khi cần
+  }),
+  
   option: (base, state) => ({
     ...base,
     backgroundColor: state.isSelected

@@ -40,11 +40,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       });
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ role, loading, setRole, name, setName }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ role, loading, setRole, name, setName }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

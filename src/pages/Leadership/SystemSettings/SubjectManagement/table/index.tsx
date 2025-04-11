@@ -9,57 +9,61 @@ import arrow_left from '../../../../../assets/icons/arrow left.png';
 import Popup from '../../../../../components/Popup';
 import DeleteConfirmation from '../../../../../components/DeleteConfirmation';
 import arrowupdown from '../../../../../assets/icons/u_arrow up down.png';
+import { DropdownOption } from '../../../../../components/Dropdown/type';
+import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 
 const API_URL = 'https://fivefood.shop/api/subject-types';
+const token = Cookies.get('accessToken');
 
-const ClassManagementTable: React.FC = () => {
+const ClassManagementTable: React.FC<{ selectedYearOption: DropdownOption | null }> = ({ selectedYearOption }) => {
   const [subjects, setSubjects] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subjectToDelete, setSubjectToDelete] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
-  const [selectedSubject, setSelectedSubject] = useState<any | null>(null);
+  const [editingSubjectId, setEditingSubjectId] = useState<string | null>(null);
+  const [editingData, setEditingData] = useState<any | null>(null);
 
-  const handleOpenPopup = (subject: any) => {
-    console.log('Subject to edit:', subject); // Kiểm tra thông tin môn học
-    setSelectedSubject(subject); // Lưu thông tin môn học vào state
-    setIsPopupOpen(true); // Mở Popup
-  };
-
-  const handleClosePopup = () => {
-    setIsPopupOpen(false); // Đóng Popup
-    setSelectedSubject(null); // Reset thông tin môn học
-  };
-
-  const handleSaveSubject = (updatedSubject: any) => {
-    if (updatedSubject) {
-      // Cập nhật thông tin môn học trong backend hoặc trong state
-      setSubjects(subjects.map((subject) => (subject.id === updatedSubject.id ? updatedSubject : subject)));
-      handleClosePopup(); // Đóng popup sau khi lưu
-    }
+  // Hàm helper: header dùng cho các request có token.
+  const authHeaders = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
   };
 
   const fetchSubjects = async () => {
+    if (!selectedYearOption) return;
     try {
-      const response = await fetch(API_URL);
+      const yearId = selectedYearOption.value || '';
+      const response = await fetch(`${API_URL}?yearId=${yearId}`, {
+        headers: {
+          ...authHeaders,
+        },
+      });
       const result = await response.json();
       if (result.code === 0) {
+        console.log('Fetched subjects:', result.data);
         setSubjects(result.data);
       }
     } catch (error) {
-      console.error('Lỗi khi gọi API:', error);
+      console.error('Error fetching subjects:', error);
     }
   };
 
-  // Fetch dữ liệu
   useEffect(() => {
+    console.log('Selected Year Option:', selectedYearOption);
     fetchSubjects();
-  }, []);
+  }, [selectedYearOption]);
 
-  // Lọc danh sách theo từ khóa tìm kiếm
-  const filteredSubjects = subjects.filter((subject) => subject.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredSubjects = subjects.filter((subject) => {
+    // Lọc theo tên và năm học
+    const matchesSearchQuery = subject.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSelectedYear = selectedYearOption ? subject.academicYear.name === selectedYearOption.label : true;
+    return matchesSearchQuery && matchesSelectedYear;
+  });
+
   const totalPages = Math.ceil(filteredSubjects.length / itemsPerPage);
   const currentData = filteredSubjects.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
@@ -69,14 +73,15 @@ const ClassManagementTable: React.FC = () => {
     }
   };
 
+  // Modal handlers
   const handleOpenModal = (id: number) => {
     setSubjectToDelete(id);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false); // Close modal
-    setSubjectToDelete(null); // Reset subjectToDelete
+    setIsModalOpen(false);
+    setSubjectToDelete(null);
   };
 
   const handleConfirmDelete = async () => {
@@ -84,25 +89,70 @@ const ClassManagementTable: React.FC = () => {
       try {
         const response = await fetch(`${API_URL}/${subjectToDelete}`, {
           method: 'DELETE',
+          headers: {
+            ...authHeaders,
+          },
         });
-
         if (response.ok) {
           setSubjects(subjects.filter((subject) => subject.id !== subjectToDelete));
-          console.log(`Xóa môn học có ID: ${subjectToDelete}`);
         } else {
-          console.error('Xóa thất bại');
+          console.error('Delete failed');
         }
       } catch (error) {
-        console.error('Lỗi khi xóa môn học:', error);
+        console.error('Error deleting subject:', error);
       }
+      toast.success('Xóa môn học thành công!');
       setIsModalOpen(false);
       setSubjectToDelete(null);
     }
   };
 
+  // Edit handlers
+  const handleEditSubject = async (id: string) => {
+    setEditingSubjectId(id);
+    try {
+      const response = await fetch(`${API_URL}/${id}`, {
+        headers: {
+          ...authHeaders,
+        },
+      });
+      const result = await response.json();
+      setEditingData(result.data);
+    } catch (error) {
+      console.error('Error fetching subject details:', error);
+    }
+  };
+
+  const handleSavePopup = async (updatedData: any) => {
+    if (!updatedData.id) return;
+    const payload = {
+      name: updatedData.name,
+      description: updatedData.description,
+      status: updatedData.status,
+      AcademicYearsId: updatedData.AcademicYearsId,
+    };
+
+    try {
+      const res = await fetch(`${API_URL}/${updatedData.id}`, {
+        method: 'PUT',
+        headers: {
+          ...authHeaders,
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('Update failed');
+
+      setSubjects((prevSubjects) => prevSubjects.map((subject) => (subject.id === updatedData.id ? { ...subject, ...updatedData } : subject)));
+      toast.success('Sửa môn học thành công!');
+      setEditingSubjectId(null);
+      setEditingData(null);
+    } catch (err) {
+      console.error('Error updating subject:', err);
+    }
+  };
+
   return (
     <div className="content-classrooomsettings">
-      {/* tìm kiếm */}
       <div className="head-content-classrooomsettings">
         <p className="title-classrooomsettings">Danh sách các loại môn học</p>
         <div className="search-classrooomsettings">
@@ -118,7 +168,7 @@ const ClassManagementTable: React.FC = () => {
           />
         </div>
       </div>
-      {/* danh sách môn */}
+
       <div className="main-content-classrooomsettings">
         <table className="w-full border-collapse">
           <thead className="bg-br-gradient-top-or text-white">
@@ -144,20 +194,8 @@ const ClassManagementTable: React.FC = () => {
                   </td>
                   <td className="p-3">{item.description}</td>
                   <td className="p-3 text-center flex justify-center gap-3">
-                    <button onClick={() => handleOpenPopup(item)} className="rounded-lg">
+                    <button onClick={() => handleEditSubject(item.id.toString())} className="rounded-lg">
                       <img src={edit} alt="edit" className="w-5 h-5" />
-                      {isPopupOpen && selectedSubject && (
-                        <Popup
-                          titleBig="Chỉnh sửa môn học"
-                          titleSmall1="Tên môn"
-                          titleSmall2="Trạng thái"
-                          titleSmall3="Ghi chú"
-                          isOpen={isPopupOpen}
-                          onClose={handleClosePopup}
-                          selectedSubject={selectedSubject}
-                          onSave={handleSaveSubject}
-                        />
-                      )}
                     </button>
                     <button onClick={() => handleOpenModal(item.id)}>
                       <img src={trash} alt="trash" className="w-5 h-5" />
@@ -175,7 +213,7 @@ const ClassManagementTable: React.FC = () => {
           </tbody>
         </table>
       </div>
-      {/* phân trang */}
+
       <div className="footer-content-classroomsettings flex justify-between items-center mt-4">
         <div className="flex items-center">
           <span className="mr-2">Hiển thị</span>
@@ -192,59 +230,50 @@ const ClassManagementTable: React.FC = () => {
           <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
             <img src={arrow_left} alt="Trước" className="h-4" />
           </button>
-
-          {totalPages <= 5 ? (
-            [...Array(totalPages)].map((_, index) => (
-              <button
-                key={index}
-                className={currentPage === index + 1 ? 'active bg-blue-500 text-white pageactive' : ''}
-                onClick={() => goToPage(index + 1)}
-              >
-                {index + 1}
-              </button>
-            ))
-          ) : (
-            <>
-              {currentPage > 3 && (
-                <>
-                  <button onClick={() => goToPage(1)}>1</button>
-                  {currentPage > 4 && <span>...</span>}
-                </>
-              )}
-
-              {Array.from({ length: 5 }, (_, i) => currentPage - 2 + i)
-                .filter((page) => page >= 1 && page <= totalPages)
-                .map((page) => (
-                  <button
-                    key={page}
-                    className={currentPage === page ? 'active bg-blue-500 text-white pageactive' : ''}
-                    onClick={() => goToPage(page)}
-                  >
-                    {page}
-                  </button>
-                ))}
-
-              {currentPage < totalPages - 2 && (
-                <>
-                  {currentPage < totalPages - 3 && <span>...</span>}
-                  <button onClick={() => goToPage(totalPages)}>{totalPages}</button>
-                </>
-              )}
-            </>
-          )}
-
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button key={i} className={currentPage === i + 1 ? 'active bg-blue-500 text-white pageactive' : ''} onClick={() => goToPage(i + 1)}>
+              {i + 1}
+            </button>
+          ))}
           <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
             <img src={arrow_right} alt="Sau" className="h-4" />
           </button>
         </div>
       </div>
-      {/* Popup xóa */}
+
+      {/* Modal Confirm Delete */}
       {isModalOpen && subjectToDelete !== null && (
         <DeleteConfirmation
           title="Xác nhận xoá môn học"
           description="Bạn có chắc chắn muốn xóa môn học này không?"
           onCancel={handleCloseModal}
           onConfirm={handleConfirmDelete}
+        />
+      )}
+
+      {/* Edit Popup */}
+      {editingSubjectId && editingData && (
+        <Popup
+          titleBig="Thiết lập lớp học"
+          titleSmall1="Loại lớp học"
+          titleSmall2="Trạng thái"
+          titleSmall3="Ghi chú"
+          isOpen={true}
+          onClose={() => {
+            setEditingSubjectId(null);
+            setEditingData(null);
+          }}
+          initId={editingData.id}
+          initName={editingData.name}
+          initDescription={editingData.description}
+          initActive={editingData.status}
+          onSave={(data) =>
+            handleSavePopup({
+              ...data,
+              id: editingData.id,
+              AcademicYearsId: editingData.academicYear?.id ?? 0,
+            })
+          }
         />
       )}
     </div>

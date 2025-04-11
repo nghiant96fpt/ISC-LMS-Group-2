@@ -1,102 +1,95 @@
-import React, { useState } from 'react';
-import { courses } from './data';
-import { Link } from 'react-router';
+import { useState, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+import axios from 'axios';
+import DynamicAccordion from '../../../../components/DynamicAccordion';
+import { IconChevronBigRightOrange, IconChevronBigRightWhite } from '../../../../components/Icons';
+import CourseList from './ScoursesList';
+import { SemesterData } from './type';
 
-const down = require('../../../../assets/icons/caret-down_white.png');
-const right = require('../../../../assets/icons/icon-arrow-right.png');
-const union = require('../../../../assets/icons/Union.png');
+const API_URL = 'https://fivefood.shop/api/semesters/course?page=1&pageSize=1111&sortOrder=asc';
 
-const AllScourses = () => {
-  const [isOpenSemester1, setIsOpenSemester1] = useState(true);
-  const [isOpenSemester2, setIsOpenSemester2] = useState(false);
+const AllCourses = () => {
+  const [data, setData] = useState<SemesterData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [cookies] = useCookies(['accessToken']);
 
-  const toggleSemester1 = () => {
-    setIsOpenSemester1(!isOpenSemester1);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = cookies.accessToken;
+        if (!token) {
+          throw new Error('Không tìm thấy token, vui lòng đăng nhập lại');
+        }
 
-  const toggleSemester2 = () => {
-    setIsOpenSemester2(!isOpenSemester2);
-  };
+        const response = await axios.get(API_URL, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log('Response API:', response.data);
+
+        // Kiểm tra code và xử lý dữ liệu nếu có
+        if (response.data.code === 0 && Array.isArray(response.data.data)) {
+          const formattedData = response.data.data.map((item: any) => ({
+            semester: item.semester,
+            subjects: item.courses.map((course: any) => ({
+              id: `${item.semester}-${course.subject}`, // Sử dụng semester và subject để tạo id duy nhất
+              title: course.subject,
+              details: {
+                class: course.class,
+                schedule: course.schedule,
+                dateRange: course.date,
+                status: course.status,
+              },
+            })),
+          }));
+          setData(formattedData);
+        } else {
+          // Nếu API trả về mã khác 0 hoặc dữ liệu không hợp lệ
+          if (response.data.code !== 0) {
+            throw new Error(response.data.message || 'Dữ liệu API không hợp lệ');
+          } else {
+            throw new Error('Không có dữ liệu từ API');
+          }
+        }
+      } catch (err: any) {
+        console.error('Lỗi khi gọi API:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [cookies.accessToken]);
 
   return (
-    <div className="p-4">
-      {/* Học kỳ II */}
-      <div
-        className={`p-3 font-bold rounded-md mb-2 flex items-center cursor-pointer transition-all ${
-          isOpenSemester1 ? 'bg-br-gradient-right-or text-white' : 'bg-white text-black border border-gray-300'
-        }`}
-        onClick={toggleSemester1}
-      >
-        <img src={isOpenSemester1 ? down : right} alt="icon" className={`mr-2 transition-transform ${isOpenSemester1 ? 'w-5 h-4' : 'w-4 h-5'}`} />
-        Học kỳ II - 2020
-      </div>
+    <section>
+      {loading && <p>Đang tải dữ liệu...</p>}
+      {error && <p className="text-red-500">Lỗi: {error}</p>}
 
-      {isOpenSemester1 && (
-        <div className="overflow-x-auto mb-4">
-          <table className="w-full  border-collapse border border-gray-200">
-            <tbody>
-              {courses.map((course, index) => (
-                <tr key={index} className="border even:bg-gray-100">
-                  <td className="p-2 h-16 text-black-text">
-                    <strong>{course.name}</strong>
-                  </td>
-                  <td className="p-2 h-12 text-gray-800">{course.class}</td>
-                  <td className="p-2 h-12 text-gray-800">
-                    {course.day} - {course.time}
-                  </td>
-                  <td className="p-2 h-12 text-gray-800">{course.duration}</td>
-                  <td className={`p-2 h-12 italic ${course.status === 'Chưa hoàn thành' ? 'text-red-500' : 'text-green-500'}`}>{course.status}</td>
-                  <td className="p-2 h-12">
-                    <Link to="class-history">
-                      <img className="w-6 h-6" src={union} alt="icon" />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      {!loading && !error && (
+        <DynamicAccordion
+          items={data}
+          getId={(item) => item.semester}
+          multiple={false}
+          renderHeader={(item, isOpen) => (
+            <>
+              {isOpen ? (
+                <IconChevronBigRightWhite className="text-xs md:text-sm lg:text-base text-white" />
+              ) : (
+                <IconChevronBigRightOrange className="text-xs md:text-sm lg:text-base text-orange-text" />
+              )}
+              <span className="font-semibold text-start text-xs md:text-sm lg:text-base">{item.semester}</span>
+            </>
+          )}
+          renderContent={(item) => <CourseList subjects={item.subjects || []} />}
+        />
       )}
-
-      {/* Học kỳ I */}
-      <div
-        className={`p-3 font-bold rounded-md mb-2 flex items-center cursor-pointer transition-all ${
-          isOpenSemester2 ? 'bg-br-gradient-right-or text-white' : 'bg-white text-black border border-gray-300'
-        }`}
-        onClick={toggleSemester2}
-      >
-        <img src={isOpenSemester2 ? down : right} alt="icon" className={`mr-2 transition-transform ${isOpenSemester2 ? 'w-5 h-4' : 'w-4 h-5'}`} />
-        Học kỳ I - 2020
-      </div>
-
-      {isOpenSemester2 && (
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[600px] border-collapse border border-gray-200">
-            <tbody>
-              {courses.map((course, index) => (
-                <tr key={index} className="border even:bg-gray-100">
-                  <td className="p-2 h-16 text-black-text">
-                    <strong>{course.name}</strong>
-                  </td>
-                  <td className="p-2 h-12 text-gray-800">{course.class}</td>
-                  <td className="p-2 h-12 text-gray-800">
-                    {course.day} - {course.time}
-                  </td>
-                  <td className="p-2 h-12 text-gray-800">{course.duration}</td>
-                  <td className={`p-2 h-12 italic ${course.status === 'Chưa hoàn thành' ? 'text-red-500' : 'text-green-500'}`}>{course.status}</td>
-                  <td className="p-2 h-12">
-                    <Link to="class-history">
-                      <img className="w-6 h-6" src={union} alt="icon" />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
+    </section>
   );
 };
 
-export default AllScourses;
+export default AllCourses;
