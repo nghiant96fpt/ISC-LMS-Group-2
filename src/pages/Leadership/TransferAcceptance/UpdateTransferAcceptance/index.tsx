@@ -69,9 +69,9 @@ const UpdateTransferAcceptance = () => {
       });
   }, [dispatch, id]);
 
-  useEffect(() => {
-    dispatch(fetchAllStudent(refreshToken));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchAllStudent(refreshToken));
+  // }, [dispatch]);
 
   useEffect(() => {
     if (StudentApiResponse?.data) {

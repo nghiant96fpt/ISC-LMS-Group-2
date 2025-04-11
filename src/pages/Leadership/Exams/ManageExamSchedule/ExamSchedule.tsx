@@ -210,13 +210,13 @@ const ManageExamSchedule: React.FC<ManageExamScheduleProps> = ({ academicYearId,
             <thead className="bg-gradient-to-r from-background-orange-1 to-background-1 text-white rounded-t-lg">
               <tr>
                 <th className="py-3 px-4 text-center">Học Kỳ</th>
-                <th className="py-3 px-4 text-center">Ngày Làm Bài</th>
+                <th className="py-3 px-4 text-start">Ngày Làm Bài</th>
                 <th className="py-3 px-4 text-center">Khoa-Khối</th>
-                <th className="py-3 px-4 text-center">Môn Thi</th>
-                <th className="py-3 px-4 text-center">Tên kỳ thi</th>
-                <th className="py-3 px-4 text-center">Tình trạng</th>
+                <th className="py-3 px-4 text-start">Môn Thi</th>
+                <th className="py-3 px-4 text-start">Tên kỳ thi</th>
+                <th className="py-3 px-4 text-start">Tình trạng</th>
                 <th className="py-3 px-4 text-center">Danh sách lớp thi</th>
-                <th className="py-3 px-4 text-center">Phân công chấm thi</th>
+                <th className="py-3 px-4 text-start">Phân công chấm thi</th>
                 <th className="py-3 px-4 text-center"></th>
               </tr>
             </thead>
