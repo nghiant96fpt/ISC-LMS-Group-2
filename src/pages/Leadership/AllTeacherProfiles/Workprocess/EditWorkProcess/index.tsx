@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
@@ -15,13 +15,13 @@ import CheckboxComponent from '../../../../../components/CheckBox';
 import { trainingPrograms } from './type';
 import Button from '../../../../../components/Button';
 import axiosInstance from '../../../../../utils/axiosInstance';
-import { Lecturer, Schoolslist } from '../Types';
+import { Lecturer, Schoolslist, WorkHistory } from '../Types';
 import { stringify } from 'querystring';
 import { toast } from 'react-toastify';
-import { useLocation } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import Input from '../../../../../components/Input';
 dayjs.extend(customParseFormat);
-const AddWorkProcess: React.FC<CustomDropdownProps> = ({
+const EditWorkProcess: React.FC<CustomDropdownProps> = ({
   label,
   placeholder = 'Lựa chọn',
   width = '100%',
@@ -30,7 +30,7 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
   className = '',
 }) => {
   const [selectedUnit, setSelectedUnit] = useState('');
-
+  const { id } = useParams<{ id: string }>();
   const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null);
   // const [endDate, setEndDate] = useState(null);
   const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null);
@@ -46,12 +46,15 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
   const [trainingPrograms, setTrainingPrograms] = useState<trainingPrograms[]>([]);
   const [selectedPrograms, setSelectedPrograms] = useState<trainingPrograms[]>([]);
   const [subjectGroups, setSubjectGroups] = useState<trainingPrograms[]>([]);
+  const [subjectGroupsid, setSubjectGroupsid] = useState<trainingPrograms[]>([]);
+  // const [workprocess, setWorkprocess] = useState<WorkHistory[]>([]);
+  const [workprocess, setWorkprocess] = useState<WorkHistory | null>(null);
 
   const [schools, setSchools] = useState<Schoolslist[]>([]);
   const [selectedOrganization, setSelectedOrganization] = useState('');
-  const location = useLocation();
-  const teacherId = location.state?.teacherId;
 
+  const [teacherId, setTeacherId] = useState<number | null>(null);
+  const [subjectGroupsId, setSubjectGroupsId] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     TeacherId: null as number | null,
     isCurrent: false,
@@ -62,11 +65,77 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
     organization: '',
     position: '',
   });
-  useEffect(() => {
-    console.log('lecturers:', teacherId);
-  }, [teacherId]);
+
+  console.log(subjectGroups);
 
   const axios = axiosInstance();
+  useEffect(() => {
+    if (!schools.length) return;
+    const fetchWorkProcess = async () => {
+      try {
+        const response = await axios.get(`/api/work-process/${id}`);
+        const data = response.data.data;
+
+        if (data) {
+          const formattedStartDate = data.startDate ? dayjs(data.startDate) : null;
+          const formattedEndDate = data.endDate ? dayjs(data.endDate) : null;
+          setStartDate(formattedStartDate);
+
+          if (!schools.some((school) => school.name === data.organization)) {
+            schools.unshift({ id: -1, name: data.organization });
+          }
+
+          setEndDate(formattedEndDate);
+          setFormData((prev) => ({
+            ...prev,
+
+            organization: prev.organization || data.organization,
+            position: prev.position || data.position,
+            isCurrent: data.isCurrent,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            subjectGroupsId: prev.subjectGroupsId ?? data.subjectGroupsId,
+          }));
+          setWorkprocess(data);
+          setTeacherId(data.teacherId);
+          setSubjectGroupsId(data.subjectGroupsId);
+        } else {
+          console.error('Dữ liệu danh sách tổ/bộ môn không hợp lệ', response.data);
+        }
+      } catch (error) {
+        console.error('Lỗi khi tải dữ liệu:', error);
+      }
+    };
+    fetchWorkProcess();
+  }, [schools]);
+
+  useEffect(() => {
+    const fetchLecturers = async () => {
+      if (!teacherId) return;
+      try {
+        const response = await axios.get(`/api/users/${teacherId}`);
+
+        if (response.data.data) {
+          const data = response.data.data;
+
+          const formattedData = Array.isArray(data) ? data : [data];
+          if (formattedData.length > 0) {
+            setFormData((prev) => ({
+              ...prev,
+              TeacherId: formattedData[0].id,
+            }));
+          }
+
+          setLecturers(formattedData);
+        } else {
+          console.error('Dữ liệu người thân không hợp lệ', response.data);
+        }
+      } catch (err) {
+        console.error('Lỗi khi lấy danh sách giảng viên', err);
+      }
+    };
+    fetchLecturers();
+  }, [teacherId]);
 
   useEffect(() => {
     const fetchSubjectGroups = async () => {
@@ -102,6 +171,13 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
     fetchschools();
   }, []);
   useEffect(() => {
+    if (trainingPrograms.length && workprocess?.program?.length) {
+      const matchedPrograms = trainingPrograms.filter((tp) => workprocess.program.includes(tp.id));
+      setSelectedPrograms(matchedPrograms);
+    }
+  }, [trainingPrograms, workprocess]);
+
+  useEffect(() => {
     const fetchTrainingPrograms = async () => {
       try {
         const response = await axios.get('/api/training-program', {
@@ -119,42 +195,18 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
     };
     fetchTrainingPrograms();
   }, []);
-  useEffect(() => {
-    const fetchLecturers = async () => {
-      try {
-        const response = await axios.get(`/api/users/${teacherId}`);
-
-        if (response.data.data) {
-          const data = response.data.data;
-
-          const formattedData = Array.isArray(data) ? data : [data];
-          if (formattedData.length > 0) {
-            setFormData((prev) => ({
-              ...prev,
-              TeacherId: formattedData[0].id,
-            }));
-          }
-
-          setLecturers(formattedData);
-        } else {
-          console.error('Dữ liệu người thân không hợp lệ', response.data);
-        }
-      } catch (err) {
-        console.error('Lỗi khi lấy danh sách giảng viên', err);
-      }
-    };
-    fetchLecturers();
-  }, []);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     setSuccess(false);
-
+    console.log('Dữ liệu gửi đi:', formData);
+    const programIds = selectedPrograms.map((program) => program.id);
     try {
-      await axios.post('/api/work-process', {
+      await axios.put(`/api/work-process/${id}`, {
         ...formData,
+        program: programIds,
       });
       toast.success('Thêm quá trình công tác thành công!');
       setSuccess(true);
@@ -192,7 +244,6 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
       if (name === 'subjectGroupsId') {
         updatedData.subjectGroupsId = Number(value);
       }
-
       // Nếu có `isCurrent`, đặt lại `endDate`
       if (name === 'isCurrent') {
         updatedData.endDate = (e.target as HTMLInputElement).checked ? null : prev.endDate;
@@ -225,13 +276,12 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
   };
 
   const handleOptionSelect = (option: trainingPrograms) => {
-    // Kiểm tra nếu option đã được chọn thì không thêm nữa
     if (selectedPrograms.some((program) => program.id === option.id)) return;
 
     setSelectedPrograms([...selectedPrograms, option]);
     setFormData((prev) => ({
       ...prev,
-      program: [...prev.program, option.id], // Chỉ lấy name và lưu vào formData
+      program: [...prev.program, option.id],
     }));
     setIsDropdownOpen(false);
   };
@@ -277,7 +327,7 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
               <div className="relative">
                 <select
                   className="w-full p-2 border border-gray-300 rounded-lg text-black appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
-                  value={formData.organization}
+                  value={formData.organization || ''}
                   name="organization"
                   onChange={handleChange}
                 >
@@ -296,9 +346,9 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
             </div>
           </div>
           <div className="pl-36">
-            <CheckboxComponent label="Đang làm việc tại đơn vị này" isChecked={formData.isCurrent} onChange={handleCheckboxChange} />
+            <CheckboxComponent isChecked={formData.isCurrent} label="Đang làm việc tại đơn vị này" onChange={handleCheckboxChange} />
           </div>
-          <div className=" pt-3 flex flex-col md:flex-row items-center justify-between mb-4">
+          <div className="pt-3 flex flex-col md:flex-row items-center justify-between mb-4">
             <label className="md:w-3/12 w-full text-black-text font-bold text-base mb-2 md:mb-0">
               Tổ/Bộ môn: <span className="text-orange-text">*</span>
             </label>
@@ -308,7 +358,7 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
                 <select
                   className="w-full p-2 border border-gray-300 rounded-lg text-black appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
                   name="subjectGroupsId"
-                  value={formData.subjectGroupsId || ''}
+                  value={formData.subjectGroupsId ?? ''}
                   onChange={handleChange}
                 >
                   <option value="" disabled hidden>
@@ -389,12 +439,8 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
             <DatePicker
               className="appearance-none w-full h-11 border border-gray-300 rounded-lg hover:border-orange-500 shadow-md px-3"
               value={endDate}
-              // onChange={(newDate) => {
-              //   setEndDate(newDate);
-              //   setOpenEnd(false);
-              // }}
               onChange={(date) => handleDateChange(date, false)}
-              format={(value) => value.format('D/M/YYYY')}
+              format="DD/MM/YYYY"
               locale={locale}
               placeholder="DD/MM/YYYY"
               open={openEnd}
@@ -456,4 +502,4 @@ const AddWorkProcess: React.FC<CustomDropdownProps> = ({
   );
 };
 
-export default AddWorkProcess;
+export default EditWorkProcess;

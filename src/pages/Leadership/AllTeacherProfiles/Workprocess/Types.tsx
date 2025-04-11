@@ -7,10 +7,13 @@ export interface WorkHistory {
   isCurrent: boolean; // Công việc hiện tại (true nếu vẫn đang làm)
   subjectGroupsId: number; // ID của tổ/ bộ môn
   teacherId: number; // ID của giáo viên
+  guardianName: string;
+  program: number[];
 }
 export interface Lecturer {
   teacherId: number;
   guardianName: string;
+  fullName: string;
 }
 export interface Schoolslist {
   id: number;
