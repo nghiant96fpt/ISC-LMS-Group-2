@@ -35,4 +35,5 @@ export interface Teacher {
     status: number;
     subjectGroupName: string;
     teacherCode: string;
+    userId: number;
 }

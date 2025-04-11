@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import minus from '../../../../assets/icons/icon_minus.png';
 import plus from '../../../../assets/icons/icon_plus.png';
 import caretdown from '../../../../assets/icons/caret_down.png';
-import { Link, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import axios from 'axios';
 import { SubjectGroup, Teacher } from './type';
 import createAxiosInstance from '../../../../utils/axiosInstance';
@@ -25,6 +25,7 @@ const DepartmentSettings: React.FC = () => {
   const [search, setSearch] = useState("");
   const [alert, setAlert] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
@@ -32,6 +33,8 @@ const DepartmentSettings: React.FC = () => {
       axiosInstance.get(`${API_URL}/subject-groups/${id}`)
         .then((response) => {
           if (response.data.data) {
+            console.log("Subject Group:", response.data.data);
+
             setSubjectGroup(response.data.data);
           } else {
             console.error("Không tìm thấy dữ liệu tổ - bộ môn");
@@ -110,6 +113,9 @@ const DepartmentSettings: React.FC = () => {
 
 
       setAlert({ message: " Cập nhật thành công!", type: "success" });
+      setTimeout(() => {
+        navigate('/leadership/declare-data');
+      }, 1000);
       setLoading(false); // Set loading to false after successful update
     } catch (error: any) {
       console.error("Lỗi khi cập nhật:", error.response?.data || error.message);
@@ -145,7 +151,6 @@ const DepartmentSettings: React.FC = () => {
               type="text"
               className="w-full md:w-9/12 p-2 border border-gray-300 rounded-lg text-black-text cursor-pointer"
               value={subjectGroup ? subjectGroup.name : ""}
-              readOnly
             />
           </div>
 
@@ -155,7 +160,7 @@ const DepartmentSettings: React.FC = () => {
               <select id="teacher-select" className="w-full p-2 border border-gray-300 rounded-lg text-black-text appearance-none">
                 {teacherList.length > 0 ? (
                   teacherList.map((teacher, index) => (
-                    <option key={index} value={teacher.id} selected={teacher.id === subjectGroup?.teacherId}>
+                    <option key={index} value={teacher.userId} selected={teacher.userId === subjectGroup?.teacherId}>
                       {teacher.fullName}
                     </option>
                   ))
