@@ -1,16 +1,6 @@
 import { TrainingProgramForm } from "./type";
 
-export const initialFormState: TrainingProgramForm = {
-    lecturer: "Huỳnh Quốc Đại",
-    institution: "",
-    major: "",
-    startDate: "",
-    isCompleted: true,
-    endDate: "",
-    method: "",
-    certificate: "",
-    attachment: null,
-};
+
 
 export const options = [
     { value: "option1", label: "Lựa chọn 1" },

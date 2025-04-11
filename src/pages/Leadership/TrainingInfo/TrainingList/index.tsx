@@ -9,13 +9,17 @@ import fiedit from '../../../../assets/icons/icon-fi_edit.png';
 import fiarrowupdown from '../../../../assets/icons/u_arrow up down.png';
 import { trainingData } from './data';
 import { Major, SchoolFacilitie, TrainingItem, TrainingProgram } from './type';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import PaginationControls from '../../../../components/Pagination';
+import createAxiosInstance from '../../../../utils/axiosInstance';
+import DeleteAcademicYearModal from '../../../../components/DeleteStudentConfirm';
 
 const API_URL = process.env.REACT_APP_API_URL;
+const axiosInstance = createAxiosInstance(true);
 
 const TrainingList: React.FC<TrainingItem> = ({ onClick }) => {
+  const id = useParams<{ id: string }>().id;
   const [searchValue, setSearchValue] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
   const headerRef = useRef<HTMLDivElement | null>(null);
@@ -30,6 +34,7 @@ const TrainingList: React.FC<TrainingItem> = ({ onClick }) => {
   const [totalItems, setTotalItems] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(3);
 
+
   const toggleExpand = () => {
     setIsExpanded((prev) => !prev);
 
@@ -43,25 +48,24 @@ const TrainingList: React.FC<TrainingItem> = ({ onClick }) => {
       }
     }
   };
+
   useEffect(() => {
-    axios
-      .get(`${API_URL}/training-program`, {
+    axiosInstance
+      .get(`${API_URL}/training-program/by-teacher/${id}`, {
         params: {
-          page,
-          pageSize,
-          sortColumn,
-          sortOrder,
           search: searchValue,
         },
       })
       .then((response) => {
         const data = response.data.data;
+        console.log(data);
         setTrainingList(data);
         setTotalItems(response.data.totalItems);
       })
       .catch((error) => {
-        console.error('Error fetching department data:', error);
+        console.error('Lỗi khi lấy training program:', error.response?.data || error);
       });
+
   }, [page, pageSize, sortColumn, sortOrder, searchValue]);
 
 
@@ -113,6 +117,7 @@ const TrainingList: React.FC<TrainingItem> = ({ onClick }) => {
     return `${day}/${month}/${year}`;
   };
 
+
   return (
     <div className="bg-background-white border border-gray-300 rounded-lg overflow-x-auto flex-grow w-full my-5">
       <div
@@ -133,7 +138,7 @@ const TrainingList: React.FC<TrainingItem> = ({ onClick }) => {
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
             />
-            <Link to="/leadership/training-info/add ">
+            <Link to={`/leadership/training-info/add/${id}`}>
               <Button size="mini" className="primary">
                 <img src={fiflus} alt="Add Icon" />
                 Thêm
