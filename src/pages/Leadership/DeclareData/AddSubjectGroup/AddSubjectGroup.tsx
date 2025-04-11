@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import minus from '../../../../assets/icons/icon_minus.png';
 import plus from '../../../../assets/icons/icon_plus.png';
 import caretdown from '../../../../assets/icons/caret_down.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AlertwithIcon from '../../../../components/AlertwithIcon';
 import createAxiosInstance from '../../../../utils/axiosInstance';
 import { TeacherList } from './type';
@@ -14,7 +14,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 const AddDepartmentSettings: React.FC = () => {
     const [subjectGroupName, setSubjectGroupName] = useState('');
     const [selectedTeacherId, setSelectedTeacherId] = useState('');
-    const [subjects, setSubjects] = useState<string[]>(['Toán', 'Lý', 'Hóa']);
+    const navigate = useNavigate();
     const [teacherList, setTeacherList] = useState<TeacherList[]>([]);
     const [hiddenSubjects, setHiddenSubjects] = useState<string[]>([]);
     const [alert, setAlert] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
@@ -66,12 +66,10 @@ const AddDepartmentSettings: React.FC = () => {
         setErrors({});
         setLoading(true); // ✅ Bắt đầu loading
 
-        const visibleSubjects = subjects.filter((s) => !hiddenSubjects.includes(s));
 
         const data = {
             name: subjectGroupName,
             teacherId: Number(selectedTeacherId),
-            subjectIds: visibleSubjects,
         };
 
         console.log("Sending data to API:", data);
@@ -80,6 +78,10 @@ const AddDepartmentSettings: React.FC = () => {
             await axiosInstance.post(`${API_URL}/subject-groups`, data);
             console.log("Subject group created successfully:", data);
             setAlert({ message: 'Tạo tổ - bộ môn thành công!', type: 'success' });
+            setTimeout(() => {
+                navigate('/leadership/declare-data');
+            }, 1000);
+
         } catch (error: any) {
             if (error.response) {
                 console.error("Response error:", error.response.data);
@@ -137,7 +139,7 @@ const AddDepartmentSettings: React.FC = () => {
                             >
                                 <option value="" disabled>Chọn Trưởng tổ - Bộ môn</option>
                                 {teacherList.map((teacher, index) => (
-                                    <option key={index} value={teacher.id}>
+                                    <option key={index} value={teacher.userId}>
                                         {teacher.fullName}
                                     </option>
                                 ))}

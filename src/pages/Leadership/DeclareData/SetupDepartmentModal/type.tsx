@@ -29,6 +29,7 @@ export interface TeacherData {
 export interface Teacher {
     id: number;
     fullName: string;
+    userId: number;
     gender: boolean;
     birthDate: string;
     position: string;

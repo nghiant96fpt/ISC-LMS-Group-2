@@ -196,7 +196,7 @@ const StudentRoutes = () => {
         <Route path="system-settings/user-management" element={<UserManagement />} />
         <Route path="system-settings/user-management/settings" element={<SettingForm />} />
         <Route path="teaching-assignment" element={<TeachingAssignment />} />
-        <Route path="training-info/add" element={<AddTrainingProgram />} />
+        <Route path="training-info/add/:id" element={<AddTrainingProgram />} />
         {/* */}
         <Route path="study-process" element={<StudyProcess />} />
         <Route path="study-process/update-rewards" element={<UpdateRewards />} />

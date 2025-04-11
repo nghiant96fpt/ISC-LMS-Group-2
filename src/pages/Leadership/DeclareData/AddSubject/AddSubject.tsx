@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import caretdown from '../../../../assets/icons/caret_down.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Settings } from '../SetupDepartmentModal/type';
 import { departmentData } from '../SetupDepartmentModal/data';
 import { Subject, SubjectGroupList, subjectType } from './type';
@@ -21,9 +21,10 @@ const AddSubject: React.FC = () => {
     const [code, setCode] = useState('');
     const [subjectGroupId, setSubjectGroupId] = useState(0);
     const [subjectTypeId, setSubjectTypeId] = useState(0);
-    const [hoursSemester1, setHoursSemester1] = useState(0);
-    const [hoursSemester2, setHoursSemester2] = useState(0);
+    const [hoursSemester1, setHoursSemester1] = useState('');
+    const [hoursSemester2, setHoursSemester2] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -69,14 +70,9 @@ const AddSubject: React.FC = () => {
                 console.log('Môn học đã tạo:', res.data);
 
                 setAlert({ message: 'Thêm môn học thành công!', type: 'success' });
-
-                // Xoá form sau khi tạo thành công
-                setName('');
-                setCode('');
-                setSubjectGroupId(0);
-                setSubjectTypeId(0);
-                setHoursSemester1(0);
-                setHoursSemester2(0);
+                setTimeout(() => {
+                    navigate('/leadership/declare-data/section-list');
+                }, 1000);
             } catch (error: any) {
                 console.error('Lỗi khi tạo môn học:', error);
                 setAlert({ message: 'Đã xảy ra lỗi khi tạo môn học.', type: 'error' });
@@ -220,7 +216,7 @@ const AddSubject: React.FC = () => {
                                 <input
                                     type="number"
                                     value={hoursSemester1}
-                                    onChange={(e) => setHoursSemester1(Number(e.target.value))}
+                                    onChange={(e) => setHoursSemester1(e.target.value)}
                                     placeholder='Nhập số tiết học kỳ 1'
                                     className="w-[170px] h-[40px] p-2 border border-background-gray rounded-md bg-white text-black-text"
                                 />
@@ -233,7 +229,7 @@ const AddSubject: React.FC = () => {
                                 <input
                                     type="number"
                                     value={hoursSemester2}
-                                    onChange={(e) => setHoursSemester2(Number(e.target.value))}
+                                    onChange={(e) => setHoursSemester2(e.target.value)}
                                     placeholder='Nhập số tiết học kỳ 2'
                                     className="w-[170px] h-[40px] p-2 border border-background-gray rounded-md bg-white text-black-text"
                                 />
