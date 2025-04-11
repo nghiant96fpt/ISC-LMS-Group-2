@@ -22,7 +22,7 @@ const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/podcast-ba34e
 
 const gender = [
     { label: "Nam", value: "true" },
-    { label: "nữ", value: "false" },
+    { label: "Nữ", value: "false" },
 ]
 
 const option_nation = [
@@ -394,7 +394,7 @@ const AddTeacher = () => {
                                     <p>
                                         <strong className="text-orange-text">Thông tin giảng viên</strong>
                                     </p>
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-6">
                                         <strong className="text-gray-500 whitespace-nowrap w-40" >Mã giảng viên:</strong>
                                         <div className="w-full">
                                             <input
@@ -439,7 +439,7 @@ const AddTeacher = () => {
                                             />
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-8">
                                         <strong className="text-gray-500 whitespace-nowrap w-40">Chức vụ:</strong>
                                         <div className="relative w-full">
                                             <Controller
@@ -462,7 +462,7 @@ const AddTeacher = () => {
                                     <div className="flex items-center gap-8">
                                         <strong className="text-gray-500 whitespace-nowrap w-40">Họ và tên:</strong>
                                         <div className="w-full">
-                                            <input type="text" className="w-full border rounded-[8px] p-2" {...register('fullName', { required: 'Họ tên là bắt buộc' })} />
+                                            <input type="text" placeholder='Họ và tên' className="w-full border rounded-[8px] p-2" {...register('fullName', { required: 'Họ tên là bắt buộc' })} />
                                             {errors.fullName && (
                                                 <p className="text-red-500 text-sm mt-1 p-0">{errors.fullName.message}</p>
                                             )}
@@ -537,25 +537,16 @@ const AddTeacher = () => {
                                             />
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-9">
+                                    <div className="flex items-center gap-8">
                                         <strong className="text-gray-500 whitespace-nowrap w-40">Dân tộc:</strong>
-                                        <div className="relative w-full">
-                                            <Controller
-                                                name="nation"
-                                                control={control}
+                                        <div className="w-full">
+                                            <input type="text" placeholder='Dân tộc' className="w-full border rounded-[8px] p-2" {...register('nation', { required: 'Dân tộc là bắt buộc' })} />
+                                            {errors.nation && (
+                                                <p className="text-red-500 text-sm mt-1 p-0">{errors.nation.message}</p>
+                                            )}
 
-                                                render={({ field }) => (
-                                                    <Dropdown
-                                                        options={option_nation}
-                                                        selectedOption={selectedNation}
-                                                        placeholder="Dân tộc"
-                                                        showArrow={true}
-                                                        handleOptionClick={selectedNationoption}
-                                                        headerClassName='w-full z-1000'
-                                                    />
-                                                )}
-                                            />
                                         </div>
+
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <strong className="text-gray-500 whitespace-nowrap w-32">Ngày vào trường:</strong>
@@ -610,24 +601,16 @@ const AddTeacher = () => {
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <strong className="text-gray-500 whitespace-nowrap w-40">Tôn giáo:</strong>
-                                        <div className="relative w-full">
-                                            <Controller
-                                                name="religion"
-                                                control={control}
+                                        <div className="w-full">
+                                            <input type="text" className="w-full border rounded-[8px] p-2" {...register('religion', { required: 'Tôn giáo là bắt buộc' })} />
+                                            {errors.religion && (
+                                                <p className="text-red-500 text-sm mt-1 p-0">{errors.religion.message}</p>
+                                            )}
 
-                                                render={({ field }) => (
-                                                    <Dropdown
-                                                        options={option_religion}
-                                                        selectedOption={selectedReligion}
-                                                        placeholder="Tôn giáo"
-                                                        showArrow={true}
-                                                        handleOptionClick={selectedReligionoption}
-                                                        headerClassName='w-full z-1000'
-                                                    />
-                                                )}
-                                            />
                                         </div>
+
                                     </div>
+
                                     <div className="flex items-center gap-4 whitespace-nowrap">
                                         <strong className="text-gray-500 whitespace-nowrap w-40">Trạng thái:</strong>
                                         <div className="relative w-full">
@@ -758,7 +741,7 @@ const AddTeacher = () => {
                                     </div>
 
                                     {/* Xã/Phường */}
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center gap-2">
                                         <strong className="text-gray-500 whitespace-nowrap w-40">Xã/Phường:</strong>
                                         <select className="w-full border rounded p-2 whitespace-nowrap"
                                             {...register('wardCode', { required: 'Vui lòng chọn Xã/phường' })}
@@ -777,14 +760,14 @@ const AddTeacher = () => {
                                             }
                                         </select>
                                     </div>
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-2">
                                         <strong className="text-gray-500 whitespace-nowrap w-40">Địa chỉ</strong>
                                         <div className="w-full">
                                             <input type="text" className="w-full border rounded p-2"  {...register('addressFull', { required: 'Địa chỉ là bắt buộc' })} />
                                             {errors.addressFull && (<p className="text-red-500 text-sm mt-1 p-0">{errors.addressFull.message}</p>)}
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-2">
                                         <strong className="text-gray-500 whitespace-nowrap w-40">Email:</strong>
                                         <div className='w-full'>
                                             <input
@@ -804,7 +787,7 @@ const AddTeacher = () => {
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-2">
                                         <strong className="text-gray-500 whitespace-nowrap w-40">SĐT:</strong>
 
                                         <div className='w-full'>
