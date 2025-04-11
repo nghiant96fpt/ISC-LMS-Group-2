@@ -8,6 +8,8 @@ import Spinner from '../../../../components/Spinner';
 import Dropdown from '../../../../components/Dropdown';
 import { DropdownOption } from '../../../../components/Dropdown/type';
 import { FormInputs } from './type';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -54,9 +56,15 @@ const AddGradeTypePage: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
       });
       reset();
+      toast.success('Thêm loại điểm mới thành công!', { autoClose: 1000});
       navigate('/leadership/declare-data/score-types');
-    } catch (error) {
-      console.error('Có lỗi xảy ra khi gọi API:', error);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || 'Có xảy ra khi thêm loại điểm mới';
+        toast.error(errorMessage, { autoClose: 1000});
+      } else {
+        toast.error('Có lỗi khi xóa', { autoClose: 1000});
+      }
     } finally {
       setIsLoading(false);
     }

@@ -95,6 +95,7 @@ import MainClassList from '../../pages/Leadership/DeclareData/ClassList';
 import MainBlockDepartment from '../../pages/Leadership/DeclareData/BlockDepartment';
 import MainSectionList from '../../pages/Leadership/DeclareData/SectionList/SectionListData';
 import MainSetupSubjectedit from '../../pages/Leadership/DeclareData/SubjectSettings/SubjecteditData';
+import MainScoreType from '../../pages/Leadership/DeclareData/ScoreTypes';
 import EditWorkProcess from '../../pages/Leadership/AllTeacherProfiles/Workprocess/EditWorkProcess';
 import AddTeacher from '../../pages/Leadership/AllTeacherProfiles/AddTeacher/Addteacher';
 import MainSetupDepartmentModal from '../../pages/Leadership/DeclareData/SetupDepartmentModal';
@@ -160,7 +161,7 @@ const StudentRoutes = () => {
         <Route path="declare-data/block-department/list" element={<ClassListWrapper />} />
         <Route path="declare-data/block-department/:id" element={<EditDepartment />} />
         {/*  */}
-        <Route path="declare-data/score-types" element={<ScoreTypes />} />
+        <Route path="declare-data/score-types" element={<MainScoreType />} />
         <Route path="declare-data/score-types/:id" element={<EditGradeTypeModal />} />
         <Route path="declare-data/score-types/add" element={<AddGradeTypeModal />} />
         <Route path="declare-data/edit/:id" element={<DepartmentSettings />} />
@@ -180,7 +181,7 @@ const StudentRoutes = () => {
         <Route path="exams/test-management/:id" element={<DetailTestManagement />} />
         <Route path="exams/edit/:id" element={<EditExamSchedule />} />
         <Route path="exams/detail/:id" element={<ExamDetailModal />} />
-        <Route path="exams/list" element={<ExamListTable />} />
+        {/* <Route path="exams/list" element={<ExamListTable />} /> */}
         <Route path="exams/create-exam-schedule" element={<CreateExamSchedule />} />
         {/*  */}
         <Route path="" element={<StudentRetention />} />

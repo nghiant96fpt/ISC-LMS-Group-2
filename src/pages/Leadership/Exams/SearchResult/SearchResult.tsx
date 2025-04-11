@@ -1,25 +1,37 @@
 import React, { useState } from 'react';
-import { SearchData, IFileOption } from './type';
+import { IFileOption, SearchResultProps } from './type';
 import { IconArrowCaretDown } from '../../../../components/Icons';
+import ScoreBoardExport from '../ScoreBoard/ScoreBoardExport';
 
-const SearchResult: React.FC = () => {
-  // Dữ liệu mẫu
-  const [searchData] = useState<SearchData>({
-    subject: 'Ngữ Văn',
-    class: '10C1',
-    classId: '134 2665 3563',
-    startTime: 'Thứ 6, 20/10/2020',
-    startHour: '13:00 (GMT +7 Bangkok)',
-  });
 
+const SearchResult: React.FC<SearchResultProps> = ({ scoreBoardClass, scoreBoard }) => {
+  // Sử dụng dữ liệu lớp từ scoreBoardClass
+  const classInfo = scoreBoardClass;
+  
+  // Format thời gian bắt đầu
+  const startDate = new Date(classInfo.startDate);
+  const formattedStartDate = new Intl.DateTimeFormat('vi-VN', {
+    weekday: 'long',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  }).format(startDate);
+
+  const formattedStartTime =
+    startDate.toLocaleTimeString('vi-VN', {
+      hour: '2-digit',
+      minute: '2-digit'
+    }) + ' (GMT +7 Bangkok)';
+  
+  // Các tùy chọn định dạng file để xuất
   const fileOptions: IFileOption[] = [
     { value: 'xlsx', label: 'Excel -.xlsx' },
     { value: 'pdf', label: 'PDF -.pdf' },
     { value: 'csv', label: 'CSV -.csv' },
   ];
 
-  // State cho dropdown
-  const [selectedFile, setSelectedFile] = useState<string>(fileOptions[0].label);
+  // Sử dụng kiểu union cho selectedFile, đảm bảo luôn có giá trị đúng (xlsx | pdf | csv)
+  const [selectedFile, setSelectedFile] = useState<'xlsx' | 'pdf' | 'csv'>(fileOptions[0].value as 'xlsx');
   const [isFileDropdownOpen, setIsFileDropdownOpen] = useState<boolean>(false);
 
   return (
@@ -28,38 +40,40 @@ const SearchResult: React.FC = () => {
         {/* Thông tin lớp học */}
         <div className="space-y-2">
           <p className="font-semibold">
-            Môn học: <span className="font-normal ml-8">{searchData.subject}</span>
+            Môn học: <span className="font-normal ml-8">{classInfo.subject.name}</span>
           </p>
           <p className="font-semibold">
-            Lớp: <span className="font-normal ml-16">{searchData.class}</span>
+            Lớp: <span className="font-normal ml-16">{classInfo.name}</span>
           </p>
           <p className="font-semibold">
-            Mã lớp: <span className="font-normal ml-10">{searchData.classId}</span>
+            Mã lớp: <span className="font-normal ml-10">{classInfo.code}</span>
           </p>
         </div>
 
         {/* Thời gian bắt đầu */}
         <div>
           <p>
-            <span className="font-semibold">Thời gian bắt đầu:</span> {searchData.startTime}
+            <span className="font-semibold">Thời gian bắt đầu:</span> {formattedStartDate}
           </p>
-          <p className="ml-32">{searchData.startHour}</p>
+          <p className="ml-32">{formattedStartTime}</p>
         </div>
 
-        {/* Nút Xuất file */}
+        {/* Nút xuất file và dropdown chọn định dạng */}
         <div className="text-right">
           <p className="font-semibold mb-2 text-start">In bảng điểm:</p>
           <div className="flex items-center space-x-2">
-            <button className="w-[113px] h-[32px] border border-orange-600 bg-orange-200 text-black-text font-semibold rounded-lg hover:bg-orange-300">
-              Xuất file
-            </button>
-
-            {/* Dropdown Xuất File */}
-
-            <div className="relative" style={{ width: '136px', height: '32px' }} onClick={() => setIsFileDropdownOpen(!isFileDropdownOpen)}>
-              {/* Ô chọn */}
-              <div className="border border-gray-300 rounded px-3 h-[32px] bg-white flex justify-between items-center cursor-pointer">
-                <span className="text-left">{selectedFile}</span>
+            {/* Component xuất file: truyền danh sách học viên dưới dạng scoreBoard */}
+            <ScoreBoardExport data={scoreBoard} exportType={selectedFile} />
+            
+            {/* Dropdown chọn định dạng file */}
+            <div
+              className="relative"
+              style={{ width: '136px', height: '40px' }}
+              onClick={() => setIsFileDropdownOpen(!isFileDropdownOpen)}
+            >
+              {/* Ô hiển thị lựa chọn */}
+              <div className="border border-gray-300 rounded px-3 h-[40px] bg-white flex justify-between items-center cursor-pointer">
+                {fileOptions.find(option => option.value === selectedFile)?.label}
                 <div data-svg-wrapper>
                   <IconArrowCaretDown />
                 </div>
@@ -73,7 +87,7 @@ const SearchResult: React.FC = () => {
                       key={index}
                       className="px-3 py-2 hover:bg-orange-100 cursor-pointer text-left"
                       onClick={() => {
-                        setSelectedFile(option.label);
+                        setSelectedFile(option.value as 'xlsx' | 'pdf' | 'csv');
                         setIsFileDropdownOpen(false);
                       }}
                     >
