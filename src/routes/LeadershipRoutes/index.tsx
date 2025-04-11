@@ -106,10 +106,10 @@ const StudentRoutes = () => {
         <Route index element={<Dashboard />} />
         <Route path="all-student-profiles" element={<AllStudentProfiles />} />
         {/*Group-3 All student */}
-        <Route path="all-teacher-profiles/:userId" element={<AllTeacherProfiles />} />
-        <Route path="all-teacher-profiles/:userId/resignation/:id" element={<ResignationForm />} />
-        <Route path="all-teacher-profiles/:userId/stop-working/:id" element={<LeaveUpdateModal />} />
-        <Route path="all-teacher-profiles/:userId/retirement/:id" element={<RetirementUpdateModal />} />
+        <Route path="all-teacher-profiles" element={<AllTeacherProfiles />} />
+        <Route path="all-teacher-profiles/resignation/:id" element={<ResignationForm />} />
+        <Route path="all-teacher-profiles/stop-working/:id" element={<LeaveUpdateModal />} />
+        <Route path="all-teacher-profiles/retirement/:id" element={<RetirementUpdateModal />} />
         <Route path="all-teacher-profiles/AddTeacher" element={<AddTeacher />} />
         {/*  */}
         {/*Group-3 All student */}

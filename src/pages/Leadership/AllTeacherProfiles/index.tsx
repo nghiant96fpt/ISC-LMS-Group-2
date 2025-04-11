@@ -86,15 +86,15 @@ const AllTeacherProfiles: React.FC = () => {
   const [cookies] = useCookies(["accessToken"]);
   const axiosInstance = createAxiosInstance();
   const [dataSubject, setDataSubject] = useState<ISubject[]>([])
-  const handleMenuClick = (key: string, userId?: number, id?: number) => {
+  const handleMenuClick = (key: string, id?: number) => {
     if (key === '1') {
       navigate(`/leadership/InstructorProfile/${id}`);
     } else if (key === '2') {
-      navigate(`/leadership/all-teacher-profiles/${userId}/retirement/${id}`);
+      navigate(`/leadership/all-teacher-profiles/retirement/${id}`);
     } else if (key === '3') {
-      navigate(`/leadership/all-teacher-profiles/${userId}/resignation/${id}`);
+      navigate(`/leadership/all-teacher-profiles/resignation/${id}`);
     } else if (key === '4') {
-      navigate(`/leadership/all-teacher-profiles/${userId}/stop-working/${id}`);
+      navigate(`/leadership/all-teacher-profiles/stop-working/${id}`);
     }
   };
 
@@ -318,12 +318,8 @@ const AllTeacherProfiles: React.FC = () => {
       <AddressList addressList={urls} />
 
       <div className="flex justify-between items-center mb-4">
-        <DropdownSelectionComponent
-          label={option_date[0]}
-          options={option_date}
-          width={144}
-        />
-        <div className="space-x-2 flex justify-between">
+        <div></div>
+        <div className="space-x-2 flex justify">
           <button
             className="border-r-[2px]"
             title="Xóa"
@@ -477,7 +473,7 @@ const AllTeacherProfiles: React.FC = () => {
                       </button>
 
                       <Dropdown
-                        menu={{ items: filteredItems(teacher.status), onClick: ({ key }) => handleMenuClick(key, teacher.userId, teacher.id) }}
+                        menu={{ items: filteredItems(teacher.status), onClick: ({ key }) => handleMenuClick(key, teacher.id) }}
                         placement="bottom"
                         arrow={{ pointAtCenter: true }}
                         className={`ms-2 `}

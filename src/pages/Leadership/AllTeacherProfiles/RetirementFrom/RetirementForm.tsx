@@ -18,8 +18,8 @@ const RetirementUpdateModal: React.FC = () => {
   const axiosInstance = createAxiosInstance();
   const [loading, setLoading] = useState(false); // Trạng thái loading
   const navigate = useNavigate();
-  const { userId, id } = useParams<{ userId: string; id: string }>();
-  const [cookies] = useCookies(["accessToken"]);
+  const { id } = useParams<{ id: string }>();
+  const [cookies] = useCookies(["accessToken", 'userId']);
   const handleClose = () => {
     navigate("/leadership/all-teacher-profiles", { replace: true });
   };
@@ -82,7 +82,7 @@ const RetirementUpdateModal: React.FC = () => {
         note: retirementData.note || "",
         attachment: base64File,
         status: 9,
-        leadershipId: Number(userId),
+        leadershipId: Number(cookies.userId),
         active: true,
       };
 

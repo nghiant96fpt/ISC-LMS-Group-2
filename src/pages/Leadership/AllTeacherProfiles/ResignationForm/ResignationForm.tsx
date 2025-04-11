@@ -14,7 +14,7 @@ const ResignationForm: React.FC = () => {
   const axiosInstance = createAxiosInstance();
   const { userId, id } = useParams<{ userId: string; id: string }>();
   const [loading, setLoading] = useState(false);
-  const [cookies] = useCookies(["accessToken"]);
+  const [cookies] = useCookies(["accessToken", 'userId']);
   const navigate = useNavigate();
   const [retirementData, setRetirementData] = useState<ResignationFormProps>({
     retirementDate: null,
@@ -63,7 +63,7 @@ const ResignationForm: React.FC = () => {
         note: retirementData.note || "",
         attachment: base64File,
         status: 8,
-        leadershipId: Number(userId),
+        leadershipId: Number(cookies.userId),
         active: true,
       };
 

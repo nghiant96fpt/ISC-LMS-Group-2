@@ -12,8 +12,8 @@ import createAxiosInstance from '../../../../utils/axiosInstance';
 const LeaveUpdateModal: React.FC = () => {
     const axiosInstance = createAxiosInstance();
     const [loading, setLoading] = useState(false);
-    const { userId, id } = useParams<{ userId: string; id: string }>();
-    const [cookies] = useCookies(["accessToken"]);
+    const { id } = useParams<{ id: string }>();
+    const [cookies] = useCookies(["accessToken", 'userId']);
     const [leaveData, setLeaveData] = useState<ILeaveUpdate>({
         leaveDate: null,
         note: '',
@@ -57,10 +57,11 @@ const LeaveUpdateModal: React.FC = () => {
                 note: leaveData.note || "",
                 attachment: base64File,
                 status: 7,
-                leadershipId: Number(userId),
+                leadershipId: Number(cookies.userId),
                 active: true,
             };
             console.log(value);
+            console.log(cookies.userId);
 
             try {
                 // Thử cập nhật trước (PUT)
@@ -69,10 +70,10 @@ const LeaveUpdateModal: React.FC = () => {
                 toast.success("Cập nhật thành công!");
 
             } catch (error: any) {
-                if (error.response.status === 404) {
+                if (error.response?.status === 404) {
                     const dataPost = await axiosInstance.post(`api/retirement`, value);
 
-                    toast.success("Cập nhật thành công!");
+                    toast.success("Thêm thành công!");
 
                 } else {
                     console.error("❌ Lỗi API:", error);
