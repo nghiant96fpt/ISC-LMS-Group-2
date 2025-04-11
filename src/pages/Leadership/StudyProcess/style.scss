@@ -5,13 +5,9 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px; /* Khoảng cách giữa các phần tử */
-  padding: 20px 20px 20px 10px;
+  padding: 20px 20px 20px 0px;
 }
-.tab {
-  width: 65%;
-}
-
-.dropdown {
+.group-dropdown {
   display: flex;
   gap: 10px; /* Khoảng cách giữa các dropdown */
 }
@@ -22,18 +18,13 @@
   align-items: center;
   padding: 0px;
 }
-.switch-tab {
-  background-color: #f2f2f2;
-  max-width: 100%;
-  margin-left: 0px;
-}
 
 .class-info-container {
   display: flex;
   justify-content: center;
   border: 1px solid var(--border-orange);
   background-color: #fff9f4;
-  margin: 20px;
+  margin: 20px 20px 20px 0px;
   border-radius: 16px;
   padding: 50px;
 }
@@ -54,7 +45,7 @@
   justify-content: flex-start;
 }
 
-.content {
+.content-study-process {
   display: flex;
   justify-content: space-between;
 }
@@ -85,7 +76,7 @@ strong {
 }
 
 .collapsible {
-  margin: 20px;
+  margin: 20px 20px 20px 0px;
 }
 
 .table-cell {

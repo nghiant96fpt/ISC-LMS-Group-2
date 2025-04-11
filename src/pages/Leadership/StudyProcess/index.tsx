@@ -4,8 +4,10 @@ import StudyProcessContent from './StudyProcessContent';
 const StudyProcess: React.FC = () => {
   return (
     <>
-      <StudyProcessHeader />
-      <StudyProcessContent />
+      <div className="w-full">
+        <StudyProcessHeader />
+        <StudyProcessContent />
+      </div>
     </>
   );
 };

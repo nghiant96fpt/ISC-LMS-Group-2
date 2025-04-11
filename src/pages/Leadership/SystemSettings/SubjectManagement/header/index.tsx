@@ -5,28 +5,23 @@ import plus from '../../../../../assets/icons/Plus.jpg';
 import Breadcrumb from '../../../../../components/AddressUrlStack/Index';
 import { useState, useEffect } from 'react';
 import './style.css';
-import axios from 'axios';
 import { toast } from 'react-toastify';
-import Cookies from 'js-cookie';
+import createAxiosInstance from '../../../../../utils/axiosInstance';
 
-const token = Cookies.get('accessToken');
+const axiosTrue = createAxiosInstance(true);
 
 const ClassManagementHeader: React.FC<{
   selectedYearOption: DropdownOption | null;
   setSelectedYearOption: (option: DropdownOption) => void;
-}> = ({ selectedYearOption, setSelectedYearOption }) => {
+  onSubjectAdded?: () => void; // ✅ thêm prop này
+}> = ({ selectedYearOption, setSelectedYearOption, onSubjectAdded }) => {
   const [yearOptions, setYearOptions] = useState<DropdownOption[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAcademicYears = async () => {
-      console.log('Token đang dùng:', token);
       try {
-        const response = await axios.get('https://fivefood.shop/api/academic-years', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axiosTrue.get(`https://fivefood.shop/api/academic-years`);
 
         const yearsData = Array.isArray(response.data?.data) ? response.data.data : [];
         const formattedYears = yearsData.map((year: any) => ({
@@ -78,12 +73,7 @@ const ClassManagementHeader: React.FC<{
       const yearId = selectedYearInModal.value;
       console.log('Year ID:', yearId);
 
-      const response = await axios.get('https://fivefood.shop/api/subject-types', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: { academicYearsId: parseInt(yearId) },
-      });
+      const response = await axiosTrue.get(`https://fivefood.shop/api/subject-types`);
 
       console.log('API Response:', response.data);
 
@@ -104,11 +94,7 @@ const ClassManagementHeader: React.FC<{
         academicYearsId: parseInt(yearId),
       };
 
-      const Response = await axios.post('https://fivefood.shop/api/subject-types', payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const Response = await axiosTrue.post('https://fivefood.shop/api/subject-types', payload);
 
       toast.success('Thêm mới môn học thành công!');
 
@@ -117,6 +103,8 @@ const ClassManagementHeader: React.FC<{
       setIsActive(true);
       setSelectedYearInModal(null);
       setShowModal(false);
+
+      onSubjectAdded?.(); // ✅ Gọi callback nếu có
     } catch (error: any) {
       console.error('Lỗi khi thêm mới môn học:', error);
       if (error.response && error.response.data && error.response.data.message) {

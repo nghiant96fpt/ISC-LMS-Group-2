@@ -13,11 +13,11 @@ import arrow_left from '../../../../../assets/icons/arrow left.png';
 import DeleteConfirmation from '../../../../../components/DeleteConfirmation';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
-import StatusBar from '../../../../../components/StatusBar/StatusBar';
 import createAxiosInstance from '../../../../../utils/axiosInstance';
 
-const token = Cookies.get('accessToken');
+const axiosTrue = createAxiosInstance(true);
 const API_URL = 'https://fivefood.shop/api/studentinfos/all';
+const url_delete = 'https://fivefood.shop/api/users';
 
 interface TableBodyProps {
   searchTerm: string;
@@ -34,17 +34,11 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const axiosTrue = createAxiosInstance(true);
   const navigator = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('Token đang dùng:', token);
-        const response = await axios.get(API_URL, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axiosTrue.get(API_URL);
 
         const result = response.data; // axios đã tự parse JSON
 
@@ -94,13 +88,10 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
   };
 
   const handleConfirmDelete = async () => {
+    console.log('ID học viên cần xóa:', studentToDelete); // <-- Kiểm tra ID
     if (studentToDelete) {
       try {
-        const response = await axios.delete(`https://fivefood.shop/api/studentinfos/${studentToDelete}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axiosTrue.delete(`${url_delete}/${studentToDelete}`);
 
         if (response.data.code === 0) {
           setStudents((prev) => prev.filter((s) => s.userId !== studentToDelete));
@@ -127,35 +118,6 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
 
   if (isLoading) return <p>Đang tải dữ liệu...</p>;
   if (error) return <p>{error}</p>;
-
-  const mapStatusToType = (status: number) => {
-    switch (status) {
-      case 1:
-        return 'studying'; // Đang làm việc
-      case 2:
-        return 'graduated'; // Tạm nghỉ
-      case 5:
-        return 'dropped'; // Đã nghỉ việc
-      case 3:
-        return 'classTransferred'; // Nghỉ hưu
-      default:
-        return 'studying'; // Mặc định
-    }
-  };
-  const mapStatusToLabel = (status: number) => {
-    switch (status) {
-      case 1:
-        return 'Đang đi học';
-      case 2:
-        return 'Đã tốt nghiệp';
-      case 5:
-        return 'Đã thôi học';
-      case 3:
-        return 'Đã chuyển lớp';
-      default:
-        return 'Đang đi học'; // Mặc định nếu không khớp
-    }
-  };
 
   return (
     <>
@@ -225,16 +187,12 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
                   <td>{student?.gender}</td>
                   <td>{student?.nation}</td>
                   <td>{student?.className}</td>
-                  {/* tạm */}
-                  <td style={{ maxWidth: 150 }}>{<Status type={mapStatusToType(student.status)} label={mapStatusToLabel(student.status)} />}</td>
-                  {/* tạm */}
-                  <td className="icon-container flex items-center">
-                    <div className="flex items-center me-1">
-                      <button onClick={() => navigator('/leadership/student', { state: { studentId: student?.userId } })}>
-                        <img className="eyeIcon" src={eye} alt="View" />
-                      </button>
-                    </div>
-                    <button className="me-1" onClick={() => toggleDropdown(student?.userId)}>
+                  {/* <td>{<Status type={student?.status || 'dropped'} />}</td> */}
+                  <td className="icon-container">
+                    <button onClick={() => navigator('/leadership/student', { state: { studentId: student?.userId, academicYearId: student?.academicYear?.id } })}>
+                      <img className="eyeIcon" src={eye} alt="View" />
+                    </button>
+                    <button onClick={() => toggleDropdown(student?.userId)}>
                       <img className="unionIcon" src={union} alt="All" />
                     </button>
                     {openDropdownId === student?.userId && (
@@ -278,15 +236,15 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
                     )}
                     <button onClick={() => handleOpenModal(student?.userId)}>
                       <img className="trashIcon" src={trash} alt="Delete" />
+                      {studentToDelete === student?.userId && studentToDelete !== null && (
+                        <DeleteConfirmation
+                          title="Xác nhận xóa học viên"
+                          description="Bạn có chắc chắn muốn xóa học viên? Hành động này không thể hoàn tác."
+                          onCancel={handleCloseModal}
+                          onConfirm={handleConfirmDelete}
+                        />
+                      )}
                     </button>
-                    {studentToDelete === student?.userId && studentToDelete !== null && (
-                      <DeleteConfirmation
-                        title="Xác nhận xóa học viên"
-                        description="Bạn có chắc chắn muốn xóa học viên? Hành động này không thể hoàn tác."
-                        onCancel={handleCloseModal}
-                        onConfirm={handleConfirmDelete}
-                      />
-                    )}
                   </td>
                 </tr>
               ))

@@ -1,38 +1,84 @@
-import SwitchTag from '../../../../components/SwitchTag';
 import Dropdown from '../../../../components/Dropdown';
 import { DropdownOption } from '../../../../components/Dropdown/type';
 import Button from '../../../../components/Button';
-import Breadcrumb from '../../../../components/AddressUrlStack/Index';
-import { useState } from 'react';
 import '../style.scss';
 import '../../../../styles/_variables.scss';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useState, useEffect } from 'react';
 
 const StudyProcessHeader: React.FC = () => {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const options = {
-    labels: ['Thông tin chung', 'quá trình học tập'],
-    paths: ['', ''],
-  };
-
-  const handleTabClick = (index: number) => {
-    setActiveTab(index);
-  };
-
-  const [selectedGradeOption, setSelectedGradeOption] = useState<DropdownOption | null>(null);
   const [selectedYearOption, setSelectedYearOption] = useState<DropdownOption | null>(null);
+  const [yearOptions, setYearOptions] = useState<DropdownOption[]>([]);
+  const [hasFetchedYears, setHasFetchedYears] = useState(false);
 
-  const gradeOptions: DropdownOption[] = [
-    { label: 'Khối 1', value: 'grade-1' },
-    { label: 'Khối 2', value: 'grade-2' },
-    { label: 'Khối 3', value: 'grade-3' },
-    { label: 'Khối 4', value: 'grade-4' },
-  ];
+  const [classOptions, setClassOptions] = useState<DropdownOption[]>([]);
+  const [selectedClassOption, setSelectedClassOption] = useState<DropdownOption | null>(null);
 
-  const yearOptions: DropdownOption[] = [
-    { label: '2023-2024', value: '2023-2024' },
-    { label: '2024-2025', value: '2024-2025' },
-  ];
+  const token = Cookies.get('accessToken');
+  const authHeaders = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  };
+
+  /// Lấy niên khóa
+  const fetchAcademicYears = async () => {
+    if (hasFetchedYears) return;
+
+    try {
+      const response = await axios.get('https://fivefood.shop/api/academic-years', {
+        headers: authHeaders,
+      });
+
+      const result = response.data;
+      if (!result || !Array.isArray(result.data)) {
+        throw new Error('API không trả về danh sách niên khóa hợp lệ');
+      }
+
+      const formattedYears: DropdownOption[] = result.data.map((year: any) => ({
+        label: year.name,
+        value: year.id.toString(),
+      }));
+
+      setYearOptions(formattedYears);
+      setHasFetchedYears(true);
+    } catch (error) {
+      console.error('Lỗi khi fetch năm học:', error);
+      toast.error('Không thể tải danh sách niên khóa');
+    }
+  };
+
+  /// Lấy danh sách lớp theo niên khóa
+  const fetchClassOptions = async () => {
+    if (!selectedYearOption?.value) return;
+
+    try {
+      const response = await axios.get(
+        `https://fivefood.shop/api/class/by-grade-academic?page=1&pageSize=100&academicYearId=${selectedYearOption.value}&sortColumn=Id&sortOrder=asc`,
+        { headers: authHeaders },
+      );
+
+      const result = response.data;
+
+      if (!result || !Array.isArray(result.data)) {
+        throw new Error('API không trả về danh sách lớp học hợp lệ');
+      }
+
+      const formattedClasses: DropdownOption[] = result.data.map((cls: any) => ({
+        label: cls.name,
+        value: cls.id.toString(),
+      }));
+
+      setClassOptions(formattedClasses);
+    } catch (error) {
+      console.error('Lỗi khi fetch danh sách lớp học:', error);
+      // toast.error('Không thể tải danh sách lớp học');
+    }
+  };
+
+  // Gọi API lớp khi chọn niên khóa
 
   const handleClick = () => {
     alert('Button clicked!');
@@ -44,33 +90,15 @@ const StudyProcessHeader: React.FC = () => {
     border: '1px solid var(--background-4)',
   };
 
-  const addresses = [
-    { linkName: 'Hồ sơ học viên', link: '/' },
-    { linkName: 'Quá trình học tập', link: '/' },
-  ];
-
   return (
-    <>
-      {/* <div className="breadcrum ml-5">
-        <Breadcrumb addressList={addresses} type={true} />
-      </div> */}
-      <div className="tab-dropdown-btn">
-        <div className="tab">
-          <SwitchTag
-            options={options}
-            // activeTab={activeTab}
-            // handleTabClick={handleTabClick}
-          />
-        </div>
-        <div className="dropdown">
-          <Dropdown
-            placeholder="Tất cả khối"
-            size="short"
-            options={gradeOptions}
-            selectedOption={selectedGradeOption}
-            onSelect={(option) => setSelectedGradeOption(option)}
-            handleOptionClick={(option) => setSelectedGradeOption(option)}
-          />
+    <div className="tab-dropdown-btn">
+      <div className="group-dropdown">
+        {/* <div
+          className="dropdown"
+          onClick={() => {
+            if (!hasFetchedYears) fetchAcademicYears();
+          }}
+        >
           <Dropdown
             placeholder="Niên khóa"
             size="short"
@@ -80,13 +108,25 @@ const StudyProcessHeader: React.FC = () => {
             handleOptionClick={(option) => setSelectedYearOption(option)}
           />
         </div>
-        <div className="btn">
-          <Button style={buttonStyle} width={'160'} height={'52'} onClick={handleClick}>
-            Xuất file
-          </Button>
-        </div>
+
+        <div className="dropdown">
+          <Dropdown
+            placeholder="Tất cả lớp"
+            size="short"
+            options={classOptions}
+            selectedOption={selectedClassOption}
+            onSelect={(option) => setSelectedClassOption(option)}
+            handleOptionClick={(option) => setSelectedClassOption(option)}
+          />
+        </div> */}
       </div>
-    </>
+
+      <div className="btn">
+        <Button style={buttonStyle} width={'160'} height={'52'} onClick={handleClick}>
+          Xuất file
+        </Button>
+      </div>
+    </div>
   );
 };
 

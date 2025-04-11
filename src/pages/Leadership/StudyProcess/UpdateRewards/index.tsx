@@ -14,7 +14,7 @@ const UpdateDiscipline: React.FC = () => {
   return (
     <div className="flex justify-center items-center min-h-screen p-6 bg-gray-100">
       <div className="bg-white rounded-2xl p-8 w-full max-w-[884px] shadow-lg">
-        <form className="w-full flex flex-col gap-6">
+        <div className="w-full flex flex-col gap-6">
           {/* Tiêu đề */}
           <h2 className="text-black-text text-center text-2xl font-bold">Cập nhật khen thưởng</h2>
 
@@ -71,7 +71,7 @@ const UpdateDiscipline: React.FC = () => {
             </Link>
             <button className="w-32 h-12 py-2 bg-orange-500 text-white font-bold rounded-lg">Lưu</button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

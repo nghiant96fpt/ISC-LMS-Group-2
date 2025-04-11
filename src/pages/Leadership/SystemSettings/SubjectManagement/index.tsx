@@ -13,9 +13,14 @@ const SubjectManagement: React.FC = () => {
 
   return (
     <div className="student-retention">
-      <SubjectManagementHeader selectedYearOption={selectedYearOption} setSelectedYearOption={setSelectedYearOption} />
+      <SubjectManagementHeader
+        selectedYearOption={selectedYearOption}
+        setSelectedYearOption={setSelectedYearOption}
+        onSubjectAdded={handleAddedSubject}
+      />
+
       <div className="content">
-        <SubjectManagementTable selectedYearOption={selectedYearOption} />
+        <SubjectManagementTable selectedYearOption={selectedYearOption} reloadTrigger={reloadTrigger} />
       </div>
     </div>
   );
