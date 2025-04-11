@@ -83,7 +83,7 @@ export const handleCreateUser = (servicesProps: servicesProps): void => {
       active: true,
       roleId: 3,
 
-      avatarUrl: servicesProps.selectedImage !== servicesProps.UserDefaultAVT ? servicesProps.selectedImage : '',
+      avatarUrl: servicesProps.selectedImage ? servicesProps.selectedImage?.split(',')[1] : '',
     };
 
     const familyData: familyType[] = servicesProps.data?.family
@@ -165,7 +165,7 @@ export const handleUpdateUser = (servicesProps: servicesProps, id: number): void
       active: true,
       roleId: 3,
 
-      avatarUrl: servicesProps.selectedImage !== servicesProps.UserDefaultAVT ? servicesProps.selectedImage : '',
+      avatarUrl: servicesProps.selectedImage ? servicesProps.selectedImage?.split(',')[1] : '',
     };
 
     const familyData: familyType[] = servicesProps.data?.family

@@ -13,11 +13,11 @@ import arrow_left from '../../../../../assets/icons/arrow left.png';
 import DeleteConfirmation from '../../../../../components/DeleteConfirmation';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import StatusBar from '../../../../../components/StatusBar/StatusBar';
+import createAxiosInstance from '../../../../../utils/axiosInstance';
 
 const token = Cookies.get('accessToken');
 const API_URL = 'https://fivefood.shop/api/studentinfos/all';
-import StatusBar from '../../../../../components/StatusBar/StatusBar';
-import createAxiosInstance from '../../../../../utils/axiosInstance';
 
 interface TableBodyProps {
   searchTerm: string;
@@ -128,6 +128,35 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
   if (isLoading) return <p>Đang tải dữ liệu...</p>;
   if (error) return <p>{error}</p>;
 
+  const mapStatusToType = (status: number) => {
+    switch (status) {
+      case 1:
+        return 'studying'; // Đang làm việc
+      case 2:
+        return 'graduated'; // Tạm nghỉ
+      case 5:
+        return 'dropped'; // Đã nghỉ việc
+      case 3:
+        return 'classTransferred'; // Nghỉ hưu
+      default:
+        return 'studying'; // Mặc định
+    }
+  };
+  const mapStatusToLabel = (status: number) => {
+    switch (status) {
+      case 1:
+        return 'Đang đi học';
+      case 2:
+        return 'Đã tốt nghiệp';
+      case 5:
+        return 'Đã thôi học';
+      case 3:
+        return 'Đã chuyển lớp';
+      default:
+        return 'Đang đi học'; // Mặc định nếu không khớp
+    }
+  };
+
   return (
     <>
       <div className="table-container">
@@ -197,15 +226,15 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
                   <td>{student?.nation}</td>
                   <td>{student?.className}</td>
                   {/* tạm */}
-                  <td style={{maxWidth: 150}}>{<StatusBar width='150px' status={student?.status}/>}</td>
+                  <td style={{ maxWidth: 150 }}>{<Status type={mapStatusToType(student.status)} label={mapStatusToLabel(student.status)} />}</td>
                   {/* tạm */}
                   <td className="icon-container flex items-center">
-                    <div className='flex items-center me-1'>
-                      <button onClick={() => navigator('/leadership/student', {state: {studentId: student?.userId}})}>
+                    <div className="flex items-center me-1">
+                      <button onClick={() => navigator('/leadership/student', { state: { studentId: student?.userId } })}>
                         <img className="eyeIcon" src={eye} alt="View" />
                       </button>
                     </div>
-                    <button className='me-1' onClick={() => toggleDropdown(student?.userId)}>
+                    <button className="me-1" onClick={() => toggleDropdown(student?.userId)}>
                       <img className="unionIcon" src={union} alt="All" />
                     </button>
                     {openDropdownId === student?.userId && (
@@ -249,15 +278,15 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
                     )}
                     <button onClick={() => handleOpenModal(student?.userId)}>
                       <img className="trashIcon" src={trash} alt="Delete" />
-                      {studentToDelete === student?.userId && studentToDelete !== null && (
-                        <DeleteConfirmation
-                          title="Xác nhận xóa học viên"
-                          description="Bạn có chắc chắn muốn xóa học viên? Hành động này không thể hoàn tác."
-                          onCancel={handleCloseModal}
-                          onConfirm={handleConfirmDelete}
-                        />
-                      )}
                     </button>
+                    {studentToDelete === student?.userId && studentToDelete !== null && (
+                      <DeleteConfirmation
+                        title="Xác nhận xóa học viên"
+                        description="Bạn có chắc chắn muốn xóa học viên? Hành động này không thể hoàn tác."
+                        onCancel={handleCloseModal}
+                        onConfirm={handleConfirmDelete}
+                      />
+                    )}
                   </td>
                 </tr>
               ))
