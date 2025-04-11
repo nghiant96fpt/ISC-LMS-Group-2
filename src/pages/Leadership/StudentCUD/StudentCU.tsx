@@ -143,6 +143,12 @@ const StudentCU = (props: stdCUDProps) => {
     }
   }, [sst]);
 
+  useEffect(() => {
+    if (sst) {
+      console.log(sst);
+    }
+  }, [sst]);
+
   type familyMembers = {
     guardianName: string;
     guardianRole: number;
@@ -243,7 +249,7 @@ const StudentCU = (props: stdCUDProps) => {
     { linkName: `${props.isUpdate ? sst?.fullName : 'Thêm học viên'}`, link: '/leadership/new-student' },
   ];
 
-  const [selectedImage, setSelectedImage] = useState<string>(UserDefaultAVT);
+  const [selectedImage, setSelectedImage] = useState<string>(sst?.avatarUrl || UserDefaultAVT);
   const cameraEditRef = useRef<HTMLInputElement>(null);
 
   const handleActiveCameraEdit = () => {
@@ -251,13 +257,27 @@ const StudentCU = (props: stdCUDProps) => {
       cameraEditRef.current.click();
     }
   };
+
+  const imageToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const imageUrl = await imageToBase64(file);
-      setSelectedImage(imageUrl);
+      const base64 = await imageToBase64(file);
+      setSelectedImage(base64);
     }
   };
+
+  useEffect(() => {
+    console.log('Selected image updated:', selectedImage);
+  }, [selectedImage]);
 
   const [courses, setCourses] = useState<DropdownOption[]>([]);
   const [grades, setGrades] = useState<DropdownOption[]>([]);
@@ -412,8 +432,6 @@ const StudentCU = (props: stdCUDProps) => {
   const selectedDistrict = watch('district');
   useEffect(() => {
     if (selectedDistrict) {
-      console.log(selectedProvince);
-
       handleGetWards(selectedDistrict?.value);
     }
   }, [selectedDistrict]);
@@ -495,7 +513,11 @@ const StudentCU = (props: stdCUDProps) => {
             <Card.Body>
               <div className="px-8 flex justify-between mb-5">
                 <div className="w-[15%] flex justify-center items-center relative h-max" onClick={handleActiveCameraEdit}>
-                  <img src={selectedImage} alt="default-avt" className="w-[160px] h-[160px] object-cover rounded-full" />
+                  <img
+                    src={`${sst?.avatarUrl ? `data:image/*;base64, ${sst.avatarUrl}` : selectedImage}`}
+                    alt="default-avt"
+                    className="w-[160px] h-[160px] object-cover rounded-full"
+                  />
                   <input id="cameraEdit" type="file" accept="image/*" ref={cameraEditRef} hidden onChange={handleImageChange} />
                   <img src={CameraEdit} alt="camera-edit" className="absolute bottom-0 size-12 translate-y-1/2 cursor-pointer" />
                 </div>

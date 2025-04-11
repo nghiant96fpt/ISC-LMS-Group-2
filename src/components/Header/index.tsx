@@ -25,10 +25,11 @@ const Header: React.FC = () => {
     removeCookie('userId');
     setRole(null);
     setLoading(false);
+    setName('');
   };
 
   const [openMenu, setOpenMenu] = useState(false);
-  const { name } = useContext(AuthContext);
+  const { name, setName } = useContext(AuthContext);
 
   return (
     <header className="header">
