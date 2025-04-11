@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../../../redux/store'; // Cập nhật đường dẫn theo đúng cấu trúc project
 import { postTrainingLevel } from './../../../../../redux/reducers/Leadership/SystemSettings/TrainingLevelManagement/TrainingLevelManagementSlice';
 import { toast } from 'react-toastify';
+import { useCookies } from 'react-cookie';
 
 const AddForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,6 +24,8 @@ const AddForm = () => {
     ghiChu: '',
     kichHoat: false,
   });
+  const [cookies] = useCookies(['refreshToken']);
+  const refreshToken = cookies.refreshToken;
 
   const [errors, setErrors] = useState({
     trinhDoDaoTao: '',
@@ -88,7 +91,7 @@ const AddForm = () => {
       console.log('formattedData', formattedData);
 
       // Gửi dữ liệu lên store
-      dispatch(postTrainingLevel(formattedData))
+      dispatch(postTrainingLevel({ ...formattedData, token: refreshToken }))
         .unwrap()
         .then(() => {
           toast.success('Thêm trình độ đào tạo thành công!');

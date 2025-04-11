@@ -69,7 +69,7 @@ const StudentRetentionUpdate = () => {
       const data = selectedStudentRetention as any;
       setValue('className', data?.className || '');
       setValue('studentName', `Học viên ${data?.fullName || ''}`);
-      setValue('semesterId', data?.semester?.toString() || '');
+      setValue('semesterId', data?.semester?.id || '');
       setValue('reason', data?.reason || '');
       setValue('retentionPeriod', data?.retentionPeriod || '');
       setDate(data?.reserveDate ? dayjs(data.reserveDate) : null);

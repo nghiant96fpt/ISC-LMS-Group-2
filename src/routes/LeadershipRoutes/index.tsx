@@ -74,6 +74,7 @@ import CreateExamSchedule from '../../pages/Leadership/Exams/CreateExamSchedule/
 import StudentRetensionUpdate from '../../pages/Leadership/StudentRetention/StudentRetensionUpdate';
 import StudentRetentionAdd from '../../pages/Leadership/StudentRetention/StudentRetentionAdd';
 import AddTransferAcceptance from '../../pages/Leadership/TransferAcceptance/AddTransferAcceptance';
+import UpdateTransferAcceptance from '../../pages/Leadership/TransferAcceptance/UpdateTransferAcceptance';
 import ListTopic from '../../pages/Leadership/TeachingAssignment/DsChiDe';
 import Config from '../../pages/Leadership/SystemSettings/Config';
 import SchoolInfo from '../../pages/Leadership/SystemSettings/SchoolInfomation';
@@ -143,6 +144,8 @@ const StudentRoutes = () => {
         <Route path="update-student-retention/:id" element={<StudentRetensionUpdate />} />
         <Route path="add-student-retention" element={<StudentRetentionAdd />} />
         <Route path="add-transfer-acceptance" element={<AddTransferAcceptance />} />
+        <Route path="update-transfer-acceptance/:id" element={<UpdateTransferAcceptance />} />
+
         {/* route cho phân công giảng dạy và ds chủ đề - group 4 */}
         <Route path="teaching-assignment" element={<TeachingAssignment />} /> {/* url phân công giảng */}
         <Route path="teaching-list-topic" element={<ListTopic />} /> {/* url ds chủ đề */}

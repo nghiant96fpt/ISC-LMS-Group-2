@@ -3,66 +3,84 @@ import { useForm } from 'react-hook-form';
 import DropdownSelectionComponent from '../../../../components/DropdownSelection';
 import Button from '../../../../components/Button';
 import attachIcon from '../../../../assets/icons/u_paperclip.png';
-import './index.css';
 import DateInput from '../../../../components/Date';
 import dayjs from 'dayjs';
 import { IconArrowCaretDown } from './../../../../components/Icons';
-import { IProvince, IDistrict, Student } from './type';
+
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from './../../../../redux/store';
-import { toast } from 'react-toastify';
-import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
 import {
+  fetchAllStudent,
   fetchProvince,
   fetchDistrict,
-  postTransferAcceptance,
-  fetchTransferSchool,
-  fetchAllStudent,
+  fetchOneTransferSchool,
+  updateTransferAcceptance,
 } from '../../../../redux/reducers/Leadership/StudentProfile/TransferAcceptance/TransferAcceptance';
+import { IProvince, IDistrict, Student } from '../AddTransferAcceptance/type';
 import createAxiosInstance from '../../../../utils/axiosInstance';
-const AddTransferAcceptance = () => {
+
+const UpdateTransferAcceptance = () => {
+  const { id } = useParams();
+  const [cookies] = useCookies(['refreshToken']);
+  const refreshToken = cookies.refreshToken;
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const [cookies] = useCookies(['refreshToken']);
-  const { register, handleSubmit, reset, setValue } = useForm();
+
+  const { register, handleSubmit, setValue, reset } = useForm();
   const [fileName, setFileName] = useState('');
   const [date, setDate] = useState<dayjs.Dayjs | null | any>(null);
   const [listProvince, setListProvince] = useState<IProvince[]>([]);
   const [districts, setDistricts] = useState<IDistrict>();
-  const [dataListStudent, setDataListStudent] = useState<Student[] | undefined>(undefined);
+  const [dataListStudent, setDataListStudent] = useState<Student[]>([]);
+  const [GetOneStudent, setGetOneStudent] = useState<any | null>(null);
 
-  const refreshToken = cookies.refreshToken;
   const [userId, setUserId] = useState();
-
-  const { StudentApiResponse, loading, error } = useSelector((state: RootState) => state.transferAcceptance);
-  const [selectedDistrictCode, setSelectedDistrictCode] = useState<number | null>(null);
   const [selectedProvinceCode, setSelectedProvinceCode] = useState<number | null>(null);
   const [selectedStudentFullName, setSelectedStudentFullName] = useState('');
+  const [selectedDistrictCode, setSelectedDistrictCode] = useState<number | null>(null);
 
   const { fetchProvince: data } = useSelector((state: RootState) => state.transferAcceptance);
   const { fetchDistrict: dataDistrict } = useSelector((state: RootState) => state.transferAcceptance);
+  const { StudentApiResponse, loading, error } = useSelector((state: RootState) => state.transferAcceptance);
+
   useEffect(() => {
-    dispatch(fetchTransferSchool({ page: 1, pageSize: 5, search: '', sortColumn: 'id', sortOrder: 'asc' }) as any);
+    dispatch(fetchOneTransferSchool(id))
+      .unwrap()
+      .then((result) => {
+        // console.log('Dữ liệu học sinh:', result);
+        setGetOneStudent(result);
+        setValue('selectedStudentId', result.studentId);
+        setValue('studentCode', result.studentCode);
+        setSelectedStudentFullName(result.fullName);
+        setDate(dayjs(result.transferSchoolDate));
+        setValue('fromSchool', result.transferToSchool);
+        setValue('reason', result.reason);
+        setValue('attachment', result.attachmentName);
+        setSelectedProvinceCode(result.provinceCode);
+        setSelectedDistrictCode(result.districtCode);
+        setFileName(result.attachmentName);
+      })
+      .catch((error) => {
+        console.error('Lỗi khi fetch:', error);
+      });
+  }, [dispatch, id]);
+
+  useEffect(() => {
     dispatch(fetchAllStudent(refreshToken));
   }, [dispatch]);
-  // console.log('StudentApiResponse', StudentApiResponse);
 
   useEffect(() => {
     if (StudentApiResponse?.data) {
       setDataListStudent(StudentApiResponse?.data);
     }
   }, [StudentApiResponse]);
-
   useEffect(() => {
     dispatch(fetchProvince());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (data) {
-      setListProvince(data);
-    }
-  }, [data]);
 
   useEffect(() => {
     if (selectedProvinceCode) {
@@ -71,13 +89,18 @@ const AddTransferAcceptance = () => {
   }, [selectedProvinceCode]);
 
   useEffect(() => {
+    if (data) {
+      setListProvince(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
     if (dataDistrict) {
       setDistricts(dataDistrict);
     }
   }, [dataDistrict]);
 
   const axiosInstance = createAxiosInstance(true);
-
   useEffect(() => {
     axiosInstance
       .get('api/auth/verify-token')
@@ -88,7 +111,7 @@ const AddTransferAcceptance = () => {
         toast.error('Có lỗi khi lấy thông tin người nhập!');
       });
   });
-  console.log('userId', userId);
+  // console.log('userId', userId);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
@@ -99,8 +122,8 @@ const AddTransferAcceptance = () => {
   const onSubmit = (data: any) => {
     const FormattedData = {
       studentId: data?.selectedStudentId,
-      studentCode: data.studentCode,
-      fullName: selectedStudentFullName,
+      studentCode: data?.studentCode,
+      fullName: null,
       transferSchoolDate: date ? dayjs(date).format('YYYY-MM-DD') : '',
       transferToSchool: data?.fromSchool,
       schoolAddress: '',
@@ -112,16 +135,18 @@ const AddTransferAcceptance = () => {
       semesterId: 1,
       userId: userId,
     };
-    dispatch(postTransferAcceptance({ Data: FormattedData, token: refreshToken }))
+    console.log(FormattedData);
+    dispatch(updateTransferAcceptance({ updatedData: FormattedData, token: refreshToken }))
       .unwrap()
       .then((res) => {
-        toast.success('Thêm bảo lưu thành công!');
-        reset();
-        setFileName('');
-        setDate(null);
+        // console.log('Cập nhật thành công:', res);
+        toast.success('Cập nhật chuyển trường thành công!');
+        // dispatch(fetchAllStudent());
+        // console.log(dataListStudent);
       })
-      .catch((errors) => {
-        toast.error(`${errors?.message}`);
+      .catch((err) => {
+        // console.error('Lỗi cập nhật:', err);
+        toast.error(err);
       });
   };
 
@@ -140,28 +165,7 @@ const AddTransferAcceptance = () => {
             Tên học viên: <span className="text-red-500">*</span>
           </label>
           <div className="relative w-full md:w-[585px]">
-            <select
-              {...register('selectedStudentId')}
-              onChange={(e) => {
-                const selectedStudentId = Number(e.target.value);
-                const selectedStudent = dataListStudent?.find((s) => s.userId === selectedStudentId);
-                if (selectedStudent) {
-                  // Cập nhật giá trị cho trường studentCode trong form
-                  setValue('studentCode', selectedStudent.code);
-                  setSelectedStudentFullName(selectedStudent.fullName);
-                }
-              }}
-              className="w-full p-2 bg-[#F2F2F2] rounded ..."
-            >
-              <option value="">Chọn học viên</option>
-              {dataListStudent &&
-                dataListStudent?.length &&
-                dataListStudent?.map((student) => (
-                  <option key={student.userId} value={student.userId}>
-                    {student.fullName}
-                  </option>
-                ))}
-            </select>
+            <input className="w-full p-2 bg-[#F2F2F2] rounded ..." defaultValue={selectedStudentFullName} type="text" disabled />
           </div>
         </div>
 
@@ -190,17 +194,13 @@ const AddTransferAcceptance = () => {
 
         {/* Học kỳ chuyển */}
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <label className="block font-medium">
-            Học kỳ chuyển: <span className="text-red-500">*</span>
-          </label>
+          <label className="block font-medium">Học kỳ chuyển:</label>
           <DropdownSelectionComponent width="585px" options={['Học kỳ I', 'Học kỳ II']} placeholder="Học kỳ I" />
         </div>
 
         {/* Tỉnh/Thành */}
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <label className="block font-medium">
-            Tỉnh/Thành: <span className="text-red-500">*</span>
-          </label>
+          <label className="block font-medium">Tỉnh/Thành:</label>
           <div className="relative w-full md:w-[585px]">
             <select
               className="appearance-none w-full p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none pr-10"
@@ -226,9 +226,7 @@ const AddTransferAcceptance = () => {
 
         {/* Quận/Huyện */}
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <label className="block font-medium">
-            Quận/Huyện: <span className="text-red-500">*</span>
-          </label>
+          <label className="block font-medium">Quận/Huyện:</label>
           <div className="relative w-full md:w-[585px]">
             <select
               className="appearance-none w-full p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none pr-10"
@@ -258,7 +256,7 @@ const AddTransferAcceptance = () => {
           </label>
           <input
             {...register('fromSchool')}
-            placeholder="Chuyển từ trường"
+            placeholder="Cần ZTho"
             className="w-full md:w-[585px] p-2 bg-[#F2F2F2] rounded focus:border-orange-400 focus:ring-1 focus:ring-orange-200 outline-none"
           />
         </div>
@@ -297,17 +295,18 @@ const AddTransferAcceptance = () => {
         {/* Buttons */}
         <div className="flex justify-center space-x-4 mt-4">
           <Button
-            children="Hủy"
-            type="button"
             className="secondary"
+            type="button"
             size="mini"
             width="160px"
             height="48px"
-            style={{ color: 'black', fontWeight: '600' }}
+            style={{ color: 'white', fontWeight: '600' }}
             onClick={handleCancel}
-          />
+          >
+            Hủy
+          </Button>
           <Button className="primary" type="submit" size="mini" width="160px" height="48px" style={{ color: 'white', fontWeight: '600' }}>
-            Tiếp theo
+            Lưu
           </Button>
         </div>
       </form>
@@ -315,4 +314,4 @@ const AddTransferAcceptance = () => {
   );
 };
 
-export default AddTransferAcceptance;
+export default UpdateTransferAcceptance;
