@@ -16,7 +16,7 @@ import Loading from '../../../components/Loading';
 import { toast } from 'react-toastify';
 import { imageToBase64 } from '../../../utils/base64Encode';
 import { handleCreateUser, handleUpdateUser } from './services';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { parseString } from '../../../utils/parseBoolean';
 import StudyProcess from '../StudyProcess';
 
@@ -485,6 +485,7 @@ const StudentCU = (props: stdCUDProps) => {
   const backgroundTrue = isProcessPage ? 'bg-[#373839] text-white' : 'bg-[#DBDBDB] text-[#373839]';
   const backgroundFalse = !isProcessPage ? 'bg-[#373839] text-white' : 'bg-[#DBDBDB] text-[#373839]';
 
+  const navigator = useNavigate();
   return (
     <div className="pr-20 pl-10 content">
       <Loading isLoading={loading} />
@@ -514,7 +515,7 @@ const StudentCU = (props: stdCUDProps) => {
               <div className="px-8 flex justify-between mb-5">
                 <div className="w-[15%] flex justify-center items-center relative h-max" onClick={handleActiveCameraEdit}>
                   <img
-                    src={`${sst?.avatarUrl && selectedImage === UserDefaultAVT ? `data:image/*;base64, ${sst.avatarUrl}` : selectedImage}`}
+                    src={`${sst?.avatarUrl && selectedImage === UserDefaultAVT ? `${sst.avatarUrl}` : selectedImage}`}
                     alt="default-avt"
                     className="w-[160px] h-[160px] object-cover rounded-full"
                   />
@@ -579,7 +580,7 @@ const StudentCU = (props: stdCUDProps) => {
           </Card>
           <div className="w-full flex justify-center mb-5">
             <div className="w-[220px] flex justify-between">
-              <Button className="secondary" children={'Hủy'} size="mini" />
+              <Button className="secondary" children={'Hủy'} size="mini" onClick={()=> navigator('/leadership/all-student-profiles')}/>
               <Button className="primary" children={'Lưu'} size="mini" onClick={props.isUpdate ? handleUpdate : handleCreate} />
             </div>
           </div>{' '}

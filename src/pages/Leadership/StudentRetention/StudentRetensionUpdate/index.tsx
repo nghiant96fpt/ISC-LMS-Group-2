@@ -52,18 +52,18 @@ const StudentRetentionUpdate = () => {
   useEffect(() => {
     if (listClass && selectedStudentRetention) {
       const defaultClass = listClass?.find((cls) => cls.name === selectedStudentRetention?.className);
-      // console.log('defaultClass', defaultClass);
+      console.log('defaultClass', defaultClass);
       // console.log('listClass', listClass);
 
       if (defaultClass) {
-        // setValue('className', defaultClass.id.toString());
+        setValue('className', defaultClass.id.toString());
 
         const matchedStudent = defaultClass.student.find((stu) => stu.fullName === selectedStudentRetention?.fullName);
-        // console.log('matchedStudent', matchedStudent);
+        console.log('matchedStudent', matchedStudent);
 
         if (matchedStudent) {
           setFullName(matchedStudent?.fullName);
-          // setValue('studentName', matchedStudent?.id);
+          setValue('studentName', matchedStudent?.id);
         }
         setStudentOptions(defaultClass.student);
       }

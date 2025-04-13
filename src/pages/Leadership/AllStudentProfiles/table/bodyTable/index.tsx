@@ -119,6 +119,35 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
   if (isLoading) return <p>Đang tải dữ liệu...</p>;
   if (error) return <p>{error}</p>;
 
+  const mapStatusToType = (status: number) => {
+    switch (status) {
+      case 1:
+        return 'studying'; // Đang làm việc
+      case 2:
+        return 'graduated'; // Tạm nghỉ
+      case 5:
+        return 'dropped'; // Đã nghỉ việc
+      case 3:
+        return 'classTransferred'; // Nghỉ hưu
+      default:
+        return 'studying'; // Mặc định
+    }
+  };
+  const mapStatusToLabel = (status: number) => {
+    switch (status) {
+      case 1:
+        return 'Đang đi học';
+      case 2:
+        return 'Đã tốt nghiệp';
+      case 5:
+        return 'Đã thôi học';
+      case 3:
+        return 'Đã chuyển lớp';
+      default:
+        return 'Đang đi học'; // Mặc định nếu không khớp
+    }
+  };
+
   return (
     <>
       <div className="table-container">
@@ -187,7 +216,7 @@ const TableBody: React.FC<TableBodyProps> = ({ searchTerm }) => {
                   <td>{student?.gender}</td>
                   <td>{student?.nation}</td>
                   <td>{student?.className}</td>
-                  {/* <td>{<Status type={student?.status || 'dropped'} />}</td> */}
+                  <td>{<Status type={mapStatusToType(student.status)} label={mapStatusToLabel(student.status)} />}</td>
                   <td className="icon-container">
                     <button onClick={() => navigator('/leadership/student', { state: { studentId: student?.userId, academicYearId: student?.academicYear?.id } })}>
                       <img className="eyeIcon" src={eye} alt="View" />

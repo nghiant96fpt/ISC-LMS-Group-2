@@ -270,8 +270,6 @@ const ListTableTest: React.FC = () => {
                 Bài kiểm tra chưa chấm
               </button>
             </div>
-
-            <button className="bg-orange-500 text-while-text px-6 py-3 rounded-lg font-bold">Thêm bài kiểm tra</button>
           </div>
         </div>
 

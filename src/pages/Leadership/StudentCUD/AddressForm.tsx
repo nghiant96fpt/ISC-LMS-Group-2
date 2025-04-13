@@ -2,6 +2,7 @@ import React from 'react';
 import Input from '../../../components/Input';
 import { DropdownOption } from '../../../components/Dropdown/type';
 import Dropdown from '../../../components/Dropdown';
+import { message } from 'antd';
 
 interface formProps {
   register?: any;
@@ -122,7 +123,7 @@ const AddressForm: React.FC<formProps> = ({
           <Input
             className="max-h-[40px] min-w-[300px]"
             placeholder="Nhập số điện thoại"
-            {...register('phone', { required: 'Họ và tên không được bỏ trống !' })}
+            {...register('phone', { required: 'Số điện thoại không được bỏ trống !', pattern: {value: /^[0-9]{8}$/, message: "Số điện thoại phải có 8 chữ số"} })}
             onChange={(e) => {
               setValue('phone', e.currentTarget.value);
               clearError('phone');
