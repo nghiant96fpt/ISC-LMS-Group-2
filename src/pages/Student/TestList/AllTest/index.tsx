@@ -5,10 +5,13 @@ import icon from '../icon';
 import CalendarInput from '../../../../components/CalendarInput/index';
 import data from '../Types/data';
 import Button from '../../../../components/Button';
+
 const AllTest: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const subjectOptions = ['Tiếng Anh', 'Toán'];
   const number = ['Khối 1', 'Khối 2', 'Khối 3', 'Khối 4', 'Khối 5'];
+  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
 
   return (
     <div className="block h-full w-full">
@@ -35,10 +38,9 @@ const AllTest: React.FC = () => {
       </div>
 
       {/* Bảng hiển thị */}
-      <div className="overflow-x-auto flex-grow px-2 md:px-10 w-full">
+      <div className="px-2 md:px-10 h-80 w-full">
         <div className="relative w-full border rounded-lg overflow-hidden">
           <table className="table-auto min-w-full border-collapse overflow-hidden rounded-t-lg">
-            {/* Header */}
             <thead className="bg-gradient-to-r from-background-orange-1 to-background-1 text-white">
               <tr>
                 <th className="py-2 px-4 text-left text-sm md:text-base font-semibold w-1/7">
@@ -58,21 +60,20 @@ const AllTest: React.FC = () => {
                 <th className="py-2 px-4 text-left text-sm md:text-base font-semibold w-1/7">Thời lượng</th>
                 <th className="py-2 px-4 text-left text-sm md:text-base font-semibold w-1/7">Tình trạng</th>
                 <th className="py-2 px-4 text-left text-sm md:text-base font-semibold w-1/7">Bài làm</th>
-                <th className="w-16"></th> {/* Cột cuối để căn chỉnh */}
+                <th className="w-16"></th>
               </tr>
             </thead>
-
             {/* Body */}
             <tbody className="max-h-48 overflow-y-auto">
               {data.map((item, index) => (
                 <tr key={index} className={`border-b ${index % 2 === 1 ? 'bg-gray-100' : ''}`}>
-                  <td className="py-3 px-4">{item.subject}</td>
-                  <td className="py-3 px-4">{item.content}</td>
-                  <td className="py-3 px-4">{item.teacher}</td>
-                  <td className="py-3 px-4">{item.examDate}</td>
-                  <td className="py-3 px-4">{item.duration}</td>
+                  <td className="h-">{item.subject}</td>
+                  <td className="">{item.content}</td>
+                  <td className="">{item.teacher}</td>
+                  <td className="">{item.examDate}</td>
+                  <td className="">{item.duration}</td>
                   <td
-                    className={`py-3 px-4 text-left italic ${
+                    className={` text-left italic ${
                       item.status === 'Đang tiến hành'
                         ? 'text-blue-500'
                         : item.status === 'Chưa bắt đầu'
@@ -85,7 +86,7 @@ const AllTest: React.FC = () => {
                     {item.status}
                   </td>
                   <td
-                    className={`py-3 px-4 text-left italic ${
+                    className={` text-left italic ${
                       item.action === 'Đang thực hiện'
                         ? 'text-blue-500'
                         : item.action === 'Chưa bắt đầu'
@@ -111,6 +112,36 @@ const AllTest: React.FC = () => {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* Thanh phân trang */}
+      <div className="mt-auto flex flex-wrap justify-center md:justify-between items-center px-2 md:px-10 p-4 mb-5 text-black-text italic text-sm gap-2">
+        <div className="flex items-center space-x-2">
+          <span>Hiển thị</span>
+          <input
+            type="number"
+            value={itemsPerPage}
+            onChange={(e) => setItemsPerPage(Number(e.target.value))}
+            className="w-12 h-7 border border-border-orange rounded-md text-center focus:outline-none focus:ring-1 focus:ring-border-orange"
+          />
+          <span>hàng trong mỗi trang</span>
+        </div>
+
+        <div className="flex space-x-1 md:space-x-2 items-center text-black-text text-sm">
+          <button>
+            <img src={icon.left} alt="Left" className="w-6 h-6 md:w-5 md:h-5" />
+          </button>
+          <button className="text-black-text">1</button>
+          <button className="w-[26px] h-[26px] rounded-full bg-background-orange-1 text-while-text flex items-center justify-center font-medium">
+            2
+          </button>
+          <button className="text-black">3</button>
+          <button className="text-black">...</button>
+          <button className="text-black">100</button>
+          <button>
+            <img src={icon.right} alt="Right" className="w-6 h-6 md:w-5 md:h-5" />
+          </button>
         </div>
       </div>
     </div>
